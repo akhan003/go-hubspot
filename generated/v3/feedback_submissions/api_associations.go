@@ -16,7 +16,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/clarkmcc/go-hubspot"
+	"github.com/akhan003/go-hubspot"
 	"net/url"
 	"strings"
 )

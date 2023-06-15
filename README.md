@@ -3,7 +3,7 @@ This is a HubSpot Go client generated using [openapi-generator](https://github.c
 
 ## Installing
 ```shell
-go get github.com/clarkmcc/go-hubspot
+go get github.com/akhan003/go-hubspot
 ```
 
 ## Re-generating Clients
@@ -16,7 +16,7 @@ go generate
 ## Using the clients
 The clients are broken out into their own packages by name and categorized by API version.
 ```go
-import "github.com/clarkmcc/go-hubspot/generated/v3/contacts"
+import "github.com/akhan003/go-hubspot/generated/v3/contacts"
 
 client := contacts.NewAPIClient(contacts.NewConfiguration())
 
