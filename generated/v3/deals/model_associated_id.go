@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AssociatedId type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AssociatedId{}
+
 // AssociatedId struct for AssociatedId
 type AssociatedId struct {
 	Id   string `json:"id"`
@@ -88,14 +91,18 @@ func (o *AssociatedId) SetType(v string) {
 }
 
 func (o AssociatedId) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["type"] = o.Type
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AssociatedId) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["type"] = o.Type
+	return toSerialize, nil
 }
 
 type NullableAssociatedId struct {

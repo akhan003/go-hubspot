@@ -18,4 +18,5 @@ model_error_detail.go
 model_identification_token_generation_request.go
 model_identification_token_response.go
 response.go
+test/api_generate_test.go
 utils.go

@@ -13,7 +13,7 @@ package crm_extensions
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -66,8 +66,8 @@ func (a *CardsApiService) CardsArchiveExecute(r ApiCardsArchiveRequest) (*http.R
 	}
 
 	localVarPath := localBasePath + "/crm/v3/extensions/cards/{appId}/{cardId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"cardId"+"}", url.PathEscape(parameterToString(r.cardId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"cardId"+"}", url.PathEscape(parameterValueToString(r.cardId, "cardId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -114,9 +114,9 @@ func (a *CardsApiService) CardsArchiveExecute(r ApiCardsArchiveRequest) (*http.R
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -132,6 +132,7 @@ func (a *CardsApiService) CardsArchiveExecute(r ApiCardsArchiveRequest) (*http.R
 			newErr.error = err.Error()
 			return localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
@@ -189,7 +190,7 @@ func (a *CardsApiService) CardsCreateExecute(r ApiCardsCreateRequest) (*CardResp
 	}
 
 	localVarPath := localBasePath + "/crm/v3/extensions/cards/{appId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -241,9 +242,9 @@ func (a *CardsApiService) CardsCreateExecute(r ApiCardsCreateRequest) (*CardResp
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -259,6 +260,7 @@ func (a *CardsApiService) CardsCreateExecute(r ApiCardsCreateRequest) (*CardResp
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -318,7 +320,7 @@ func (a *CardsApiService) CardsGetAllExecute(r ApiCardsGetAllRequest) (*CardList
 	}
 
 	localVarPath := localBasePath + "/crm/v3/extensions/cards/{appId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -365,9 +367,9 @@ func (a *CardsApiService) CardsGetAllExecute(r ApiCardsGetAllRequest) (*CardList
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -383,6 +385,7 @@ func (a *CardsApiService) CardsGetAllExecute(r ApiCardsGetAllRequest) (*CardList
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -445,8 +448,8 @@ func (a *CardsApiService) CardsGetByIDExecute(r ApiCardsGetByIDRequest) (*CardRe
 	}
 
 	localVarPath := localBasePath + "/crm/v3/extensions/cards/{appId}/{cardId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"cardId"+"}", url.PathEscape(parameterToString(r.cardId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"cardId"+"}", url.PathEscape(parameterValueToString(r.cardId, "cardId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -493,9 +496,9 @@ func (a *CardsApiService) CardsGetByIDExecute(r ApiCardsGetByIDRequest) (*CardRe
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -511,6 +514,7 @@ func (a *CardsApiService) CardsGetByIDExecute(r ApiCardsGetByIDRequest) (*CardRe
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -580,8 +584,8 @@ func (a *CardsApiService) CardsUpdateExecute(r ApiCardsUpdateRequest) (*CardResp
 	}
 
 	localVarPath := localBasePath + "/crm/v3/extensions/cards/{appId}/{cardId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"cardId"+"}", url.PathEscape(parameterToString(r.cardId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"cardId"+"}", url.PathEscape(parameterValueToString(r.cardId, "cardId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -633,9 +637,9 @@ func (a *CardsApiService) CardsUpdateExecute(r ApiCardsUpdateRequest) (*CardResp
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -651,6 +655,7 @@ func (a *CardsApiService) CardsUpdateExecute(r ApiCardsUpdateRequest) (*CardResp
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

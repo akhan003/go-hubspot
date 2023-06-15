@@ -123,7 +123,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Get all Blog Posts
@@ -153,7 +154,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Create a new Blog Post
@@ -183,7 +185,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Delete a batch of Blog Posts
@@ -220,7 +223,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Create a batch of Blog Posts
@@ -266,7 +270,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Retrieve a batch of Blog Posts
@@ -313,7 +318,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Update a batch of Blog Posts
@@ -344,7 +350,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Clone a Blog Post
@@ -369,7 +376,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Attach a Blog Post to a multi-language group
@@ -401,7 +409,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Create a new language variation
@@ -426,7 +435,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Detach a Blog Post from a multi-language group
@@ -454,7 +464,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Set a new primary language
@@ -480,7 +491,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Update languages of multi-language group
@@ -508,7 +520,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Schedule a Blog Post to be Published
@@ -546,7 +559,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Delete a Blog Post
@@ -586,7 +600,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Retrieve a Blog Post
@@ -635,7 +650,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Update a Blog Post
@@ -668,7 +684,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Retrieve the full draft version of the Blog Post
@@ -710,7 +727,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Update a Blog Post draft
@@ -741,7 +759,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Push Blog Post draft edits live
@@ -771,7 +790,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Reset the Blog Post draft to the live version
@@ -830,7 +850,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Retrieves all the previous versions of a blog post
@@ -871,7 +892,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Retrieves a previous version of a blog post
@@ -912,7 +934,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Restore a previous version of a blog post
@@ -955,7 +978,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: "Restore a previous version of a blog post, to the draft version of\
@@ -1782,6 +1806,17 @@ components:
       - languages
       - primaryId
       type: object
+    SetNewLanguagePrimaryRequestVNext:
+      description: Request body object for setting a new primary language.
+      example:
+        id: id
+      properties:
+        id:
+          description: ID of object to set as primary in multi-language group.
+          type: string
+      required:
+      - id
+      type: object
     CollectionResponseWithTotalVersionBlogPost:
       description: Response object for collections of blog post versions with pagination
         information.
@@ -2234,17 +2269,6 @@ components:
       required:
       - results
       - total
-      type: object
-    SetNewLanguagePrimaryRequestVNext:
-      description: Request body object for setting a new primary language.
-      example:
-        id: id
-      properties:
-        id:
-          description: ID of object to set as primary in multi-language group.
-          type: string
-      required:
-      - id
       type: object
     RGBAColor:
       description: A color defined by RGB values.
@@ -3859,6 +3883,27 @@ components:
       - language
       - primaryId
       type: object
+    SideOrCorner:
+      example:
+        horizontalSide: LEFT
+        verticalSide: TOP
+      properties:
+        verticalSide:
+          enum:
+          - TOP
+          - MIDDLE
+          - BOTTOM
+          type: string
+        horizontalSide:
+          enum:
+          - LEFT
+          - CENTER
+          - RIGHT
+          type: string
+      required:
+      - horizontalSide
+      - verticalSide
+      type: object
     ErrorDetail:
       properties:
         message:
@@ -3888,27 +3933,6 @@ components:
           type: object
       required:
       - message
-      type: object
-    SideOrCorner:
-      example:
-        horizontalSide: LEFT
-        verticalSide: TOP
-      properties:
-        verticalSide:
-          enum:
-          - TOP
-          - MIDDLE
-          - BOTTOM
-          type: string
-        horizontalSide:
-          enum:
-          - LEFT
-          - CENTER
-          - RIGHT
-          type: string
-      required:
-      - horizontalSide
-      - verticalSide
       type: object
     BatchInputBlogPost:
       description: Wrapper for providing an array of blog posts as inputs.
@@ -4614,109 +4638,6 @@ components:
         prev:
           $ref: '#/components/schemas/PreviousPage'
       type: object
-    BatchResponseBlogPostWithErrors:
-      description: Response object for batch operations on blog posts with errors.
-      properties:
-        status:
-          description: Status of batch operation.
-          enum:
-          - PENDING
-          - PROCESSING
-          - CANCELED
-          - COMPLETE
-          type: string
-        results:
-          description: Results of batch operation.
-          items:
-            $ref: '#/components/schemas/BlogPost'
-          type: array
-        numErrors:
-          description: Number of errors.
-          format: int32
-          type: integer
-        errors:
-          description: Errors in batch operation.
-          items:
-            $ref: '#/components/schemas/StandardError'
-          type: array
-        requestedAt:
-          description: Time of batch operation request.
-          format: date-time
-          type: string
-        startedAt:
-          description: Time of batch operation start.
-          format: date-time
-          type: string
-        completedAt:
-          description: Time of batch operation completion.
-          format: date-time
-          type: string
-        links:
-          additionalProperties:
-            type: string
-          description: Links associated with batch operation.
-          type: object
-      required:
-      - completedAt
-      - results
-      - startedAt
-      - status
-      type: object
-    Error:
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-      properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          example: An error occurred
-          type: string
-        correlationId:
-          description: A unique identifier for the request. Include this value with
-            any error reports or support tickets
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-          format: uuid
-          type: string
-        category:
-          description: The error category
-          type: string
-        subCategory:
-          description: A specific category that contains more specific detail about
-            the error
-          type: string
-        errors:
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type: array
-        context:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: Context about the error condition
-          example:
-            invalidPropertyName:
-            - propertyValue
-            missingScopes:
-            - scope1
-            - scope2
-          type: object
-        links:
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation
-            about the error or recommended remediation steps
-          type: object
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
     VersionBlogPost:
       description: Model definition of a version of a blog post.
       example:
@@ -4948,6 +4869,109 @@ components:
       - object
       - updatedAt
       - user
+      type: object
+    Error:
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+      properties:
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          example: An error occurred
+          type: string
+        correlationId:
+          description: A unique identifier for the request. Include this value with
+            any error reports or support tickets
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+          format: uuid
+          type: string
+        category:
+          description: The error category
+          type: string
+        subCategory:
+          description: A specific category that contains more specific detail about
+            the error
+          type: string
+        errors:
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type: array
+        context:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: Context about the error condition
+          example:
+            invalidPropertyName:
+            - propertyValue
+            missingScopes:
+            - scope1
+            - scope2
+          type: object
+        links:
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation
+            about the error or recommended remediation steps
+          type: object
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+    BatchResponseBlogPostWithErrors:
+      description: Response object for batch operations on blog posts with errors.
+      properties:
+        status:
+          description: Status of batch operation.
+          enum:
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
+          type: string
+        results:
+          description: Results of batch operation.
+          items:
+            $ref: '#/components/schemas/BlogPost'
+          type: array
+        numErrors:
+          description: Number of errors.
+          format: int32
+          type: integer
+        errors:
+          description: Errors in batch operation.
+          items:
+            $ref: '#/components/schemas/StandardError'
+          type: array
+        requestedAt:
+          description: Time of batch operation request.
+          format: date-time
+          type: string
+        startedAt:
+          description: Time of batch operation start.
+          format: date-time
+          type: string
+        completedAt:
+          description: Time of batch operation completion.
+          format: date-time
+          type: string
+        links:
+          additionalProperties:
+            type: string
+          description: Links associated with batch operation.
+          type: object
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
       type: object
     BlogPost:
       description: Model definition for a Blog Post.
@@ -7130,6 +7154,9 @@ components:
       - backgroundSize
       - imageUrl
       type: object
+    ErrorCategory:
+      description: Model definition for an error category.
+      type: object
     Angle:
       example:
         units: deg
@@ -7147,9 +7174,6 @@ components:
       required:
       - units
       - value
-      type: object
-    ErrorCategory:
-      description: Model definition for an error category.
       type: object
     PreviousPage:
       description: Model definition for a previous page
@@ -7290,9 +7314,9 @@ components:
             content: Read from and write to my Content
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
-    hapikey:
-      in: query
-      name: hapikey
+    private_apps_legacy:
+      in: header
+      name: private-app-legacy
       type: apiKey
 x-hubspot-available-client-libraries:
 - PHP

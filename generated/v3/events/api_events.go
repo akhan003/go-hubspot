@@ -13,10 +13,8 @@ package events
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"reflect"
 	"time"
@@ -131,38 +129,38 @@ func (a *EventsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespo
 	localVarFormParams := url.Values{}
 
 	if r.occurredAfter != nil {
-		localVarQueryParams.Add("occurredAfter", parameterToString(*r.occurredAfter, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "occurredAfter", r.occurredAfter, "")
 	}
 	if r.occurredBefore != nil {
-		localVarQueryParams.Add("occurredBefore", parameterToString(*r.occurredBefore, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "occurredBefore", r.occurredBefore, "")
 	}
 	if r.objectType != nil {
-		localVarQueryParams.Add("objectType", parameterToString(*r.objectType, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "objectType", r.objectType, "")
 	}
 	if r.objectId != nil {
-		localVarQueryParams.Add("objectId", parameterToString(*r.objectId, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "objectId", r.objectId, "")
 	}
 	if r.eventType != nil {
-		localVarQueryParams.Add("eventType", parameterToString(*r.eventType, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "eventType", r.eventType, "")
 	}
 	if r.after != nil {
-		localVarQueryParams.Add("after", parameterToString(*r.after, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "after", r.after, "")
 	}
 	if r.before != nil {
-		localVarQueryParams.Add("before", parameterToString(*r.before, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "before", r.before, "")
 	}
 	if r.limit != nil {
-		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	if r.sort != nil {
 		t := *r.sort
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("sort", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("sort", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "sort", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -184,12 +182,16 @@ func (a *EventsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespo
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -202,9 +204,9 @@ func (a *EventsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespo
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -220,6 +222,7 @@ func (a *EventsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespo
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

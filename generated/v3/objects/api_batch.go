@@ -13,10 +13,8 @@ package objects
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"strings"
 )
@@ -69,7 +67,7 @@ func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.R
 	}
 
 	localVarPath := localBasePath + "/crm/v3/objects/{objectType}/batch/archive"
-	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterToString(r.objectType, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterValueToString(r.objectType, "objectType")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -99,12 +97,30 @@ func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.R
 	localVarPostBody = r.batchInputSimplePublicObjectId
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -117,9 +133,9 @@ func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.R
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -135,6 +151,7 @@ func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.R
 			newErr.error = err.Error()
 			return localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
@@ -143,14 +160,14 @@ func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.R
 }
 
 type ApiBatchCreateRequest struct {
-	ctx                               context.Context
-	ApiService                        *BatchApiService
-	objectType                        string
-	batchInputSimplePublicObjectInput *BatchInputSimplePublicObjectInput
+	ctx                                        context.Context
+	ApiService                                 *BatchApiService
+	objectType                                 string
+	batchInputSimplePublicObjectInputForCreate *BatchInputSimplePublicObjectInputForCreate
 }
 
-func (r ApiBatchCreateRequest) BatchInputSimplePublicObjectInput(batchInputSimplePublicObjectInput BatchInputSimplePublicObjectInput) ApiBatchCreateRequest {
-	r.batchInputSimplePublicObjectInput = &batchInputSimplePublicObjectInput
+func (r ApiBatchCreateRequest) BatchInputSimplePublicObjectInputForCreate(batchInputSimplePublicObjectInputForCreate BatchInputSimplePublicObjectInputForCreate) ApiBatchCreateRequest {
+	r.batchInputSimplePublicObjectInputForCreate = &batchInputSimplePublicObjectInputForCreate
 	return r
 }
 
@@ -189,13 +206,13 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 	}
 
 	localVarPath := localBasePath + "/crm/v3/objects/{objectType}/batch/create"
-	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterToString(r.objectType, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterValueToString(r.objectType, "objectType")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.batchInputSimplePublicObjectInput == nil {
-		return localVarReturnValue, nil, reportError("batchInputSimplePublicObjectInput is required and must be specified")
+	if r.batchInputSimplePublicObjectInputForCreate == nil {
+		return localVarReturnValue, nil, reportError("batchInputSimplePublicObjectInputForCreate is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -216,15 +233,33 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.batchInputSimplePublicObjectInput
+	localVarPostBody = r.batchInputSimplePublicObjectInputForCreate
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -237,9 +272,9 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -255,6 +290,7 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -325,7 +361,7 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 	}
 
 	localVarPath := localBasePath + "/crm/v3/objects/{objectType}/batch/read"
-	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterToString(r.objectType, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterValueToString(r.objectType, "objectType")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -335,7 +371,7 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 	}
 
 	if r.archived != nil {
-		localVarQueryParams.Add("archived", parameterToString(*r.archived, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -358,12 +394,30 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 	localVarPostBody = r.batchReadInputSimplePublicObjectId
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -376,9 +430,9 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -394,6 +448,7 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -457,7 +512,7 @@ func (a *BatchApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*BatchRes
 	}
 
 	localVarPath := localBasePath + "/crm/v3/objects/{objectType}/batch/update"
-	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterToString(r.objectType, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterValueToString(r.objectType, "objectType")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -487,12 +542,30 @@ func (a *BatchApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*BatchRes
 	localVarPostBody = r.batchInputSimplePublicObjectBatchInput
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -505,9 +578,9 @@ func (a *BatchApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*BatchRes
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -523,6 +596,7 @@ func (a *BatchApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*BatchRes
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

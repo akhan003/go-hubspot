@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SideOrCorner type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SideOrCorner{}
+
 // SideOrCorner struct for SideOrCorner
 type SideOrCorner struct {
 	VerticalSide   string `json:"verticalSide"`
@@ -88,14 +91,18 @@ func (o *SideOrCorner) SetHorizontalSide(v string) {
 }
 
 func (o SideOrCorner) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["verticalSide"] = o.VerticalSide
-	}
-	if true {
-		toSerialize["horizontalSide"] = o.HorizontalSide
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SideOrCorner) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["verticalSide"] = o.VerticalSide
+	toSerialize["horizontalSide"] = o.HorizontalSide
+	return toSerialize, nil
 }
 
 type NullableSideOrCorner struct {

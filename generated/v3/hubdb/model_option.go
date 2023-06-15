@@ -14,12 +14,16 @@ import (
 	"encoding/json"
 )
 
+// checks if the Option type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Option{}
+
 // Option struct for Option
 type Option struct {
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Type  string `json:"type"`
-	Order int32  `json:"order"`
+	Id    string  `json:"id"`
+	Name  string  `json:"name"`
+	Label *string `json:"label,omitempty"`
+	Type  string  `json:"type"`
+	Order int32   `json:"order"`
 }
 
 // NewOption instantiates a new Option object
@@ -91,6 +95,38 @@ func (o *Option) SetName(v string) {
 	o.Name = v
 }
 
+// GetLabel returns the Label field value if set, zero value otherwise.
+func (o *Option) GetLabel() string {
+	if o == nil || IsNil(o.Label) {
+		var ret string
+		return ret
+	}
+	return *o.Label
+}
+
+// GetLabelOk returns a tuple with the Label field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Option) GetLabelOk() (*string, bool) {
+	if o == nil || IsNil(o.Label) {
+		return nil, false
+	}
+	return o.Label, true
+}
+
+// HasLabel returns a boolean if a field has been set.
+func (o *Option) HasLabel() bool {
+	if o != nil && !IsNil(o.Label) {
+		return true
+	}
+
+	return false
+}
+
+// SetLabel gets a reference to the given string and assigns it to the Label field.
+func (o *Option) SetLabel(v string) {
+	o.Label = &v
+}
+
 // GetType returns the Type field value
 func (o *Option) GetType() string {
 	if o == nil {
@@ -140,20 +176,23 @@ func (o *Option) SetOrder(v int32) {
 }
 
 func (o Option) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["type"] = o.Type
-	}
-	if true {
-		toSerialize["order"] = o.Order
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Option) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	if !IsNil(o.Label) {
+		toSerialize["label"] = o.Label
+	}
+	toSerialize["type"] = o.Type
+	toSerialize["order"] = o.Order
+	return toSerialize, nil
 }
 
 type NullableOption struct {

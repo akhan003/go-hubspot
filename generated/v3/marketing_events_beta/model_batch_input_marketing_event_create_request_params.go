@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputMarketingEventCreateRequestParams type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputMarketingEventCreateRequestParams{}
+
 // BatchInputMarketingEventCreateRequestParams struct for BatchInputMarketingEventCreateRequestParams
 type BatchInputMarketingEventCreateRequestParams struct {
 	Inputs []MarketingEventCreateRequestParams `json:"inputs"`
@@ -62,11 +65,17 @@ func (o *BatchInputMarketingEventCreateRequestParams) SetInputs(v []MarketingEve
 }
 
 func (o BatchInputMarketingEventCreateRequestParams) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputMarketingEventCreateRequestParams) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputMarketingEventCreateRequestParams struct {

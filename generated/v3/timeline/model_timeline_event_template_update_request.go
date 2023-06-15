@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TimelineEventTemplateUpdateRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TimelineEventTemplateUpdateRequest{}
+
 // TimelineEventTemplateUpdateRequest State of the template definition being updated.
 type TimelineEventTemplateUpdateRequest struct {
 	// The template name.
@@ -74,7 +77,7 @@ func (o *TimelineEventTemplateUpdateRequest) SetName(v string) {
 
 // GetHeaderTemplate returns the HeaderTemplate field value if set, zero value otherwise.
 func (o *TimelineEventTemplateUpdateRequest) GetHeaderTemplate() string {
-	if o == nil || o.HeaderTemplate == nil {
+	if o == nil || IsNil(o.HeaderTemplate) {
 		var ret string
 		return ret
 	}
@@ -84,7 +87,7 @@ func (o *TimelineEventTemplateUpdateRequest) GetHeaderTemplate() string {
 // GetHeaderTemplateOk returns a tuple with the HeaderTemplate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplateUpdateRequest) GetHeaderTemplateOk() (*string, bool) {
-	if o == nil || o.HeaderTemplate == nil {
+	if o == nil || IsNil(o.HeaderTemplate) {
 		return nil, false
 	}
 	return o.HeaderTemplate, true
@@ -92,7 +95,7 @@ func (o *TimelineEventTemplateUpdateRequest) GetHeaderTemplateOk() (*string, boo
 
 // HasHeaderTemplate returns a boolean if a field has been set.
 func (o *TimelineEventTemplateUpdateRequest) HasHeaderTemplate() bool {
-	if o != nil && o.HeaderTemplate != nil {
+	if o != nil && !IsNil(o.HeaderTemplate) {
 		return true
 	}
 
@@ -106,7 +109,7 @@ func (o *TimelineEventTemplateUpdateRequest) SetHeaderTemplate(v string) {
 
 // GetDetailTemplate returns the DetailTemplate field value if set, zero value otherwise.
 func (o *TimelineEventTemplateUpdateRequest) GetDetailTemplate() string {
-	if o == nil || o.DetailTemplate == nil {
+	if o == nil || IsNil(o.DetailTemplate) {
 		var ret string
 		return ret
 	}
@@ -116,7 +119,7 @@ func (o *TimelineEventTemplateUpdateRequest) GetDetailTemplate() string {
 // GetDetailTemplateOk returns a tuple with the DetailTemplate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplateUpdateRequest) GetDetailTemplateOk() (*string, bool) {
-	if o == nil || o.DetailTemplate == nil {
+	if o == nil || IsNil(o.DetailTemplate) {
 		return nil, false
 	}
 	return o.DetailTemplate, true
@@ -124,7 +127,7 @@ func (o *TimelineEventTemplateUpdateRequest) GetDetailTemplateOk() (*string, boo
 
 // HasDetailTemplate returns a boolean if a field has been set.
 func (o *TimelineEventTemplateUpdateRequest) HasDetailTemplate() bool {
-	if o != nil && o.DetailTemplate != nil {
+	if o != nil && !IsNil(o.DetailTemplate) {
 		return true
 	}
 
@@ -185,23 +188,25 @@ func (o *TimelineEventTemplateUpdateRequest) SetId(v string) {
 }
 
 func (o TimelineEventTemplateUpdateRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if o.HeaderTemplate != nil {
-		toSerialize["headerTemplate"] = o.HeaderTemplate
-	}
-	if o.DetailTemplate != nil {
-		toSerialize["detailTemplate"] = o.DetailTemplate
-	}
-	if true {
-		toSerialize["tokens"] = o.Tokens
-	}
-	if true {
-		toSerialize["id"] = o.Id
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TimelineEventTemplateUpdateRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	if !IsNil(o.HeaderTemplate) {
+		toSerialize["headerTemplate"] = o.HeaderTemplate
+	}
+	if !IsNil(o.DetailTemplate) {
+		toSerialize["detailTemplate"] = o.DetailTemplate
+	}
+	toSerialize["tokens"] = o.Tokens
+	toSerialize["id"] = o.Id
+	return toSerialize, nil
 }
 
 type NullableTimelineEventTemplateUpdateRequest struct {

@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the MarketingEventDefaultResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MarketingEventDefaultResponse{}
+
 // MarketingEventDefaultResponse struct for MarketingEventDefaultResponse
 type MarketingEventDefaultResponse struct {
 	// The name of the marketing event.
@@ -82,7 +85,7 @@ func (o *MarketingEventDefaultResponse) SetEventName(v string) {
 
 // GetEventType returns the EventType field value if set, zero value otherwise.
 func (o *MarketingEventDefaultResponse) GetEventType() string {
-	if o == nil || o.EventType == nil {
+	if o == nil || IsNil(o.EventType) {
 		var ret string
 		return ret
 	}
@@ -92,7 +95,7 @@ func (o *MarketingEventDefaultResponse) GetEventType() string {
 // GetEventTypeOk returns a tuple with the EventType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventDefaultResponse) GetEventTypeOk() (*string, bool) {
-	if o == nil || o.EventType == nil {
+	if o == nil || IsNil(o.EventType) {
 		return nil, false
 	}
 	return o.EventType, true
@@ -100,7 +103,7 @@ func (o *MarketingEventDefaultResponse) GetEventTypeOk() (*string, bool) {
 
 // HasEventType returns a boolean if a field has been set.
 func (o *MarketingEventDefaultResponse) HasEventType() bool {
-	if o != nil && o.EventType != nil {
+	if o != nil && !IsNil(o.EventType) {
 		return true
 	}
 
@@ -114,7 +117,7 @@ func (o *MarketingEventDefaultResponse) SetEventType(v string) {
 
 // GetStartDateTime returns the StartDateTime field value if set, zero value otherwise.
 func (o *MarketingEventDefaultResponse) GetStartDateTime() time.Time {
-	if o == nil || o.StartDateTime == nil {
+	if o == nil || IsNil(o.StartDateTime) {
 		var ret time.Time
 		return ret
 	}
@@ -124,7 +127,7 @@ func (o *MarketingEventDefaultResponse) GetStartDateTime() time.Time {
 // GetStartDateTimeOk returns a tuple with the StartDateTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventDefaultResponse) GetStartDateTimeOk() (*time.Time, bool) {
-	if o == nil || o.StartDateTime == nil {
+	if o == nil || IsNil(o.StartDateTime) {
 		return nil, false
 	}
 	return o.StartDateTime, true
@@ -132,7 +135,7 @@ func (o *MarketingEventDefaultResponse) GetStartDateTimeOk() (*time.Time, bool) 
 
 // HasStartDateTime returns a boolean if a field has been set.
 func (o *MarketingEventDefaultResponse) HasStartDateTime() bool {
-	if o != nil && o.StartDateTime != nil {
+	if o != nil && !IsNil(o.StartDateTime) {
 		return true
 	}
 
@@ -146,7 +149,7 @@ func (o *MarketingEventDefaultResponse) SetStartDateTime(v time.Time) {
 
 // GetEndDateTime returns the EndDateTime field value if set, zero value otherwise.
 func (o *MarketingEventDefaultResponse) GetEndDateTime() time.Time {
-	if o == nil || o.EndDateTime == nil {
+	if o == nil || IsNil(o.EndDateTime) {
 		var ret time.Time
 		return ret
 	}
@@ -156,7 +159,7 @@ func (o *MarketingEventDefaultResponse) GetEndDateTime() time.Time {
 // GetEndDateTimeOk returns a tuple with the EndDateTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventDefaultResponse) GetEndDateTimeOk() (*time.Time, bool) {
-	if o == nil || o.EndDateTime == nil {
+	if o == nil || IsNil(o.EndDateTime) {
 		return nil, false
 	}
 	return o.EndDateTime, true
@@ -164,7 +167,7 @@ func (o *MarketingEventDefaultResponse) GetEndDateTimeOk() (*time.Time, bool) {
 
 // HasEndDateTime returns a boolean if a field has been set.
 func (o *MarketingEventDefaultResponse) HasEndDateTime() bool {
-	if o != nil && o.EndDateTime != nil {
+	if o != nil && !IsNil(o.EndDateTime) {
 		return true
 	}
 
@@ -202,7 +205,7 @@ func (o *MarketingEventDefaultResponse) SetEventOrganizer(v string) {
 
 // GetEventDescription returns the EventDescription field value if set, zero value otherwise.
 func (o *MarketingEventDefaultResponse) GetEventDescription() string {
-	if o == nil || o.EventDescription == nil {
+	if o == nil || IsNil(o.EventDescription) {
 		var ret string
 		return ret
 	}
@@ -212,7 +215,7 @@ func (o *MarketingEventDefaultResponse) GetEventDescription() string {
 // GetEventDescriptionOk returns a tuple with the EventDescription field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventDefaultResponse) GetEventDescriptionOk() (*string, bool) {
-	if o == nil || o.EventDescription == nil {
+	if o == nil || IsNil(o.EventDescription) {
 		return nil, false
 	}
 	return o.EventDescription, true
@@ -220,7 +223,7 @@ func (o *MarketingEventDefaultResponse) GetEventDescriptionOk() (*string, bool) 
 
 // HasEventDescription returns a boolean if a field has been set.
 func (o *MarketingEventDefaultResponse) HasEventDescription() bool {
-	if o != nil && o.EventDescription != nil {
+	if o != nil && !IsNil(o.EventDescription) {
 		return true
 	}
 
@@ -234,7 +237,7 @@ func (o *MarketingEventDefaultResponse) SetEventDescription(v string) {
 
 // GetEventUrl returns the EventUrl field value if set, zero value otherwise.
 func (o *MarketingEventDefaultResponse) GetEventUrl() string {
-	if o == nil || o.EventUrl == nil {
+	if o == nil || IsNil(o.EventUrl) {
 		var ret string
 		return ret
 	}
@@ -244,7 +247,7 @@ func (o *MarketingEventDefaultResponse) GetEventUrl() string {
 // GetEventUrlOk returns a tuple with the EventUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventDefaultResponse) GetEventUrlOk() (*string, bool) {
-	if o == nil || o.EventUrl == nil {
+	if o == nil || IsNil(o.EventUrl) {
 		return nil, false
 	}
 	return o.EventUrl, true
@@ -252,7 +255,7 @@ func (o *MarketingEventDefaultResponse) GetEventUrlOk() (*string, bool) {
 
 // HasEventUrl returns a boolean if a field has been set.
 func (o *MarketingEventDefaultResponse) HasEventUrl() bool {
-	if o != nil && o.EventUrl != nil {
+	if o != nil && !IsNil(o.EventUrl) {
 		return true
 	}
 
@@ -266,7 +269,7 @@ func (o *MarketingEventDefaultResponse) SetEventUrl(v string) {
 
 // GetEventCancelled returns the EventCancelled field value if set, zero value otherwise.
 func (o *MarketingEventDefaultResponse) GetEventCancelled() bool {
-	if o == nil || o.EventCancelled == nil {
+	if o == nil || IsNil(o.EventCancelled) {
 		var ret bool
 		return ret
 	}
@@ -276,7 +279,7 @@ func (o *MarketingEventDefaultResponse) GetEventCancelled() bool {
 // GetEventCancelledOk returns a tuple with the EventCancelled field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventDefaultResponse) GetEventCancelledOk() (*bool, bool) {
-	if o == nil || o.EventCancelled == nil {
+	if o == nil || IsNil(o.EventCancelled) {
 		return nil, false
 	}
 	return o.EventCancelled, true
@@ -284,7 +287,7 @@ func (o *MarketingEventDefaultResponse) GetEventCancelledOk() (*bool, bool) {
 
 // HasEventCancelled returns a boolean if a field has been set.
 func (o *MarketingEventDefaultResponse) HasEventCancelled() bool {
-	if o != nil && o.EventCancelled != nil {
+	if o != nil && !IsNil(o.EventCancelled) {
 		return true
 	}
 
@@ -298,7 +301,7 @@ func (o *MarketingEventDefaultResponse) SetEventCancelled(v bool) {
 
 // GetCustomProperties returns the CustomProperties field value if set, zero value otherwise.
 func (o *MarketingEventDefaultResponse) GetCustomProperties() []PropertyValue {
-	if o == nil || o.CustomProperties == nil {
+	if o == nil || IsNil(o.CustomProperties) {
 		var ret []PropertyValue
 		return ret
 	}
@@ -308,7 +311,7 @@ func (o *MarketingEventDefaultResponse) GetCustomProperties() []PropertyValue {
 // GetCustomPropertiesOk returns a tuple with the CustomProperties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventDefaultResponse) GetCustomPropertiesOk() ([]PropertyValue, bool) {
-	if o == nil || o.CustomProperties == nil {
+	if o == nil || IsNil(o.CustomProperties) {
 		return nil, false
 	}
 	return o.CustomProperties, true
@@ -316,7 +319,7 @@ func (o *MarketingEventDefaultResponse) GetCustomPropertiesOk() ([]PropertyValue
 
 // HasCustomProperties returns a boolean if a field has been set.
 func (o *MarketingEventDefaultResponse) HasCustomProperties() bool {
-	if o != nil && o.CustomProperties != nil {
+	if o != nil && !IsNil(o.CustomProperties) {
 		return true
 	}
 
@@ -329,35 +332,39 @@ func (o *MarketingEventDefaultResponse) SetCustomProperties(v []PropertyValue) {
 }
 
 func (o MarketingEventDefaultResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["eventName"] = o.EventName
-	}
-	if o.EventType != nil {
-		toSerialize["eventType"] = o.EventType
-	}
-	if o.StartDateTime != nil {
-		toSerialize["startDateTime"] = o.StartDateTime
-	}
-	if o.EndDateTime != nil {
-		toSerialize["endDateTime"] = o.EndDateTime
-	}
-	if true {
-		toSerialize["eventOrganizer"] = o.EventOrganizer
-	}
-	if o.EventDescription != nil {
-		toSerialize["eventDescription"] = o.EventDescription
-	}
-	if o.EventUrl != nil {
-		toSerialize["eventUrl"] = o.EventUrl
-	}
-	if o.EventCancelled != nil {
-		toSerialize["eventCancelled"] = o.EventCancelled
-	}
-	if o.CustomProperties != nil {
-		toSerialize["customProperties"] = o.CustomProperties
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MarketingEventDefaultResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["eventName"] = o.EventName
+	if !IsNil(o.EventType) {
+		toSerialize["eventType"] = o.EventType
+	}
+	if !IsNil(o.StartDateTime) {
+		toSerialize["startDateTime"] = o.StartDateTime
+	}
+	if !IsNil(o.EndDateTime) {
+		toSerialize["endDateTime"] = o.EndDateTime
+	}
+	toSerialize["eventOrganizer"] = o.EventOrganizer
+	if !IsNil(o.EventDescription) {
+		toSerialize["eventDescription"] = o.EventDescription
+	}
+	if !IsNil(o.EventUrl) {
+		toSerialize["eventUrl"] = o.EventUrl
+	}
+	if !IsNil(o.EventCancelled) {
+		toSerialize["eventCancelled"] = o.EventCancelled
+	}
+	if !IsNil(o.CustomProperties) {
+		toSerialize["customProperties"] = o.CustomProperties
+	}
+	return toSerialize, nil
 }
 
 type NullableMarketingEventDefaultResponse struct {

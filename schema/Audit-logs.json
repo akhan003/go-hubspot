@@ -131,7 +131,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -199,6 +199,52 @@
           }
         }
       },
+      "PublicAuditLog" : {
+        "required" : [ "event", "fullName", "objectId", "objectName", "objectType", "timestamp", "userId" ],
+        "type" : "object",
+        "properties" : {
+          "objectId" : {
+            "type" : "string",
+            "description" : "The ID of the object."
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "The ID of the user who caused the event."
+          },
+          "timestamp" : {
+            "type" : "string",
+            "description" : "The timestamp at which the event occurred.",
+            "format" : "date-time"
+          },
+          "objectName" : {
+            "type" : "string",
+            "description" : "The internal name of the object in HubSpot."
+          },
+          "fullName" : {
+            "type" : "string",
+            "description" : "The name of the user who caused the event."
+          },
+          "event" : {
+            "type" : "string",
+            "description" : "The type of event that took place (CREATED, UPDATED, PUBLISHED, DELETED, UNPUBLISHED).",
+            "enum" : [ "CREATED", "UPDATED", "PUBLISHED", "DELETED", "UNPUBLISHED" ]
+          },
+          "objectType" : {
+            "type" : "string",
+            "description" : "The type of the object (BLOG, LANDING_PAGE, DOMAIN, HUBDB_TABLE etc.)",
+            "enum" : [ "BLOG", "BLOG_POST", "LANDING_PAGE", "WEBSITE_PAGE", "TEMPLATE", "MODULE", "GLOBAL_MODULE", "SERVERLESS_FUNCTION", "DOMAIN", "URL_MAPPING", "EMAIL", "CONTENT_SETTINGS", "HUBDB_TABLE", "KNOWLEDGE_BASE_ARTICLE", "KNOWLEDGE_BASE", "THEME", "CSS", "JS" ]
+          }
+        },
+        "example" : {
+          "objectName" : "My Landing Page",
+          "fullName" : "John Doe",
+          "event" : "UPDATED",
+          "userId" : "1011561",
+          "objectId" : "4065364319",
+          "timestamp" : "1583792674672",
+          "objectType" : "LANDING_PAGE"
+        }
+      },
       "Error" : {
         "required" : [ "category", "correlationId", "message" ],
         "type" : "object",
@@ -260,52 +306,6 @@
           }
         }
       },
-      "PublicAuditLog" : {
-        "required" : [ "event", "fullName", "objectId", "objectName", "objectType", "timestamp", "userId" ],
-        "type" : "object",
-        "properties" : {
-          "objectId" : {
-            "type" : "string",
-            "description" : "The ID of the object."
-          },
-          "userId" : {
-            "type" : "string",
-            "description" : "The ID of the user who caused the event."
-          },
-          "timestamp" : {
-            "type" : "string",
-            "description" : "The timestamp at which the event occurred.",
-            "format" : "date-time"
-          },
-          "objectName" : {
-            "type" : "string",
-            "description" : "The internal name of the object in HubSpot."
-          },
-          "fullName" : {
-            "type" : "string",
-            "description" : "The name of the user who caused the event."
-          },
-          "event" : {
-            "type" : "string",
-            "description" : "The type of event that took place (CREATED, UPDATED, PUBLISHED, DELETED, UNPUBLISHED).",
-            "enum" : [ "CREATED", "UPDATED", "PUBLISHED", "DELETED", "UNPUBLISHED" ]
-          },
-          "objectType" : {
-            "type" : "string",
-            "description" : "The type of the object (BLOG, LANDING_PAGE, DOMAIN, HUBDB_TABLE etc.)",
-            "enum" : [ "BLOG", "BLOG_POST", "LANDING_PAGE", "WEBSITE_PAGE", "TEMPLATE", "MODULE", "GLOBAL_MODULE", "SERVERLESS_FUNCTION", "DOMAIN", "URL_MAPPING", "EMAIL", "CONTENT_SETTINGS", "HUBDB_TABLE", "KNOWLEDGE_BASE_ARTICLE", "KNOWLEDGE_BASE", "THEME", "CSS", "JS" ]
-          }
-        },
-        "example" : {
-          "objectName" : "My Landing Page",
-          "fullName" : "John Doe",
-          "event" : "UPDATED",
-          "userId" : "1011561",
-          "objectId" : "4065364319",
-          "timestamp" : "1583792674672",
-          "objectType" : "LANDING_PAGE"
-        }
-      },
       "NextPage" : {
         "required" : [ "after" ],
         "type" : "object",
@@ -344,10 +344,10 @@
           }
         }
       },
-      "hapikey" : {
+      "private_apps_legacy" : {
         "type" : "apiKey",
-        "name" : "hapikey",
-        "in" : "query"
+        "name" : "private-app-legacy",
+        "in" : "header"
       }
     }
   },

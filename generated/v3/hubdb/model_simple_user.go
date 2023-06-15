@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SimpleUser type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SimpleUser{}
+
 // SimpleUser struct for SimpleUser
 type SimpleUser struct {
 	Id        string `json:"id"`
@@ -140,20 +143,20 @@ func (o *SimpleUser) SetLastName(v string) {
 }
 
 func (o SimpleUser) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if true {
-		toSerialize["firstName"] = o.FirstName
-	}
-	if true {
-		toSerialize["lastName"] = o.LastName
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SimpleUser) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["email"] = o.Email
+	toSerialize["firstName"] = o.FirstName
+	toSerialize["lastName"] = o.LastName
+	return toSerialize, nil
 }
 
 type NullableSimpleUser struct {

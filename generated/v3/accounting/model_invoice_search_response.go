@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the InvoiceSearchResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &InvoiceSearchResponse{}
+
 // InvoiceSearchResponse A response to a search for invoices.
 type InvoiceSearchResponse struct {
 	// Designates if the response is a success ('OK') or failure ('ERR').
@@ -42,7 +45,7 @@ func NewInvoiceSearchResponseWithDefaults() *InvoiceSearchResponse {
 
 // GetResult returns the Result field value if set, zero value otherwise.
 func (o *InvoiceSearchResponse) GetResult() string {
-	if o == nil || o.Result == nil {
+	if o == nil || IsNil(o.Result) {
 		var ret string
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *InvoiceSearchResponse) GetResult() string {
 // GetResultOk returns a tuple with the Result field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceSearchResponse) GetResultOk() (*string, bool) {
-	if o == nil || o.Result == nil {
+	if o == nil || IsNil(o.Result) {
 		return nil, false
 	}
 	return o.Result, true
@@ -60,7 +63,7 @@ func (o *InvoiceSearchResponse) GetResultOk() (*string, bool) {
 
 // HasResult returns a boolean if a field has been set.
 func (o *InvoiceSearchResponse) HasResult() bool {
-	if o != nil && o.Result != nil {
+	if o != nil && !IsNil(o.Result) {
 		return true
 	}
 
@@ -97,14 +100,20 @@ func (o *InvoiceSearchResponse) SetInvoices(v []AccountingExtensionInvoice) {
 }
 
 func (o InvoiceSearchResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Result != nil {
-		toSerialize["@result"] = o.Result
-	}
-	if true {
-		toSerialize["invoices"] = o.Invoices
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o InvoiceSearchResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Result) {
+		toSerialize["@result"] = o.Result
+	}
+	toSerialize["invoices"] = o.Invoices
+	return toSerialize, nil
 }
 
 type NullableInvoiceSearchResponse struct {

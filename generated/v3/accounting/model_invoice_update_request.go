@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the InvoiceUpdateRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &InvoiceUpdateRequest{}
+
 // InvoiceUpdateRequest The invoice data to update in HubSpot
 type InvoiceUpdateRequest struct {
 	ExternalInvoiceNumber *string `json:"externalInvoiceNumber,omitempty"`
@@ -51,7 +54,7 @@ func NewInvoiceUpdateRequestWithDefaults() *InvoiceUpdateRequest {
 
 // GetExternalInvoiceNumber returns the ExternalInvoiceNumber field value if set, zero value otherwise.
 func (o *InvoiceUpdateRequest) GetExternalInvoiceNumber() string {
-	if o == nil || o.ExternalInvoiceNumber == nil {
+	if o == nil || IsNil(o.ExternalInvoiceNumber) {
 		var ret string
 		return ret
 	}
@@ -61,7 +64,7 @@ func (o *InvoiceUpdateRequest) GetExternalInvoiceNumber() string {
 // GetExternalInvoiceNumberOk returns a tuple with the ExternalInvoiceNumber field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceUpdateRequest) GetExternalInvoiceNumberOk() (*string, bool) {
-	if o == nil || o.ExternalInvoiceNumber == nil {
+	if o == nil || IsNil(o.ExternalInvoiceNumber) {
 		return nil, false
 	}
 	return o.ExternalInvoiceNumber, true
@@ -69,7 +72,7 @@ func (o *InvoiceUpdateRequest) GetExternalInvoiceNumberOk() (*string, bool) {
 
 // HasExternalInvoiceNumber returns a boolean if a field has been set.
 func (o *InvoiceUpdateRequest) HasExternalInvoiceNumber() bool {
-	if o != nil && o.ExternalInvoiceNumber != nil {
+	if o != nil && !IsNil(o.ExternalInvoiceNumber) {
 		return true
 	}
 
@@ -83,7 +86,7 @@ func (o *InvoiceUpdateRequest) SetExternalInvoiceNumber(v string) {
 
 // GetCurrencyCode returns the CurrencyCode field value if set, zero value otherwise.
 func (o *InvoiceUpdateRequest) GetCurrencyCode() string {
-	if o == nil || o.CurrencyCode == nil {
+	if o == nil || IsNil(o.CurrencyCode) {
 		var ret string
 		return ret
 	}
@@ -93,7 +96,7 @@ func (o *InvoiceUpdateRequest) GetCurrencyCode() string {
 // GetCurrencyCodeOk returns a tuple with the CurrencyCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceUpdateRequest) GetCurrencyCodeOk() (*string, bool) {
-	if o == nil || o.CurrencyCode == nil {
+	if o == nil || IsNil(o.CurrencyCode) {
 		return nil, false
 	}
 	return o.CurrencyCode, true
@@ -101,7 +104,7 @@ func (o *InvoiceUpdateRequest) GetCurrencyCodeOk() (*string, bool) {
 
 // HasCurrencyCode returns a boolean if a field has been set.
 func (o *InvoiceUpdateRequest) HasCurrencyCode() bool {
-	if o != nil && o.CurrencyCode != nil {
+	if o != nil && !IsNil(o.CurrencyCode) {
 		return true
 	}
 
@@ -115,7 +118,7 @@ func (o *InvoiceUpdateRequest) SetCurrencyCode(v string) {
 
 // GetDueDate returns the DueDate field value if set, zero value otherwise.
 func (o *InvoiceUpdateRequest) GetDueDate() string {
-	if o == nil || o.DueDate == nil {
+	if o == nil || IsNil(o.DueDate) {
 		var ret string
 		return ret
 	}
@@ -125,7 +128,7 @@ func (o *InvoiceUpdateRequest) GetDueDate() string {
 // GetDueDateOk returns a tuple with the DueDate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceUpdateRequest) GetDueDateOk() (*string, bool) {
-	if o == nil || o.DueDate == nil {
+	if o == nil || IsNil(o.DueDate) {
 		return nil, false
 	}
 	return o.DueDate, true
@@ -133,7 +136,7 @@ func (o *InvoiceUpdateRequest) GetDueDateOk() (*string, bool) {
 
 // HasDueDate returns a boolean if a field has been set.
 func (o *InvoiceUpdateRequest) HasDueDate() bool {
-	if o != nil && o.DueDate != nil {
+	if o != nil && !IsNil(o.DueDate) {
 		return true
 	}
 
@@ -147,7 +150,7 @@ func (o *InvoiceUpdateRequest) SetDueDate(v string) {
 
 // GetExternalRecipientId returns the ExternalRecipientId field value if set, zero value otherwise.
 func (o *InvoiceUpdateRequest) GetExternalRecipientId() string {
-	if o == nil || o.ExternalRecipientId == nil {
+	if o == nil || IsNil(o.ExternalRecipientId) {
 		var ret string
 		return ret
 	}
@@ -157,7 +160,7 @@ func (o *InvoiceUpdateRequest) GetExternalRecipientId() string {
 // GetExternalRecipientIdOk returns a tuple with the ExternalRecipientId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceUpdateRequest) GetExternalRecipientIdOk() (*string, bool) {
-	if o == nil || o.ExternalRecipientId == nil {
+	if o == nil || IsNil(o.ExternalRecipientId) {
 		return nil, false
 	}
 	return o.ExternalRecipientId, true
@@ -165,7 +168,7 @@ func (o *InvoiceUpdateRequest) GetExternalRecipientIdOk() (*string, bool) {
 
 // HasExternalRecipientId returns a boolean if a field has been set.
 func (o *InvoiceUpdateRequest) HasExternalRecipientId() bool {
-	if o != nil && o.ExternalRecipientId != nil {
+	if o != nil && !IsNil(o.ExternalRecipientId) {
 		return true
 	}
 
@@ -179,7 +182,7 @@ func (o *InvoiceUpdateRequest) SetExternalRecipientId(v string) {
 
 // GetReceivedByRecipientDate returns the ReceivedByRecipientDate field value if set, zero value otherwise.
 func (o *InvoiceUpdateRequest) GetReceivedByRecipientDate() int64 {
-	if o == nil || o.ReceivedByRecipientDate == nil {
+	if o == nil || IsNil(o.ReceivedByRecipientDate) {
 		var ret int64
 		return ret
 	}
@@ -189,7 +192,7 @@ func (o *InvoiceUpdateRequest) GetReceivedByRecipientDate() int64 {
 // GetReceivedByRecipientDateOk returns a tuple with the ReceivedByRecipientDate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceUpdateRequest) GetReceivedByRecipientDateOk() (*int64, bool) {
-	if o == nil || o.ReceivedByRecipientDate == nil {
+	if o == nil || IsNil(o.ReceivedByRecipientDate) {
 		return nil, false
 	}
 	return o.ReceivedByRecipientDate, true
@@ -197,7 +200,7 @@ func (o *InvoiceUpdateRequest) GetReceivedByRecipientDateOk() (*int64, bool) {
 
 // HasReceivedByRecipientDate returns a boolean if a field has been set.
 func (o *InvoiceUpdateRequest) HasReceivedByRecipientDate() bool {
-	if o != nil && o.ReceivedByRecipientDate != nil {
+	if o != nil && !IsNil(o.ReceivedByRecipientDate) {
 		return true
 	}
 
@@ -211,7 +214,7 @@ func (o *InvoiceUpdateRequest) SetReceivedByRecipientDate(v int64) {
 
 // GetIsVoided returns the IsVoided field value if set, zero value otherwise.
 func (o *InvoiceUpdateRequest) GetIsVoided() bool {
-	if o == nil || o.IsVoided == nil {
+	if o == nil || IsNil(o.IsVoided) {
 		var ret bool
 		return ret
 	}
@@ -221,7 +224,7 @@ func (o *InvoiceUpdateRequest) GetIsVoided() bool {
 // GetIsVoidedOk returns a tuple with the IsVoided field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceUpdateRequest) GetIsVoidedOk() (*bool, bool) {
-	if o == nil || o.IsVoided == nil {
+	if o == nil || IsNil(o.IsVoided) {
 		return nil, false
 	}
 	return o.IsVoided, true
@@ -229,7 +232,7 @@ func (o *InvoiceUpdateRequest) GetIsVoidedOk() (*bool, bool) {
 
 // HasIsVoided returns a boolean if a field has been set.
 func (o *InvoiceUpdateRequest) HasIsVoided() bool {
-	if o != nil && o.IsVoided != nil {
+	if o != nil && !IsNil(o.IsVoided) {
 		return true
 	}
 
@@ -243,7 +246,7 @@ func (o *InvoiceUpdateRequest) SetIsVoided(v bool) {
 
 // GetReceivedByCustomerDate returns the ReceivedByCustomerDate field value if set, zero value otherwise.
 func (o *InvoiceUpdateRequest) GetReceivedByCustomerDate() string {
-	if o == nil || o.ReceivedByCustomerDate == nil {
+	if o == nil || IsNil(o.ReceivedByCustomerDate) {
 		var ret string
 		return ret
 	}
@@ -253,7 +256,7 @@ func (o *InvoiceUpdateRequest) GetReceivedByCustomerDate() string {
 // GetReceivedByCustomerDateOk returns a tuple with the ReceivedByCustomerDate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceUpdateRequest) GetReceivedByCustomerDateOk() (*string, bool) {
-	if o == nil || o.ReceivedByCustomerDate == nil {
+	if o == nil || IsNil(o.ReceivedByCustomerDate) {
 		return nil, false
 	}
 	return o.ReceivedByCustomerDate, true
@@ -261,7 +264,7 @@ func (o *InvoiceUpdateRequest) GetReceivedByCustomerDateOk() (*string, bool) {
 
 // HasReceivedByCustomerDate returns a boolean if a field has been set.
 func (o *InvoiceUpdateRequest) HasReceivedByCustomerDate() bool {
-	if o != nil && o.ReceivedByCustomerDate != nil {
+	if o != nil && !IsNil(o.ReceivedByCustomerDate) {
 		return true
 	}
 
@@ -275,7 +278,7 @@ func (o *InvoiceUpdateRequest) SetReceivedByCustomerDate(v string) {
 
 // GetInvoiceNumber returns the InvoiceNumber field value if set, zero value otherwise.
 func (o *InvoiceUpdateRequest) GetInvoiceNumber() string {
-	if o == nil || o.InvoiceNumber == nil {
+	if o == nil || IsNil(o.InvoiceNumber) {
 		var ret string
 		return ret
 	}
@@ -285,7 +288,7 @@ func (o *InvoiceUpdateRequest) GetInvoiceNumber() string {
 // GetInvoiceNumberOk returns a tuple with the InvoiceNumber field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoiceUpdateRequest) GetInvoiceNumberOk() (*string, bool) {
-	if o == nil || o.InvoiceNumber == nil {
+	if o == nil || IsNil(o.InvoiceNumber) {
 		return nil, false
 	}
 	return o.InvoiceNumber, true
@@ -293,7 +296,7 @@ func (o *InvoiceUpdateRequest) GetInvoiceNumberOk() (*string, bool) {
 
 // HasInvoiceNumber returns a boolean if a field has been set.
 func (o *InvoiceUpdateRequest) HasInvoiceNumber() bool {
-	if o != nil && o.InvoiceNumber != nil {
+	if o != nil && !IsNil(o.InvoiceNumber) {
 		return true
 	}
 
@@ -306,32 +309,40 @@ func (o *InvoiceUpdateRequest) SetInvoiceNumber(v string) {
 }
 
 func (o InvoiceUpdateRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.ExternalInvoiceNumber != nil {
-		toSerialize["externalInvoiceNumber"] = o.ExternalInvoiceNumber
-	}
-	if o.CurrencyCode != nil {
-		toSerialize["currencyCode"] = o.CurrencyCode
-	}
-	if o.DueDate != nil {
-		toSerialize["dueDate"] = o.DueDate
-	}
-	if o.ExternalRecipientId != nil {
-		toSerialize["externalRecipientId"] = o.ExternalRecipientId
-	}
-	if o.ReceivedByRecipientDate != nil {
-		toSerialize["receivedByRecipientDate"] = o.ReceivedByRecipientDate
-	}
-	if o.IsVoided != nil {
-		toSerialize["isVoided"] = o.IsVoided
-	}
-	if o.ReceivedByCustomerDate != nil {
-		toSerialize["receivedByCustomerDate"] = o.ReceivedByCustomerDate
-	}
-	if o.InvoiceNumber != nil {
-		toSerialize["invoiceNumber"] = o.InvoiceNumber
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o InvoiceUpdateRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.ExternalInvoiceNumber) {
+		toSerialize["externalInvoiceNumber"] = o.ExternalInvoiceNumber
+	}
+	if !IsNil(o.CurrencyCode) {
+		toSerialize["currencyCode"] = o.CurrencyCode
+	}
+	if !IsNil(o.DueDate) {
+		toSerialize["dueDate"] = o.DueDate
+	}
+	if !IsNil(o.ExternalRecipientId) {
+		toSerialize["externalRecipientId"] = o.ExternalRecipientId
+	}
+	if !IsNil(o.ReceivedByRecipientDate) {
+		toSerialize["receivedByRecipientDate"] = o.ReceivedByRecipientDate
+	}
+	if !IsNil(o.IsVoided) {
+		toSerialize["isVoided"] = o.IsVoided
+	}
+	if !IsNil(o.ReceivedByCustomerDate) {
+		toSerialize["receivedByCustomerDate"] = o.ReceivedByCustomerDate
+	}
+	if !IsNil(o.InvoiceNumber) {
+		toSerialize["invoiceNumber"] = o.InvoiceNumber
+	}
+	return toSerialize, nil
 }
 
 type NullableInvoiceUpdateRequest struct {

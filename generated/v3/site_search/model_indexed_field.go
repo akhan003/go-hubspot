@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the IndexedField type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &IndexedField{}
+
 // IndexedField struct for IndexedField
 type IndexedField struct {
 	Name          string                   `json:"name"`
@@ -81,7 +84,7 @@ func (o *IndexedField) GetValue() map[string]interface{} {
 // and a boolean to check if the value has been set.
 func (o *IndexedField) GetValueOk() (map[string]interface{}, bool) {
 	if o == nil {
-		return nil, false
+		return map[string]interface{}{}, false
 	}
 	return o.Value, true
 }
@@ -140,20 +143,20 @@ func (o *IndexedField) SetMetadataField(v bool) {
 }
 
 func (o IndexedField) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["value"] = o.Value
-	}
-	if true {
-		toSerialize["values"] = o.Values
-	}
-	if true {
-		toSerialize["metadataField"] = o.MetadataField
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o IndexedField) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["value"] = o.Value
+	toSerialize["values"] = o.Values
+	toSerialize["metadataField"] = o.MetadataField
+	return toSerialize, nil
 }
 
 type NullableIndexedField struct {

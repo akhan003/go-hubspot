@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ErrorCategory type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ErrorCategory{}
+
 // ErrorCategory struct for ErrorCategory
 type ErrorCategory struct {
 	Name       string `json:"name"`
@@ -88,14 +91,18 @@ func (o *ErrorCategory) SetHttpStatus(v string) {
 }
 
 func (o ErrorCategory) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["httpStatus"] = o.HttpStatus
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ErrorCategory) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["httpStatus"] = o.HttpStatus
+	return toSerialize, nil
 }
 
 type NullableErrorCategory struct {

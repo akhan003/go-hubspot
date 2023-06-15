@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateInvoiceFeature type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateInvoiceFeature{}
+
 // CreateInvoiceFeature Indicates what elements of creating invoices in HubSpot is supported for the integration.
 type CreateInvoiceFeature struct {
 	// Indicates if creating invoices in HubSpot is supported for the integration.
@@ -89,14 +92,18 @@ func (o *CreateInvoiceFeature) SetSubFeatures(v CreateInvoiceSubFeatures) {
 }
 
 func (o CreateInvoiceFeature) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["enabled"] = o.Enabled
-	}
-	if true {
-		toSerialize["subFeatures"] = o.SubFeatures
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateInvoiceFeature) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["enabled"] = o.Enabled
+	toSerialize["subFeatures"] = o.SubFeatures
+	return toSerialize, nil
 }
 
 type NullableCreateInvoiceFeature struct {

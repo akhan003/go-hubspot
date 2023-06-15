@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the DetachFromLangGroupRequestVNext type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &DetachFromLangGroupRequestVNext{}
+
 // DetachFromLangGroupRequestVNext Request body object for detaching objects from multi-language groups.
 type DetachFromLangGroupRequestVNext struct {
 	// ID of the object to remove from a multi-language group.
@@ -63,11 +66,17 @@ func (o *DetachFromLangGroupRequestVNext) SetId(v string) {
 }
 
 func (o DetachFromLangGroupRequestVNext) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o DetachFromLangGroupRequestVNext) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	return toSerialize, nil
 }
 
 type NullableDetachFromLangGroupRequestVNext struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SettingsPatchRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SettingsPatchRequest{}
+
 // SettingsPatchRequest Settings update request
 type SettingsPatchRequest struct {
 	// The name of your calling service to display to users.
@@ -49,7 +52,7 @@ func NewSettingsPatchRequestWithDefaults() *SettingsPatchRequest {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *SettingsPatchRequest) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -59,7 +62,7 @@ func (o *SettingsPatchRequest) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SettingsPatchRequest) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
 	return o.Name, true
@@ -67,7 +70,7 @@ func (o *SettingsPatchRequest) GetNameOk() (*string, bool) {
 
 // HasName returns a boolean if a field has been set.
 func (o *SettingsPatchRequest) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !IsNil(o.Name) {
 		return true
 	}
 
@@ -81,7 +84,7 @@ func (o *SettingsPatchRequest) SetName(v string) {
 
 // GetUrl returns the Url field value if set, zero value otherwise.
 func (o *SettingsPatchRequest) GetUrl() string {
-	if o == nil || o.Url == nil {
+	if o == nil || IsNil(o.Url) {
 		var ret string
 		return ret
 	}
@@ -91,7 +94,7 @@ func (o *SettingsPatchRequest) GetUrl() string {
 // GetUrlOk returns a tuple with the Url field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SettingsPatchRequest) GetUrlOk() (*string, bool) {
-	if o == nil || o.Url == nil {
+	if o == nil || IsNil(o.Url) {
 		return nil, false
 	}
 	return o.Url, true
@@ -99,7 +102,7 @@ func (o *SettingsPatchRequest) GetUrlOk() (*string, bool) {
 
 // HasUrl returns a boolean if a field has been set.
 func (o *SettingsPatchRequest) HasUrl() bool {
-	if o != nil && o.Url != nil {
+	if o != nil && !IsNil(o.Url) {
 		return true
 	}
 
@@ -113,7 +116,7 @@ func (o *SettingsPatchRequest) SetUrl(v string) {
 
 // GetHeight returns the Height field value if set, zero value otherwise.
 func (o *SettingsPatchRequest) GetHeight() int32 {
-	if o == nil || o.Height == nil {
+	if o == nil || IsNil(o.Height) {
 		var ret int32
 		return ret
 	}
@@ -123,7 +126,7 @@ func (o *SettingsPatchRequest) GetHeight() int32 {
 // GetHeightOk returns a tuple with the Height field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SettingsPatchRequest) GetHeightOk() (*int32, bool) {
-	if o == nil || o.Height == nil {
+	if o == nil || IsNil(o.Height) {
 		return nil, false
 	}
 	return o.Height, true
@@ -131,7 +134,7 @@ func (o *SettingsPatchRequest) GetHeightOk() (*int32, bool) {
 
 // HasHeight returns a boolean if a field has been set.
 func (o *SettingsPatchRequest) HasHeight() bool {
-	if o != nil && o.Height != nil {
+	if o != nil && !IsNil(o.Height) {
 		return true
 	}
 
@@ -145,7 +148,7 @@ func (o *SettingsPatchRequest) SetHeight(v int32) {
 
 // GetWidth returns the Width field value if set, zero value otherwise.
 func (o *SettingsPatchRequest) GetWidth() int32 {
-	if o == nil || o.Width == nil {
+	if o == nil || IsNil(o.Width) {
 		var ret int32
 		return ret
 	}
@@ -155,7 +158,7 @@ func (o *SettingsPatchRequest) GetWidth() int32 {
 // GetWidthOk returns a tuple with the Width field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SettingsPatchRequest) GetWidthOk() (*int32, bool) {
-	if o == nil || o.Width == nil {
+	if o == nil || IsNil(o.Width) {
 		return nil, false
 	}
 	return o.Width, true
@@ -163,7 +166,7 @@ func (o *SettingsPatchRequest) GetWidthOk() (*int32, bool) {
 
 // HasWidth returns a boolean if a field has been set.
 func (o *SettingsPatchRequest) HasWidth() bool {
-	if o != nil && o.Width != nil {
+	if o != nil && !IsNil(o.Width) {
 		return true
 	}
 
@@ -177,7 +180,7 @@ func (o *SettingsPatchRequest) SetWidth(v int32) {
 
 // GetIsReady returns the IsReady field value if set, zero value otherwise.
 func (o *SettingsPatchRequest) GetIsReady() bool {
-	if o == nil || o.IsReady == nil {
+	if o == nil || IsNil(o.IsReady) {
 		var ret bool
 		return ret
 	}
@@ -187,7 +190,7 @@ func (o *SettingsPatchRequest) GetIsReady() bool {
 // GetIsReadyOk returns a tuple with the IsReady field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SettingsPatchRequest) GetIsReadyOk() (*bool, bool) {
-	if o == nil || o.IsReady == nil {
+	if o == nil || IsNil(o.IsReady) {
 		return nil, false
 	}
 	return o.IsReady, true
@@ -195,7 +198,7 @@ func (o *SettingsPatchRequest) GetIsReadyOk() (*bool, bool) {
 
 // HasIsReady returns a boolean if a field has been set.
 func (o *SettingsPatchRequest) HasIsReady() bool {
-	if o != nil && o.IsReady != nil {
+	if o != nil && !IsNil(o.IsReady) {
 		return true
 	}
 
@@ -209,7 +212,7 @@ func (o *SettingsPatchRequest) SetIsReady(v bool) {
 
 // GetSupportsCustomObjects returns the SupportsCustomObjects field value if set, zero value otherwise.
 func (o *SettingsPatchRequest) GetSupportsCustomObjects() bool {
-	if o == nil || o.SupportsCustomObjects == nil {
+	if o == nil || IsNil(o.SupportsCustomObjects) {
 		var ret bool
 		return ret
 	}
@@ -219,7 +222,7 @@ func (o *SettingsPatchRequest) GetSupportsCustomObjects() bool {
 // GetSupportsCustomObjectsOk returns a tuple with the SupportsCustomObjects field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SettingsPatchRequest) GetSupportsCustomObjectsOk() (*bool, bool) {
-	if o == nil || o.SupportsCustomObjects == nil {
+	if o == nil || IsNil(o.SupportsCustomObjects) {
 		return nil, false
 	}
 	return o.SupportsCustomObjects, true
@@ -227,7 +230,7 @@ func (o *SettingsPatchRequest) GetSupportsCustomObjectsOk() (*bool, bool) {
 
 // HasSupportsCustomObjects returns a boolean if a field has been set.
 func (o *SettingsPatchRequest) HasSupportsCustomObjects() bool {
-	if o != nil && o.SupportsCustomObjects != nil {
+	if o != nil && !IsNil(o.SupportsCustomObjects) {
 		return true
 	}
 
@@ -240,26 +243,34 @@ func (o *SettingsPatchRequest) SetSupportsCustomObjects(v bool) {
 }
 
 func (o SettingsPatchRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Name != nil {
-		toSerialize["name"] = o.Name
-	}
-	if o.Url != nil {
-		toSerialize["url"] = o.Url
-	}
-	if o.Height != nil {
-		toSerialize["height"] = o.Height
-	}
-	if o.Width != nil {
-		toSerialize["width"] = o.Width
-	}
-	if o.IsReady != nil {
-		toSerialize["isReady"] = o.IsReady
-	}
-	if o.SupportsCustomObjects != nil {
-		toSerialize["supportsCustomObjects"] = o.SupportsCustomObjects
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SettingsPatchRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.Url) {
+		toSerialize["url"] = o.Url
+	}
+	if !IsNil(o.Height) {
+		toSerialize["height"] = o.Height
+	}
+	if !IsNil(o.Width) {
+		toSerialize["width"] = o.Width
+	}
+	if !IsNil(o.IsReady) {
+		toSerialize["isReady"] = o.IsReady
+	}
+	if !IsNil(o.SupportsCustomObjects) {
+		toSerialize["supportsCustomObjects"] = o.SupportsCustomObjects
+	}
+	return toSerialize, nil
 }
 
 type NullableSettingsPatchRequest struct {

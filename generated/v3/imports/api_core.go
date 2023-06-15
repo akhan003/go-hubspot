@@ -13,10 +13,8 @@ package imports
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"os"
 	"strings"
@@ -68,7 +66,7 @@ func (a *CoreApiService) CancelExecute(r ApiCancelRequest) (*ActionResponse, *ht
 	}
 
 	localVarPath := localBasePath + "/crm/v3/imports/{importId}/cancel"
-	localVarPath = strings.Replace(localVarPath, "{"+"importId"+"}", url.PathEscape(parameterToString(r.importId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"importId"+"}", url.PathEscape(parameterValueToString(r.importId, "importId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -93,12 +91,16 @@ func (a *CoreApiService) CancelExecute(r ApiCancelRequest) (*ActionResponse, *ht
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -111,9 +113,9 @@ func (a *CoreApiService) CancelExecute(r ApiCancelRequest) (*ActionResponse, *ht
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -129,6 +131,7 @@ func (a *CoreApiService) CancelExecute(r ApiCancelRequest) (*ActionResponse, *ht
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -148,13 +151,13 @@ func (a *CoreApiService) CancelExecute(r ApiCancelRequest) (*ActionResponse, *ht
 type ApiCreateRequest struct {
 	ctx           context.Context
 	ApiService    *CoreApiService
-	files         **os.File
+	files         *os.File
 	importRequest *string
 }
 
 // A list of files containing the data to import
 func (r ApiCreateRequest) Files(files *os.File) ApiCreateRequest {
-	r.files = &files
+	r.files = files
 	return r
 }
 
@@ -227,28 +230,31 @@ func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*PublicImportRespons
 
 	filesLocalVarFormFileName = "files"
 
-	var filesLocalVarFile *os.File
-	if r.files != nil {
-		filesLocalVarFile = *r.files
-	}
+	filesLocalVarFile := r.files
+
 	if filesLocalVarFile != nil {
-		fbs, _ := ioutil.ReadAll(filesLocalVarFile)
+		fbs, _ := io.ReadAll(filesLocalVarFile)
+
 		filesLocalVarFileBytes = fbs
 		filesLocalVarFileName = filesLocalVarFile.Name()
 		filesLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: filesLocalVarFileBytes, fileName: filesLocalVarFileName, formFileName: filesLocalVarFormFileName})
 	}
-	formFiles = append(formFiles, formFile{fileBytes: filesLocalVarFileBytes, fileName: filesLocalVarFileName, formFileName: filesLocalVarFormFileName})
 	if r.importRequest != nil {
-		localVarFormParams.Add("importRequest", parameterToString(*r.importRequest, ""))
+		parameterAddToHeaderOrQuery(localVarFormParams, "importRequest", r.importRequest, "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -261,9 +267,9 @@ func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*PublicImportRespons
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -279,6 +285,7 @@ func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*PublicImportRespons
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -338,7 +345,7 @@ func (a *CoreApiService) GetByIDExecute(r ApiGetByIDRequest) (*PublicImportRespo
 	}
 
 	localVarPath := localBasePath + "/crm/v3/imports/{importId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"importId"+"}", url.PathEscape(parameterToString(r.importId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"importId"+"}", url.PathEscape(parameterValueToString(r.importId, "importId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -363,12 +370,16 @@ func (a *CoreApiService) GetByIDExecute(r ApiGetByIDRequest) (*PublicImportRespo
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -381,9 +392,9 @@ func (a *CoreApiService) GetByIDExecute(r ApiGetByIDRequest) (*PublicImportRespo
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -399,6 +410,7 @@ func (a *CoreApiService) GetByIDExecute(r ApiGetByIDRequest) (*PublicImportRespo
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -481,13 +493,13 @@ func (a *CoreApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespons
 	localVarFormParams := url.Values{}
 
 	if r.after != nil {
-		localVarQueryParams.Add("after", parameterToString(*r.after, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "after", r.after, "")
 	}
 	if r.before != nil {
-		localVarQueryParams.Add("before", parameterToString(*r.before, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "before", r.before, "")
 	}
 	if r.limit != nil {
-		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -508,12 +520,16 @@ func (a *CoreApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespons
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -526,9 +542,9 @@ func (a *CoreApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespons
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -544,6 +560,7 @@ func (a *CoreApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespons
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

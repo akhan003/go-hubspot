@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TimelineEventIFrame type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TimelineEventIFrame{}
+
 // TimelineEventIFrame struct for TimelineEventIFrame
 type TimelineEventIFrame struct {
 	// The text displaying the link that will display the iframe.
@@ -171,23 +174,21 @@ func (o *TimelineEventIFrame) SetHeight(v int32) {
 }
 
 func (o TimelineEventIFrame) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["linkLabel"] = o.LinkLabel
-	}
-	if true {
-		toSerialize["headerLabel"] = o.HeaderLabel
-	}
-	if true {
-		toSerialize["url"] = o.Url
-	}
-	if true {
-		toSerialize["width"] = o.Width
-	}
-	if true {
-		toSerialize["height"] = o.Height
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TimelineEventIFrame) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["linkLabel"] = o.LinkLabel
+	toSerialize["headerLabel"] = o.HeaderLabel
+	toSerialize["url"] = o.Url
+	toSerialize["width"] = o.Width
+	toSerialize["height"] = o.Height
+	return toSerialize, nil
 }
 
 type NullableTimelineEventIFrame struct {

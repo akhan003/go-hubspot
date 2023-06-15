@@ -15,22 +15,26 @@ import (
 	"time"
 )
 
+// checks if the HubDbTableRowV3 type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &HubDbTableRowV3{}
+
 // HubDbTableRowV3 struct for HubDbTableRowV3
 type HubDbTableRowV3 struct {
 	// The id of the table row
 	Id *string `json:"id,omitempty"`
+	// List of key value pairs with the column name and column value
+	Values map[string]map[string]interface{} `json:"values"`
 	// Specifies the value for `hs_path` column, which will be used as slug in the dynamic pages
 	Path *string `json:"path,omitempty"`
 	// Specifies the value for `hs_name` column, which will be used as title in the dynamic pages
 	Name *string `json:"name,omitempty"`
+	// Specifies the value for the column child table id
+	ChildTableId *string `json:"childTableId,omitempty"`
 	// Timestamp at which the row is created
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// Timestamp at which the row is updated last time
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
-	// Specifies the value for the column child table id
-	ChildTableId *string `json:"childTableId,omitempty"`
-	// List of key value pairs with the column name and column value
-	Values map[string]map[string]interface{} `json:"values"`
+	UpdatedAt   *time.Time `json:"updatedAt,omitempty"`
+	PublishedAt *time.Time `json:"publishedAt,omitempty"`
 }
 
 // NewHubDbTableRowV3 instantiates a new HubDbTableRowV3 object
@@ -53,7 +57,7 @@ func NewHubDbTableRowV3WithDefaults() *HubDbTableRowV3 {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *HubDbTableRowV3) GetId() string {
-	if o == nil || o.Id == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
@@ -63,7 +67,7 @@ func (o *HubDbTableRowV3) GetId() string {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HubDbTableRowV3) GetIdOk() (*string, bool) {
-	if o == nil || o.Id == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
 	return o.Id, true
@@ -71,7 +75,7 @@ func (o *HubDbTableRowV3) GetIdOk() (*string, bool) {
 
 // HasId returns a boolean if a field has been set.
 func (o *HubDbTableRowV3) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !IsNil(o.Id) {
 		return true
 	}
 
@@ -81,166 +85,6 @@ func (o *HubDbTableRowV3) HasId() bool {
 // SetId gets a reference to the given string and assigns it to the Id field.
 func (o *HubDbTableRowV3) SetId(v string) {
 	o.Id = &v
-}
-
-// GetPath returns the Path field value if set, zero value otherwise.
-func (o *HubDbTableRowV3) GetPath() string {
-	if o == nil || o.Path == nil {
-		var ret string
-		return ret
-	}
-	return *o.Path
-}
-
-// GetPathOk returns a tuple with the Path field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *HubDbTableRowV3) GetPathOk() (*string, bool) {
-	if o == nil || o.Path == nil {
-		return nil, false
-	}
-	return o.Path, true
-}
-
-// HasPath returns a boolean if a field has been set.
-func (o *HubDbTableRowV3) HasPath() bool {
-	if o != nil && o.Path != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetPath gets a reference to the given string and assigns it to the Path field.
-func (o *HubDbTableRowV3) SetPath(v string) {
-	o.Path = &v
-}
-
-// GetName returns the Name field value if set, zero value otherwise.
-func (o *HubDbTableRowV3) GetName() string {
-	if o == nil || o.Name == nil {
-		var ret string
-		return ret
-	}
-	return *o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *HubDbTableRowV3) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
-	}
-	return o.Name, true
-}
-
-// HasName returns a boolean if a field has been set.
-func (o *HubDbTableRowV3) HasName() bool {
-	if o != nil && o.Name != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetName gets a reference to the given string and assigns it to the Name field.
-func (o *HubDbTableRowV3) SetName(v string) {
-	o.Name = &v
-}
-
-// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
-func (o *HubDbTableRowV3) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
-		var ret time.Time
-		return ret
-	}
-	return *o.CreatedAt
-}
-
-// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *HubDbTableRowV3) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
-		return nil, false
-	}
-	return o.CreatedAt, true
-}
-
-// HasCreatedAt returns a boolean if a field has been set.
-func (o *HubDbTableRowV3) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
-func (o *HubDbTableRowV3) SetCreatedAt(v time.Time) {
-	o.CreatedAt = &v
-}
-
-// GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
-func (o *HubDbTableRowV3) GetUpdatedAt() time.Time {
-	if o == nil || o.UpdatedAt == nil {
-		var ret time.Time
-		return ret
-	}
-	return *o.UpdatedAt
-}
-
-// GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *HubDbTableRowV3) GetUpdatedAtOk() (*time.Time, bool) {
-	if o == nil || o.UpdatedAt == nil {
-		return nil, false
-	}
-	return o.UpdatedAt, true
-}
-
-// HasUpdatedAt returns a boolean if a field has been set.
-func (o *HubDbTableRowV3) HasUpdatedAt() bool {
-	if o != nil && o.UpdatedAt != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetUpdatedAt gets a reference to the given time.Time and assigns it to the UpdatedAt field.
-func (o *HubDbTableRowV3) SetUpdatedAt(v time.Time) {
-	o.UpdatedAt = &v
-}
-
-// GetChildTableId returns the ChildTableId field value if set, zero value otherwise.
-func (o *HubDbTableRowV3) GetChildTableId() string {
-	if o == nil || o.ChildTableId == nil {
-		var ret string
-		return ret
-	}
-	return *o.ChildTableId
-}
-
-// GetChildTableIdOk returns a tuple with the ChildTableId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *HubDbTableRowV3) GetChildTableIdOk() (*string, bool) {
-	if o == nil || o.ChildTableId == nil {
-		return nil, false
-	}
-	return o.ChildTableId, true
-}
-
-// HasChildTableId returns a boolean if a field has been set.
-func (o *HubDbTableRowV3) HasChildTableId() bool {
-	if o != nil && o.ChildTableId != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetChildTableId gets a reference to the given string and assigns it to the ChildTableId field.
-func (o *HubDbTableRowV3) SetChildTableId(v string) {
-	o.ChildTableId = &v
 }
 
 // GetValues returns the Values field value
@@ -257,7 +101,7 @@ func (o *HubDbTableRowV3) GetValues() map[string]map[string]interface{} {
 // and a boolean to check if the value has been set.
 func (o *HubDbTableRowV3) GetValuesOk() (map[string]map[string]interface{}, bool) {
 	if o == nil {
-		return nil, false
+		return map[string]map[string]interface{}{}, false
 	}
 	return o.Values, true
 }
@@ -267,30 +111,231 @@ func (o *HubDbTableRowV3) SetValues(v map[string]map[string]interface{}) {
 	o.Values = v
 }
 
+// GetPath returns the Path field value if set, zero value otherwise.
+func (o *HubDbTableRowV3) GetPath() string {
+	if o == nil || IsNil(o.Path) {
+		var ret string
+		return ret
+	}
+	return *o.Path
+}
+
+// GetPathOk returns a tuple with the Path field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HubDbTableRowV3) GetPathOk() (*string, bool) {
+	if o == nil || IsNil(o.Path) {
+		return nil, false
+	}
+	return o.Path, true
+}
+
+// HasPath returns a boolean if a field has been set.
+func (o *HubDbTableRowV3) HasPath() bool {
+	if o != nil && !IsNil(o.Path) {
+		return true
+	}
+
+	return false
+}
+
+// SetPath gets a reference to the given string and assigns it to the Path field.
+func (o *HubDbTableRowV3) SetPath(v string) {
+	o.Path = &v
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *HubDbTableRowV3) GetName() string {
+	if o == nil || IsNil(o.Name) {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HubDbTableRowV3) GetNameOk() (*string, bool) {
+	if o == nil || IsNil(o.Name) {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *HubDbTableRowV3) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *HubDbTableRowV3) SetName(v string) {
+	o.Name = &v
+}
+
+// GetChildTableId returns the ChildTableId field value if set, zero value otherwise.
+func (o *HubDbTableRowV3) GetChildTableId() string {
+	if o == nil || IsNil(o.ChildTableId) {
+		var ret string
+		return ret
+	}
+	return *o.ChildTableId
+}
+
+// GetChildTableIdOk returns a tuple with the ChildTableId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HubDbTableRowV3) GetChildTableIdOk() (*string, bool) {
+	if o == nil || IsNil(o.ChildTableId) {
+		return nil, false
+	}
+	return o.ChildTableId, true
+}
+
+// HasChildTableId returns a boolean if a field has been set.
+func (o *HubDbTableRowV3) HasChildTableId() bool {
+	if o != nil && !IsNil(o.ChildTableId) {
+		return true
+	}
+
+	return false
+}
+
+// SetChildTableId gets a reference to the given string and assigns it to the ChildTableId field.
+func (o *HubDbTableRowV3) SetChildTableId(v string) {
+	o.ChildTableId = &v
+}
+
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+func (o *HubDbTableRowV3) GetCreatedAt() time.Time {
+	if o == nil || IsNil(o.CreatedAt) {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HubDbTableRowV3) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.CreatedAt) {
+		return nil, false
+	}
+	return o.CreatedAt, true
+}
+
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *HubDbTableRowV3) HasCreatedAt() bool {
+	if o != nil && !IsNil(o.CreatedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+func (o *HubDbTableRowV3) SetCreatedAt(v time.Time) {
+	o.CreatedAt = &v
+}
+
+// GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
+func (o *HubDbTableRowV3) GetUpdatedAt() time.Time {
+	if o == nil || IsNil(o.UpdatedAt) {
+		var ret time.Time
+		return ret
+	}
+	return *o.UpdatedAt
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HubDbTableRowV3) GetUpdatedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.UpdatedAt) {
+		return nil, false
+	}
+	return o.UpdatedAt, true
+}
+
+// HasUpdatedAt returns a boolean if a field has been set.
+func (o *HubDbTableRowV3) HasUpdatedAt() bool {
+	if o != nil && !IsNil(o.UpdatedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetUpdatedAt gets a reference to the given time.Time and assigns it to the UpdatedAt field.
+func (o *HubDbTableRowV3) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = &v
+}
+
+// GetPublishedAt returns the PublishedAt field value if set, zero value otherwise.
+func (o *HubDbTableRowV3) GetPublishedAt() time.Time {
+	if o == nil || IsNil(o.PublishedAt) {
+		var ret time.Time
+		return ret
+	}
+	return *o.PublishedAt
+}
+
+// GetPublishedAtOk returns a tuple with the PublishedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HubDbTableRowV3) GetPublishedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.PublishedAt) {
+		return nil, false
+	}
+	return o.PublishedAt, true
+}
+
+// HasPublishedAt returns a boolean if a field has been set.
+func (o *HubDbTableRowV3) HasPublishedAt() bool {
+	if o != nil && !IsNil(o.PublishedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetPublishedAt gets a reference to the given time.Time and assigns it to the PublishedAt field.
+func (o *HubDbTableRowV3) SetPublishedAt(v time.Time) {
+	o.PublishedAt = &v
+}
+
 func (o HubDbTableRowV3) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Id != nil {
-		toSerialize["id"] = o.Id
-	}
-	if o.Path != nil {
-		toSerialize["path"] = o.Path
-	}
-	if o.Name != nil {
-		toSerialize["name"] = o.Name
-	}
-	if o.CreatedAt != nil {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.UpdatedAt != nil {
-		toSerialize["updatedAt"] = o.UpdatedAt
-	}
-	if o.ChildTableId != nil {
-		toSerialize["childTableId"] = o.ChildTableId
-	}
-	if true {
-		toSerialize["values"] = o.Values
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o HubDbTableRowV3) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	toSerialize["values"] = o.Values
+	if !IsNil(o.Path) {
+		toSerialize["path"] = o.Path
+	}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.ChildTableId) {
+		toSerialize["childTableId"] = o.ChildTableId
+	}
+	if !IsNil(o.CreatedAt) {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if !IsNil(o.UpdatedAt) {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	if !IsNil(o.PublishedAt) {
+		toSerialize["publishedAt"] = o.PublishedAt
+	}
+	return toSerialize, nil
 }
 
 type NullableHubDbTableRowV3 struct {

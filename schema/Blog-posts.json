@@ -145,7 +145,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -182,7 +182,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -215,7 +215,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -264,7 +264,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -324,7 +324,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -384,7 +384,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -423,7 +423,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -452,7 +452,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -491,7 +491,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -520,7 +520,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -553,7 +553,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -582,7 +582,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -615,7 +615,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -664,7 +664,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -705,7 +705,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -763,7 +763,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -802,7 +802,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -850,7 +850,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -883,7 +883,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -916,7 +916,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -985,7 +985,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -1034,7 +1034,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -1083,7 +1083,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -1133,7 +1133,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -1242,6 +1242,17 @@
         },
         "description" : "Request object for updating languages within a multi-language group."
       },
+      "SetNewLanguagePrimaryRequestVNext" : {
+        "required" : [ "id" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "ID of object to set as primary in multi-language group."
+          }
+        },
+        "description" : "Request body object for setting a new primary language."
+      },
       "CollectionResponseWithTotalVersionBlogPost" : {
         "required" : [ "results", "total" ],
         "type" : "object",
@@ -1263,17 +1274,6 @@
           }
         },
         "description" : "Response object for collections of blog post versions with pagination information."
-      },
-      "SetNewLanguagePrimaryRequestVNext" : {
-        "required" : [ "id" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "ID of object to set as primary in multi-language group."
-          }
-        },
-        "description" : "Request body object for setting a new primary language."
       },
       "RGBAColor" : {
         "required" : [ "a", "b", "g", "r" ],
@@ -1408,6 +1408,20 @@
         },
         "description" : "Request body object fro attaching objects to multi-language groups."
       },
+      "SideOrCorner" : {
+        "required" : [ "horizontalSide", "verticalSide" ],
+        "type" : "object",
+        "properties" : {
+          "verticalSide" : {
+            "type" : "string",
+            "enum" : [ "TOP", "MIDDLE", "BOTTOM" ]
+          },
+          "horizontalSide" : {
+            "type" : "string",
+            "enum" : [ "LEFT", "CENTER", "RIGHT" ]
+          }
+        }
+      },
       "ErrorDetail" : {
         "required" : [ "message" ],
         "type" : "object",
@@ -1440,20 +1454,6 @@
             "example" : {
               "missingScopes" : [ "scope1", "scope2" ]
             }
-          }
-        }
-      },
-      "SideOrCorner" : {
-        "required" : [ "horizontalSide", "verticalSide" ],
-        "type" : "object",
-        "properties" : {
-          "verticalSide" : {
-            "type" : "string",
-            "enum" : [ "TOP", "MIDDLE", "BOTTOM" ]
-          },
-          "horizontalSide" : {
-            "type" : "string",
-            "enum" : [ "LEFT", "CENTER", "RIGHT" ]
           }
         }
       },
@@ -1617,58 +1617,26 @@
         },
         "description" : "Model definition for paging."
       },
-      "BatchResponseBlogPostWithErrors" : {
-        "required" : [ "completedAt", "results", "startedAt", "status" ],
+      "VersionBlogPost" : {
+        "required" : [ "id", "object", "updatedAt", "user" ],
         "type" : "object",
         "properties" : {
-          "status" : {
+          "object" : {
+            "$ref" : "#/components/schemas/BlogPost"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/VersionUser"
+          },
+          "id" : {
             "type" : "string",
-            "description" : "Status of batch operation.",
-            "enum" : [ "PENDING", "PROCESSING", "CANCELED", "COMPLETE" ]
+            "description" : "The id of the version."
           },
-          "results" : {
-            "type" : "array",
-            "description" : "Results of batch operation.",
-            "items" : {
-              "$ref" : "#/components/schemas/BlogPost"
-            }
-          },
-          "numErrors" : {
-            "type" : "integer",
-            "description" : "Number of errors.",
-            "format" : "int32"
-          },
-          "errors" : {
-            "type" : "array",
-            "description" : "Errors in batch operation.",
-            "items" : {
-              "$ref" : "#/components/schemas/StandardError"
-            }
-          },
-          "requestedAt" : {
+          "updatedAt" : {
             "type" : "string",
-            "description" : "Time of batch operation request.",
             "format" : "date-time"
-          },
-          "startedAt" : {
-            "type" : "string",
-            "description" : "Time of batch operation start.",
-            "format" : "date-time"
-          },
-          "completedAt" : {
-            "type" : "string",
-            "description" : "Time of batch operation completion.",
-            "format" : "date-time"
-          },
-          "links" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string"
-            },
-            "description" : "Links associated with batch operation."
           }
         },
-        "description" : "Response object for batch operations on blog posts with errors."
+        "description" : "Model definition of a version of a blog post."
       },
       "Error" : {
         "required" : [ "category", "correlationId", "message" ],
@@ -1731,26 +1699,58 @@
           }
         }
       },
-      "VersionBlogPost" : {
-        "required" : [ "id", "object", "updatedAt", "user" ],
+      "BatchResponseBlogPostWithErrors" : {
+        "required" : [ "completedAt", "results", "startedAt", "status" ],
         "type" : "object",
         "properties" : {
-          "object" : {
-            "$ref" : "#/components/schemas/BlogPost"
-          },
-          "user" : {
-            "$ref" : "#/components/schemas/VersionUser"
-          },
-          "id" : {
+          "status" : {
             "type" : "string",
-            "description" : "The id of the version."
+            "description" : "Status of batch operation.",
+            "enum" : [ "PENDING", "PROCESSING", "CANCELED", "COMPLETE" ]
           },
-          "updatedAt" : {
+          "results" : {
+            "type" : "array",
+            "description" : "Results of batch operation.",
+            "items" : {
+              "$ref" : "#/components/schemas/BlogPost"
+            }
+          },
+          "numErrors" : {
+            "type" : "integer",
+            "description" : "Number of errors.",
+            "format" : "int32"
+          },
+          "errors" : {
+            "type" : "array",
+            "description" : "Errors in batch operation.",
+            "items" : {
+              "$ref" : "#/components/schemas/StandardError"
+            }
+          },
+          "requestedAt" : {
             "type" : "string",
+            "description" : "Time of batch operation request.",
             "format" : "date-time"
+          },
+          "startedAt" : {
+            "type" : "string",
+            "description" : "Time of batch operation start.",
+            "format" : "date-time"
+          },
+          "completedAt" : {
+            "type" : "string",
+            "description" : "Time of batch operation completion.",
+            "format" : "date-time"
+          },
+          "links" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "description" : "Links associated with batch operation."
           }
         },
-        "description" : "Model definition of a version of a blog post."
+        "description" : "Response object for batch operations on blog posts with errors."
       },
       "BlogPost" : {
         "required" : [ "abStatus", "abTestId", "archived", "archivedInDashboard", "attachedStylesheets", "authorName", "blogAuthorId", "campaign", "categoryId", "contentGroupId", "contentTypeCategory", "created", "createdById", "currentState", "currentlyPublished", "deletedAt", "domain", "dynamicPageDataSourceId", "dynamicPageDataSourceType", "enableDomainStylesheets", "enableGoogleAmpOutputOverride", "enableLayoutStylesheets", "featuredImage", "featuredImageAltText", "folderId", "footerHtml", "headHtml", "htmlTitle", "id", "includeDefaultCustomCss", "language", "layoutSections", "linkRelCanonicalUrl", "mabExperimentId", "metaDescription", "name", "pageExpiryDate", "pageExpiryEnabled", "pageExpiryRedirectId", "pageExpiryRedirectUrl", "password", "postBody", "postSummary", "publicAccessRules", "publicAccessRulesEnabled", "publishDate", "publishImmediately", "rssBody", "rssSummary", "slug", "state", "tagIds", "themeSettingsValues", "translatedFromId", "translations", "updated", "updatedById", "url", "useFeaturedImage", "widgetContainers", "widgets" ],
@@ -2113,6 +2113,10 @@
           }
         }
       },
+      "ErrorCategory" : {
+        "type" : "object",
+        "description" : "Model definition for an error category."
+      },
       "Angle" : {
         "required" : [ "units", "value" ],
         "type" : "object",
@@ -2125,10 +2129,6 @@
             "enum" : [ "deg", "grad", "rad", "turn" ]
           }
         }
-      },
-      "ErrorCategory" : {
-        "type" : "object",
-        "description" : "Model definition for an error category."
       },
       "PreviousPage" : {
         "required" : [ "before" ],
@@ -2243,10 +2243,10 @@
           }
         }
       },
-      "hapikey" : {
+      "private_apps_legacy" : {
         "type" : "apiKey",
-        "name" : "hapikey",
-        "in" : "query"
+        "name" : "private-app-legacy",
+        "in" : "header"
       }
     }
   },

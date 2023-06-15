@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Styles type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Styles{}
+
 // Styles struct for Styles
 type Styles struct {
 	VerticalAlignment        string          `json:"verticalAlignment"`
@@ -218,29 +221,23 @@ func (o *Styles) SetFlexboxPositioning(v string) {
 }
 
 func (o Styles) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["verticalAlignment"] = o.VerticalAlignment
-	}
-	if true {
-		toSerialize["backgroundColor"] = o.BackgroundColor
-	}
-	if true {
-		toSerialize["backgroundImage"] = o.BackgroundImage
-	}
-	if true {
-		toSerialize["backgroundGradient"] = o.BackgroundGradient
-	}
-	if true {
-		toSerialize["maxWidthSectionCentering"] = o.MaxWidthSectionCentering
-	}
-	if true {
-		toSerialize["forceFullWidthSection"] = o.ForceFullWidthSection
-	}
-	if true {
-		toSerialize["flexboxPositioning"] = o.FlexboxPositioning
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Styles) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["verticalAlignment"] = o.VerticalAlignment
+	toSerialize["backgroundColor"] = o.BackgroundColor
+	toSerialize["backgroundImage"] = o.BackgroundImage
+	toSerialize["backgroundGradient"] = o.BackgroundGradient
+	toSerialize["maxWidthSectionCentering"] = o.MaxWidthSectionCentering
+	toSerialize["forceFullWidthSection"] = o.ForceFullWidthSection
+	toSerialize["flexboxPositioning"] = o.FlexboxPositioning
+	return toSerialize, nil
 }
 
 type NullableStyles struct {

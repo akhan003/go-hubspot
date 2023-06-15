@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the ValueWithTimestamp type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ValueWithTimestamp{}
+
 // ValueWithTimestamp struct for ValueWithTimestamp
 type ValueWithTimestamp struct {
 	Value           string    `json:"value"`
@@ -119,7 +122,7 @@ func (o *ValueWithTimestamp) SetSourceType(v string) {
 
 // GetSourceId returns the SourceId field value if set, zero value otherwise.
 func (o *ValueWithTimestamp) GetSourceId() string {
-	if o == nil || o.SourceId == nil {
+	if o == nil || IsNil(o.SourceId) {
 		var ret string
 		return ret
 	}
@@ -129,7 +132,7 @@ func (o *ValueWithTimestamp) GetSourceId() string {
 // GetSourceIdOk returns a tuple with the SourceId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ValueWithTimestamp) GetSourceIdOk() (*string, bool) {
-	if o == nil || o.SourceId == nil {
+	if o == nil || IsNil(o.SourceId) {
 		return nil, false
 	}
 	return o.SourceId, true
@@ -137,7 +140,7 @@ func (o *ValueWithTimestamp) GetSourceIdOk() (*string, bool) {
 
 // HasSourceId returns a boolean if a field has been set.
 func (o *ValueWithTimestamp) HasSourceId() bool {
-	if o != nil && o.SourceId != nil {
+	if o != nil && !IsNil(o.SourceId) {
 		return true
 	}
 
@@ -151,7 +154,7 @@ func (o *ValueWithTimestamp) SetSourceId(v string) {
 
 // GetSourceLabel returns the SourceLabel field value if set, zero value otherwise.
 func (o *ValueWithTimestamp) GetSourceLabel() string {
-	if o == nil || o.SourceLabel == nil {
+	if o == nil || IsNil(o.SourceLabel) {
 		var ret string
 		return ret
 	}
@@ -161,7 +164,7 @@ func (o *ValueWithTimestamp) GetSourceLabel() string {
 // GetSourceLabelOk returns a tuple with the SourceLabel field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ValueWithTimestamp) GetSourceLabelOk() (*string, bool) {
-	if o == nil || o.SourceLabel == nil {
+	if o == nil || IsNil(o.SourceLabel) {
 		return nil, false
 	}
 	return o.SourceLabel, true
@@ -169,7 +172,7 @@ func (o *ValueWithTimestamp) GetSourceLabelOk() (*string, bool) {
 
 // HasSourceLabel returns a boolean if a field has been set.
 func (o *ValueWithTimestamp) HasSourceLabel() bool {
-	if o != nil && o.SourceLabel != nil {
+	if o != nil && !IsNil(o.SourceLabel) {
 		return true
 	}
 
@@ -183,7 +186,7 @@ func (o *ValueWithTimestamp) SetSourceLabel(v string) {
 
 // GetUpdatedByUserId returns the UpdatedByUserId field value if set, zero value otherwise.
 func (o *ValueWithTimestamp) GetUpdatedByUserId() int32 {
-	if o == nil || o.UpdatedByUserId == nil {
+	if o == nil || IsNil(o.UpdatedByUserId) {
 		var ret int32
 		return ret
 	}
@@ -193,7 +196,7 @@ func (o *ValueWithTimestamp) GetUpdatedByUserId() int32 {
 // GetUpdatedByUserIdOk returns a tuple with the UpdatedByUserId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ValueWithTimestamp) GetUpdatedByUserIdOk() (*int32, bool) {
-	if o == nil || o.UpdatedByUserId == nil {
+	if o == nil || IsNil(o.UpdatedByUserId) {
 		return nil, false
 	}
 	return o.UpdatedByUserId, true
@@ -201,7 +204,7 @@ func (o *ValueWithTimestamp) GetUpdatedByUserIdOk() (*int32, bool) {
 
 // HasUpdatedByUserId returns a boolean if a field has been set.
 func (o *ValueWithTimestamp) HasUpdatedByUserId() bool {
-	if o != nil && o.UpdatedByUserId != nil {
+	if o != nil && !IsNil(o.UpdatedByUserId) {
 		return true
 	}
 
@@ -214,26 +217,28 @@ func (o *ValueWithTimestamp) SetUpdatedByUserId(v int32) {
 }
 
 func (o ValueWithTimestamp) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["value"] = o.Value
-	}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp
-	}
-	if true {
-		toSerialize["sourceType"] = o.SourceType
-	}
-	if o.SourceId != nil {
-		toSerialize["sourceId"] = o.SourceId
-	}
-	if o.SourceLabel != nil {
-		toSerialize["sourceLabel"] = o.SourceLabel
-	}
-	if o.UpdatedByUserId != nil {
-		toSerialize["updatedByUserId"] = o.UpdatedByUserId
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ValueWithTimestamp) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["value"] = o.Value
+	toSerialize["timestamp"] = o.Timestamp
+	toSerialize["sourceType"] = o.SourceType
+	if !IsNil(o.SourceId) {
+		toSerialize["sourceId"] = o.SourceId
+	}
+	if !IsNil(o.SourceLabel) {
+		toSerialize["sourceLabel"] = o.SourceLabel
+	}
+	if !IsNil(o.UpdatedByUserId) {
+		toSerialize["updatedByUserId"] = o.UpdatedByUserId
+	}
+	return toSerialize, nil
 }
 
 type NullableValueWithTimestamp struct {

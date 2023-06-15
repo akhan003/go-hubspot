@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ActionConfirmationBody type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ActionConfirmationBody{}
+
 // ActionConfirmationBody struct for ActionConfirmationBody
 type ActionConfirmationBody struct {
 	Prompt             string `json:"prompt"`
@@ -114,17 +117,19 @@ func (o *ActionConfirmationBody) SetCancelButtonLabel(v string) {
 }
 
 func (o ActionConfirmationBody) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["prompt"] = o.Prompt
-	}
-	if true {
-		toSerialize["confirmButtonLabel"] = o.ConfirmButtonLabel
-	}
-	if true {
-		toSerialize["cancelButtonLabel"] = o.CancelButtonLabel
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ActionConfirmationBody) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["prompt"] = o.Prompt
+	toSerialize["confirmButtonLabel"] = o.ConfirmButtonLabel
+	toSerialize["cancelButtonLabel"] = o.CancelButtonLabel
+	return toSerialize, nil
 }
 
 type NullableActionConfirmationBody struct {

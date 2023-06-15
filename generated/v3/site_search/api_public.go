@@ -13,10 +13,8 @@ package site_search
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"reflect"
 	"strings"
@@ -75,14 +73,14 @@ func (a *PublicApiService) GetByIDExecute(r ApiGetByIDRequest) (*IndexedData, *h
 	}
 
 	localVarPath := localBasePath + "/cms/v3/site-search/indexed-data/{contentId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"contentId"+"}", url.PathEscape(parameterToString(r.contentId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"contentId"+"}", url.PathEscape(parameterValueToString(r.contentId, "contentId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.type_ != nil {
-		localVarQueryParams.Add("type", parameterToString(*r.type_, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "type", r.type_, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -103,12 +101,16 @@ func (a *PublicApiService) GetByIDExecute(r ApiGetByIDRequest) (*IndexedData, *h
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -121,9 +123,9 @@ func (a *PublicApiService) GetByIDExecute(r ApiGetByIDRequest) (*IndexedData, *h
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -139,6 +141,7 @@ func (a *PublicApiService) GetByIDExecute(r ApiGetByIDRequest) (*IndexedData, *h
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -320,47 +323,47 @@ func (a *PublicApiService) SearchExecute(r ApiSearchRequest) (*PublicSearchResul
 	localVarFormParams := url.Values{}
 
 	if r.q != nil {
-		localVarQueryParams.Add("q", parameterToString(*r.q, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "q", r.q, "")
 	}
 	if r.limit != nil {
-		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	if r.offset != nil {
-		localVarQueryParams.Add("offset", parameterToString(*r.offset, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "")
 	}
 	if r.language != nil {
-		localVarQueryParams.Add("language", parameterToString(*r.language, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language", r.language, "")
 	}
 	if r.matchPrefix != nil {
-		localVarQueryParams.Add("matchPrefix", parameterToString(*r.matchPrefix, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "matchPrefix", r.matchPrefix, "")
 	}
 	if r.autocomplete != nil {
-		localVarQueryParams.Add("autocomplete", parameterToString(*r.autocomplete, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "autocomplete", r.autocomplete, "")
 	}
 	if r.popularityBoost != nil {
-		localVarQueryParams.Add("popularityBoost", parameterToString(*r.popularityBoost, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "popularityBoost", r.popularityBoost, "")
 	}
 	if r.boostLimit != nil {
-		localVarQueryParams.Add("boostLimit", parameterToString(*r.boostLimit, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "boostLimit", r.boostLimit, "")
 	}
 	if r.boostRecent != nil {
-		localVarQueryParams.Add("boostRecent", parameterToString(*r.boostRecent, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "boostRecent", r.boostRecent, "")
 	}
 	if r.tableId != nil {
-		localVarQueryParams.Add("tableId", parameterToString(*r.tableId, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "tableId", r.tableId, "")
 	}
 	if r.hubdbQuery != nil {
-		localVarQueryParams.Add("hubdbQuery", parameterToString(*r.hubdbQuery, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "hubdbQuery", r.hubdbQuery, "")
 	}
 	if r.domain != nil {
 		t := *r.domain
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("domain", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "domain", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("domain", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "domain", t, "multi")
 		}
 	}
 	if r.type_ != nil {
@@ -368,10 +371,10 @@ func (a *PublicApiService) SearchExecute(r ApiSearchRequest) (*PublicSearchResul
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("type", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "type", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("type", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "type", t, "multi")
 		}
 	}
 	if r.pathPrefix != nil {
@@ -379,10 +382,10 @@ func (a *PublicApiService) SearchExecute(r ApiSearchRequest) (*PublicSearchResul
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("pathPrefix", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "pathPrefix", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("pathPrefix", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "pathPrefix", t, "multi")
 		}
 	}
 	if r.property != nil {
@@ -390,24 +393,24 @@ func (a *PublicApiService) SearchExecute(r ApiSearchRequest) (*PublicSearchResul
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("property", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "property", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("property", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "property", t, "multi")
 		}
 	}
 	if r.length != nil {
-		localVarQueryParams.Add("length", parameterToString(*r.length, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "length", r.length, "")
 	}
 	if r.groupId != nil {
 		t := *r.groupId
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("groupId", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "groupId", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("groupId", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "groupId", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -429,12 +432,16 @@ func (a *PublicApiService) SearchExecute(r ApiSearchRequest) (*PublicSearchResul
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -447,9 +454,9 @@ func (a *PublicApiService) SearchExecute(r ApiSearchRequest) (*PublicSearchResul
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -465,6 +472,7 @@ func (a *PublicApiService) SearchExecute(r ApiSearchRequest) (*PublicSearchResul
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

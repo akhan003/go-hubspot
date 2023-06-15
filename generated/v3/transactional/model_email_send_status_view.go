@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the EmailSendStatusView type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &EmailSendStatusView{}
+
 // EmailSendStatusView Describes the status of an email send request.
 type EmailSendStatusView struct {
 	// Identifier used to query the status of the send.
@@ -77,7 +80,7 @@ func (o *EmailSendStatusView) SetStatusId(v string) {
 
 // GetSendResult returns the SendResult field value if set, zero value otherwise.
 func (o *EmailSendStatusView) GetSendResult() string {
-	if o == nil || o.SendResult == nil {
+	if o == nil || IsNil(o.SendResult) {
 		var ret string
 		return ret
 	}
@@ -87,7 +90,7 @@ func (o *EmailSendStatusView) GetSendResult() string {
 // GetSendResultOk returns a tuple with the SendResult field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EmailSendStatusView) GetSendResultOk() (*string, bool) {
-	if o == nil || o.SendResult == nil {
+	if o == nil || IsNil(o.SendResult) {
 		return nil, false
 	}
 	return o.SendResult, true
@@ -95,7 +98,7 @@ func (o *EmailSendStatusView) GetSendResultOk() (*string, bool) {
 
 // HasSendResult returns a boolean if a field has been set.
 func (o *EmailSendStatusView) HasSendResult() bool {
-	if o != nil && o.SendResult != nil {
+	if o != nil && !IsNil(o.SendResult) {
 		return true
 	}
 
@@ -109,7 +112,7 @@ func (o *EmailSendStatusView) SetSendResult(v string) {
 
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
 func (o *EmailSendStatusView) GetRequestedAt() time.Time {
-	if o == nil || o.RequestedAt == nil {
+	if o == nil || IsNil(o.RequestedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -119,7 +122,7 @@ func (o *EmailSendStatusView) GetRequestedAt() time.Time {
 // GetRequestedAtOk returns a tuple with the RequestedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EmailSendStatusView) GetRequestedAtOk() (*time.Time, bool) {
-	if o == nil || o.RequestedAt == nil {
+	if o == nil || IsNil(o.RequestedAt) {
 		return nil, false
 	}
 	return o.RequestedAt, true
@@ -127,7 +130,7 @@ func (o *EmailSendStatusView) GetRequestedAtOk() (*time.Time, bool) {
 
 // HasRequestedAt returns a boolean if a field has been set.
 func (o *EmailSendStatusView) HasRequestedAt() bool {
-	if o != nil && o.RequestedAt != nil {
+	if o != nil && !IsNil(o.RequestedAt) {
 		return true
 	}
 
@@ -141,7 +144,7 @@ func (o *EmailSendStatusView) SetRequestedAt(v time.Time) {
 
 // GetStartedAt returns the StartedAt field value if set, zero value otherwise.
 func (o *EmailSendStatusView) GetStartedAt() time.Time {
-	if o == nil || o.StartedAt == nil {
+	if o == nil || IsNil(o.StartedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -151,7 +154,7 @@ func (o *EmailSendStatusView) GetStartedAt() time.Time {
 // GetStartedAtOk returns a tuple with the StartedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EmailSendStatusView) GetStartedAtOk() (*time.Time, bool) {
-	if o == nil || o.StartedAt == nil {
+	if o == nil || IsNil(o.StartedAt) {
 		return nil, false
 	}
 	return o.StartedAt, true
@@ -159,7 +162,7 @@ func (o *EmailSendStatusView) GetStartedAtOk() (*time.Time, bool) {
 
 // HasStartedAt returns a boolean if a field has been set.
 func (o *EmailSendStatusView) HasStartedAt() bool {
-	if o != nil && o.StartedAt != nil {
+	if o != nil && !IsNil(o.StartedAt) {
 		return true
 	}
 
@@ -173,7 +176,7 @@ func (o *EmailSendStatusView) SetStartedAt(v time.Time) {
 
 // GetCompletedAt returns the CompletedAt field value if set, zero value otherwise.
 func (o *EmailSendStatusView) GetCompletedAt() time.Time {
-	if o == nil || o.CompletedAt == nil {
+	if o == nil || IsNil(o.CompletedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -183,7 +186,7 @@ func (o *EmailSendStatusView) GetCompletedAt() time.Time {
 // GetCompletedAtOk returns a tuple with the CompletedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EmailSendStatusView) GetCompletedAtOk() (*time.Time, bool) {
-	if o == nil || o.CompletedAt == nil {
+	if o == nil || IsNil(o.CompletedAt) {
 		return nil, false
 	}
 	return o.CompletedAt, true
@@ -191,7 +194,7 @@ func (o *EmailSendStatusView) GetCompletedAtOk() (*time.Time, bool) {
 
 // HasCompletedAt returns a boolean if a field has been set.
 func (o *EmailSendStatusView) HasCompletedAt() bool {
-	if o != nil && o.CompletedAt != nil {
+	if o != nil && !IsNil(o.CompletedAt) {
 		return true
 	}
 
@@ -229,7 +232,7 @@ func (o *EmailSendStatusView) SetStatus(v string) {
 
 // GetEventId returns the EventId field value if set, zero value otherwise.
 func (o *EmailSendStatusView) GetEventId() EventIdView {
-	if o == nil || o.EventId == nil {
+	if o == nil || IsNil(o.EventId) {
 		var ret EventIdView
 		return ret
 	}
@@ -239,7 +242,7 @@ func (o *EmailSendStatusView) GetEventId() EventIdView {
 // GetEventIdOk returns a tuple with the EventId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EmailSendStatusView) GetEventIdOk() (*EventIdView, bool) {
-	if o == nil || o.EventId == nil {
+	if o == nil || IsNil(o.EventId) {
 		return nil, false
 	}
 	return o.EventId, true
@@ -247,7 +250,7 @@ func (o *EmailSendStatusView) GetEventIdOk() (*EventIdView, bool) {
 
 // HasEventId returns a boolean if a field has been set.
 func (o *EmailSendStatusView) HasEventId() bool {
-	if o != nil && o.EventId != nil {
+	if o != nil && !IsNil(o.EventId) {
 		return true
 	}
 
@@ -260,29 +263,33 @@ func (o *EmailSendStatusView) SetEventId(v EventIdView) {
 }
 
 func (o EmailSendStatusView) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["statusId"] = o.StatusId
-	}
-	if o.SendResult != nil {
-		toSerialize["sendResult"] = o.SendResult
-	}
-	if o.RequestedAt != nil {
-		toSerialize["requestedAt"] = o.RequestedAt
-	}
-	if o.StartedAt != nil {
-		toSerialize["startedAt"] = o.StartedAt
-	}
-	if o.CompletedAt != nil {
-		toSerialize["completedAt"] = o.CompletedAt
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if o.EventId != nil {
-		toSerialize["eventId"] = o.EventId
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o EmailSendStatusView) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["statusId"] = o.StatusId
+	if !IsNil(o.SendResult) {
+		toSerialize["sendResult"] = o.SendResult
+	}
+	if !IsNil(o.RequestedAt) {
+		toSerialize["requestedAt"] = o.RequestedAt
+	}
+	if !IsNil(o.StartedAt) {
+		toSerialize["startedAt"] = o.StartedAt
+	}
+	if !IsNil(o.CompletedAt) {
+		toSerialize["completedAt"] = o.CompletedAt
+	}
+	toSerialize["status"] = o.Status
+	if !IsNil(o.EventId) {
+		toSerialize["eventId"] = o.EventId
+	}
+	return toSerialize, nil
 }
 
 type NullableEmailSendStatusView struct {

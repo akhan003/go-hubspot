@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Product type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Product{}
+
 // Product Representation of a product in the external accounting system.
 type Product struct {
 	UnitPrice UnitPrice `json:"unitPrice"`
@@ -99,7 +102,7 @@ func (o *Product) SetTaxExempt(v bool) {
 
 // GetSalesTaxType returns the SalesTaxType field value if set, zero value otherwise.
 func (o *Product) GetSalesTaxType() TaxType {
-	if o == nil || o.SalesTaxType == nil {
+	if o == nil || IsNil(o.SalesTaxType) {
 		var ret TaxType
 		return ret
 	}
@@ -109,7 +112,7 @@ func (o *Product) GetSalesTaxType() TaxType {
 // GetSalesTaxTypeOk returns a tuple with the SalesTaxType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Product) GetSalesTaxTypeOk() (*TaxType, bool) {
-	if o == nil || o.SalesTaxType == nil {
+	if o == nil || IsNil(o.SalesTaxType) {
 		return nil, false
 	}
 	return o.SalesTaxType, true
@@ -117,7 +120,7 @@ func (o *Product) GetSalesTaxTypeOk() (*TaxType, bool) {
 
 // HasSalesTaxType returns a boolean if a field has been set.
 func (o *Product) HasSalesTaxType() bool {
-	if o != nil && o.SalesTaxType != nil {
+	if o != nil && !IsNil(o.SalesTaxType) {
 		return true
 	}
 
@@ -155,7 +158,7 @@ func (o *Product) SetName(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *Product) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -165,7 +168,7 @@ func (o *Product) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Product) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
 	return o.Description, true
@@ -173,7 +176,7 @@ func (o *Product) GetDescriptionOk() (*string, bool) {
 
 // HasDescription returns a boolean if a field has been set.
 func (o *Product) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !IsNil(o.Description) {
 		return true
 	}
 
@@ -210,26 +213,26 @@ func (o *Product) SetId(v string) {
 }
 
 func (o Product) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["unitPrice"] = o.UnitPrice
-	}
-	if true {
-		toSerialize["taxExempt"] = o.TaxExempt
-	}
-	if o.SalesTaxType != nil {
-		toSerialize["salesTaxType"] = o.SalesTaxType
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if o.Description != nil {
-		toSerialize["description"] = o.Description
-	}
-	if true {
-		toSerialize["id"] = o.Id
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Product) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["unitPrice"] = o.UnitPrice
+	toSerialize["taxExempt"] = o.TaxExempt
+	if !IsNil(o.SalesTaxType) {
+		toSerialize["salesTaxType"] = o.SalesTaxType
+	}
+	toSerialize["name"] = o.Name
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	toSerialize["id"] = o.Id
+	return toSerialize, nil
 }
 
 type NullableProduct struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AccountingExtensionTerm type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AccountingExtensionTerm{}
+
 // AccountingExtensionTerm Representation of payment terms that are defined in the external accounting system. One of 'dueDays' or 'dueDate' is required.
 type AccountingExtensionTerm struct {
 	// The due date for payment of the invoice, in ISO-8601 date format (yyyy-MM-dd)
@@ -47,7 +50,7 @@ func NewAccountingExtensionTermWithDefaults() *AccountingExtensionTerm {
 
 // GetDueDate returns the DueDate field value if set, zero value otherwise.
 func (o *AccountingExtensionTerm) GetDueDate() string {
-	if o == nil || o.DueDate == nil {
+	if o == nil || IsNil(o.DueDate) {
 		var ret string
 		return ret
 	}
@@ -57,7 +60,7 @@ func (o *AccountingExtensionTerm) GetDueDate() string {
 // GetDueDateOk returns a tuple with the DueDate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingExtensionTerm) GetDueDateOk() (*string, bool) {
-	if o == nil || o.DueDate == nil {
+	if o == nil || IsNil(o.DueDate) {
 		return nil, false
 	}
 	return o.DueDate, true
@@ -65,7 +68,7 @@ func (o *AccountingExtensionTerm) GetDueDateOk() (*string, bool) {
 
 // HasDueDate returns a boolean if a field has been set.
 func (o *AccountingExtensionTerm) HasDueDate() bool {
-	if o != nil && o.DueDate != nil {
+	if o != nil && !IsNil(o.DueDate) {
 		return true
 	}
 
@@ -127,7 +130,7 @@ func (o *AccountingExtensionTerm) SetId(v string) {
 
 // GetDueDays returns the DueDays field value if set, zero value otherwise.
 func (o *AccountingExtensionTerm) GetDueDays() int32 {
-	if o == nil || o.DueDays == nil {
+	if o == nil || IsNil(o.DueDays) {
 		var ret int32
 		return ret
 	}
@@ -137,7 +140,7 @@ func (o *AccountingExtensionTerm) GetDueDays() int32 {
 // GetDueDaysOk returns a tuple with the DueDays field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingExtensionTerm) GetDueDaysOk() (*int32, bool) {
-	if o == nil || o.DueDays == nil {
+	if o == nil || IsNil(o.DueDays) {
 		return nil, false
 	}
 	return o.DueDays, true
@@ -145,7 +148,7 @@ func (o *AccountingExtensionTerm) GetDueDaysOk() (*int32, bool) {
 
 // HasDueDays returns a boolean if a field has been set.
 func (o *AccountingExtensionTerm) HasDueDays() bool {
-	if o != nil && o.DueDays != nil {
+	if o != nil && !IsNil(o.DueDays) {
 		return true
 	}
 
@@ -158,20 +161,24 @@ func (o *AccountingExtensionTerm) SetDueDays(v int32) {
 }
 
 func (o AccountingExtensionTerm) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.DueDate != nil {
-		toSerialize["dueDate"] = o.DueDate
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if o.DueDays != nil {
-		toSerialize["dueDays"] = o.DueDays
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AccountingExtensionTerm) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.DueDate) {
+		toSerialize["dueDate"] = o.DueDate
+	}
+	toSerialize["name"] = o.Name
+	toSerialize["id"] = o.Id
+	if !IsNil(o.DueDays) {
+		toSerialize["dueDays"] = o.DueDays
+	}
+	return toSerialize, nil
 }
 
 type NullableAccountingExtensionTerm struct {

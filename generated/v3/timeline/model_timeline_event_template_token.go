@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the TimelineEventTemplateToken type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TimelineEventTemplateToken{}
+
 // TimelineEventTemplateToken State of the token definition.
 type TimelineEventTemplateToken struct {
 	// Used for list segmentation and reporting.
@@ -80,7 +83,7 @@ func (o *TimelineEventTemplateToken) SetLabel(v string) {
 
 // GetObjectPropertyName returns the ObjectPropertyName field value if set, zero value otherwise.
 func (o *TimelineEventTemplateToken) GetObjectPropertyName() string {
-	if o == nil || o.ObjectPropertyName == nil {
+	if o == nil || IsNil(o.ObjectPropertyName) {
 		var ret string
 		return ret
 	}
@@ -90,7 +93,7 @@ func (o *TimelineEventTemplateToken) GetObjectPropertyName() string {
 // GetObjectPropertyNameOk returns a tuple with the ObjectPropertyName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplateToken) GetObjectPropertyNameOk() (*string, bool) {
-	if o == nil || o.ObjectPropertyName == nil {
+	if o == nil || IsNil(o.ObjectPropertyName) {
 		return nil, false
 	}
 	return o.ObjectPropertyName, true
@@ -98,7 +101,7 @@ func (o *TimelineEventTemplateToken) GetObjectPropertyNameOk() (*string, bool) {
 
 // HasObjectPropertyName returns a boolean if a field has been set.
 func (o *TimelineEventTemplateToken) HasObjectPropertyName() bool {
-	if o != nil && o.ObjectPropertyName != nil {
+	if o != nil && !IsNil(o.ObjectPropertyName) {
 		return true
 	}
 
@@ -184,7 +187,7 @@ func (o *TimelineEventTemplateToken) SetType(v string) {
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *TimelineEventTemplateToken) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -194,7 +197,7 @@ func (o *TimelineEventTemplateToken) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplateToken) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
 	return o.CreatedAt, true
@@ -202,7 +205,7 @@ func (o *TimelineEventTemplateToken) GetCreatedAtOk() (*time.Time, bool) {
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *TimelineEventTemplateToken) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
@@ -216,7 +219,7 @@ func (o *TimelineEventTemplateToken) SetCreatedAt(v time.Time) {
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
 func (o *TimelineEventTemplateToken) GetUpdatedAt() time.Time {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -226,7 +229,7 @@ func (o *TimelineEventTemplateToken) GetUpdatedAt() time.Time {
 // GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplateToken) GetUpdatedAtOk() (*time.Time, bool) {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		return nil, false
 	}
 	return o.UpdatedAt, true
@@ -234,7 +237,7 @@ func (o *TimelineEventTemplateToken) GetUpdatedAtOk() (*time.Time, bool) {
 
 // HasUpdatedAt returns a boolean if a field has been set.
 func (o *TimelineEventTemplateToken) HasUpdatedAt() bool {
-	if o != nil && o.UpdatedAt != nil {
+	if o != nil && !IsNil(o.UpdatedAt) {
 		return true
 	}
 
@@ -247,29 +250,29 @@ func (o *TimelineEventTemplateToken) SetUpdatedAt(v time.Time) {
 }
 
 func (o TimelineEventTemplateToken) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if o.ObjectPropertyName != nil {
-		toSerialize["objectPropertyName"] = o.ObjectPropertyName
-	}
-	if true {
-		toSerialize["options"] = o.Options
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["type"] = o.Type
-	}
-	if o.CreatedAt != nil {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.UpdatedAt != nil {
-		toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TimelineEventTemplateToken) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["label"] = o.Label
+	if !IsNil(o.ObjectPropertyName) {
+		toSerialize["objectPropertyName"] = o.ObjectPropertyName
+	}
+	toSerialize["options"] = o.Options
+	toSerialize["name"] = o.Name
+	toSerialize["type"] = o.Type
+	if !IsNil(o.CreatedAt) {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if !IsNil(o.UpdatedAt) {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	return toSerialize, nil
 }
 
 type NullableTimelineEventTemplateToken struct {

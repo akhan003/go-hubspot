@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PropertyGroup type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PropertyGroup{}
+
 // PropertyGroup An ID for a group of properties
 type PropertyGroup struct {
 	// The internal property group name, which must be used when referencing the property group via the API.
@@ -143,20 +146,20 @@ func (o *PropertyGroup) SetArchived(v bool) {
 }
 
 func (o PropertyGroup) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["displayOrder"] = o.DisplayOrder
-	}
-	if true {
-		toSerialize["archived"] = o.Archived
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PropertyGroup) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["label"] = o.Label
+	toSerialize["displayOrder"] = o.DisplayOrder
+	toSerialize["archived"] = o.Archived
+	return toSerialize, nil
 }
 
 type NullablePropertyGroup struct {

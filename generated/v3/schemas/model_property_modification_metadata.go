@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PropertyModificationMetadata type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PropertyModificationMetadata{}
+
 // PropertyModificationMetadata struct for PropertyModificationMetadata
 type PropertyModificationMetadata struct {
 	Archivable         bool  `json:"archivable"`
@@ -92,7 +95,7 @@ func (o *PropertyModificationMetadata) SetReadOnlyDefinition(v bool) {
 
 // GetReadOnlyOptions returns the ReadOnlyOptions field value if set, zero value otherwise.
 func (o *PropertyModificationMetadata) GetReadOnlyOptions() bool {
-	if o == nil || o.ReadOnlyOptions == nil {
+	if o == nil || IsNil(o.ReadOnlyOptions) {
 		var ret bool
 		return ret
 	}
@@ -102,7 +105,7 @@ func (o *PropertyModificationMetadata) GetReadOnlyOptions() bool {
 // GetReadOnlyOptionsOk returns a tuple with the ReadOnlyOptions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyModificationMetadata) GetReadOnlyOptionsOk() (*bool, bool) {
-	if o == nil || o.ReadOnlyOptions == nil {
+	if o == nil || IsNil(o.ReadOnlyOptions) {
 		return nil, false
 	}
 	return o.ReadOnlyOptions, true
@@ -110,7 +113,7 @@ func (o *PropertyModificationMetadata) GetReadOnlyOptionsOk() (*bool, bool) {
 
 // HasReadOnlyOptions returns a boolean if a field has been set.
 func (o *PropertyModificationMetadata) HasReadOnlyOptions() bool {
-	if o != nil && o.ReadOnlyOptions != nil {
+	if o != nil && !IsNil(o.ReadOnlyOptions) {
 		return true
 	}
 
@@ -147,20 +150,22 @@ func (o *PropertyModificationMetadata) SetReadOnlyValue(v bool) {
 }
 
 func (o PropertyModificationMetadata) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["archivable"] = o.Archivable
-	}
-	if true {
-		toSerialize["readOnlyDefinition"] = o.ReadOnlyDefinition
-	}
-	if o.ReadOnlyOptions != nil {
-		toSerialize["readOnlyOptions"] = o.ReadOnlyOptions
-	}
-	if true {
-		toSerialize["readOnlyValue"] = o.ReadOnlyValue
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PropertyModificationMetadata) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["archivable"] = o.Archivable
+	toSerialize["readOnlyDefinition"] = o.ReadOnlyDefinition
+	if !IsNil(o.ReadOnlyOptions) {
+		toSerialize["readOnlyOptions"] = o.ReadOnlyOptions
+	}
+	toSerialize["readOnlyValue"] = o.ReadOnlyValue
+	return toSerialize, nil
 }
 
 type NullablePropertyModificationMetadata struct {

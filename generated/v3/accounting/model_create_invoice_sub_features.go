@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateInvoiceSubFeatures type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateInvoiceSubFeatures{}
+
 // CreateInvoiceSubFeatures Lists the individual aspects of creating invoices that are enabled for the integration, as part of the create invoice flow in HubSpot.
 type CreateInvoiceSubFeatures struct {
 	// Indicates if a new customer can be created in the external accounting system.
@@ -198,26 +201,22 @@ func (o *CreateInvoiceSubFeatures) SetInvoiceDiscounts(v bool) {
 }
 
 func (o CreateInvoiceSubFeatures) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["createCustomer"] = o.CreateCustomer
-	}
-	if true {
-		toSerialize["taxes"] = o.Taxes
-	}
-	if true {
-		toSerialize["exchangeRates"] = o.ExchangeRates
-	}
-	if true {
-		toSerialize["terms"] = o.Terms
-	}
-	if true {
-		toSerialize["invoiceComments"] = o.InvoiceComments
-	}
-	if true {
-		toSerialize["invoiceDiscounts"] = o.InvoiceDiscounts
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateInvoiceSubFeatures) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["createCustomer"] = o.CreateCustomer
+	toSerialize["taxes"] = o.Taxes
+	toSerialize["exchangeRates"] = o.ExchangeRates
+	toSerialize["terms"] = o.Terms
+	toSerialize["invoiceComments"] = o.InvoiceComments
+	toSerialize["invoiceDiscounts"] = o.InvoiceDiscounts
+	return toSerialize, nil
 }
 
 type NullableCreateInvoiceSubFeatures struct {

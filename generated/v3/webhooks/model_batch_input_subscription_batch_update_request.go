@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputSubscriptionBatchUpdateRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputSubscriptionBatchUpdateRequest{}
+
 // BatchInputSubscriptionBatchUpdateRequest struct for BatchInputSubscriptionBatchUpdateRequest
 type BatchInputSubscriptionBatchUpdateRequest struct {
 	Inputs []SubscriptionBatchUpdateRequest `json:"inputs"`
@@ -62,11 +65,17 @@ func (o *BatchInputSubscriptionBatchUpdateRequest) SetInputs(v []SubscriptionBat
 }
 
 func (o BatchInputSubscriptionBatchUpdateRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputSubscriptionBatchUpdateRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputSubscriptionBatchUpdateRequest struct {

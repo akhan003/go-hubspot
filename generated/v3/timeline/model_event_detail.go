@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the EventDetail type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &EventDetail{}
+
 // EventDetail The details Markdown rendered as HTML.
 type EventDetail struct {
 	// The details Markdown rendered as HTML.
@@ -63,11 +66,17 @@ func (o *EventDetail) SetDetails(v string) {
 }
 
 func (o EventDetail) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["details"] = o.Details
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o EventDetail) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["details"] = o.Details
+	return toSerialize, nil
 }
 
 type NullableEventDetail struct {

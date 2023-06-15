@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AccountingAppSettings type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AccountingAppSettings{}
+
 // AccountingAppSettings The URL Settings, which defines the URL endpoints that HubSpot will send requests to an external accounting application for certain actions.
 type AccountingAppSettings struct {
 	// The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
@@ -91,7 +94,7 @@ func (o *AccountingAppSettings) SetUrls(v AccountingAppUrls) {
 
 // GetFeatures returns the Features field value if set, zero value otherwise.
 func (o *AccountingAppSettings) GetFeatures() AccountingFeatures {
-	if o == nil || o.Features == nil {
+	if o == nil || IsNil(o.Features) {
 		var ret AccountingFeatures
 		return ret
 	}
@@ -101,7 +104,7 @@ func (o *AccountingAppSettings) GetFeatures() AccountingFeatures {
 // GetFeaturesOk returns a tuple with the Features field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingAppSettings) GetFeaturesOk() (*AccountingFeatures, bool) {
-	if o == nil || o.Features == nil {
+	if o == nil || IsNil(o.Features) {
 		return nil, false
 	}
 	return o.Features, true
@@ -109,7 +112,7 @@ func (o *AccountingAppSettings) GetFeaturesOk() (*AccountingFeatures, bool) {
 
 // HasFeatures returns a boolean if a field has been set.
 func (o *AccountingAppSettings) HasFeatures() bool {
-	if o != nil && o.Features != nil {
+	if o != nil && !IsNil(o.Features) {
 		return true
 	}
 
@@ -122,17 +125,21 @@ func (o *AccountingAppSettings) SetFeatures(v AccountingFeatures) {
 }
 
 func (o AccountingAppSettings) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["appId"] = o.AppId
-	}
-	if true {
-		toSerialize["urls"] = o.Urls
-	}
-	if o.Features != nil {
-		toSerialize["features"] = o.Features
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AccountingAppSettings) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["appId"] = o.AppId
+	toSerialize["urls"] = o.Urls
+	if !IsNil(o.Features) {
+		toSerialize["features"] = o.Features
+	}
+	return toSerialize, nil
 }
 
 type NullableAccountingAppSettings struct {

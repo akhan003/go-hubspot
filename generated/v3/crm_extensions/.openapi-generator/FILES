@@ -54,4 +54,6 @@ model_integrator_object_result_actions_inner.go
 model_object_token.go
 model_top_level_actions.go
 response.go
+test/api_cards_test.go
+test/api_sample_response_test.go
 utils.go

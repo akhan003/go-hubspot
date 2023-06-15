@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the RGBAColor type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &RGBAColor{}
+
 // RGBAColor A color defined by RGB values.
 type RGBAColor struct {
 	// Red.
@@ -144,20 +147,20 @@ func (o *RGBAColor) SetA(v float32) {
 }
 
 func (o RGBAColor) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["r"] = o.R
-	}
-	if true {
-		toSerialize["g"] = o.G
-	}
-	if true {
-		toSerialize["b"] = o.B
-	}
-	if true {
-		toSerialize["a"] = o.A
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o RGBAColor) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["r"] = o.R
+	toSerialize["g"] = o.G
+	toSerialize["b"] = o.B
+	toSerialize["a"] = o.A
+	return toSerialize, nil
 }
 
 type NullableRGBAColor struct {

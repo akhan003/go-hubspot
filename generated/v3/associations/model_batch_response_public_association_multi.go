@@ -15,25 +15,27 @@ import (
 	"time"
 )
 
+// checks if the BatchResponsePublicAssociationMulti type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchResponsePublicAssociationMulti{}
+
 // BatchResponsePublicAssociationMulti struct for BatchResponsePublicAssociationMulti
 type BatchResponsePublicAssociationMulti struct {
-	Results     []PublicAssociationMulti `json:"results"`
-	NumErrors   *int32                   `json:"numErrors,omitempty"`
-	Errors      []StandardError          `json:"errors,omitempty"`
 	Status      string                   `json:"status"`
+	Results     []PublicAssociationMulti `json:"results"`
 	RequestedAt *time.Time               `json:"requestedAt,omitempty"`
 	StartedAt   time.Time                `json:"startedAt"`
 	CompletedAt time.Time                `json:"completedAt"`
+	Links       *map[string]string       `json:"links,omitempty"`
 }
 
 // NewBatchResponsePublicAssociationMulti instantiates a new BatchResponsePublicAssociationMulti object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBatchResponsePublicAssociationMulti(results []PublicAssociationMulti, status string, startedAt time.Time, completedAt time.Time) *BatchResponsePublicAssociationMulti {
+func NewBatchResponsePublicAssociationMulti(status string, results []PublicAssociationMulti, startedAt time.Time, completedAt time.Time) *BatchResponsePublicAssociationMulti {
 	this := BatchResponsePublicAssociationMulti{}
-	this.Results = results
 	this.Status = status
+	this.Results = results
 	this.StartedAt = startedAt
 	this.CompletedAt = completedAt
 	return &this
@@ -45,94 +47,6 @@ func NewBatchResponsePublicAssociationMulti(results []PublicAssociationMulti, st
 func NewBatchResponsePublicAssociationMultiWithDefaults() *BatchResponsePublicAssociationMulti {
 	this := BatchResponsePublicAssociationMulti{}
 	return &this
-}
-
-// GetResults returns the Results field value
-func (o *BatchResponsePublicAssociationMulti) GetResults() []PublicAssociationMulti {
-	if o == nil {
-		var ret []PublicAssociationMulti
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponsePublicAssociationMulti) GetResultsOk() ([]PublicAssociationMulti, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *BatchResponsePublicAssociationMulti) SetResults(v []PublicAssociationMulti) {
-	o.Results = v
-}
-
-// GetNumErrors returns the NumErrors field value if set, zero value otherwise.
-func (o *BatchResponsePublicAssociationMulti) GetNumErrors() int32 {
-	if o == nil || o.NumErrors == nil {
-		var ret int32
-		return ret
-	}
-	return *o.NumErrors
-}
-
-// GetNumErrorsOk returns a tuple with the NumErrors field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *BatchResponsePublicAssociationMulti) GetNumErrorsOk() (*int32, bool) {
-	if o == nil || o.NumErrors == nil {
-		return nil, false
-	}
-	return o.NumErrors, true
-}
-
-// HasNumErrors returns a boolean if a field has been set.
-func (o *BatchResponsePublicAssociationMulti) HasNumErrors() bool {
-	if o != nil && o.NumErrors != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetNumErrors gets a reference to the given int32 and assigns it to the NumErrors field.
-func (o *BatchResponsePublicAssociationMulti) SetNumErrors(v int32) {
-	o.NumErrors = &v
-}
-
-// GetErrors returns the Errors field value if set, zero value otherwise.
-func (o *BatchResponsePublicAssociationMulti) GetErrors() []StandardError {
-	if o == nil || o.Errors == nil {
-		var ret []StandardError
-		return ret
-	}
-	return o.Errors
-}
-
-// GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *BatchResponsePublicAssociationMulti) GetErrorsOk() ([]StandardError, bool) {
-	if o == nil || o.Errors == nil {
-		return nil, false
-	}
-	return o.Errors, true
-}
-
-// HasErrors returns a boolean if a field has been set.
-func (o *BatchResponsePublicAssociationMulti) HasErrors() bool {
-	if o != nil && o.Errors != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetErrors gets a reference to the given []StandardError and assigns it to the Errors field.
-func (o *BatchResponsePublicAssociationMulti) SetErrors(v []StandardError) {
-	o.Errors = v
 }
 
 // GetStatus returns the Status field value
@@ -159,9 +73,33 @@ func (o *BatchResponsePublicAssociationMulti) SetStatus(v string) {
 	o.Status = v
 }
 
+// GetResults returns the Results field value
+func (o *BatchResponsePublicAssociationMulti) GetResults() []PublicAssociationMulti {
+	if o == nil {
+		var ret []PublicAssociationMulti
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponsePublicAssociationMulti) GetResultsOk() ([]PublicAssociationMulti, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *BatchResponsePublicAssociationMulti) SetResults(v []PublicAssociationMulti) {
+	o.Results = v
+}
+
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
 func (o *BatchResponsePublicAssociationMulti) GetRequestedAt() time.Time {
-	if o == nil || o.RequestedAt == nil {
+	if o == nil || IsNil(o.RequestedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -171,7 +109,7 @@ func (o *BatchResponsePublicAssociationMulti) GetRequestedAt() time.Time {
 // GetRequestedAtOk returns a tuple with the RequestedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BatchResponsePublicAssociationMulti) GetRequestedAtOk() (*time.Time, bool) {
-	if o == nil || o.RequestedAt == nil {
+	if o == nil || IsNil(o.RequestedAt) {
 		return nil, false
 	}
 	return o.RequestedAt, true
@@ -179,7 +117,7 @@ func (o *BatchResponsePublicAssociationMulti) GetRequestedAtOk() (*time.Time, bo
 
 // HasRequestedAt returns a boolean if a field has been set.
 func (o *BatchResponsePublicAssociationMulti) HasRequestedAt() bool {
-	if o != nil && o.RequestedAt != nil {
+	if o != nil && !IsNil(o.RequestedAt) {
 		return true
 	}
 
@@ -239,30 +177,59 @@ func (o *BatchResponsePublicAssociationMulti) SetCompletedAt(v time.Time) {
 	o.CompletedAt = v
 }
 
+// GetLinks returns the Links field value if set, zero value otherwise.
+func (o *BatchResponsePublicAssociationMulti) GetLinks() map[string]string {
+	if o == nil || IsNil(o.Links) {
+		var ret map[string]string
+		return ret
+	}
+	return *o.Links
+}
+
+// GetLinksOk returns a tuple with the Links field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BatchResponsePublicAssociationMulti) GetLinksOk() (*map[string]string, bool) {
+	if o == nil || IsNil(o.Links) {
+		return nil, false
+	}
+	return o.Links, true
+}
+
+// HasLinks returns a boolean if a field has been set.
+func (o *BatchResponsePublicAssociationMulti) HasLinks() bool {
+	if o != nil && !IsNil(o.Links) {
+		return true
+	}
+
+	return false
+}
+
+// SetLinks gets a reference to the given map[string]string and assigns it to the Links field.
+func (o *BatchResponsePublicAssociationMulti) SetLinks(v map[string]string) {
+	o.Links = &v
+}
+
 func (o BatchResponsePublicAssociationMulti) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["results"] = o.Results
-	}
-	if o.NumErrors != nil {
-		toSerialize["numErrors"] = o.NumErrors
-	}
-	if o.Errors != nil {
-		toSerialize["errors"] = o.Errors
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if o.RequestedAt != nil {
-		toSerialize["requestedAt"] = o.RequestedAt
-	}
-	if true {
-		toSerialize["startedAt"] = o.StartedAt
-	}
-	if true {
-		toSerialize["completedAt"] = o.CompletedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchResponsePublicAssociationMulti) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["status"] = o.Status
+	toSerialize["results"] = o.Results
+	if !IsNil(o.RequestedAt) {
+		toSerialize["requestedAt"] = o.RequestedAt
+	}
+	toSerialize["startedAt"] = o.StartedAt
+	toSerialize["completedAt"] = o.CompletedAt
+	if !IsNil(o.Links) {
+		toSerialize["links"] = o.Links
+	}
+	return toSerialize, nil
 }
 
 type NullableBatchResponsePublicAssociationMulti struct {

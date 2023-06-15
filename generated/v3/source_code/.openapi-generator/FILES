@@ -30,4 +30,9 @@ model_error_detail.go
 model_file_extract_request.go
 model_task_locator.go
 response.go
+test/api_content_test.go
+test/api_extract_test.go
+test/api_metadata_test.go
+test/api_source_code_extract_test.go
+test/api_validation_test.go
 utils.go

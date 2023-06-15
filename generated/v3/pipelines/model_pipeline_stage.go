@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the PipelineStage type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PipelineStage{}
+
 // PipelineStage A pipeline stage definition.
 type PipelineStage struct {
 	// A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline.
@@ -181,7 +184,7 @@ func (o *PipelineStage) SetCreatedAt(v time.Time) {
 
 // GetArchivedAt returns the ArchivedAt field value if set, zero value otherwise.
 func (o *PipelineStage) GetArchivedAt() time.Time {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -191,7 +194,7 @@ func (o *PipelineStage) GetArchivedAt() time.Time {
 // GetArchivedAtOk returns a tuple with the ArchivedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PipelineStage) GetArchivedAtOk() (*time.Time, bool) {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		return nil, false
 	}
 	return o.ArchivedAt, true
@@ -199,7 +202,7 @@ func (o *PipelineStage) GetArchivedAtOk() (*time.Time, bool) {
 
 // HasArchivedAt returns a boolean if a field has been set.
 func (o *PipelineStage) HasArchivedAt() bool {
-	if o != nil && o.ArchivedAt != nil {
+	if o != nil && !IsNil(o.ArchivedAt) {
 		return true
 	}
 
@@ -260,32 +263,26 @@ func (o *PipelineStage) SetArchived(v bool) {
 }
 
 func (o PipelineStage) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["displayOrder"] = o.DisplayOrder
-	}
-	if true {
-		toSerialize["metadata"] = o.Metadata
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.ArchivedAt != nil {
-		toSerialize["archivedAt"] = o.ArchivedAt
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
-	}
-	if true {
-		toSerialize["archived"] = o.Archived
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PipelineStage) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["label"] = o.Label
+	toSerialize["displayOrder"] = o.DisplayOrder
+	toSerialize["metadata"] = o.Metadata
+	toSerialize["id"] = o.Id
+	toSerialize["createdAt"] = o.CreatedAt
+	if !IsNil(o.ArchivedAt) {
+		toSerialize["archivedAt"] = o.ArchivedAt
+	}
+	toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize["archived"] = o.Archived
+	return toSerialize, nil
 }
 
 type NullablePipelineStage struct {

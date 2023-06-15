@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CardFetchBodyPatch type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CardFetchBodyPatch{}
+
 // CardFetchBodyPatch Variant of CardFetchBody with fields as optional for patches
 type CardFetchBodyPatch struct {
 	// URL to a service endpoint that will respond with details for this card. HubSpot will call this endpoint each time a user visits a CRM record page where this card should be displayed.
@@ -42,7 +45,7 @@ func NewCardFetchBodyPatchWithDefaults() *CardFetchBodyPatch {
 
 // GetTargetUrl returns the TargetUrl field value if set, zero value otherwise.
 func (o *CardFetchBodyPatch) GetTargetUrl() string {
-	if o == nil || o.TargetUrl == nil {
+	if o == nil || IsNil(o.TargetUrl) {
 		var ret string
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *CardFetchBodyPatch) GetTargetUrl() string {
 // GetTargetUrlOk returns a tuple with the TargetUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CardFetchBodyPatch) GetTargetUrlOk() (*string, bool) {
-	if o == nil || o.TargetUrl == nil {
+	if o == nil || IsNil(o.TargetUrl) {
 		return nil, false
 	}
 	return o.TargetUrl, true
@@ -60,7 +63,7 @@ func (o *CardFetchBodyPatch) GetTargetUrlOk() (*string, bool) {
 
 // HasTargetUrl returns a boolean if a field has been set.
 func (o *CardFetchBodyPatch) HasTargetUrl() bool {
-	if o != nil && o.TargetUrl != nil {
+	if o != nil && !IsNil(o.TargetUrl) {
 		return true
 	}
 
@@ -97,14 +100,20 @@ func (o *CardFetchBodyPatch) SetObjectTypes(v []CardObjectTypeBody) {
 }
 
 func (o CardFetchBodyPatch) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.TargetUrl != nil {
-		toSerialize["targetUrl"] = o.TargetUrl
-	}
-	if true {
-		toSerialize["objectTypes"] = o.ObjectTypes
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CardFetchBodyPatch) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.TargetUrl) {
+		toSerialize["targetUrl"] = o.TargetUrl
+	}
+	toSerialize["objectTypes"] = o.ObjectTypes
+	return toSerialize, nil
 }
 
 type NullableCardFetchBodyPatch struct {

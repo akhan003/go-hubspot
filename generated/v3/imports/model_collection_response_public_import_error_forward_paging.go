@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionResponsePublicImportErrorForwardPaging type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionResponsePublicImportErrorForwardPaging{}
+
 // CollectionResponsePublicImportErrorForwardPaging struct for CollectionResponsePublicImportErrorForwardPaging
 type CollectionResponsePublicImportErrorForwardPaging struct {
 	Results []PublicImportError `json:"results"`
@@ -64,7 +67,7 @@ func (o *CollectionResponsePublicImportErrorForwardPaging) SetResults(v []Public
 
 // GetPaging returns the Paging field value if set, zero value otherwise.
 func (o *CollectionResponsePublicImportErrorForwardPaging) GetPaging() ForwardPaging {
-	if o == nil || o.Paging == nil {
+	if o == nil || IsNil(o.Paging) {
 		var ret ForwardPaging
 		return ret
 	}
@@ -74,7 +77,7 @@ func (o *CollectionResponsePublicImportErrorForwardPaging) GetPaging() ForwardPa
 // GetPagingOk returns a tuple with the Paging field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CollectionResponsePublicImportErrorForwardPaging) GetPagingOk() (*ForwardPaging, bool) {
-	if o == nil || o.Paging == nil {
+	if o == nil || IsNil(o.Paging) {
 		return nil, false
 	}
 	return o.Paging, true
@@ -82,7 +85,7 @@ func (o *CollectionResponsePublicImportErrorForwardPaging) GetPagingOk() (*Forwa
 
 // HasPaging returns a boolean if a field has been set.
 func (o *CollectionResponsePublicImportErrorForwardPaging) HasPaging() bool {
-	if o != nil && o.Paging != nil {
+	if o != nil && !IsNil(o.Paging) {
 		return true
 	}
 
@@ -95,14 +98,20 @@ func (o *CollectionResponsePublicImportErrorForwardPaging) SetPaging(v ForwardPa
 }
 
 func (o CollectionResponsePublicImportErrorForwardPaging) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["results"] = o.Results
-	}
-	if o.Paging != nil {
-		toSerialize["paging"] = o.Paging
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionResponsePublicImportErrorForwardPaging) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["results"] = o.Results
+	if !IsNil(o.Paging) {
+		toSerialize["paging"] = o.Paging
+	}
+	return toSerialize, nil
 }
 
 type NullableCollectionResponsePublicImportErrorForwardPaging struct {

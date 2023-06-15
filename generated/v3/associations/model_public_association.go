@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicAssociation type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicAssociation{}
+
 // PublicAssociation struct for PublicAssociation
 type PublicAssociation struct {
 	From PublicObjectId `json:"from"`
@@ -114,17 +117,19 @@ func (o *PublicAssociation) SetType(v string) {
 }
 
 func (o PublicAssociation) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["from"] = o.From
-	}
-	if true {
-		toSerialize["to"] = o.To
-	}
-	if true {
-		toSerialize["type"] = o.Type
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicAssociation) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["from"] = o.From
+	toSerialize["to"] = o.To
+	toSerialize["type"] = o.Type
+	return toSerialize, nil
 }
 
 type NullablePublicAssociation struct {

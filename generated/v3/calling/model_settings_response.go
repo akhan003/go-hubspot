@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the SettingsResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SettingsResponse{}
+
 // SettingsResponse Current settings state
 type SettingsResponse struct {
 	// The name of your calling service to display to users.
@@ -253,32 +256,24 @@ func (o *SettingsResponse) SetUpdatedAt(v time.Time) {
 }
 
 func (o SettingsResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["url"] = o.Url
-	}
-	if true {
-		toSerialize["height"] = o.Height
-	}
-	if true {
-		toSerialize["width"] = o.Width
-	}
-	if true {
-		toSerialize["isReady"] = o.IsReady
-	}
-	if true {
-		toSerialize["supportsCustomObjects"] = o.SupportsCustomObjects
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SettingsResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["url"] = o.Url
+	toSerialize["height"] = o.Height
+	toSerialize["width"] = o.Width
+	toSerialize["isReady"] = o.IsReady
+	toSerialize["supportsCustomObjects"] = o.SupportsCustomObjects
+	toSerialize["createdAt"] = o.CreatedAt
+	toSerialize["updatedAt"] = o.UpdatedAt
+	return toSerialize, nil
 }
 
 type NullableSettingsResponse struct {

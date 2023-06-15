@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the EventDetailSettings type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &EventDetailSettings{}
+
 // EventDetailSettings struct for EventDetailSettings
 type EventDetailSettings struct {
 	// The id of the application the settings are for
@@ -90,14 +93,18 @@ func (o *EventDetailSettings) SetEventDetailsUrl(v string) {
 }
 
 func (o EventDetailSettings) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["appId"] = o.AppId
-	}
-	if true {
-		toSerialize["eventDetailsUrl"] = o.EventDetailsUrl
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o EventDetailSettings) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["appId"] = o.AppId
+	toSerialize["eventDetailsUrl"] = o.EventDetailsUrl
+	return toSerialize, nil
 }
 
 type NullableEventDetailSettings struct {

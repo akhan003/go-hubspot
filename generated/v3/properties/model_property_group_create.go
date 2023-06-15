@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PropertyGroupCreate type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PropertyGroupCreate{}
+
 // PropertyGroupCreate struct for PropertyGroupCreate
 type PropertyGroupCreate struct {
 	// The internal property group name, which must be used when referencing the property group via the API.
@@ -93,7 +96,7 @@ func (o *PropertyGroupCreate) SetLabel(v string) {
 
 // GetDisplayOrder returns the DisplayOrder field value if set, zero value otherwise.
 func (o *PropertyGroupCreate) GetDisplayOrder() int32 {
-	if o == nil || o.DisplayOrder == nil {
+	if o == nil || IsNil(o.DisplayOrder) {
 		var ret int32
 		return ret
 	}
@@ -103,7 +106,7 @@ func (o *PropertyGroupCreate) GetDisplayOrder() int32 {
 // GetDisplayOrderOk returns a tuple with the DisplayOrder field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyGroupCreate) GetDisplayOrderOk() (*int32, bool) {
-	if o == nil || o.DisplayOrder == nil {
+	if o == nil || IsNil(o.DisplayOrder) {
 		return nil, false
 	}
 	return o.DisplayOrder, true
@@ -111,7 +114,7 @@ func (o *PropertyGroupCreate) GetDisplayOrderOk() (*int32, bool) {
 
 // HasDisplayOrder returns a boolean if a field has been set.
 func (o *PropertyGroupCreate) HasDisplayOrder() bool {
-	if o != nil && o.DisplayOrder != nil {
+	if o != nil && !IsNil(o.DisplayOrder) {
 		return true
 	}
 
@@ -124,17 +127,21 @@ func (o *PropertyGroupCreate) SetDisplayOrder(v int32) {
 }
 
 func (o PropertyGroupCreate) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if o.DisplayOrder != nil {
-		toSerialize["displayOrder"] = o.DisplayOrder
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PropertyGroupCreate) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["label"] = o.Label
+	if !IsNil(o.DisplayOrder) {
+		toSerialize["displayOrder"] = o.DisplayOrder
+	}
+	return toSerialize, nil
 }
 
 type NullablePropertyGroupCreate struct {

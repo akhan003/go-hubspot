@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ThrottlingSettings type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ThrottlingSettings{}
+
 // ThrottlingSettings Configuration details for webhook throttling.
 type ThrottlingSettings struct {
 	// The maximum number of HTTP requests HubSpot will attempt to make to your app in a given time frame determined by `period`.
@@ -90,14 +93,18 @@ func (o *ThrottlingSettings) SetPeriod(v string) {
 }
 
 func (o ThrottlingSettings) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["maxConcurrentRequests"] = o.MaxConcurrentRequests
-	}
-	if true {
-		toSerialize["period"] = o.Period
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ThrottlingSettings) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["maxConcurrentRequests"] = o.MaxConcurrentRequests
+	toSerialize["period"] = o.Period
+	return toSerialize, nil
 }
 
 type NullableThrottlingSettings struct {

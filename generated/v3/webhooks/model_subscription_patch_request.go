@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SubscriptionPatchRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SubscriptionPatchRequest{}
+
 // SubscriptionPatchRequest Updated details for the subscription.
 type SubscriptionPatchRequest struct {
 	// Determines if the subscription is active or paused.
@@ -39,7 +42,7 @@ func NewSubscriptionPatchRequestWithDefaults() *SubscriptionPatchRequest {
 
 // GetActive returns the Active field value if set, zero value otherwise.
 func (o *SubscriptionPatchRequest) GetActive() bool {
-	if o == nil || o.Active == nil {
+	if o == nil || IsNil(o.Active) {
 		var ret bool
 		return ret
 	}
@@ -49,7 +52,7 @@ func (o *SubscriptionPatchRequest) GetActive() bool {
 // GetActiveOk returns a tuple with the Active field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SubscriptionPatchRequest) GetActiveOk() (*bool, bool) {
-	if o == nil || o.Active == nil {
+	if o == nil || IsNil(o.Active) {
 		return nil, false
 	}
 	return o.Active, true
@@ -57,7 +60,7 @@ func (o *SubscriptionPatchRequest) GetActiveOk() (*bool, bool) {
 
 // HasActive returns a boolean if a field has been set.
 func (o *SubscriptionPatchRequest) HasActive() bool {
-	if o != nil && o.Active != nil {
+	if o != nil && !IsNil(o.Active) {
 		return true
 	}
 
@@ -70,11 +73,19 @@ func (o *SubscriptionPatchRequest) SetActive(v bool) {
 }
 
 func (o SubscriptionPatchRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Active != nil {
-		toSerialize["active"] = o.Active
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SubscriptionPatchRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Active) {
+		toSerialize["active"] = o.Active
+	}
+	return toSerialize, nil
 }
 
 type NullableSubscriptionPatchRequest struct {

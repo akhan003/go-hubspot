@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MarketingEventExternalUniqueIdentifier type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MarketingEventExternalUniqueIdentifier{}
+
 // MarketingEventExternalUniqueIdentifier struct for MarketingEventExternalUniqueIdentifier
 type MarketingEventExternalUniqueIdentifier struct {
 	// The id of the application that created the marketing event in HubSpot.
@@ -117,17 +120,19 @@ func (o *MarketingEventExternalUniqueIdentifier) SetExternalEventId(v string) {
 }
 
 func (o MarketingEventExternalUniqueIdentifier) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["appId"] = o.AppId
-	}
-	if true {
-		toSerialize["externalAccountId"] = o.ExternalAccountId
-	}
-	if true {
-		toSerialize["externalEventId"] = o.ExternalEventId
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MarketingEventExternalUniqueIdentifier) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["appId"] = o.AppId
+	toSerialize["externalAccountId"] = o.ExternalAccountId
+	toSerialize["externalEventId"] = o.ExternalEventId
+	return toSerialize, nil
 }
 
 type NullableMarketingEventExternalUniqueIdentifier struct {

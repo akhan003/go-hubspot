@@ -15,7 +15,6 @@ Install the following dependencies:
 
 ```shell
 go get github.com/stretchr/testify/assert
-go get golang.org/x/oauth2
 go get golang.org/x/net/context
 ```
 
@@ -92,15 +91,7 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Authorization
 
-
-
-### hapikey
-
-- **Type**: API key
-- **API key parameter name**: hapikey
-- **Location**: URL query string
-
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: hapikey and passed in as the auth context for each request.
+Endpoints do not require authorization.
 
 
 ## Documentation for Utility Methods

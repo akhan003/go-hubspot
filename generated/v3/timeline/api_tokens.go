@@ -13,7 +13,7 @@ package timeline
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -73,9 +73,9 @@ func (a *TokensApiService) TemplatesTokensArchiveExecute(r ApiTemplatesTokensArc
 	}
 
 	localVarPath := localBasePath + "/crm/v3/timeline/{appId}/event-templates/{eventTemplateId}/tokens/{tokenName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterToString(r.eventTemplateId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"tokenName"+"}", url.PathEscape(parameterToString(r.tokenName, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tokenName"+"}", url.PathEscape(parameterValueToString(r.tokenName, "tokenName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -122,9 +122,9 @@ func (a *TokensApiService) TemplatesTokensArchiveExecute(r ApiTemplatesTokensArc
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -140,6 +140,7 @@ func (a *TokensApiService) TemplatesTokensArchiveExecute(r ApiTemplatesTokensArc
 			newErr.error = err.Error()
 			return localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
@@ -206,8 +207,8 @@ func (a *TokensApiService) TemplatesTokensCreateExecute(r ApiTemplatesTokensCrea
 	}
 
 	localVarPath := localBasePath + "/crm/v3/timeline/{appId}/event-templates/{eventTemplateId}/tokens"
-	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterToString(r.eventTemplateId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -259,9 +260,9 @@ func (a *TokensApiService) TemplatesTokensCreateExecute(r ApiTemplatesTokensCrea
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -277,6 +278,7 @@ func (a *TokensApiService) TemplatesTokensCreateExecute(r ApiTemplatesTokensCrea
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -349,9 +351,9 @@ func (a *TokensApiService) TemplatesTokensUpdateExecute(r ApiTemplatesTokensUpda
 	}
 
 	localVarPath := localBasePath + "/crm/v3/timeline/{appId}/event-templates/{eventTemplateId}/tokens/{tokenName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterToString(r.eventTemplateId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"tokenName"+"}", url.PathEscape(parameterToString(r.tokenName, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tokenName"+"}", url.PathEscape(parameterValueToString(r.tokenName, "tokenName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -403,9 +405,9 @@ func (a *TokensApiService) TemplatesTokensUpdateExecute(r ApiTemplatesTokensUpda
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -421,6 +423,7 @@ func (a *TokensApiService) TemplatesTokensUpdateExecute(r ApiTemplatesTokensUpda
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

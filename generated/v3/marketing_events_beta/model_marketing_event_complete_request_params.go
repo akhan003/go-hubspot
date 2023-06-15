@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the MarketingEventCompleteRequestParams type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MarketingEventCompleteRequestParams{}
+
 // MarketingEventCompleteRequestParams struct for MarketingEventCompleteRequestParams
 type MarketingEventCompleteRequestParams struct {
 	StartDateTime time.Time `json:"startDateTime"`
@@ -89,14 +92,18 @@ func (o *MarketingEventCompleteRequestParams) SetEndDateTime(v time.Time) {
 }
 
 func (o MarketingEventCompleteRequestParams) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["startDateTime"] = o.StartDateTime
-	}
-	if true {
-		toSerialize["endDateTime"] = o.EndDateTime
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MarketingEventCompleteRequestParams) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["startDateTime"] = o.StartDateTime
+	toSerialize["endDateTime"] = o.EndDateTime
+	return toSerialize, nil
 }
 
 type NullableMarketingEventCompleteRequestParams struct {

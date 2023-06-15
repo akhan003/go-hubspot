@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the FileExtractRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &FileExtractRequest{}
+
 // FileExtractRequest struct for FileExtractRequest
 type FileExtractRequest struct {
 	Path string `json:"path"`
@@ -62,11 +65,17 @@ func (o *FileExtractRequest) SetPath(v string) {
 }
 
 func (o FileExtractRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["path"] = o.Path
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o FileExtractRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["path"] = o.Path
+	return toSerialize, nil
 }
 
 type NullableFileExtractRequest struct {

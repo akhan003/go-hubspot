@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CardCreateRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CardCreateRequest{}
+
 // CardCreateRequest State of card definition to be created
 type CardCreateRequest struct {
 	// The top-level title for this card. Displayed to users in the CRM UI.
@@ -141,20 +144,20 @@ func (o *CardCreateRequest) SetActions(v CardActions) {
 }
 
 func (o CardCreateRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["title"] = o.Title
-	}
-	if true {
-		toSerialize["fetch"] = o.Fetch
-	}
-	if true {
-		toSerialize["display"] = o.Display
-	}
-	if true {
-		toSerialize["actions"] = o.Actions
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CardCreateRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["title"] = o.Title
+	toSerialize["fetch"] = o.Fetch
+	toSerialize["display"] = o.Display
+	toSerialize["actions"] = o.Actions
+	return toSerialize, nil
 }
 
 type NullableCardCreateRequest struct {

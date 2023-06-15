@@ -70,11 +70,11 @@ func (dst *IntegratorObjectResultActionsInner) UnmarshalJSON(data []byte) error 
 		dst.ActionHookActionBody = nil
 		dst.IFrameActionBody = nil
 
-		return fmt.Errorf("Data matches more than one schema in oneOf(IntegratorObjectResultActionsInner)")
+		return fmt.Errorf("data matches more than one schema in oneOf(IntegratorObjectResultActionsInner)")
 	} else if match == 1 {
 		return nil // exactly one match
 	} else { // no match
-		return fmt.Errorf("Data failed to match schemas in oneOf(IntegratorObjectResultActionsInner)")
+		return fmt.Errorf("data failed to match schemas in oneOf(IntegratorObjectResultActionsInner)")
 	}
 }
 

@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the SubscriptionDefinition type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SubscriptionDefinition{}
+
 // SubscriptionDefinition struct for SubscriptionDefinition
 type SubscriptionDefinition struct {
 	// The ID of the definition.
@@ -138,7 +141,7 @@ func (o *SubscriptionDefinition) SetDescription(v string) {
 
 // GetPurpose returns the Purpose field value if set, zero value otherwise.
 func (o *SubscriptionDefinition) GetPurpose() string {
-	if o == nil || o.Purpose == nil {
+	if o == nil || IsNil(o.Purpose) {
 		var ret string
 		return ret
 	}
@@ -148,7 +151,7 @@ func (o *SubscriptionDefinition) GetPurpose() string {
 // GetPurposeOk returns a tuple with the Purpose field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SubscriptionDefinition) GetPurposeOk() (*string, bool) {
-	if o == nil || o.Purpose == nil {
+	if o == nil || IsNil(o.Purpose) {
 		return nil, false
 	}
 	return o.Purpose, true
@@ -156,7 +159,7 @@ func (o *SubscriptionDefinition) GetPurposeOk() (*string, bool) {
 
 // HasPurpose returns a boolean if a field has been set.
 func (o *SubscriptionDefinition) HasPurpose() bool {
-	if o != nil && o.Purpose != nil {
+	if o != nil && !IsNil(o.Purpose) {
 		return true
 	}
 
@@ -170,7 +173,7 @@ func (o *SubscriptionDefinition) SetPurpose(v string) {
 
 // GetCommunicationMethod returns the CommunicationMethod field value if set, zero value otherwise.
 func (o *SubscriptionDefinition) GetCommunicationMethod() string {
-	if o == nil || o.CommunicationMethod == nil {
+	if o == nil || IsNil(o.CommunicationMethod) {
 		var ret string
 		return ret
 	}
@@ -180,7 +183,7 @@ func (o *SubscriptionDefinition) GetCommunicationMethod() string {
 // GetCommunicationMethodOk returns a tuple with the CommunicationMethod field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SubscriptionDefinition) GetCommunicationMethodOk() (*string, bool) {
-	if o == nil || o.CommunicationMethod == nil {
+	if o == nil || IsNil(o.CommunicationMethod) {
 		return nil, false
 	}
 	return o.CommunicationMethod, true
@@ -188,7 +191,7 @@ func (o *SubscriptionDefinition) GetCommunicationMethodOk() (*string, bool) {
 
 // HasCommunicationMethod returns a boolean if a field has been set.
 func (o *SubscriptionDefinition) HasCommunicationMethod() bool {
-	if o != nil && o.CommunicationMethod != nil {
+	if o != nil && !IsNil(o.CommunicationMethod) {
 		return true
 	}
 
@@ -321,38 +324,30 @@ func (o *SubscriptionDefinition) SetUpdatedAt(v time.Time) {
 }
 
 func (o SubscriptionDefinition) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["description"] = o.Description
-	}
-	if o.Purpose != nil {
-		toSerialize["purpose"] = o.Purpose
-	}
-	if o.CommunicationMethod != nil {
-		toSerialize["communicationMethod"] = o.CommunicationMethod
-	}
-	if true {
-		toSerialize["isActive"] = o.IsActive
-	}
-	if true {
-		toSerialize["isDefault"] = o.IsDefault
-	}
-	if true {
-		toSerialize["isInternal"] = o.IsInternal
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SubscriptionDefinition) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	toSerialize["description"] = o.Description
+	if !IsNil(o.Purpose) {
+		toSerialize["purpose"] = o.Purpose
+	}
+	if !IsNil(o.CommunicationMethod) {
+		toSerialize["communicationMethod"] = o.CommunicationMethod
+	}
+	toSerialize["isActive"] = o.IsActive
+	toSerialize["isDefault"] = o.IsDefault
+	toSerialize["isInternal"] = o.IsInternal
+	toSerialize["createdAt"] = o.CreatedAt
+	toSerialize["updatedAt"] = o.UpdatedAt
+	return toSerialize, nil
 }
 
 type NullableSubscriptionDefinition struct {

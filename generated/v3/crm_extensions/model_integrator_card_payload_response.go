@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the IntegratorCardPayloadResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &IntegratorCardPayloadResponse{}
+
 // IntegratorCardPayloadResponse The card details payload, sent to HubSpot by an app in response to a data fetch request when a user visits a CRM record page.
 type IntegratorCardPayloadResponse struct {
 	// The total number of card properties that will be sent in this response.
@@ -72,7 +75,7 @@ func (o *IntegratorCardPayloadResponse) SetTotalCount(v int32) {
 
 // GetAllItemsLinkUrl returns the AllItemsLinkUrl field value if set, zero value otherwise.
 func (o *IntegratorCardPayloadResponse) GetAllItemsLinkUrl() string {
-	if o == nil || o.AllItemsLinkUrl == nil {
+	if o == nil || IsNil(o.AllItemsLinkUrl) {
 		var ret string
 		return ret
 	}
@@ -82,7 +85,7 @@ func (o *IntegratorCardPayloadResponse) GetAllItemsLinkUrl() string {
 // GetAllItemsLinkUrlOk returns a tuple with the AllItemsLinkUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IntegratorCardPayloadResponse) GetAllItemsLinkUrlOk() (*string, bool) {
-	if o == nil || o.AllItemsLinkUrl == nil {
+	if o == nil || IsNil(o.AllItemsLinkUrl) {
 		return nil, false
 	}
 	return o.AllItemsLinkUrl, true
@@ -90,7 +93,7 @@ func (o *IntegratorCardPayloadResponse) GetAllItemsLinkUrlOk() (*string, bool) {
 
 // HasAllItemsLinkUrl returns a boolean if a field has been set.
 func (o *IntegratorCardPayloadResponse) HasAllItemsLinkUrl() bool {
-	if o != nil && o.AllItemsLinkUrl != nil {
+	if o != nil && !IsNil(o.AllItemsLinkUrl) {
 		return true
 	}
 
@@ -104,7 +107,7 @@ func (o *IntegratorCardPayloadResponse) SetAllItemsLinkUrl(v string) {
 
 // GetCardLabel returns the CardLabel field value if set, zero value otherwise.
 func (o *IntegratorCardPayloadResponse) GetCardLabel() string {
-	if o == nil || o.CardLabel == nil {
+	if o == nil || IsNil(o.CardLabel) {
 		var ret string
 		return ret
 	}
@@ -114,7 +117,7 @@ func (o *IntegratorCardPayloadResponse) GetCardLabel() string {
 // GetCardLabelOk returns a tuple with the CardLabel field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IntegratorCardPayloadResponse) GetCardLabelOk() (*string, bool) {
-	if o == nil || o.CardLabel == nil {
+	if o == nil || IsNil(o.CardLabel) {
 		return nil, false
 	}
 	return o.CardLabel, true
@@ -122,7 +125,7 @@ func (o *IntegratorCardPayloadResponse) GetCardLabelOk() (*string, bool) {
 
 // HasCardLabel returns a boolean if a field has been set.
 func (o *IntegratorCardPayloadResponse) HasCardLabel() bool {
-	if o != nil && o.CardLabel != nil {
+	if o != nil && !IsNil(o.CardLabel) {
 		return true
 	}
 
@@ -136,7 +139,7 @@ func (o *IntegratorCardPayloadResponse) SetCardLabel(v string) {
 
 // GetTopLevelActions returns the TopLevelActions field value if set, zero value otherwise.
 func (o *IntegratorCardPayloadResponse) GetTopLevelActions() TopLevelActions {
-	if o == nil || o.TopLevelActions == nil {
+	if o == nil || IsNil(o.TopLevelActions) {
 		var ret TopLevelActions
 		return ret
 	}
@@ -146,7 +149,7 @@ func (o *IntegratorCardPayloadResponse) GetTopLevelActions() TopLevelActions {
 // GetTopLevelActionsOk returns a tuple with the TopLevelActions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IntegratorCardPayloadResponse) GetTopLevelActionsOk() (*TopLevelActions, bool) {
-	if o == nil || o.TopLevelActions == nil {
+	if o == nil || IsNil(o.TopLevelActions) {
 		return nil, false
 	}
 	return o.TopLevelActions, true
@@ -154,7 +157,7 @@ func (o *IntegratorCardPayloadResponse) GetTopLevelActionsOk() (*TopLevelActions
 
 // HasTopLevelActions returns a boolean if a field has been set.
 func (o *IntegratorCardPayloadResponse) HasTopLevelActions() bool {
-	if o != nil && o.TopLevelActions != nil {
+	if o != nil && !IsNil(o.TopLevelActions) {
 		return true
 	}
 
@@ -168,7 +171,7 @@ func (o *IntegratorCardPayloadResponse) SetTopLevelActions(v TopLevelActions) {
 
 // GetSections returns the Sections field value if set, zero value otherwise.
 func (o *IntegratorCardPayloadResponse) GetSections() []IntegratorObjectResult {
-	if o == nil || o.Sections == nil {
+	if o == nil || IsNil(o.Sections) {
 		var ret []IntegratorObjectResult
 		return ret
 	}
@@ -178,7 +181,7 @@ func (o *IntegratorCardPayloadResponse) GetSections() []IntegratorObjectResult {
 // GetSectionsOk returns a tuple with the Sections field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IntegratorCardPayloadResponse) GetSectionsOk() ([]IntegratorObjectResult, bool) {
-	if o == nil || o.Sections == nil {
+	if o == nil || IsNil(o.Sections) {
 		return nil, false
 	}
 	return o.Sections, true
@@ -186,7 +189,7 @@ func (o *IntegratorCardPayloadResponse) GetSectionsOk() ([]IntegratorObjectResul
 
 // HasSections returns a boolean if a field has been set.
 func (o *IntegratorCardPayloadResponse) HasSections() bool {
-	if o != nil && o.Sections != nil {
+	if o != nil && !IsNil(o.Sections) {
 		return true
 	}
 
@@ -200,7 +203,7 @@ func (o *IntegratorCardPayloadResponse) SetSections(v []IntegratorObjectResult) 
 
 // GetResponseVersion returns the ResponseVersion field value if set, zero value otherwise.
 func (o *IntegratorCardPayloadResponse) GetResponseVersion() string {
-	if o == nil || o.ResponseVersion == nil {
+	if o == nil || IsNil(o.ResponseVersion) {
 		var ret string
 		return ret
 	}
@@ -210,7 +213,7 @@ func (o *IntegratorCardPayloadResponse) GetResponseVersion() string {
 // GetResponseVersionOk returns a tuple with the ResponseVersion field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IntegratorCardPayloadResponse) GetResponseVersionOk() (*string, bool) {
-	if o == nil || o.ResponseVersion == nil {
+	if o == nil || IsNil(o.ResponseVersion) {
 		return nil, false
 	}
 	return o.ResponseVersion, true
@@ -218,7 +221,7 @@ func (o *IntegratorCardPayloadResponse) GetResponseVersionOk() (*string, bool) {
 
 // HasResponseVersion returns a boolean if a field has been set.
 func (o *IntegratorCardPayloadResponse) HasResponseVersion() bool {
-	if o != nil && o.ResponseVersion != nil {
+	if o != nil && !IsNil(o.ResponseVersion) {
 		return true
 	}
 
@@ -231,26 +234,32 @@ func (o *IntegratorCardPayloadResponse) SetResponseVersion(v string) {
 }
 
 func (o IntegratorCardPayloadResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["totalCount"] = o.TotalCount
-	}
-	if o.AllItemsLinkUrl != nil {
-		toSerialize["allItemsLinkUrl"] = o.AllItemsLinkUrl
-	}
-	if o.CardLabel != nil {
-		toSerialize["cardLabel"] = o.CardLabel
-	}
-	if o.TopLevelActions != nil {
-		toSerialize["topLevelActions"] = o.TopLevelActions
-	}
-	if o.Sections != nil {
-		toSerialize["sections"] = o.Sections
-	}
-	if o.ResponseVersion != nil {
-		toSerialize["responseVersion"] = o.ResponseVersion
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o IntegratorCardPayloadResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["totalCount"] = o.TotalCount
+	if !IsNil(o.AllItemsLinkUrl) {
+		toSerialize["allItemsLinkUrl"] = o.AllItemsLinkUrl
+	}
+	if !IsNil(o.CardLabel) {
+		toSerialize["cardLabel"] = o.CardLabel
+	}
+	if !IsNil(o.TopLevelActions) {
+		toSerialize["topLevelActions"] = o.TopLevelActions
+	}
+	if !IsNil(o.Sections) {
+		toSerialize["sections"] = o.Sections
+	}
+	if !IsNil(o.ResponseVersion) {
+		toSerialize["responseVersion"] = o.ResponseVersion
+	}
+	return toSerialize, nil
 }
 
 type NullableIntegratorCardPayloadResponse struct {

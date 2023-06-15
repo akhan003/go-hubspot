@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AccountingExtensionInvoice type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AccountingExtensionInvoice{}
+
 // AccountingExtensionInvoice Representation of an invoice in the external accounting system.
 type AccountingExtensionInvoice struct {
 	// The total amount due.
@@ -85,7 +88,7 @@ func (o *AccountingExtensionInvoice) SetAmountDue(v float32) {
 
 // GetBalance returns the Balance field value if set, zero value otherwise.
 func (o *AccountingExtensionInvoice) GetBalance() float32 {
-	if o == nil || o.Balance == nil {
+	if o == nil || IsNil(o.Balance) {
 		var ret float32
 		return ret
 	}
@@ -95,7 +98,7 @@ func (o *AccountingExtensionInvoice) GetBalance() float32 {
 // GetBalanceOk returns a tuple with the Balance field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingExtensionInvoice) GetBalanceOk() (*float32, bool) {
-	if o == nil || o.Balance == nil {
+	if o == nil || IsNil(o.Balance) {
 		return nil, false
 	}
 	return o.Balance, true
@@ -103,7 +106,7 @@ func (o *AccountingExtensionInvoice) GetBalanceOk() (*float32, bool) {
 
 // HasBalance returns a boolean if a field has been set.
 func (o *AccountingExtensionInvoice) HasBalance() bool {
-	if o != nil && o.Balance != nil {
+	if o != nil && !IsNil(o.Balance) {
 		return true
 	}
 
@@ -141,7 +144,7 @@ func (o *AccountingExtensionInvoice) SetDueDate(v string) {
 
 // GetInvoiceNumber returns the InvoiceNumber field value if set, zero value otherwise.
 func (o *AccountingExtensionInvoice) GetInvoiceNumber() string {
-	if o == nil || o.InvoiceNumber == nil {
+	if o == nil || IsNil(o.InvoiceNumber) {
 		var ret string
 		return ret
 	}
@@ -151,7 +154,7 @@ func (o *AccountingExtensionInvoice) GetInvoiceNumber() string {
 // GetInvoiceNumberOk returns a tuple with the InvoiceNumber field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingExtensionInvoice) GetInvoiceNumberOk() (*string, bool) {
-	if o == nil || o.InvoiceNumber == nil {
+	if o == nil || IsNil(o.InvoiceNumber) {
 		return nil, false
 	}
 	return o.InvoiceNumber, true
@@ -159,7 +162,7 @@ func (o *AccountingExtensionInvoice) GetInvoiceNumberOk() (*string, bool) {
 
 // HasInvoiceNumber returns a boolean if a field has been set.
 func (o *AccountingExtensionInvoice) HasInvoiceNumber() bool {
-	if o != nil && o.InvoiceNumber != nil {
+	if o != nil && !IsNil(o.InvoiceNumber) {
 		return true
 	}
 
@@ -173,7 +176,7 @@ func (o *AccountingExtensionInvoice) SetInvoiceNumber(v string) {
 
 // GetCustomerId returns the CustomerId field value if set, zero value otherwise.
 func (o *AccountingExtensionInvoice) GetCustomerId() string {
-	if o == nil || o.CustomerId == nil {
+	if o == nil || IsNil(o.CustomerId) {
 		var ret string
 		return ret
 	}
@@ -183,7 +186,7 @@ func (o *AccountingExtensionInvoice) GetCustomerId() string {
 // GetCustomerIdOk returns a tuple with the CustomerId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingExtensionInvoice) GetCustomerIdOk() (*string, bool) {
-	if o == nil || o.CustomerId == nil {
+	if o == nil || IsNil(o.CustomerId) {
 		return nil, false
 	}
 	return o.CustomerId, true
@@ -191,7 +194,7 @@ func (o *AccountingExtensionInvoice) GetCustomerIdOk() (*string, bool) {
 
 // HasCustomerId returns a boolean if a field has been set.
 func (o *AccountingExtensionInvoice) HasCustomerId() bool {
-	if o != nil && o.CustomerId != nil {
+	if o != nil && !IsNil(o.CustomerId) {
 		return true
 	}
 
@@ -300,35 +303,31 @@ func (o *AccountingExtensionInvoice) SetStatus(v string) {
 }
 
 func (o AccountingExtensionInvoice) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amountDue"] = o.AmountDue
-	}
-	if o.Balance != nil {
-		toSerialize["balance"] = o.Balance
-	}
-	if true {
-		toSerialize["dueDate"] = o.DueDate
-	}
-	if o.InvoiceNumber != nil {
-		toSerialize["invoiceNumber"] = o.InvoiceNumber
-	}
-	if o.CustomerId != nil {
-		toSerialize["customerId"] = o.CustomerId
-	}
-	if true {
-		toSerialize["currency"] = o.Currency
-	}
-	if true {
-		toSerialize["invoiceLink"] = o.InvoiceLink
-	}
-	if true {
-		toSerialize["customerName"] = o.CustomerName
-	}
-	if true {
-		toSerialize["status"] = o.Status
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AccountingExtensionInvoice) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amountDue"] = o.AmountDue
+	if !IsNil(o.Balance) {
+		toSerialize["balance"] = o.Balance
+	}
+	toSerialize["dueDate"] = o.DueDate
+	if !IsNil(o.InvoiceNumber) {
+		toSerialize["invoiceNumber"] = o.InvoiceNumber
+	}
+	if !IsNil(o.CustomerId) {
+		toSerialize["customerId"] = o.CustomerId
+	}
+	toSerialize["currency"] = o.Currency
+	toSerialize["invoiceLink"] = o.InvoiceLink
+	toSerialize["customerName"] = o.CustomerName
+	toSerialize["status"] = o.Status
+	return toSerialize, nil
 }
 
 type NullableAccountingExtensionInvoice struct {

@@ -117,7 +117,9 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "oauth2_legacy" : [ "cms.performance.read" ]
+        }, {
+          "private_apps_legacy" : [ "cms.performance.read" ]
         } ]
       }
     },
@@ -225,7 +227,9 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "oauth2_legacy" : [ "cms.performance.read" ]
+        }, {
+          "private_apps_legacy" : [ "cms.performance.read" ]
         } ]
       }
     }
@@ -487,11 +491,24 @@
       }
     },
     "securitySchemes" : {
-      "hapikey" : {
+      "oauth2_legacy" : {
+        "type" : "oauth2",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "https://app.hubspot.com/oauth/authorize",
+            "tokenUrl" : "https://api.hubapi.com/oauth/v1/token",
+            "scopes" : {
+              "cms.performance.read" : "Access the CMS Performance API"
+            }
+          }
+        }
+      },
+      "private_apps_legacy" : {
         "type" : "apiKey",
-        "name" : "hapikey",
-        "in" : "query"
+        "name" : "private-app-legacy",
+        "in" : "header"
       }
     }
-  }
+  },
+  "x-hubspot-available-client-libraries" : [ "PHP", "Node", "Python", "Ruby" ]
 }

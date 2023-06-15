@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PropertyName type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PropertyName{}
+
 // PropertyName struct for PropertyName
 type PropertyName struct {
 	// The name of the property to read or modify.
@@ -63,11 +66,17 @@ func (o *PropertyName) SetName(v string) {
 }
 
 func (o PropertyName) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PropertyName) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullablePropertyName struct {

@@ -70,9 +70,39 @@ paths:
           description: An error occurred.
       security:
       - oauth2_legacy:
-        - contacts
-        - timeline
         - tickets
+      - oauth2:
+        - crm.schemas.deals.write
+      - private_apps_legacy:
+        - timeline
+      - oauth2:
+        - crm.schemas.contacts.write
+      - oauth2:
+        - crm.objects.contacts.write
+      - private_apps:
+        - crm.objects.contacts.write
+      - oauth2:
+        - crm.schemas.companies.write
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.schemas.contacts.write
+      - private_apps:
+        - crm.schemas.companies.write
+      - private_apps:
+        - crm.objects.deals.write
+      - oauth2:
+        - crm.objects.deals.write
+      - private_apps_legacy:
+        - tickets
+      - oauth2_legacy:
+        - timeline
+      - private_apps:
+        - crm.objects.companies.write
+      - private_apps:
+        - crm.schemas.deals.write
+      - oauth2:
+        - crm.objects.companies.write
       summary: Create a single event
       tags:
       - Events
@@ -112,9 +142,39 @@ paths:
           description: An error occurred.
       security:
       - oauth2_legacy:
-        - contacts
-        - timeline
         - tickets
+      - oauth2:
+        - crm.schemas.deals.write
+      - private_apps_legacy:
+        - timeline
+      - oauth2:
+        - crm.schemas.contacts.write
+      - oauth2:
+        - crm.objects.contacts.write
+      - private_apps:
+        - crm.objects.contacts.write
+      - oauth2:
+        - crm.schemas.companies.write
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.schemas.contacts.write
+      - private_apps:
+        - crm.schemas.companies.write
+      - private_apps:
+        - crm.objects.deals.write
+      - oauth2:
+        - crm.objects.deals.write
+      - private_apps_legacy:
+        - tickets
+      - oauth2_legacy:
+        - timeline
+      - private_apps:
+        - crm.objects.companies.write
+      - private_apps:
+        - crm.schemas.deals.write
+      - oauth2:
+        - crm.objects.companies.write
       summary: Creates multiple events
       tags:
       - Events
@@ -154,10 +214,40 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - oauth2:
+        - crm.schemas.contacts.read
+      - private_apps:
+        - crm.schemas.contacts.read
       - oauth2_legacy:
-        - contacts
-        - timeline
         - tickets
+      - oauth2:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - timeline
+      - oauth2:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.companies.read
+      - oauth2:
+        - crm.objects.companies.read
+      - private_apps:
+        - crm.schemas.companies.read
+      - oauth2:
+        - crm.schemas.companies.read
+      - private_apps_legacy:
+        - tickets
+      - private_apps:
+        - crm.schemas.deals.read
+      - oauth2:
+        - crm.schemas.deals.read
+      - oauth2_legacy:
+        - timeline
       summary: Gets the event
       tags:
       - Events
@@ -199,10 +289,40 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - oauth2:
+        - crm.schemas.contacts.read
+      - private_apps:
+        - crm.schemas.contacts.read
       - oauth2_legacy:
-        - contacts
-        - timeline
         - tickets
+      - oauth2:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - timeline
+      - oauth2:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.companies.read
+      - oauth2:
+        - crm.objects.companies.read
+      - private_apps:
+        - crm.schemas.companies.read
+      - oauth2:
+        - crm.schemas.companies.read
+      - private_apps_legacy:
+        - tickets
+      - private_apps:
+        - crm.schemas.deals.read
+      - oauth2:
+        - crm.schemas.deals.read
+      - oauth2_legacy:
+        - timeline
       summary: Gets the detailTemplate as rendered
       tags:
       - Events
@@ -253,10 +373,40 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - oauth2:
+        - crm.schemas.contacts.read
+      - private_apps:
+        - crm.schemas.contacts.read
       - oauth2_legacy:
-        - contacts
-        - timeline
         - tickets
+      - oauth2:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - timeline
+      - oauth2:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.companies.read
+      - oauth2:
+        - crm.objects.companies.read
+      - private_apps:
+        - crm.schemas.companies.read
+      - oauth2:
+        - crm.schemas.companies.read
+      - private_apps_legacy:
+        - tickets
+      - private_apps:
+        - crm.schemas.deals.read
+      - oauth2:
+        - crm.schemas.deals.read
+      - oauth2_legacy:
+        - timeline
       summary: Renders the header or detail as HTML
       tags:
       - Events
@@ -858,6 +1008,38 @@ components:
             $ref: '#/components/schemas/Error'
       description: An error occurred.
   schemas:
+    TimelineEventIFrame:
+      example:
+        linkLabel: View Art3mis
+        headerLabel: Art3mis dog
+        url: https://my.petspot.com/pets/Art3mis
+        width: 600
+        height: 400
+      properties:
+        linkLabel:
+          description: The text displaying the link that will display the iframe.
+          type: string
+        headerLabel:
+          description: The label of the modal window that displays the iframe contents.
+          type: string
+        url:
+          description: The URI of the iframe contents.
+          type: string
+        width:
+          description: The width of the modal window in pixels.
+          format: int32
+          type: integer
+        height:
+          description: The height of the modal window in pixels.
+          format: int32
+          type: integer
+      required:
+      - headerLabel
+      - height
+      - linkLabel
+      - url
+      - width
+      type: object
     TimelineEvent:
       description: The state of the timeline event.
       example:
@@ -928,38 +1110,6 @@ components:
       required:
       - eventTemplateId
       - tokens
-      type: object
-    TimelineEventIFrame:
-      example:
-        linkLabel: View Art3mis
-        headerLabel: Art3mis dog
-        url: https://my.petspot.com/pets/Art3mis
-        width: 600
-        height: 400
-      properties:
-        linkLabel:
-          description: The text displaying the link that will display the iframe.
-          type: string
-        headerLabel:
-          description: The label of the modal window that displays the iframe contents.
-          type: string
-        url:
-          description: The URI of the iframe contents.
-          type: string
-        width:
-          description: The width of the modal window in pixels.
-          format: int32
-          type: integer
-        height:
-          description: The height of the modal window in pixels.
-          format: int32
-          type: integer
-      required:
-      - headerLabel
-      - height
-      - linkLabel
-      - url
-      - width
       type: object
     StandardError:
       properties:
@@ -1051,78 +1201,6 @@ components:
       - correlationId
       - message
       type: object
-    EventDetail:
-      description: The details Markdown rendered as HTML.
-      example:
-        details: "<p>Registration occurred at Jan 30, 2020, 1:13:25 PM</p><h4>Questions</h4><p><strong>Who&#x27;s\
-          \ a good kitty?</strong>: Purr...</p><p><strong>Will you stop playing with\
-          \ that?</strong>: Meow!</p><p>EDIT</p>"
-      properties:
-        details:
-          description: The details Markdown rendered as HTML.
-          type: string
-      required:
-      - details
-      type: object
-    TimelineEventTemplateCreateRequest:
-      description: State of the template definition being created.
-      example:
-        name: PetSpot Registration
-        objectType: contacts
-        headerTemplate: "Registered for [{{petName}}](https://my.petspot.com/pets/{{petName}})"
-        detailTemplate: |-
-          Registration occurred at {{#formatDate timestamp}}{{/formatDate}}
-
-          #### Questions
-          {{#each extraData.questions}}
-            **{{question}}**: {{answer}}
-          {{/each}}
-        tokens:
-        - name: petName
-          label: Pet Name
-          type: string
-        - name: petAge
-          label: Pet Age
-          type: number
-        - name: petColor
-          label: Pet Color
-          type: enumeration
-          options:
-          - value: white
-            label: White
-          - value: black
-            label: Black
-          - value: brown
-            label: Brown
-          - value: other
-            label: Other
-      properties:
-        name:
-          description: The template name.
-          type: string
-        headerTemplate:
-          description: This uses Markdown syntax with Handlebars and event-specific
-            data to render HTML on a timeline as a header.
-          type: string
-        detailTemplate:
-          description: This uses Markdown syntax with Handlebars and event-specific
-            data to render HTML on a timeline when you expand the details.
-          type: string
-        tokens:
-          description: A collection of tokens that can be used as custom properties
-            on the event and to create fully fledged CRM objects.
-          items:
-            $ref: '#/components/schemas/TimelineEventTemplateToken'
-          type: array
-        objectType:
-          description: "The type of CRM object this template is for. [Contacts, companies,\
-            \ tickets, and deals] are supported."
-          type: string
-      required:
-      - name
-      - objectType
-      - tokens
-      type: object
     TimelineEventTemplateUpdateRequest:
       description: State of the template definition being updated.
       example:
@@ -1185,6 +1263,78 @@ components:
       - id
       - name
       - tokens
+      type: object
+    TimelineEventTemplateCreateRequest:
+      description: State of the template definition being created.
+      example:
+        name: PetSpot Registration
+        objectType: contacts
+        headerTemplate: "Registered for [{{petName}}](https://my.petspot.com/pets/{{petName}})"
+        detailTemplate: |-
+          Registration occurred at {{#formatDate timestamp}}{{/formatDate}}
+
+          #### Questions
+          {{#each extraData.questions}}
+            **{{question}}**: {{answer}}
+          {{/each}}
+        tokens:
+        - name: petName
+          label: Pet Name
+          type: string
+        - name: petAge
+          label: Pet Age
+          type: number
+        - name: petColor
+          label: Pet Color
+          type: enumeration
+          options:
+          - value: white
+            label: White
+          - value: black
+            label: Black
+          - value: brown
+            label: Brown
+          - value: other
+            label: Other
+      properties:
+        name:
+          description: The template name.
+          type: string
+        headerTemplate:
+          description: This uses Markdown syntax with Handlebars and event-specific
+            data to render HTML on a timeline as a header.
+          type: string
+        detailTemplate:
+          description: This uses Markdown syntax with Handlebars and event-specific
+            data to render HTML on a timeline when you expand the details.
+          type: string
+        tokens:
+          description: A collection of tokens that can be used as custom properties
+            on the event and to create fully fledged CRM objects.
+          items:
+            $ref: '#/components/schemas/TimelineEventTemplateToken'
+          type: array
+        objectType:
+          description: "The type of CRM object this template is for. [Contacts, companies,\
+            \ tickets, and deals] are supported."
+          type: string
+      required:
+      - name
+      - objectType
+      - tokens
+      type: object
+    EventDetail:
+      description: The details Markdown rendered as HTML.
+      example:
+        details: "<p>Registration occurred at Jan 30, 2020, 1:13:25 PM</p><h4>Questions</h4><p><strong>Who&#x27;s\
+          \ a good kitty?</strong>: Purr...</p><p><strong>Will you stop playing with\
+          \ that?</strong>: Meow!</p><p>EDIT</p>"
+      properties:
+        details:
+          description: The details Markdown rendered as HTML.
+          type: string
+      required:
+      - details
       type: object
     CollectionResponseTimelineEventTemplateNoPaging:
       example:
@@ -1497,6 +1647,16 @@ components:
       - httpStatus
       - name
       type: object
+    TimelineEventTemplateTokenOption:
+      properties:
+        value:
+          type: string
+        label:
+          type: string
+      required:
+      - label
+      - value
+      type: object
     TimelineEventTemplate:
       description: The current state of the template definition.
       example:
@@ -1573,16 +1733,6 @@ components:
       - objectType
       - tokens
       type: object
-    TimelineEventTemplateTokenOption:
-      properties:
-        value:
-          type: string
-        label:
-          type: string
-      required:
-      - label
-      - value
-      type: object
     TimelineEventTemplateToken:
       description: State of the token definition.
       example:
@@ -1643,6 +1793,36 @@ components:
       - name
       - options
       - type
+      type: object
+    TimelineEventTemplateTokenUpdateRequest:
+      description: State of the token definition for update requests.
+      example:
+        label: petType edit
+        options:
+        - value: dog
+          label: Dog
+        - value: cat
+          label: Cat
+        - value: bird
+          label: Bird
+      properties:
+        label:
+          description: Used for list segmentation and reporting.
+          type: string
+        objectPropertyName:
+          description: "The name of the CRM object property. This will populate the\
+            \ CRM object property associated with the event. With enough of these,\
+            \ you can fully build CRM objects via the Timeline API."
+          type: string
+        options:
+          description: "If type is `enumeration`, we should have a list of options\
+            \ to choose from."
+          items:
+            $ref: '#/components/schemas/TimelineEventTemplateTokenOption'
+          type: array
+      required:
+      - label
+      - options
       type: object
     TimelineEventResponse:
       description: The current state of the timeline event.
@@ -1728,36 +1908,6 @@ components:
       - objectType
       - tokens
       type: object
-    TimelineEventTemplateTokenUpdateRequest:
-      description: State of the token definition for update requests.
-      example:
-        label: petType edit
-        options:
-        - value: dog
-          label: Dog
-        - value: cat
-          label: Cat
-        - value: bird
-          label: Bird
-      properties:
-        label:
-          description: Used for list segmentation and reporting.
-          type: string
-        objectPropertyName:
-          description: "The name of the CRM object property. This will populate the\
-            \ CRM object property associated with the event. With enough of these,\
-            \ you can fully build CRM objects via the Timeline API."
-          type: string
-        options:
-          description: "If type is `enumeration`, we should have a list of options\
-            \ to choose from."
-          items:
-            $ref: '#/components/schemas/TimelineEventTemplateTokenOption'
-          type: array
-      required:
-      - label
-      - options
-      type: object
     BatchResponseTimelineEventResponseWithErrors:
       properties:
         status:
@@ -1803,14 +1953,40 @@ components:
         authorizationCode:
           authorizationUrl: https://app.hubspot.com/oauth/authorize
           scopes:
-            contacts: Read from and write to my Contacts
-            timeline: Create timeline events
             tickets: Read and write tickets
+            timeline: Create timeline events
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
     developer_hapikey:
       in: query
       name: hapikey
+      type: apiKey
+    oauth2:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          scopes:
+            crm.schemas.contacts.write: ' '
+            crm.objects.contacts.write: ' '
+            crm.schemas.companies.write: ' '
+            crm.objects.companies.write: ' '
+            crm.objects.deals.write: ' '
+            crm.schemas.deals.write: ' '
+            crm.objects.contacts.read: ' '
+            crm.schemas.contacts.read: ' '
+            crm.schemas.companies.read: ' '
+            crm.objects.companies.read: ' '
+            crm.objects.deals.read: ' '
+            crm.schemas.deals.read: ' '
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+      type: oauth2
+    private_apps_legacy:
+      in: header
+      name: private-app-legacy
+      type: apiKey
+    private_apps:
+      in: header
+      name: private-app
       type: apiKey
 x-hubspot-available-client-libraries:
 - PHP

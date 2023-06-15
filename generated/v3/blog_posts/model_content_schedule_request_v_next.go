@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the ContentScheduleRequestVNext type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ContentScheduleRequestVNext{}
+
 // ContentScheduleRequestVNext Request body object for scheduling the publish of content
 type ContentScheduleRequestVNext struct {
 	// The ID of the object to be scheduled.
@@ -91,14 +94,18 @@ func (o *ContentScheduleRequestVNext) SetPublishDate(v time.Time) {
 }
 
 func (o ContentScheduleRequestVNext) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["publishDate"] = o.PublishDate
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ContentScheduleRequestVNext) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["publishDate"] = o.PublishDate
+	return toSerialize, nil
 }
 
 type NullableContentScheduleRequestVNext struct {

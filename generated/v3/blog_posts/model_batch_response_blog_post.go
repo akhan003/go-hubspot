@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the BatchResponseBlogPost type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchResponseBlogPost{}
+
 // BatchResponseBlogPost Response object for batch operations on blog posts.
 type BatchResponseBlogPost struct {
 	// Status of batch operation.
@@ -102,7 +105,7 @@ func (o *BatchResponseBlogPost) SetResults(v []BlogPost) {
 
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
 func (o *BatchResponseBlogPost) GetRequestedAt() time.Time {
-	if o == nil || o.RequestedAt == nil {
+	if o == nil || IsNil(o.RequestedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -112,7 +115,7 @@ func (o *BatchResponseBlogPost) GetRequestedAt() time.Time {
 // GetRequestedAtOk returns a tuple with the RequestedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BatchResponseBlogPost) GetRequestedAtOk() (*time.Time, bool) {
-	if o == nil || o.RequestedAt == nil {
+	if o == nil || IsNil(o.RequestedAt) {
 		return nil, false
 	}
 	return o.RequestedAt, true
@@ -120,7 +123,7 @@ func (o *BatchResponseBlogPost) GetRequestedAtOk() (*time.Time, bool) {
 
 // HasRequestedAt returns a boolean if a field has been set.
 func (o *BatchResponseBlogPost) HasRequestedAt() bool {
-	if o != nil && o.RequestedAt != nil {
+	if o != nil && !IsNil(o.RequestedAt) {
 		return true
 	}
 
@@ -182,7 +185,7 @@ func (o *BatchResponseBlogPost) SetCompletedAt(v time.Time) {
 
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *BatchResponseBlogPost) GetLinks() map[string]string {
-	if o == nil || o.Links == nil {
+	if o == nil || IsNil(o.Links) {
 		var ret map[string]string
 		return ret
 	}
@@ -192,7 +195,7 @@ func (o *BatchResponseBlogPost) GetLinks() map[string]string {
 // GetLinksOk returns a tuple with the Links field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BatchResponseBlogPost) GetLinksOk() (*map[string]string, bool) {
-	if o == nil || o.Links == nil {
+	if o == nil || IsNil(o.Links) {
 		return nil, false
 	}
 	return o.Links, true
@@ -200,7 +203,7 @@ func (o *BatchResponseBlogPost) GetLinksOk() (*map[string]string, bool) {
 
 // HasLinks returns a boolean if a field has been set.
 func (o *BatchResponseBlogPost) HasLinks() bool {
-	if o != nil && o.Links != nil {
+	if o != nil && !IsNil(o.Links) {
 		return true
 	}
 
@@ -213,26 +216,26 @@ func (o *BatchResponseBlogPost) SetLinks(v map[string]string) {
 }
 
 func (o BatchResponseBlogPost) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["results"] = o.Results
-	}
-	if o.RequestedAt != nil {
-		toSerialize["requestedAt"] = o.RequestedAt
-	}
-	if true {
-		toSerialize["startedAt"] = o.StartedAt
-	}
-	if true {
-		toSerialize["completedAt"] = o.CompletedAt
-	}
-	if o.Links != nil {
-		toSerialize["links"] = o.Links
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchResponseBlogPost) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["status"] = o.Status
+	toSerialize["results"] = o.Results
+	if !IsNil(o.RequestedAt) {
+		toSerialize["requestedAt"] = o.RequestedAt
+	}
+	toSerialize["startedAt"] = o.StartedAt
+	toSerialize["completedAt"] = o.CompletedAt
+	if !IsNil(o.Links) {
+		toSerialize["links"] = o.Links
+	}
+	return toSerialize, nil
 }
 
 type NullableBatchResponseBlogPost struct {

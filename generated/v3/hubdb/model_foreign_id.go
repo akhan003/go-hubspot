@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ForeignId type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ForeignId{}
+
 // ForeignId struct for ForeignId
 type ForeignId struct {
 	Id   string `json:"id"`
@@ -114,17 +117,19 @@ func (o *ForeignId) SetType(v string) {
 }
 
 func (o ForeignId) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["type"] = o.Type
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ForeignId) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	toSerialize["type"] = o.Type
+	return toSerialize, nil
 }
 
 type NullableForeignId struct {

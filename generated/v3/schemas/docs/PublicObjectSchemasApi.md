@@ -23,7 +23,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -31,7 +31,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.PublicObjectSchemasApi.Purge(context.Background(), objectType).Execute()
+    r, err := apiClient.PublicObjectSchemasApi.Purge(context.Background(), objectType).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `PublicObjectSchemasApi.Purge``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey)
+[private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 

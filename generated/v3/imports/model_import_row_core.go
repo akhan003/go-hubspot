@@ -14,21 +14,26 @@ import (
 	"encoding/json"
 )
 
+// checks if the ImportRowCore type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ImportRowCore{}
+
 // ImportRowCore struct for ImportRowCore
 type ImportRowCore struct {
-	FileId     int32   `json:"fileId"`
-	PageName   *string `json:"pageName,omitempty"`
-	LineNumber int32   `json:"lineNumber"`
+	LineNumber int32    `json:"lineNumber"`
+	RowData    []string `json:"rowData"`
+	FileId     int32    `json:"fileId"`
+	PageName   *string  `json:"pageName,omitempty"`
 }
 
 // NewImportRowCore instantiates a new ImportRowCore object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewImportRowCore(fileId int32, lineNumber int32) *ImportRowCore {
+func NewImportRowCore(lineNumber int32, rowData []string, fileId int32) *ImportRowCore {
 	this := ImportRowCore{}
-	this.FileId = fileId
 	this.LineNumber = lineNumber
+	this.RowData = rowData
+	this.FileId = fileId
 	return &this
 }
 
@@ -38,6 +43,54 @@ func NewImportRowCore(fileId int32, lineNumber int32) *ImportRowCore {
 func NewImportRowCoreWithDefaults() *ImportRowCore {
 	this := ImportRowCore{}
 	return &this
+}
+
+// GetLineNumber returns the LineNumber field value
+func (o *ImportRowCore) GetLineNumber() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.LineNumber
+}
+
+// GetLineNumberOk returns a tuple with the LineNumber field value
+// and a boolean to check if the value has been set.
+func (o *ImportRowCore) GetLineNumberOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.LineNumber, true
+}
+
+// SetLineNumber sets field value
+func (o *ImportRowCore) SetLineNumber(v int32) {
+	o.LineNumber = v
+}
+
+// GetRowData returns the RowData field value
+func (o *ImportRowCore) GetRowData() []string {
+	if o == nil {
+		var ret []string
+		return ret
+	}
+
+	return o.RowData
+}
+
+// GetRowDataOk returns a tuple with the RowData field value
+// and a boolean to check if the value has been set.
+func (o *ImportRowCore) GetRowDataOk() ([]string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.RowData, true
+}
+
+// SetRowData sets field value
+func (o *ImportRowCore) SetRowData(v []string) {
+	o.RowData = v
 }
 
 // GetFileId returns the FileId field value
@@ -66,7 +119,7 @@ func (o *ImportRowCore) SetFileId(v int32) {
 
 // GetPageName returns the PageName field value if set, zero value otherwise.
 func (o *ImportRowCore) GetPageName() string {
-	if o == nil || o.PageName == nil {
+	if o == nil || IsNil(o.PageName) {
 		var ret string
 		return ret
 	}
@@ -76,7 +129,7 @@ func (o *ImportRowCore) GetPageName() string {
 // GetPageNameOk returns a tuple with the PageName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ImportRowCore) GetPageNameOk() (*string, bool) {
-	if o == nil || o.PageName == nil {
+	if o == nil || IsNil(o.PageName) {
 		return nil, false
 	}
 	return o.PageName, true
@@ -84,7 +137,7 @@ func (o *ImportRowCore) GetPageNameOk() (*string, bool) {
 
 // HasPageName returns a boolean if a field has been set.
 func (o *ImportRowCore) HasPageName() bool {
-	if o != nil && o.PageName != nil {
+	if o != nil && !IsNil(o.PageName) {
 		return true
 	}
 
@@ -96,42 +149,23 @@ func (o *ImportRowCore) SetPageName(v string) {
 	o.PageName = &v
 }
 
-// GetLineNumber returns the LineNumber field value
-func (o *ImportRowCore) GetLineNumber() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.LineNumber
-}
-
-// GetLineNumberOk returns a tuple with the LineNumber field value
-// and a boolean to check if the value has been set.
-func (o *ImportRowCore) GetLineNumberOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.LineNumber, true
-}
-
-// SetLineNumber sets field value
-func (o *ImportRowCore) SetLineNumber(v int32) {
-	o.LineNumber = v
-}
-
 func (o ImportRowCore) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["fileId"] = o.FileId
-	}
-	if o.PageName != nil {
-		toSerialize["pageName"] = o.PageName
-	}
-	if true {
-		toSerialize["lineNumber"] = o.LineNumber
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ImportRowCore) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["lineNumber"] = o.LineNumber
+	toSerialize["rowData"] = o.RowData
+	toSerialize["fileId"] = o.FileId
+	if !IsNil(o.PageName) {
+		toSerialize["pageName"] = o.PageName
+	}
+	return toSerialize, nil
 }
 
 type NullableImportRowCore struct {

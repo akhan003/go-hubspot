@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputMarketingEventEmailSubscriber type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputMarketingEventEmailSubscriber{}
+
 // BatchInputMarketingEventEmailSubscriber List of marketing event details to create or update
 type BatchInputMarketingEventEmailSubscriber struct {
 	// List of marketing event details to create or update
@@ -63,11 +66,17 @@ func (o *BatchInputMarketingEventEmailSubscriber) SetInputs(v []MarketingEventEm
 }
 
 func (o BatchInputMarketingEventEmailSubscriber) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputMarketingEventEmailSubscriber) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputMarketingEventEmailSubscriber struct {

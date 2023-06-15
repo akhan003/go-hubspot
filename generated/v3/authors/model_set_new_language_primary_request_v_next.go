@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SetNewLanguagePrimaryRequestVNext type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SetNewLanguagePrimaryRequestVNext{}
+
 // SetNewLanguagePrimaryRequestVNext Request body object for setting a new primary language.
 type SetNewLanguagePrimaryRequestVNext struct {
 	// ID of object to set as primary in multi-language group.
@@ -63,11 +66,17 @@ func (o *SetNewLanguagePrimaryRequestVNext) SetId(v string) {
 }
 
 func (o SetNewLanguagePrimaryRequestVNext) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SetNewLanguagePrimaryRequestVNext) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	return toSerialize, nil
 }
 
 type NullableSetNewLanguagePrimaryRequestVNext struct {

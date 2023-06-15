@@ -14,9 +14,13 @@ import (
 	"encoding/json"
 )
 
+// checks if the Filter type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Filter{}
+
 // Filter struct for Filter
 type Filter struct {
 	Value        *string  `json:"value,omitempty"`
+	HighValue    *string  `json:"highValue,omitempty"`
 	Values       []string `json:"values,omitempty"`
 	PropertyName string   `json:"propertyName"`
 	// null
@@ -44,7 +48,7 @@ func NewFilterWithDefaults() *Filter {
 
 // GetValue returns the Value field value if set, zero value otherwise.
 func (o *Filter) GetValue() string {
-	if o == nil || o.Value == nil {
+	if o == nil || IsNil(o.Value) {
 		var ret string
 		return ret
 	}
@@ -54,7 +58,7 @@ func (o *Filter) GetValue() string {
 // GetValueOk returns a tuple with the Value field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Filter) GetValueOk() (*string, bool) {
-	if o == nil || o.Value == nil {
+	if o == nil || IsNil(o.Value) {
 		return nil, false
 	}
 	return o.Value, true
@@ -62,7 +66,7 @@ func (o *Filter) GetValueOk() (*string, bool) {
 
 // HasValue returns a boolean if a field has been set.
 func (o *Filter) HasValue() bool {
-	if o != nil && o.Value != nil {
+	if o != nil && !IsNil(o.Value) {
 		return true
 	}
 
@@ -74,9 +78,41 @@ func (o *Filter) SetValue(v string) {
 	o.Value = &v
 }
 
+// GetHighValue returns the HighValue field value if set, zero value otherwise.
+func (o *Filter) GetHighValue() string {
+	if o == nil || IsNil(o.HighValue) {
+		var ret string
+		return ret
+	}
+	return *o.HighValue
+}
+
+// GetHighValueOk returns a tuple with the HighValue field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Filter) GetHighValueOk() (*string, bool) {
+	if o == nil || IsNil(o.HighValue) {
+		return nil, false
+	}
+	return o.HighValue, true
+}
+
+// HasHighValue returns a boolean if a field has been set.
+func (o *Filter) HasHighValue() bool {
+	if o != nil && !IsNil(o.HighValue) {
+		return true
+	}
+
+	return false
+}
+
+// SetHighValue gets a reference to the given string and assigns it to the HighValue field.
+func (o *Filter) SetHighValue(v string) {
+	o.HighValue = &v
+}
+
 // GetValues returns the Values field value if set, zero value otherwise.
 func (o *Filter) GetValues() []string {
-	if o == nil || o.Values == nil {
+	if o == nil || IsNil(o.Values) {
 		var ret []string
 		return ret
 	}
@@ -86,7 +122,7 @@ func (o *Filter) GetValues() []string {
 // GetValuesOk returns a tuple with the Values field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Filter) GetValuesOk() ([]string, bool) {
-	if o == nil || o.Values == nil {
+	if o == nil || IsNil(o.Values) {
 		return nil, false
 	}
 	return o.Values, true
@@ -94,7 +130,7 @@ func (o *Filter) GetValuesOk() ([]string, bool) {
 
 // HasValues returns a boolean if a field has been set.
 func (o *Filter) HasValues() bool {
-	if o != nil && o.Values != nil {
+	if o != nil && !IsNil(o.Values) {
 		return true
 	}
 
@@ -155,20 +191,27 @@ func (o *Filter) SetOperator(v string) {
 }
 
 func (o Filter) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Value != nil {
-		toSerialize["value"] = o.Value
-	}
-	if o.Values != nil {
-		toSerialize["values"] = o.Values
-	}
-	if true {
-		toSerialize["propertyName"] = o.PropertyName
-	}
-	if true {
-		toSerialize["operator"] = o.Operator
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Filter) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Value) {
+		toSerialize["value"] = o.Value
+	}
+	if !IsNil(o.HighValue) {
+		toSerialize["highValue"] = o.HighValue
+	}
+	if !IsNil(o.Values) {
+		toSerialize["values"] = o.Values
+	}
+	toSerialize["propertyName"] = o.PropertyName
+	toSerialize["operator"] = o.Operator
+	return toSerialize, nil
 }
 
 type NullableFilter struct {

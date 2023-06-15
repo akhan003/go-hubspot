@@ -13,10 +13,8 @@ package deals
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"reflect"
 	"strings"
@@ -66,7 +64,7 @@ func (a *BasicApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, e
 	}
 
 	localVarPath := localBasePath + "/crm/v3/objects/deals/{dealId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"dealId"+"}", url.PathEscape(parameterToString(r.dealId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"dealId"+"}", url.PathEscape(parameterValueToString(r.dealId, "dealId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -91,12 +89,30 @@ func (a *BasicApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, e
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -109,9 +125,9 @@ func (a *BasicApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, e
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -127,6 +143,7 @@ func (a *BasicApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, e
 			newErr.error = err.Error()
 			return localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
@@ -135,13 +152,13 @@ func (a *BasicApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, e
 }
 
 type ApiCreateRequest struct {
-	ctx                     context.Context
-	ApiService              *BasicApiService
-	simplePublicObjectInput *SimplePublicObjectInput
+	ctx                              context.Context
+	ApiService                       *BasicApiService
+	simplePublicObjectInputForCreate *SimplePublicObjectInputForCreate
 }
 
-func (r ApiCreateRequest) SimplePublicObjectInput(simplePublicObjectInput SimplePublicObjectInput) ApiCreateRequest {
-	r.simplePublicObjectInput = &simplePublicObjectInput
+func (r ApiCreateRequest) SimplePublicObjectInputForCreate(simplePublicObjectInputForCreate SimplePublicObjectInputForCreate) ApiCreateRequest {
+	r.simplePublicObjectInputForCreate = &simplePublicObjectInputForCreate
 	return r
 }
 
@@ -184,8 +201,8 @@ func (a *BasicApiService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.simplePublicObjectInput == nil {
-		return localVarReturnValue, nil, reportError("simplePublicObjectInput is required and must be specified")
+	if r.simplePublicObjectInputForCreate == nil {
+		return localVarReturnValue, nil, reportError("simplePublicObjectInputForCreate is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -206,15 +223,33 @@ func (a *BasicApiService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.simplePublicObjectInput
+	localVarPostBody = r.simplePublicObjectInputForCreate
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -227,9 +262,9 @@ func (a *BasicApiService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -245,6 +280,7 @@ func (a *BasicApiService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -339,7 +375,7 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 	}
 
 	localVarPath := localBasePath + "/crm/v3/objects/deals/{dealId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"dealId"+"}", url.PathEscape(parameterToString(r.dealId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"dealId"+"}", url.PathEscape(parameterValueToString(r.dealId, "dealId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -350,10 +386,10 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("properties", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("properties", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "properties", t, "multi")
 		}
 	}
 	if r.propertiesWithHistory != nil {
@@ -361,10 +397,10 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("propertiesWithHistory", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("propertiesWithHistory", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", t, "multi")
 		}
 	}
 	if r.associations != nil {
@@ -372,17 +408,17 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("associations", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "associations", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("associations", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "associations", t, "multi")
 		}
 	}
 	if r.archived != nil {
-		localVarQueryParams.Add("archived", parameterToString(*r.archived, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
 	}
 	if r.idProperty != nil {
-		localVarQueryParams.Add("idProperty", parameterToString(*r.idProperty, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "idProperty", r.idProperty, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -403,12 +439,30 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -421,9 +475,9 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -439,6 +493,7 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -543,20 +598,20 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 	localVarFormParams := url.Values{}
 
 	if r.limit != nil {
-		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	if r.after != nil {
-		localVarQueryParams.Add("after", parameterToString(*r.after, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "after", r.after, "")
 	}
 	if r.properties != nil {
 		t := *r.properties
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("properties", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("properties", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "properties", t, "multi")
 		}
 	}
 	if r.propertiesWithHistory != nil {
@@ -564,10 +619,10 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("propertiesWithHistory", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("propertiesWithHistory", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", t, "multi")
 		}
 	}
 	if r.associations != nil {
@@ -575,14 +630,14 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("associations", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "associations", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("associations", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "associations", t, "multi")
 		}
 	}
 	if r.archived != nil {
-		localVarQueryParams.Add("archived", parameterToString(*r.archived, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -603,12 +658,30 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -621,9 +694,9 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -639,6 +712,7 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -711,7 +785,7 @@ func (a *BasicApiService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject
 	}
 
 	localVarPath := localBasePath + "/crm/v3/objects/deals/{dealId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"dealId"+"}", url.PathEscape(parameterToString(r.dealId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"dealId"+"}", url.PathEscape(parameterValueToString(r.dealId, "dealId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -721,7 +795,7 @@ func (a *BasicApiService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject
 	}
 
 	if r.idProperty != nil {
-		localVarQueryParams.Add("idProperty", parameterToString(*r.idProperty, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "idProperty", r.idProperty, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -744,12 +818,30 @@ func (a *BasicApiService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject
 	localVarPostBody = r.simplePublicObjectInput
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -762,9 +854,9 @@ func (a *BasicApiService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -780,6 +872,7 @@ func (a *BasicApiService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

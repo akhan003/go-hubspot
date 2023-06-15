@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CardDisplayProperty type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CardDisplayProperty{}
+
 // CardDisplayProperty Definition for a card display property.
 type CardDisplayProperty struct {
 	// An internal identifier for this property. This value must be unique TODO.
@@ -144,20 +147,20 @@ func (o *CardDisplayProperty) SetOptions(v []DisplayOption) {
 }
 
 func (o CardDisplayProperty) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["dataType"] = o.DataType
-	}
-	if true {
-		toSerialize["options"] = o.Options
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CardDisplayProperty) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["label"] = o.Label
+	toSerialize["dataType"] = o.DataType
+	toSerialize["options"] = o.Options
+	return toSerialize, nil
 }
 
 type NullableCardDisplayProperty struct {

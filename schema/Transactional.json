@@ -48,7 +48,7 @@
         "security" : [ {
           "oauth2_legacy" : [ "transactional-email" ]
         }, {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "transactional-email" ]
         } ],
         "x-hubspot-rate-limit-exemptions" : [ "daily", "ten-secondly" ]
       }
@@ -118,6 +118,8 @@
         },
         "security" : [ {
           "oauth2_legacy" : [ "transactional-email" ]
+        }, {
+          "private_apps_legacy" : [ "transactional-email" ]
         } ]
       },
       "post" : {
@@ -153,6 +155,8 @@
         },
         "security" : [ {
           "oauth2_legacy" : [ "transactional-email" ]
+        }, {
+          "private_apps_legacy" : [ "transactional-email" ]
         } ]
       }
     },
@@ -190,6 +194,8 @@
         },
         "security" : [ {
           "oauth2_legacy" : [ "transactional-email" ]
+        }, {
+          "private_apps_legacy" : [ "transactional-email" ]
         } ]
       },
       "delete" : {
@@ -219,6 +225,8 @@
         },
         "security" : [ {
           "oauth2_legacy" : [ "transactional-email" ]
+        }, {
+          "private_apps_legacy" : [ "transactional-email" ]
         } ]
       }
     },
@@ -256,24 +264,61 @@
         },
         "security" : [ {
           "oauth2_legacy" : [ "transactional-email" ]
+        }, {
+          "private_apps_legacy" : [ "transactional-email" ]
         } ]
       }
     }
   },
   "components" : {
     "schemas" : {
-      "CollectionResponseSmtpApiTokenViewForwardPaging" : {
-        "required" : [ "results" ],
+      "SmtpApiTokenRequestEgg" : {
+        "required" : [ "campaignName", "createContact" ],
         "type" : "object",
         "properties" : {
-          "results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/SmtpApiTokenView"
-            }
+          "createContact" : {
+            "type" : "boolean",
+            "description" : "Indicates whether a contact should be created for email recipients."
           },
-          "paging" : {
-            "$ref" : "#/components/schemas/ForwardPaging"
+          "campaignName" : {
+            "type" : "string",
+            "description" : "A name for the campaign tied to the SMTP API token."
+          }
+        },
+        "description" : "A request object to create a SMTP API token"
+      },
+      "ErrorDetail" : {
+        "required" : [ "message" ],
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "A human readable message describing the error along with remediation steps where appropriate"
+          },
+          "in" : {
+            "type" : "string",
+            "description" : "The name of the field or parameter in which the error was found."
+          },
+          "code" : {
+            "type" : "string",
+            "description" : "The status code associated with the error detail"
+          },
+          "subCategory" : {
+            "type" : "string",
+            "description" : "A specific category that contains more specific detail about the error"
+          },
+          "context" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "array",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "description" : "Context about the error condition",
+            "example" : {
+              "missingScopes" : [ "scope1", "scope2" ]
+            }
           }
         }
       },
@@ -316,55 +361,20 @@
         },
         "description" : "Describes the status of an email send request."
       },
-      "ErrorDetail" : {
-        "required" : [ "message" ],
+      "CollectionResponseSmtpApiTokenViewForwardPaging" : {
+        "required" : [ "results" ],
         "type" : "object",
         "properties" : {
-          "message" : {
-            "type" : "string",
-            "description" : "A human readable message describing the error along with remediation steps where appropriate"
-          },
-          "in" : {
-            "type" : "string",
-            "description" : "The name of the field or parameter in which the error was found."
-          },
-          "code" : {
-            "type" : "string",
-            "description" : "The status code associated with the error detail"
-          },
-          "subCategory" : {
-            "type" : "string",
-            "description" : "A specific category that contains more specific detail about the error"
-          },
-          "context" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "array",
-              "items" : {
-                "type" : "string"
-              }
-            },
-            "description" : "Context about the error condition",
-            "example" : {
-              "missingScopes" : [ "scope1", "scope2" ]
+          "results" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SmtpApiTokenView"
             }
+          },
+          "paging" : {
+            "$ref" : "#/components/schemas/ForwardPaging"
           }
         }
-      },
-      "SmtpApiTokenRequestEgg" : {
-        "required" : [ "campaignName", "createContact" ],
-        "type" : "object",
-        "properties" : {
-          "createContact" : {
-            "type" : "boolean",
-            "description" : "Indicates whether a contact should be created for email recipients."
-          },
-          "campaignName" : {
-            "type" : "string",
-            "description" : "A name for the campaign tied to the SMTP API token."
-          }
-        },
-        "description" : "A request object to create a SMTP API token"
       },
       "ForwardPaging" : {
         "type" : "object",
@@ -420,6 +430,42 @@
           }
         },
         "description" : "The ID of a send event."
+      },
+      "SmtpApiTokenView" : {
+        "required" : [ "campaignName", "createContact", "createdAt", "createdBy", "emailCampaignId", "id" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "User name to log into the HubSpot SMTP server."
+          },
+          "createdBy" : {
+            "type" : "string",
+            "description" : "Email address of the user that sent the token creation request."
+          },
+          "password" : {
+            "type" : "string",
+            "description" : "Password used to log into the HubSpot SMTP server."
+          },
+          "emailCampaignId" : {
+            "type" : "string",
+            "description" : "Identifier assigned to the campaign provided in the token creation request."
+          },
+          "createdAt" : {
+            "type" : "string",
+            "description" : "Timestamp generated when a token is created.",
+            "format" : "date-time"
+          },
+          "createContact" : {
+            "type" : "boolean",
+            "description" : "Indicates whether a contact should be created for email recipients."
+          },
+          "campaignName" : {
+            "type" : "string",
+            "description" : "A name for the campaign tied to the token."
+          }
+        },
+        "description" : "A SMTP API token provides both an ID and password that can be used to send email through the HubSpot SMTP API."
       },
       "Error" : {
         "required" : [ "category", "correlationId", "message" ],
@@ -481,42 +527,6 @@
             "knowledge-base" : "https://www.hubspot.com/products/service/knowledge-base"
           }
         }
-      },
-      "SmtpApiTokenView" : {
-        "required" : [ "campaignName", "createContact", "createdAt", "createdBy", "emailCampaignId", "id" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "User name to log into the HubSpot SMTP server."
-          },
-          "createdBy" : {
-            "type" : "string",
-            "description" : "Email address of the user that sent the token creation request."
-          },
-          "password" : {
-            "type" : "string",
-            "description" : "Password used to log into the HubSpot SMTP server."
-          },
-          "emailCampaignId" : {
-            "type" : "string",
-            "description" : "Identifier assigned to the campaign provided in the token creation request."
-          },
-          "createdAt" : {
-            "type" : "string",
-            "description" : "Timestamp generated when a token is created.",
-            "format" : "date-time"
-          },
-          "createContact" : {
-            "type" : "boolean",
-            "description" : "Indicates whether a contact should be created for email recipients."
-          },
-          "campaignName" : {
-            "type" : "string",
-            "description" : "A name for the campaign tied to the token."
-          }
-        },
-        "description" : "A SMTP API token provides both an ID and password that can be used to send email through the HubSpot SMTP API."
       },
       "NextPage" : {
         "required" : [ "after" ],
@@ -596,12 +606,12 @@
           }
         }
       },
-      "hapikey" : {
+      "private_apps_legacy" : {
         "type" : "apiKey",
-        "name" : "hapikey",
-        "in" : "query"
+        "name" : "private-app-legacy",
+        "in" : "header"
       }
     }
   },
-  "x-hubspot-available-client-libraries" : [ "Node" ]
+  "x-hubspot-available-client-libraries" : [ "PHP", "Node", "Python", "Ruby" ]
 }

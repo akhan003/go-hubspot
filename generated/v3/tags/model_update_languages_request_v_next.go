@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the UpdateLanguagesRequestVNext type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &UpdateLanguagesRequestVNext{}
+
 // UpdateLanguagesRequestVNext Request object for updating languages within a multi-language group.
 type UpdateLanguagesRequestVNext struct {
 	// ID of the primary object in the multi-language group.
@@ -90,14 +93,18 @@ func (o *UpdateLanguagesRequestVNext) SetLanguages(v map[string]string) {
 }
 
 func (o UpdateLanguagesRequestVNext) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["primaryId"] = o.PrimaryId
-	}
-	if true {
-		toSerialize["languages"] = o.Languages
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o UpdateLanguagesRequestVNext) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["primaryId"] = o.PrimaryId
+	toSerialize["languages"] = o.Languages
+	return toSerialize, nil
 }
 
 type NullableUpdateLanguagesRequestVNext struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SubscriberVidResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SubscriberVidResponse{}
+
 // SubscriberVidResponse struct for SubscriberVidResponse
 type SubscriberVidResponse struct {
 	Vid int32 `json:"vid"`
@@ -62,11 +65,17 @@ func (o *SubscriberVidResponse) SetVid(v int32) {
 }
 
 func (o SubscriberVidResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["vid"] = o.Vid
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SubscriberVidResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["vid"] = o.Vid
+	return toSerialize, nil
 }
 
 type NullableSubscriberVidResponse struct {

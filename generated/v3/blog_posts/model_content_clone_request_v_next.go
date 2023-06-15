@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ContentCloneRequestVNext type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ContentCloneRequestVNext{}
+
 // ContentCloneRequestVNext Request body object for cloning content.
 type ContentCloneRequestVNext struct {
 	// ID of the object to be cloned.
@@ -66,7 +69,7 @@ func (o *ContentCloneRequestVNext) SetId(v string) {
 
 // GetCloneName returns the CloneName field value if set, zero value otherwise.
 func (o *ContentCloneRequestVNext) GetCloneName() string {
-	if o == nil || o.CloneName == nil {
+	if o == nil || IsNil(o.CloneName) {
 		var ret string
 		return ret
 	}
@@ -76,7 +79,7 @@ func (o *ContentCloneRequestVNext) GetCloneName() string {
 // GetCloneNameOk returns a tuple with the CloneName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ContentCloneRequestVNext) GetCloneNameOk() (*string, bool) {
-	if o == nil || o.CloneName == nil {
+	if o == nil || IsNil(o.CloneName) {
 		return nil, false
 	}
 	return o.CloneName, true
@@ -84,7 +87,7 @@ func (o *ContentCloneRequestVNext) GetCloneNameOk() (*string, bool) {
 
 // HasCloneName returns a boolean if a field has been set.
 func (o *ContentCloneRequestVNext) HasCloneName() bool {
-	if o != nil && o.CloneName != nil {
+	if o != nil && !IsNil(o.CloneName) {
 		return true
 	}
 
@@ -97,14 +100,20 @@ func (o *ContentCloneRequestVNext) SetCloneName(v string) {
 }
 
 func (o ContentCloneRequestVNext) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if o.CloneName != nil {
-		toSerialize["cloneName"] = o.CloneName
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ContentCloneRequestVNext) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	if !IsNil(o.CloneName) {
+		toSerialize["cloneName"] = o.CloneName
+	}
+	return toSerialize, nil
 }
 
 type NullableContentCloneRequestVNext struct {

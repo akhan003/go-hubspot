@@ -13,10 +13,8 @@ package performance
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 )
 
@@ -125,28 +123,28 @@ func (a *PublicPerformanceApiService) GetPageExecute(r ApiGetPageRequest) (*Publ
 	localVarFormParams := url.Values{}
 
 	if r.domain != nil {
-		localVarQueryParams.Add("domain", parameterToString(*r.domain, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "domain", r.domain, "")
 	}
 	if r.path != nil {
-		localVarQueryParams.Add("path", parameterToString(*r.path, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "path", r.path, "")
 	}
 	if r.pad != nil {
-		localVarQueryParams.Add("pad", parameterToString(*r.pad, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pad", r.pad, "")
 	}
 	if r.sum != nil {
-		localVarQueryParams.Add("sum", parameterToString(*r.sum, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sum", r.sum, "")
 	}
 	if r.period != nil {
-		localVarQueryParams.Add("period", parameterToString(*r.period, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "period", r.period, "")
 	}
 	if r.interval != nil {
-		localVarQueryParams.Add("interval", parameterToString(*r.interval, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "interval", r.interval, "")
 	}
 	if r.start != nil {
-		localVarQueryParams.Add("start", parameterToString(*r.start, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start", r.start, "")
 	}
 	if r.end != nil {
-		localVarQueryParams.Add("end", parameterToString(*r.end, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end", r.end, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -167,12 +165,16 @@ func (a *PublicPerformanceApiService) GetPageExecute(r ApiGetPageRequest) (*Publ
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -185,9 +187,9 @@ func (a *PublicPerformanceApiService) GetPageExecute(r ApiGetPageRequest) (*Publ
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -203,6 +205,7 @@ func (a *PublicPerformanceApiService) GetPageExecute(r ApiGetPageRequest) (*Publ
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -320,28 +323,28 @@ func (a *PublicPerformanceApiService) GetUptimeExecute(r ApiGetUptimeRequest) (*
 	localVarFormParams := url.Values{}
 
 	if r.domain != nil {
-		localVarQueryParams.Add("domain", parameterToString(*r.domain, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "domain", r.domain, "")
 	}
 	if r.path != nil {
-		localVarQueryParams.Add("path", parameterToString(*r.path, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "path", r.path, "")
 	}
 	if r.pad != nil {
-		localVarQueryParams.Add("pad", parameterToString(*r.pad, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pad", r.pad, "")
 	}
 	if r.sum != nil {
-		localVarQueryParams.Add("sum", parameterToString(*r.sum, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sum", r.sum, "")
 	}
 	if r.period != nil {
-		localVarQueryParams.Add("period", parameterToString(*r.period, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "period", r.period, "")
 	}
 	if r.interval != nil {
-		localVarQueryParams.Add("interval", parameterToString(*r.interval, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "interval", r.interval, "")
 	}
 	if r.start != nil {
-		localVarQueryParams.Add("start", parameterToString(*r.start, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start", r.start, "")
 	}
 	if r.end != nil {
-		localVarQueryParams.Add("end", parameterToString(*r.end, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end", r.end, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -362,12 +365,16 @@ func (a *PublicPerformanceApiService) GetUptimeExecute(r ApiGetUptimeRequest) (*
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -380,9 +387,9 @@ func (a *PublicPerformanceApiService) GetUptimeExecute(r ApiGetUptimeRequest) (*
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -398,6 +405,7 @@ func (a *PublicPerformanceApiService) GetUptimeExecute(r ApiGetUptimeRequest) (*
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

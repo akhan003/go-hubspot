@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ErrorDetail type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ErrorDetail{}
+
 // ErrorDetail struct for ErrorDetail
 type ErrorDetail struct {
 	// A human readable message describing the error along with remediation steps where appropriate
@@ -72,7 +75,7 @@ func (o *ErrorDetail) SetMessage(v string) {
 
 // GetIn returns the In field value if set, zero value otherwise.
 func (o *ErrorDetail) GetIn() string {
-	if o == nil || o.In == nil {
+	if o == nil || IsNil(o.In) {
 		var ret string
 		return ret
 	}
@@ -82,7 +85,7 @@ func (o *ErrorDetail) GetIn() string {
 // GetInOk returns a tuple with the In field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ErrorDetail) GetInOk() (*string, bool) {
-	if o == nil || o.In == nil {
+	if o == nil || IsNil(o.In) {
 		return nil, false
 	}
 	return o.In, true
@@ -90,7 +93,7 @@ func (o *ErrorDetail) GetInOk() (*string, bool) {
 
 // HasIn returns a boolean if a field has been set.
 func (o *ErrorDetail) HasIn() bool {
-	if o != nil && o.In != nil {
+	if o != nil && !IsNil(o.In) {
 		return true
 	}
 
@@ -104,7 +107,7 @@ func (o *ErrorDetail) SetIn(v string) {
 
 // GetCode returns the Code field value if set, zero value otherwise.
 func (o *ErrorDetail) GetCode() string {
-	if o == nil || o.Code == nil {
+	if o == nil || IsNil(o.Code) {
 		var ret string
 		return ret
 	}
@@ -114,7 +117,7 @@ func (o *ErrorDetail) GetCode() string {
 // GetCodeOk returns a tuple with the Code field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ErrorDetail) GetCodeOk() (*string, bool) {
-	if o == nil || o.Code == nil {
+	if o == nil || IsNil(o.Code) {
 		return nil, false
 	}
 	return o.Code, true
@@ -122,7 +125,7 @@ func (o *ErrorDetail) GetCodeOk() (*string, bool) {
 
 // HasCode returns a boolean if a field has been set.
 func (o *ErrorDetail) HasCode() bool {
-	if o != nil && o.Code != nil {
+	if o != nil && !IsNil(o.Code) {
 		return true
 	}
 
@@ -136,7 +139,7 @@ func (o *ErrorDetail) SetCode(v string) {
 
 // GetSubCategory returns the SubCategory field value if set, zero value otherwise.
 func (o *ErrorDetail) GetSubCategory() string {
-	if o == nil || o.SubCategory == nil {
+	if o == nil || IsNil(o.SubCategory) {
 		var ret string
 		return ret
 	}
@@ -146,7 +149,7 @@ func (o *ErrorDetail) GetSubCategory() string {
 // GetSubCategoryOk returns a tuple with the SubCategory field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ErrorDetail) GetSubCategoryOk() (*string, bool) {
-	if o == nil || o.SubCategory == nil {
+	if o == nil || IsNil(o.SubCategory) {
 		return nil, false
 	}
 	return o.SubCategory, true
@@ -154,7 +157,7 @@ func (o *ErrorDetail) GetSubCategoryOk() (*string, bool) {
 
 // HasSubCategory returns a boolean if a field has been set.
 func (o *ErrorDetail) HasSubCategory() bool {
-	if o != nil && o.SubCategory != nil {
+	if o != nil && !IsNil(o.SubCategory) {
 		return true
 	}
 
@@ -168,7 +171,7 @@ func (o *ErrorDetail) SetSubCategory(v string) {
 
 // GetContext returns the Context field value if set, zero value otherwise.
 func (o *ErrorDetail) GetContext() map[string][]string {
-	if o == nil || o.Context == nil {
+	if o == nil || IsNil(o.Context) {
 		var ret map[string][]string
 		return ret
 	}
@@ -178,7 +181,7 @@ func (o *ErrorDetail) GetContext() map[string][]string {
 // GetContextOk returns a tuple with the Context field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ErrorDetail) GetContextOk() (*map[string][]string, bool) {
-	if o == nil || o.Context == nil {
+	if o == nil || IsNil(o.Context) {
 		return nil, false
 	}
 	return o.Context, true
@@ -186,7 +189,7 @@ func (o *ErrorDetail) GetContextOk() (*map[string][]string, bool) {
 
 // HasContext returns a boolean if a field has been set.
 func (o *ErrorDetail) HasContext() bool {
-	if o != nil && o.Context != nil {
+	if o != nil && !IsNil(o.Context) {
 		return true
 	}
 
@@ -199,23 +202,29 @@ func (o *ErrorDetail) SetContext(v map[string][]string) {
 }
 
 func (o ErrorDetail) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["message"] = o.Message
-	}
-	if o.In != nil {
-		toSerialize["in"] = o.In
-	}
-	if o.Code != nil {
-		toSerialize["code"] = o.Code
-	}
-	if o.SubCategory != nil {
-		toSerialize["subCategory"] = o.SubCategory
-	}
-	if o.Context != nil {
-		toSerialize["context"] = o.Context
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ErrorDetail) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["message"] = o.Message
+	if !IsNil(o.In) {
+		toSerialize["in"] = o.In
+	}
+	if !IsNil(o.Code) {
+		toSerialize["code"] = o.Code
+	}
+	if !IsNil(o.SubCategory) {
+		toSerialize["subCategory"] = o.SubCategory
+	}
+	if !IsNil(o.Context) {
+		toSerialize["context"] = o.Context
+	}
+	return toSerialize, nil
 }
 
 type NullableErrorDetail struct {

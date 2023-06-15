@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Option type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Option{}
+
 // Option An option for a field value.
 type Option struct {
 	// The user-facing label for the option.
@@ -220,29 +223,23 @@ func (o *Option) SetReadOnly(v bool) {
 }
 
 func (o Option) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["value"] = o.Value
-	}
-	if true {
-		toSerialize["displayOrder"] = o.DisplayOrder
-	}
-	if true {
-		toSerialize["doubleData"] = o.DoubleData
-	}
-	if true {
-		toSerialize["hidden"] = o.Hidden
-	}
-	if true {
-		toSerialize["description"] = o.Description
-	}
-	if true {
-		toSerialize["readOnly"] = o.ReadOnly
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Option) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["label"] = o.Label
+	toSerialize["value"] = o.Value
+	toSerialize["displayOrder"] = o.DisplayOrder
+	toSerialize["doubleData"] = o.DoubleData
+	toSerialize["hidden"] = o.Hidden
+	toSerialize["description"] = o.Description
+	toSerialize["readOnly"] = o.ReadOnly
+	return toSerialize, nil
 }
 
 type NullableOption struct {

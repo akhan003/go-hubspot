@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionResponsePublicAuditLog type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionResponsePublicAuditLog{}
+
 // CollectionResponsePublicAuditLog The collection of audit logs.
 type CollectionResponsePublicAuditLog struct {
 	Results []PublicAuditLog `json:"results"`
@@ -64,7 +67,7 @@ func (o *CollectionResponsePublicAuditLog) SetResults(v []PublicAuditLog) {
 
 // GetPaging returns the Paging field value if set, zero value otherwise.
 func (o *CollectionResponsePublicAuditLog) GetPaging() Paging {
-	if o == nil || o.Paging == nil {
+	if o == nil || IsNil(o.Paging) {
 		var ret Paging
 		return ret
 	}
@@ -74,7 +77,7 @@ func (o *CollectionResponsePublicAuditLog) GetPaging() Paging {
 // GetPagingOk returns a tuple with the Paging field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CollectionResponsePublicAuditLog) GetPagingOk() (*Paging, bool) {
-	if o == nil || o.Paging == nil {
+	if o == nil || IsNil(o.Paging) {
 		return nil, false
 	}
 	return o.Paging, true
@@ -82,7 +85,7 @@ func (o *CollectionResponsePublicAuditLog) GetPagingOk() (*Paging, bool) {
 
 // HasPaging returns a boolean if a field has been set.
 func (o *CollectionResponsePublicAuditLog) HasPaging() bool {
-	if o != nil && o.Paging != nil {
+	if o != nil && !IsNil(o.Paging) {
 		return true
 	}
 
@@ -95,14 +98,20 @@ func (o *CollectionResponsePublicAuditLog) SetPaging(v Paging) {
 }
 
 func (o CollectionResponsePublicAuditLog) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["results"] = o.Results
-	}
-	if o.Paging != nil {
-		toSerialize["paging"] = o.Paging
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionResponsePublicAuditLog) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["results"] = o.Results
+	if !IsNil(o.Paging) {
+		toSerialize["paging"] = o.Paging
+	}
+	return toSerialize, nil
 }
 
 type NullableCollectionResponsePublicAuditLog struct {

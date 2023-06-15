@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the InputFieldDefinition type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &InputFieldDefinition{}
+
 // InputFieldDefinition Configuration for an input field on the custom action
 type InputFieldDefinition struct {
 	TypeDefinition FieldTypeDefinition `json:"typeDefinition"`
@@ -68,7 +71,7 @@ func (o *InputFieldDefinition) SetTypeDefinition(v FieldTypeDefinition) {
 
 // GetSupportedValueTypes returns the SupportedValueTypes field value if set, zero value otherwise.
 func (o *InputFieldDefinition) GetSupportedValueTypes() []string {
-	if o == nil || o.SupportedValueTypes == nil {
+	if o == nil || IsNil(o.SupportedValueTypes) {
 		var ret []string
 		return ret
 	}
@@ -78,7 +81,7 @@ func (o *InputFieldDefinition) GetSupportedValueTypes() []string {
 // GetSupportedValueTypesOk returns a tuple with the SupportedValueTypes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InputFieldDefinition) GetSupportedValueTypesOk() ([]string, bool) {
-	if o == nil || o.SupportedValueTypes == nil {
+	if o == nil || IsNil(o.SupportedValueTypes) {
 		return nil, false
 	}
 	return o.SupportedValueTypes, true
@@ -86,7 +89,7 @@ func (o *InputFieldDefinition) GetSupportedValueTypesOk() ([]string, bool) {
 
 // HasSupportedValueTypes returns a boolean if a field has been set.
 func (o *InputFieldDefinition) HasSupportedValueTypes() bool {
-	if o != nil && o.SupportedValueTypes != nil {
+	if o != nil && !IsNil(o.SupportedValueTypes) {
 		return true
 	}
 
@@ -123,17 +126,21 @@ func (o *InputFieldDefinition) SetIsRequired(v bool) {
 }
 
 func (o InputFieldDefinition) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["typeDefinition"] = o.TypeDefinition
-	}
-	if o.SupportedValueTypes != nil {
-		toSerialize["supportedValueTypes"] = o.SupportedValueTypes
-	}
-	if true {
-		toSerialize["isRequired"] = o.IsRequired
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o InputFieldDefinition) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["typeDefinition"] = o.TypeDefinition
+	if !IsNil(o.SupportedValueTypes) {
+		toSerialize["supportedValueTypes"] = o.SupportedValueTypes
+	}
+	toSerialize["isRequired"] = o.IsRequired
+	return toSerialize, nil
 }
 
 type NullableInputFieldDefinition struct {

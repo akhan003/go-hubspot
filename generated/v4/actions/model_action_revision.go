@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the ActionRevision type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ActionRevision{}
+
 // ActionRevision A revision of this custom action.
 type ActionRevision struct {
 	Definition ExtensionActionDefinition `json:"definition"`
@@ -143,20 +146,20 @@ func (o *ActionRevision) SetRevisionId(v string) {
 }
 
 func (o ActionRevision) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["definition"] = o.Definition
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["revisionId"] = o.RevisionId
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ActionRevision) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["definition"] = o.Definition
+	toSerialize["createdAt"] = o.CreatedAt
+	toSerialize["id"] = o.Id
+	toSerialize["revisionId"] = o.RevisionId
+	return toSerialize, nil
 }
 
 type NullableActionRevision struct {

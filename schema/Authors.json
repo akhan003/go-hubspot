@@ -145,7 +145,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -182,7 +182,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -215,7 +215,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -264,7 +264,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -324,7 +324,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -384,7 +384,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -413,7 +413,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -452,7 +452,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -481,7 +481,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -514,7 +514,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -543,7 +543,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -592,7 +592,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -633,7 +633,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -691,7 +691,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -713,20 +713,6 @@
           }
         },
         "description" : "Wrapper for providing an array of strings as inputs."
-      },
-      "BatchInputBlogAuthor" : {
-        "required" : [ "inputs" ],
-        "type" : "object",
-        "properties" : {
-          "inputs" : {
-            "type" : "array",
-            "description" : "Blog authors to input.",
-            "items" : {
-              "$ref" : "#/components/schemas/BlogAuthor"
-            }
-          }
-        },
-        "description" : "Wrapper for providing an array of blog authors as inputs."
       },
       "StandardError" : {
         "required" : [ "category", "context", "errors", "links", "message", "status" ],
@@ -778,6 +764,20 @@
           }
         },
         "description" : "Model definition for a standard error."
+      },
+      "BatchInputBlogAuthor" : {
+        "required" : [ "inputs" ],
+        "type" : "object",
+        "properties" : {
+          "inputs" : {
+            "type" : "array",
+            "description" : "Blog authors to input.",
+            "items" : {
+              "$ref" : "#/components/schemas/BlogAuthor"
+            }
+          }
+        },
+        "description" : "Wrapper for providing an array of blog authors as inputs."
       },
       "BatchInputJsonNode" : {
         "required" : [ "inputs" ],
@@ -858,6 +858,67 @@
         },
         "description" : "Request body object for detaching objects from multi-language groups."
       },
+      "Error" : {
+        "required" : [ "category", "correlationId", "message" ],
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "A human readable message describing the error along with remediation steps where appropriate",
+            "example" : "An error occurred"
+          },
+          "correlationId" : {
+            "type" : "string",
+            "description" : "A unique identifier for the request. Include this value with any error reports or support tickets",
+            "format" : "uuid",
+            "example" : "aeb5f871-7f07-4993-9211-075dc63e7cbf"
+          },
+          "category" : {
+            "type" : "string",
+            "description" : "The error category"
+          },
+          "subCategory" : {
+            "type" : "string",
+            "description" : "A specific category that contains more specific detail about the error"
+          },
+          "errors" : {
+            "type" : "array",
+            "description" : "further information about the error",
+            "items" : {
+              "$ref" : "#/components/schemas/ErrorDetail"
+            }
+          },
+          "context" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "array",
+              "items" : {
+                "type" : "string"
+              }
+            },
+            "description" : "Context about the error condition",
+            "example" : {
+              "invalidPropertyName" : [ "propertyValue" ],
+              "missingScopes" : [ "scope1", "scope2" ]
+            }
+          },
+          "links" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "description" : "A map of link names to associated URIs containing documentation about the error or recommended remediation steps"
+          }
+        },
+        "example" : {
+          "message" : "Invalid input (details will vary based on the error)",
+          "correlationId" : "aeb5f871-7f07-4993-9211-075dc63e7cbf",
+          "category" : "VALIDATION_ERROR",
+          "links" : {
+            "knowledge-base" : "https://www.hubspot.com/products/service/knowledge-base"
+          }
+        }
+      },
       "BlogAuthor" : {
         "required" : [ "avatar", "bio", "created", "deletedAt", "displayName", "email", "facebook", "fullName", "id", "language", "linkedin", "name", "slug", "translatedFromId", "twitter", "updated", "website" ],
         "type" : "object",
@@ -932,67 +993,6 @@
           }
         },
         "description" : "Model definition for a Blog Author."
-      },
-      "Error" : {
-        "required" : [ "category", "correlationId", "message" ],
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string",
-            "description" : "A human readable message describing the error along with remediation steps where appropriate",
-            "example" : "An error occurred"
-          },
-          "correlationId" : {
-            "type" : "string",
-            "description" : "A unique identifier for the request. Include this value with any error reports or support tickets",
-            "format" : "uuid",
-            "example" : "aeb5f871-7f07-4993-9211-075dc63e7cbf"
-          },
-          "category" : {
-            "type" : "string",
-            "description" : "The error category"
-          },
-          "subCategory" : {
-            "type" : "string",
-            "description" : "A specific category that contains more specific detail about the error"
-          },
-          "errors" : {
-            "type" : "array",
-            "description" : "further information about the error",
-            "items" : {
-              "$ref" : "#/components/schemas/ErrorDetail"
-            }
-          },
-          "context" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "array",
-              "items" : {
-                "type" : "string"
-              }
-            },
-            "description" : "Context about the error condition",
-            "example" : {
-              "invalidPropertyName" : [ "propertyValue" ],
-              "missingScopes" : [ "scope1", "scope2" ]
-            }
-          },
-          "links" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string"
-            },
-            "description" : "A map of link names to associated URIs containing documentation about the error or recommended remediation steps"
-          }
-        },
-        "example" : {
-          "message" : "Invalid input (details will vary based on the error)",
-          "correlationId" : "aeb5f871-7f07-4993-9211-075dc63e7cbf",
-          "category" : "VALIDATION_ERROR",
-          "links" : {
-            "knowledge-base" : "https://www.hubspot.com/products/service/knowledge-base"
-          }
-        }
       },
       "AttachToLangPrimaryRequestVNext" : {
         "required" : [ "id", "language", "primaryId" ],
@@ -1222,10 +1222,10 @@
           }
         }
       },
-      "hapikey" : {
+      "private_apps_legacy" : {
         "type" : "apiKey",
-        "name" : "hapikey",
-        "in" : "query"
+        "name" : "private-app-legacy",
+        "in" : "header"
       }
     }
   },

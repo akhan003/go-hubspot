@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ExternalSettings type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ExternalSettings{}
+
 // ExternalSettings The URLs of the various actions provided by the video conferencing application. All URLs must use the `https` protocol.
 type ExternalSettings struct {
 	// The URL that HubSpot will send requests to create a new video conference.
@@ -70,7 +73,7 @@ func (o *ExternalSettings) SetCreateMeetingUrl(v string) {
 
 // GetUpdateMeetingUrl returns the UpdateMeetingUrl field value if set, zero value otherwise.
 func (o *ExternalSettings) GetUpdateMeetingUrl() string {
-	if o == nil || o.UpdateMeetingUrl == nil {
+	if o == nil || IsNil(o.UpdateMeetingUrl) {
 		var ret string
 		return ret
 	}
@@ -80,7 +83,7 @@ func (o *ExternalSettings) GetUpdateMeetingUrl() string {
 // GetUpdateMeetingUrlOk returns a tuple with the UpdateMeetingUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExternalSettings) GetUpdateMeetingUrlOk() (*string, bool) {
-	if o == nil || o.UpdateMeetingUrl == nil {
+	if o == nil || IsNil(o.UpdateMeetingUrl) {
 		return nil, false
 	}
 	return o.UpdateMeetingUrl, true
@@ -88,7 +91,7 @@ func (o *ExternalSettings) GetUpdateMeetingUrlOk() (*string, bool) {
 
 // HasUpdateMeetingUrl returns a boolean if a field has been set.
 func (o *ExternalSettings) HasUpdateMeetingUrl() bool {
-	if o != nil && o.UpdateMeetingUrl != nil {
+	if o != nil && !IsNil(o.UpdateMeetingUrl) {
 		return true
 	}
 
@@ -102,7 +105,7 @@ func (o *ExternalSettings) SetUpdateMeetingUrl(v string) {
 
 // GetDeleteMeetingUrl returns the DeleteMeetingUrl field value if set, zero value otherwise.
 func (o *ExternalSettings) GetDeleteMeetingUrl() string {
-	if o == nil || o.DeleteMeetingUrl == nil {
+	if o == nil || IsNil(o.DeleteMeetingUrl) {
 		var ret string
 		return ret
 	}
@@ -112,7 +115,7 @@ func (o *ExternalSettings) GetDeleteMeetingUrl() string {
 // GetDeleteMeetingUrlOk returns a tuple with the DeleteMeetingUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExternalSettings) GetDeleteMeetingUrlOk() (*string, bool) {
-	if o == nil || o.DeleteMeetingUrl == nil {
+	if o == nil || IsNil(o.DeleteMeetingUrl) {
 		return nil, false
 	}
 	return o.DeleteMeetingUrl, true
@@ -120,7 +123,7 @@ func (o *ExternalSettings) GetDeleteMeetingUrlOk() (*string, bool) {
 
 // HasDeleteMeetingUrl returns a boolean if a field has been set.
 func (o *ExternalSettings) HasDeleteMeetingUrl() bool {
-	if o != nil && o.DeleteMeetingUrl != nil {
+	if o != nil && !IsNil(o.DeleteMeetingUrl) {
 		return true
 	}
 
@@ -134,7 +137,7 @@ func (o *ExternalSettings) SetDeleteMeetingUrl(v string) {
 
 // GetUserVerifyUrl returns the UserVerifyUrl field value if set, zero value otherwise.
 func (o *ExternalSettings) GetUserVerifyUrl() string {
-	if o == nil || o.UserVerifyUrl == nil {
+	if o == nil || IsNil(o.UserVerifyUrl) {
 		var ret string
 		return ret
 	}
@@ -144,7 +147,7 @@ func (o *ExternalSettings) GetUserVerifyUrl() string {
 // GetUserVerifyUrlOk returns a tuple with the UserVerifyUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExternalSettings) GetUserVerifyUrlOk() (*string, bool) {
-	if o == nil || o.UserVerifyUrl == nil {
+	if o == nil || IsNil(o.UserVerifyUrl) {
 		return nil, false
 	}
 	return o.UserVerifyUrl, true
@@ -152,7 +155,7 @@ func (o *ExternalSettings) GetUserVerifyUrlOk() (*string, bool) {
 
 // HasUserVerifyUrl returns a boolean if a field has been set.
 func (o *ExternalSettings) HasUserVerifyUrl() bool {
-	if o != nil && o.UserVerifyUrl != nil {
+	if o != nil && !IsNil(o.UserVerifyUrl) {
 		return true
 	}
 
@@ -165,20 +168,26 @@ func (o *ExternalSettings) SetUserVerifyUrl(v string) {
 }
 
 func (o ExternalSettings) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["createMeetingUrl"] = o.CreateMeetingUrl
-	}
-	if o.UpdateMeetingUrl != nil {
-		toSerialize["updateMeetingUrl"] = o.UpdateMeetingUrl
-	}
-	if o.DeleteMeetingUrl != nil {
-		toSerialize["deleteMeetingUrl"] = o.DeleteMeetingUrl
-	}
-	if o.UserVerifyUrl != nil {
-		toSerialize["userVerifyUrl"] = o.UserVerifyUrl
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ExternalSettings) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["createMeetingUrl"] = o.CreateMeetingUrl
+	if !IsNil(o.UpdateMeetingUrl) {
+		toSerialize["updateMeetingUrl"] = o.UpdateMeetingUrl
+	}
+	if !IsNil(o.DeleteMeetingUrl) {
+		toSerialize["deleteMeetingUrl"] = o.DeleteMeetingUrl
+	}
+	if !IsNil(o.UserVerifyUrl) {
+		toSerialize["userVerifyUrl"] = o.UserVerifyUrl
+	}
+	return toSerialize, nil
 }
 
 type NullableExternalSettings struct {

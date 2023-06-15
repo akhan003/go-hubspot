@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BlogPostLanguageCloneRequestVNext type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BlogPostLanguageCloneRequestVNext{}
+
 // BlogPostLanguageCloneRequestVNext Request body object for creating new blog post language variant.
 type BlogPostLanguageCloneRequestVNext struct {
 	// ID of blog post to clone.
@@ -66,7 +69,7 @@ func (o *BlogPostLanguageCloneRequestVNext) SetId(v string) {
 
 // GetLanguage returns the Language field value if set, zero value otherwise.
 func (o *BlogPostLanguageCloneRequestVNext) GetLanguage() string {
-	if o == nil || o.Language == nil {
+	if o == nil || IsNil(o.Language) {
 		var ret string
 		return ret
 	}
@@ -76,7 +79,7 @@ func (o *BlogPostLanguageCloneRequestVNext) GetLanguage() string {
 // GetLanguageOk returns a tuple with the Language field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BlogPostLanguageCloneRequestVNext) GetLanguageOk() (*string, bool) {
-	if o == nil || o.Language == nil {
+	if o == nil || IsNil(o.Language) {
 		return nil, false
 	}
 	return o.Language, true
@@ -84,7 +87,7 @@ func (o *BlogPostLanguageCloneRequestVNext) GetLanguageOk() (*string, bool) {
 
 // HasLanguage returns a boolean if a field has been set.
 func (o *BlogPostLanguageCloneRequestVNext) HasLanguage() bool {
-	if o != nil && o.Language != nil {
+	if o != nil && !IsNil(o.Language) {
 		return true
 	}
 
@@ -97,14 +100,20 @@ func (o *BlogPostLanguageCloneRequestVNext) SetLanguage(v string) {
 }
 
 func (o BlogPostLanguageCloneRequestVNext) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if o.Language != nil {
-		toSerialize["language"] = o.Language
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BlogPostLanguageCloneRequestVNext) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	if !IsNil(o.Language) {
+		toSerialize["language"] = o.Language
+	}
+	return toSerialize, nil
 }
 
 type NullableBlogPostLanguageCloneRequestVNext struct {

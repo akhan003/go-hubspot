@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MarketingEventEmailSubscriber type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MarketingEventEmailSubscriber{}
+
 // MarketingEventEmailSubscriber struct for MarketingEventEmailSubscriber
 type MarketingEventEmailSubscriber struct {
 	// The date and time at which the contact subscribed to the event.
@@ -69,7 +72,7 @@ func (o *MarketingEventEmailSubscriber) SetInteractionDateTime(v int64) {
 
 // GetProperties returns the Properties field value if set, zero value otherwise.
 func (o *MarketingEventEmailSubscriber) GetProperties() map[string]string {
-	if o == nil || o.Properties == nil {
+	if o == nil || IsNil(o.Properties) {
 		var ret map[string]string
 		return ret
 	}
@@ -79,7 +82,7 @@ func (o *MarketingEventEmailSubscriber) GetProperties() map[string]string {
 // GetPropertiesOk returns a tuple with the Properties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventEmailSubscriber) GetPropertiesOk() (*map[string]string, bool) {
-	if o == nil || o.Properties == nil {
+	if o == nil || IsNil(o.Properties) {
 		return nil, false
 	}
 	return o.Properties, true
@@ -87,7 +90,7 @@ func (o *MarketingEventEmailSubscriber) GetPropertiesOk() (*map[string]string, b
 
 // HasProperties returns a boolean if a field has been set.
 func (o *MarketingEventEmailSubscriber) HasProperties() bool {
-	if o != nil && o.Properties != nil {
+	if o != nil && !IsNil(o.Properties) {
 		return true
 	}
 
@@ -125,7 +128,7 @@ func (o *MarketingEventEmailSubscriber) SetEmail(v string) {
 
 // GetContactProperties returns the ContactProperties field value if set, zero value otherwise.
 func (o *MarketingEventEmailSubscriber) GetContactProperties() map[string]string {
-	if o == nil || o.ContactProperties == nil {
+	if o == nil || IsNil(o.ContactProperties) {
 		var ret map[string]string
 		return ret
 	}
@@ -135,7 +138,7 @@ func (o *MarketingEventEmailSubscriber) GetContactProperties() map[string]string
 // GetContactPropertiesOk returns a tuple with the ContactProperties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventEmailSubscriber) GetContactPropertiesOk() (*map[string]string, bool) {
-	if o == nil || o.ContactProperties == nil {
+	if o == nil || IsNil(o.ContactProperties) {
 		return nil, false
 	}
 	return o.ContactProperties, true
@@ -143,7 +146,7 @@ func (o *MarketingEventEmailSubscriber) GetContactPropertiesOk() (*map[string]st
 
 // HasContactProperties returns a boolean if a field has been set.
 func (o *MarketingEventEmailSubscriber) HasContactProperties() bool {
-	if o != nil && o.ContactProperties != nil {
+	if o != nil && !IsNil(o.ContactProperties) {
 		return true
 	}
 
@@ -156,20 +159,24 @@ func (o *MarketingEventEmailSubscriber) SetContactProperties(v map[string]string
 }
 
 func (o MarketingEventEmailSubscriber) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["interactionDateTime"] = o.InteractionDateTime
-	}
-	if o.Properties != nil {
-		toSerialize["properties"] = o.Properties
-	}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if o.ContactProperties != nil {
-		toSerialize["contactProperties"] = o.ContactProperties
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MarketingEventEmailSubscriber) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["interactionDateTime"] = o.InteractionDateTime
+	if !IsNil(o.Properties) {
+		toSerialize["properties"] = o.Properties
+	}
+	toSerialize["email"] = o.Email
+	if !IsNil(o.ContactProperties) {
+		toSerialize["contactProperties"] = o.ContactProperties
+	}
+	return toSerialize, nil
 }
 
 type NullableMarketingEventEmailSubscriber struct {

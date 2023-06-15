@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Angle type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Angle{}
+
 // Angle struct for Angle
 type Angle struct {
 	Value float32 `json:"value"`
@@ -88,14 +91,18 @@ func (o *Angle) SetUnits(v string) {
 }
 
 func (o Angle) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["value"] = o.Value
-	}
-	if true {
-		toSerialize["units"] = o.Units
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Angle) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["value"] = o.Value
+	toSerialize["units"] = o.Units
+	return toSerialize, nil
 }
 
 type NullableAngle struct {

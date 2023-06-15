@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputMarketingEventExternalUniqueIdentifier type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputMarketingEventExternalUniqueIdentifier{}
+
 // BatchInputMarketingEventExternalUniqueIdentifier struct for BatchInputMarketingEventExternalUniqueIdentifier
 type BatchInputMarketingEventExternalUniqueIdentifier struct {
 	Inputs []MarketingEventExternalUniqueIdentifier `json:"inputs"`
@@ -62,11 +65,17 @@ func (o *BatchInputMarketingEventExternalUniqueIdentifier) SetInputs(v []Marketi
 }
 
 func (o BatchInputMarketingEventExternalUniqueIdentifier) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputMarketingEventExternalUniqueIdentifier) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputMarketingEventExternalUniqueIdentifier struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionResponseWithTotalTagForwardPaging type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionResponseWithTotalTagForwardPaging{}
+
 // CollectionResponseWithTotalTagForwardPaging Response object for collections of blog tags with pagination information.
 type CollectionResponseWithTotalTagForwardPaging struct {
 	// Total number of blog tags.
@@ -92,7 +95,7 @@ func (o *CollectionResponseWithTotalTagForwardPaging) SetResults(v []Tag) {
 
 // GetPaging returns the Paging field value if set, zero value otherwise.
 func (o *CollectionResponseWithTotalTagForwardPaging) GetPaging() ForwardPaging {
-	if o == nil || o.Paging == nil {
+	if o == nil || IsNil(o.Paging) {
 		var ret ForwardPaging
 		return ret
 	}
@@ -102,7 +105,7 @@ func (o *CollectionResponseWithTotalTagForwardPaging) GetPaging() ForwardPaging 
 // GetPagingOk returns a tuple with the Paging field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CollectionResponseWithTotalTagForwardPaging) GetPagingOk() (*ForwardPaging, bool) {
-	if o == nil || o.Paging == nil {
+	if o == nil || IsNil(o.Paging) {
 		return nil, false
 	}
 	return o.Paging, true
@@ -110,7 +113,7 @@ func (o *CollectionResponseWithTotalTagForwardPaging) GetPagingOk() (*ForwardPag
 
 // HasPaging returns a boolean if a field has been set.
 func (o *CollectionResponseWithTotalTagForwardPaging) HasPaging() bool {
-	if o != nil && o.Paging != nil {
+	if o != nil && !IsNil(o.Paging) {
 		return true
 	}
 
@@ -123,17 +126,21 @@ func (o *CollectionResponseWithTotalTagForwardPaging) SetPaging(v ForwardPaging)
 }
 
 func (o CollectionResponseWithTotalTagForwardPaging) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["total"] = o.Total
-	}
-	if true {
-		toSerialize["results"] = o.Results
-	}
-	if o.Paging != nil {
-		toSerialize["paging"] = o.Paging
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionResponseWithTotalTagForwardPaging) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["total"] = o.Total
+	toSerialize["results"] = o.Results
+	if !IsNil(o.Paging) {
+		toSerialize["paging"] = o.Paging
+	}
+	return toSerialize, nil
 }
 
 type NullableCollectionResponseWithTotalTagForwardPaging struct {

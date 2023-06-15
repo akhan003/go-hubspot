@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the InvoicePdfResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &InvoicePdfResponse{}
+
 // InvoicePdfResponse A response that contains the PDF of an invoice
 type InvoicePdfResponse struct {
 	// Designates if the response is a success ('OK') or failure ('ERR').
@@ -42,7 +45,7 @@ func NewInvoicePdfResponseWithDefaults() *InvoicePdfResponse {
 
 // GetResult returns the Result field value if set, zero value otherwise.
 func (o *InvoicePdfResponse) GetResult() string {
-	if o == nil || o.Result == nil {
+	if o == nil || IsNil(o.Result) {
 		var ret string
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *InvoicePdfResponse) GetResult() string {
 // GetResultOk returns a tuple with the Result field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InvoicePdfResponse) GetResultOk() (*string, bool) {
-	if o == nil || o.Result == nil {
+	if o == nil || IsNil(o.Result) {
 		return nil, false
 	}
 	return o.Result, true
@@ -60,7 +63,7 @@ func (o *InvoicePdfResponse) GetResultOk() (*string, bool) {
 
 // HasResult returns a boolean if a field has been set.
 func (o *InvoicePdfResponse) HasResult() bool {
-	if o != nil && o.Result != nil {
+	if o != nil && !IsNil(o.Result) {
 		return true
 	}
 
@@ -97,14 +100,20 @@ func (o *InvoicePdfResponse) SetInvoice(v string) {
 }
 
 func (o InvoicePdfResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Result != nil {
-		toSerialize["@result"] = o.Result
-	}
-	if true {
-		toSerialize["invoice"] = o.Invoice
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o InvoicePdfResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Result) {
+		toSerialize["@result"] = o.Result
+	}
+	toSerialize["invoice"] = o.Invoice
+	return toSerialize, nil
 }
 
 type NullableInvoicePdfResponse struct {

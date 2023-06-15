@@ -70,11 +70,11 @@ func (dst *ExtensionActionDefinitionPatchInputFieldDependenciesInner) UnmarshalJ
 		dst.ConditionalSingleFieldDependency = nil
 		dst.SingleFieldDependency = nil
 
-		return fmt.Errorf("Data matches more than one schema in oneOf(ExtensionActionDefinitionPatchInputFieldDependenciesInner)")
+		return fmt.Errorf("data matches more than one schema in oneOf(ExtensionActionDefinitionPatchInputFieldDependenciesInner)")
 	} else if match == 1 {
 		return nil // exactly one match
 	} else { // no match
-		return fmt.Errorf("Data failed to match schemas in oneOf(ExtensionActionDefinitionPatchInputFieldDependenciesInner)")
+		return fmt.Errorf("data failed to match schemas in oneOf(ExtensionActionDefinitionPatchInputFieldDependenciesInner)")
 	}
 }
 

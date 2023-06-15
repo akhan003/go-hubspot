@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SubscriptionDefinitionsResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SubscriptionDefinitionsResponse{}
+
 // SubscriptionDefinitionsResponse A collection of subscription definitions for the portal.
 type SubscriptionDefinitionsResponse struct {
 	// A list of all subscription definitions.
@@ -63,11 +66,17 @@ func (o *SubscriptionDefinitionsResponse) SetSubscriptionDefinitions(v []Subscri
 }
 
 func (o SubscriptionDefinitionsResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["subscriptionDefinitions"] = o.SubscriptionDefinitions
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SubscriptionDefinitionsResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["subscriptionDefinitions"] = o.SubscriptionDefinitions
+	return toSerialize, nil
 }
 
 type NullableSubscriptionDefinitionsResponse struct {

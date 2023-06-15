@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PropertyCreate type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PropertyCreate{}
+
 // PropertyCreate struct for PropertyCreate
 type PropertyCreate struct {
 	// The internal property name, which must be used when referencing the property via the API.
@@ -38,6 +41,12 @@ type PropertyCreate struct {
 	Hidden *bool `json:"hidden,omitempty"`
 	// Whether or not the property can be used in a HubSpot form.
 	FormField *bool `json:"formField,omitempty"`
+	// Applicable only for 'enumeration' type properties.  Should be set to true in conjunction with a 'referencedObjectType' of 'OWNER'.  Otherwise false.
+	ExternalOptions *bool `json:"externalOptions,omitempty"`
+	// Should be set to 'OWNER' when 'externalOptions' is true, which causes the property to dynamically pull option values from the current HubSpot users.
+	ReferencedObjectType *string `json:"referencedObjectType,omitempty"`
+	// Represents a formula that is used to compute a calculated property.
+	CalculationFormula *string `json:"calculationFormula,omitempty"`
 }
 
 // NewPropertyCreate instantiates a new PropertyCreate object
@@ -184,7 +193,7 @@ func (o *PropertyCreate) SetGroupName(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *PropertyCreate) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -194,7 +203,7 @@ func (o *PropertyCreate) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyCreate) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
 	return o.Description, true
@@ -202,7 +211,7 @@ func (o *PropertyCreate) GetDescriptionOk() (*string, bool) {
 
 // HasDescription returns a boolean if a field has been set.
 func (o *PropertyCreate) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !IsNil(o.Description) {
 		return true
 	}
 
@@ -216,7 +225,7 @@ func (o *PropertyCreate) SetDescription(v string) {
 
 // GetOptions returns the Options field value if set, zero value otherwise.
 func (o *PropertyCreate) GetOptions() []OptionInput {
-	if o == nil || o.Options == nil {
+	if o == nil || IsNil(o.Options) {
 		var ret []OptionInput
 		return ret
 	}
@@ -226,7 +235,7 @@ func (o *PropertyCreate) GetOptions() []OptionInput {
 // GetOptionsOk returns a tuple with the Options field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyCreate) GetOptionsOk() ([]OptionInput, bool) {
-	if o == nil || o.Options == nil {
+	if o == nil || IsNil(o.Options) {
 		return nil, false
 	}
 	return o.Options, true
@@ -234,7 +243,7 @@ func (o *PropertyCreate) GetOptionsOk() ([]OptionInput, bool) {
 
 // HasOptions returns a boolean if a field has been set.
 func (o *PropertyCreate) HasOptions() bool {
-	if o != nil && o.Options != nil {
+	if o != nil && !IsNil(o.Options) {
 		return true
 	}
 
@@ -248,7 +257,7 @@ func (o *PropertyCreate) SetOptions(v []OptionInput) {
 
 // GetDisplayOrder returns the DisplayOrder field value if set, zero value otherwise.
 func (o *PropertyCreate) GetDisplayOrder() int32 {
-	if o == nil || o.DisplayOrder == nil {
+	if o == nil || IsNil(o.DisplayOrder) {
 		var ret int32
 		return ret
 	}
@@ -258,7 +267,7 @@ func (o *PropertyCreate) GetDisplayOrder() int32 {
 // GetDisplayOrderOk returns a tuple with the DisplayOrder field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyCreate) GetDisplayOrderOk() (*int32, bool) {
-	if o == nil || o.DisplayOrder == nil {
+	if o == nil || IsNil(o.DisplayOrder) {
 		return nil, false
 	}
 	return o.DisplayOrder, true
@@ -266,7 +275,7 @@ func (o *PropertyCreate) GetDisplayOrderOk() (*int32, bool) {
 
 // HasDisplayOrder returns a boolean if a field has been set.
 func (o *PropertyCreate) HasDisplayOrder() bool {
-	if o != nil && o.DisplayOrder != nil {
+	if o != nil && !IsNil(o.DisplayOrder) {
 		return true
 	}
 
@@ -280,7 +289,7 @@ func (o *PropertyCreate) SetDisplayOrder(v int32) {
 
 // GetHasUniqueValue returns the HasUniqueValue field value if set, zero value otherwise.
 func (o *PropertyCreate) GetHasUniqueValue() bool {
-	if o == nil || o.HasUniqueValue == nil {
+	if o == nil || IsNil(o.HasUniqueValue) {
 		var ret bool
 		return ret
 	}
@@ -290,7 +299,7 @@ func (o *PropertyCreate) GetHasUniqueValue() bool {
 // GetHasUniqueValueOk returns a tuple with the HasUniqueValue field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyCreate) GetHasUniqueValueOk() (*bool, bool) {
-	if o == nil || o.HasUniqueValue == nil {
+	if o == nil || IsNil(o.HasUniqueValue) {
 		return nil, false
 	}
 	return o.HasUniqueValue, true
@@ -298,7 +307,7 @@ func (o *PropertyCreate) GetHasUniqueValueOk() (*bool, bool) {
 
 // HasHasUniqueValue returns a boolean if a field has been set.
 func (o *PropertyCreate) HasHasUniqueValue() bool {
-	if o != nil && o.HasUniqueValue != nil {
+	if o != nil && !IsNil(o.HasUniqueValue) {
 		return true
 	}
 
@@ -312,7 +321,7 @@ func (o *PropertyCreate) SetHasUniqueValue(v bool) {
 
 // GetHidden returns the Hidden field value if set, zero value otherwise.
 func (o *PropertyCreate) GetHidden() bool {
-	if o == nil || o.Hidden == nil {
+	if o == nil || IsNil(o.Hidden) {
 		var ret bool
 		return ret
 	}
@@ -322,7 +331,7 @@ func (o *PropertyCreate) GetHidden() bool {
 // GetHiddenOk returns a tuple with the Hidden field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyCreate) GetHiddenOk() (*bool, bool) {
-	if o == nil || o.Hidden == nil {
+	if o == nil || IsNil(o.Hidden) {
 		return nil, false
 	}
 	return o.Hidden, true
@@ -330,7 +339,7 @@ func (o *PropertyCreate) GetHiddenOk() (*bool, bool) {
 
 // HasHidden returns a boolean if a field has been set.
 func (o *PropertyCreate) HasHidden() bool {
-	if o != nil && o.Hidden != nil {
+	if o != nil && !IsNil(o.Hidden) {
 		return true
 	}
 
@@ -344,7 +353,7 @@ func (o *PropertyCreate) SetHidden(v bool) {
 
 // GetFormField returns the FormField field value if set, zero value otherwise.
 func (o *PropertyCreate) GetFormField() bool {
-	if o == nil || o.FormField == nil {
+	if o == nil || IsNil(o.FormField) {
 		var ret bool
 		return ret
 	}
@@ -354,7 +363,7 @@ func (o *PropertyCreate) GetFormField() bool {
 // GetFormFieldOk returns a tuple with the FormField field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyCreate) GetFormFieldOk() (*bool, bool) {
-	if o == nil || o.FormField == nil {
+	if o == nil || IsNil(o.FormField) {
 		return nil, false
 	}
 	return o.FormField, true
@@ -362,7 +371,7 @@ func (o *PropertyCreate) GetFormFieldOk() (*bool, bool) {
 
 // HasFormField returns a boolean if a field has been set.
 func (o *PropertyCreate) HasFormField() bool {
-	if o != nil && o.FormField != nil {
+	if o != nil && !IsNil(o.FormField) {
 		return true
 	}
 
@@ -374,42 +383,145 @@ func (o *PropertyCreate) SetFormField(v bool) {
 	o.FormField = &v
 }
 
+// GetExternalOptions returns the ExternalOptions field value if set, zero value otherwise.
+func (o *PropertyCreate) GetExternalOptions() bool {
+	if o == nil || IsNil(o.ExternalOptions) {
+		var ret bool
+		return ret
+	}
+	return *o.ExternalOptions
+}
+
+// GetExternalOptionsOk returns a tuple with the ExternalOptions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyCreate) GetExternalOptionsOk() (*bool, bool) {
+	if o == nil || IsNil(o.ExternalOptions) {
+		return nil, false
+	}
+	return o.ExternalOptions, true
+}
+
+// HasExternalOptions returns a boolean if a field has been set.
+func (o *PropertyCreate) HasExternalOptions() bool {
+	if o != nil && !IsNil(o.ExternalOptions) {
+		return true
+	}
+
+	return false
+}
+
+// SetExternalOptions gets a reference to the given bool and assigns it to the ExternalOptions field.
+func (o *PropertyCreate) SetExternalOptions(v bool) {
+	o.ExternalOptions = &v
+}
+
+// GetReferencedObjectType returns the ReferencedObjectType field value if set, zero value otherwise.
+func (o *PropertyCreate) GetReferencedObjectType() string {
+	if o == nil || IsNil(o.ReferencedObjectType) {
+		var ret string
+		return ret
+	}
+	return *o.ReferencedObjectType
+}
+
+// GetReferencedObjectTypeOk returns a tuple with the ReferencedObjectType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyCreate) GetReferencedObjectTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.ReferencedObjectType) {
+		return nil, false
+	}
+	return o.ReferencedObjectType, true
+}
+
+// HasReferencedObjectType returns a boolean if a field has been set.
+func (o *PropertyCreate) HasReferencedObjectType() bool {
+	if o != nil && !IsNil(o.ReferencedObjectType) {
+		return true
+	}
+
+	return false
+}
+
+// SetReferencedObjectType gets a reference to the given string and assigns it to the ReferencedObjectType field.
+func (o *PropertyCreate) SetReferencedObjectType(v string) {
+	o.ReferencedObjectType = &v
+}
+
+// GetCalculationFormula returns the CalculationFormula field value if set, zero value otherwise.
+func (o *PropertyCreate) GetCalculationFormula() string {
+	if o == nil || IsNil(o.CalculationFormula) {
+		var ret string
+		return ret
+	}
+	return *o.CalculationFormula
+}
+
+// GetCalculationFormulaOk returns a tuple with the CalculationFormula field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyCreate) GetCalculationFormulaOk() (*string, bool) {
+	if o == nil || IsNil(o.CalculationFormula) {
+		return nil, false
+	}
+	return o.CalculationFormula, true
+}
+
+// HasCalculationFormula returns a boolean if a field has been set.
+func (o *PropertyCreate) HasCalculationFormula() bool {
+	if o != nil && !IsNil(o.CalculationFormula) {
+		return true
+	}
+
+	return false
+}
+
+// SetCalculationFormula gets a reference to the given string and assigns it to the CalculationFormula field.
+func (o *PropertyCreate) SetCalculationFormula(v string) {
+	o.CalculationFormula = &v
+}
+
 func (o PropertyCreate) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["type"] = o.Type
-	}
-	if true {
-		toSerialize["fieldType"] = o.FieldType
-	}
-	if true {
-		toSerialize["groupName"] = o.GroupName
-	}
-	if o.Description != nil {
-		toSerialize["description"] = o.Description
-	}
-	if o.Options != nil {
-		toSerialize["options"] = o.Options
-	}
-	if o.DisplayOrder != nil {
-		toSerialize["displayOrder"] = o.DisplayOrder
-	}
-	if o.HasUniqueValue != nil {
-		toSerialize["hasUniqueValue"] = o.HasUniqueValue
-	}
-	if o.Hidden != nil {
-		toSerialize["hidden"] = o.Hidden
-	}
-	if o.FormField != nil {
-		toSerialize["formField"] = o.FormField
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PropertyCreate) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["label"] = o.Label
+	toSerialize["type"] = o.Type
+	toSerialize["fieldType"] = o.FieldType
+	toSerialize["groupName"] = o.GroupName
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	if !IsNil(o.Options) {
+		toSerialize["options"] = o.Options
+	}
+	if !IsNil(o.DisplayOrder) {
+		toSerialize["displayOrder"] = o.DisplayOrder
+	}
+	if !IsNil(o.HasUniqueValue) {
+		toSerialize["hasUniqueValue"] = o.HasUniqueValue
+	}
+	if !IsNil(o.Hidden) {
+		toSerialize["hidden"] = o.Hidden
+	}
+	if !IsNil(o.FormField) {
+		toSerialize["formField"] = o.FormField
+	}
+	if !IsNil(o.ExternalOptions) {
+		toSerialize["externalOptions"] = o.ExternalOptions
+	}
+	if !IsNil(o.ReferencedObjectType) {
+		toSerialize["referencedObjectType"] = o.ReferencedObjectType
+	}
+	if !IsNil(o.CalculationFormula) {
+		toSerialize["calculationFormula"] = o.CalculationFormula
+	}
+	return toSerialize, nil
 }
 
 type NullablePropertyCreate struct {

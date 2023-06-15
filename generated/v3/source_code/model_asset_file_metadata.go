@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AssetFileMetadata type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AssetFileMetadata{}
+
 // AssetFileMetadata The object metadata of a file.
 type AssetFileMetadata struct {
 	// The path of the file in the CMS Developer File System.
@@ -128,7 +131,7 @@ func (o *AssetFileMetadata) SetFolder(v bool) {
 
 // GetChildren returns the Children field value if set, zero value otherwise.
 func (o *AssetFileMetadata) GetChildren() []string {
-	if o == nil || o.Children == nil {
+	if o == nil || IsNil(o.Children) {
 		var ret []string
 		return ret
 	}
@@ -138,7 +141,7 @@ func (o *AssetFileMetadata) GetChildren() []string {
 // GetChildrenOk returns a tuple with the Children field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssetFileMetadata) GetChildrenOk() ([]string, bool) {
-	if o == nil || o.Children == nil {
+	if o == nil || IsNil(o.Children) {
 		return nil, false
 	}
 	return o.Children, true
@@ -146,7 +149,7 @@ func (o *AssetFileMetadata) GetChildrenOk() ([]string, bool) {
 
 // HasChildren returns a boolean if a field has been set.
 func (o *AssetFileMetadata) HasChildren() bool {
-	if o != nil && o.Children != nil {
+	if o != nil && !IsNil(o.Children) {
 		return true
 	}
 
@@ -208,7 +211,7 @@ func (o *AssetFileMetadata) SetCreatedAt(v int32) {
 
 // GetArchivedAt returns the ArchivedAt field value if set, zero value otherwise.
 func (o *AssetFileMetadata) GetArchivedAt() int64 {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		var ret int64
 		return ret
 	}
@@ -218,7 +221,7 @@ func (o *AssetFileMetadata) GetArchivedAt() int64 {
 // GetArchivedAtOk returns a tuple with the ArchivedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssetFileMetadata) GetArchivedAtOk() (*int64, bool) {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		return nil, false
 	}
 	return o.ArchivedAt, true
@@ -226,7 +229,7 @@ func (o *AssetFileMetadata) GetArchivedAtOk() (*int64, bool) {
 
 // HasArchivedAt returns a boolean if a field has been set.
 func (o *AssetFileMetadata) HasArchivedAt() bool {
-	if o != nil && o.ArchivedAt != nil {
+	if o != nil && !IsNil(o.ArchivedAt) {
 		return true
 	}
 
@@ -239,29 +242,27 @@ func (o *AssetFileMetadata) SetArchivedAt(v int64) {
 }
 
 func (o AssetFileMetadata) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["folder"] = o.Folder
-	}
-	if o.Children != nil {
-		toSerialize["children"] = o.Children
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.ArchivedAt != nil {
-		toSerialize["archivedAt"] = o.ArchivedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AssetFileMetadata) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	toSerialize["folder"] = o.Folder
+	if !IsNil(o.Children) {
+		toSerialize["children"] = o.Children
+	}
+	toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize["createdAt"] = o.CreatedAt
+	if !IsNil(o.ArchivedAt) {
+		toSerialize["archivedAt"] = o.ArchivedAt
+	}
+	return toSerialize, nil
 }
 
 type NullableAssetFileMetadata struct {

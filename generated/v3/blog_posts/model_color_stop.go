@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ColorStop type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ColorStop{}
+
 // ColorStop struct for ColorStop
 type ColorStop struct {
 	Color RGBAColor `json:"color"`
@@ -62,11 +65,17 @@ func (o *ColorStop) SetColor(v RGBAColor) {
 }
 
 func (o ColorStop) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["color"] = o.Color
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ColorStop) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["color"] = o.Color
+	return toSerialize, nil
 }
 
 type NullableColorStop struct {

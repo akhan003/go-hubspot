@@ -459,7 +459,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Get indexed properties.
@@ -1457,7 +1458,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Search your site.
@@ -1501,6 +1503,78 @@ components:
           type: object
       required:
       - message
+      type: object
+    PublicSearchResults:
+      example:
+        total: 0
+        searchTerm: searchTerm
+        offset: 6
+        limit: 1
+        page: 3
+        results:
+        - combinedId: combinedId
+          description: description
+          language: af
+          type: LANDING_PAGE
+          title: title
+          url: url
+          tags:
+          - tags
+          - tags
+          rowId: 7
+          featuredImageUrl: featuredImageUrl
+          score: 5.637376656633329
+          authorFullName: authorFullName
+          domain: domain
+          tableId: 2
+          id: 5
+          publishedDate: 9
+          category: category
+          subcategory: subcategory
+        - combinedId: combinedId
+          description: description
+          language: af
+          type: LANDING_PAGE
+          title: title
+          url: url
+          tags:
+          - tags
+          - tags
+          rowId: 7
+          featuredImageUrl: featuredImageUrl
+          score: 5.637376656633329
+          authorFullName: authorFullName
+          domain: domain
+          tableId: 2
+          id: 5
+          publishedDate: 9
+          category: category
+          subcategory: subcategory
+      properties:
+        total:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        results:
+          items:
+            $ref: '#/components/schemas/ContentSearchResult'
+          type: array
+        searchTerm:
+          type: string
+        page:
+          format: int32
+          type: integer
+      required:
+      - limit
+      - offset
+      - page
+      - results
+      - total
       type: object
     ContentSearchResult:
       description: An individual search result.
@@ -2350,78 +2424,6 @@ components:
       - type
       - url
       type: object
-    PublicSearchResults:
-      example:
-        total: 0
-        searchTerm: searchTerm
-        offset: 6
-        limit: 1
-        page: 3
-        results:
-        - combinedId: combinedId
-          description: description
-          language: af
-          type: LANDING_PAGE
-          title: title
-          url: url
-          tags:
-          - tags
-          - tags
-          rowId: 7
-          featuredImageUrl: featuredImageUrl
-          score: 5.637376656633329
-          authorFullName: authorFullName
-          domain: domain
-          tableId: 2
-          id: 5
-          publishedDate: 9
-          category: category
-          subcategory: subcategory
-        - combinedId: combinedId
-          description: description
-          language: af
-          type: LANDING_PAGE
-          title: title
-          url: url
-          tags:
-          - tags
-          - tags
-          rowId: 7
-          featuredImageUrl: featuredImageUrl
-          score: 5.637376656633329
-          authorFullName: authorFullName
-          domain: domain
-          tableId: 2
-          id: 5
-          publishedDate: 9
-          category: category
-          subcategory: subcategory
-      properties:
-        total:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        results:
-          items:
-            $ref: '#/components/schemas/ContentSearchResult'
-          type: array
-        searchTerm:
-          type: string
-        page:
-          format: int32
-          type: integer
-      required:
-      - limit
-      - offset
-      - page
-      - results
-      - total
-      type: object
     IndexedData:
       description: The indexed data in HubSpot
       example:
@@ -2550,7 +2552,12 @@ components:
             content: Read from and write to my Content
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
-    hapikey:
-      in: query
-      name: hapikey
+    private_apps_legacy:
+      in: header
+      name: private-app-legacy
       type: apiKey
+x-hubspot-available-client-libraries:
+- PHP
+- Node
+- Python
+- Ruby

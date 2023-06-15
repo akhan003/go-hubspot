@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputHubDbTableRowV3Request type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputHubDbTableRowV3Request{}
+
 // BatchInputHubDbTableRowV3Request struct for BatchInputHubDbTableRowV3Request
 type BatchInputHubDbTableRowV3Request struct {
 	Inputs []HubDbTableRowV3Request `json:"inputs"`
@@ -62,11 +65,17 @@ func (o *BatchInputHubDbTableRowV3Request) SetInputs(v []HubDbTableRowV3Request)
 }
 
 func (o BatchInputHubDbTableRowV3Request) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputHubDbTableRowV3Request) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputHubDbTableRowV3Request struct {

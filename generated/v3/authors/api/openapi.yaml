@@ -124,7 +124,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Get all Blog Authors
@@ -154,7 +155,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Create a new Blog Author
@@ -182,7 +184,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Delete a batch of Blog Authors
@@ -219,7 +222,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Create a batch of Blog Authors
@@ -266,7 +270,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Retrieve a batch of Blog Authors
@@ -314,7 +319,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Update a batch of Blog Authors
@@ -339,7 +345,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Attach a Blog Author to a multi-language group
@@ -370,7 +377,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Create a new language variation
@@ -395,7 +403,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Detach a Blog Author from a multi-language group
@@ -423,7 +432,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Set a new primary language
@@ -449,7 +459,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Update languages of multi-language group
@@ -487,7 +498,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Delete a Blog Author
@@ -528,7 +540,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Retrieve a Blog Author
@@ -578,7 +591,8 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - private_apps_legacy:
+        - content
       - oauth2_legacy:
         - content
       summary: Update a Blog Author
@@ -604,53 +618,6 @@ components:
           description: Strings to input.
           items:
             type: string
-          type: array
-      required:
-      - inputs
-      type: object
-    BatchInputBlogAuthor:
-      description: Wrapper for providing an array of blog authors as inputs.
-      example:
-        inputs:
-        - website: website
-          displayName: displayName
-          created: 2000-01-23T04:56:07.000+00:00
-          facebook: facebook
-          fullName: fullName
-          bio: bio
-          language: af
-          linkedin: linkedin
-          avatar: avatar
-          translatedFromId: 6
-          twitter: twitter
-          deletedAt: 2000-01-23T04:56:07.000+00:00
-          name: name
-          id: id
-          updated: 2000-01-23T04:56:07.000+00:00
-          email: email
-          slug: slug
-        - website: website
-          displayName: displayName
-          created: 2000-01-23T04:56:07.000+00:00
-          facebook: facebook
-          fullName: fullName
-          bio: bio
-          language: af
-          linkedin: linkedin
-          avatar: avatar
-          translatedFromId: 6
-          twitter: twitter
-          deletedAt: 2000-01-23T04:56:07.000+00:00
-          name: name
-          id: id
-          updated: 2000-01-23T04:56:07.000+00:00
-          email: email
-          slug: slug
-      properties:
-        inputs:
-          description: Blog authors to input.
-          items:
-            $ref: '#/components/schemas/BlogAuthor'
           type: array
       required:
       - inputs
@@ -698,6 +665,53 @@ components:
       - links
       - message
       - status
+      type: object
+    BatchInputBlogAuthor:
+      description: Wrapper for providing an array of blog authors as inputs.
+      example:
+        inputs:
+        - website: website
+          displayName: displayName
+          created: 2000-01-23T04:56:07.000+00:00
+          facebook: facebook
+          fullName: fullName
+          bio: bio
+          language: af
+          linkedin: linkedin
+          avatar: avatar
+          translatedFromId: 6
+          twitter: twitter
+          deletedAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          updated: 2000-01-23T04:56:07.000+00:00
+          email: email
+          slug: slug
+        - website: website
+          displayName: displayName
+          created: 2000-01-23T04:56:07.000+00:00
+          facebook: facebook
+          fullName: fullName
+          bio: bio
+          language: af
+          linkedin: linkedin
+          avatar: avatar
+          translatedFromId: 6
+          twitter: twitter
+          deletedAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          updated: 2000-01-23T04:56:07.000+00:00
+          email: email
+          slug: slug
+      properties:
+        inputs:
+          description: Blog authors to input.
+          items:
+            $ref: '#/components/schemas/BlogAuthor'
+          type: array
+      required:
+      - inputs
       type: object
     BatchInputJsonNode:
       description: Wrapper for providing an array of JSON nodes as inputs.
@@ -1513,6 +1527,61 @@ components:
       required:
       - id
       type: object
+    Error:
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+      properties:
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          example: An error occurred
+          type: string
+        correlationId:
+          description: A unique identifier for the request. Include this value with
+            any error reports or support tickets
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+          format: uuid
+          type: string
+        category:
+          description: The error category
+          type: string
+        subCategory:
+          description: A specific category that contains more specific detail about
+            the error
+          type: string
+        errors:
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type: array
+        context:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: Context about the error condition
+          example:
+            invalidPropertyName:
+            - propertyValue
+            missingScopes:
+            - scope1
+            - scope2
+          type: object
+        links:
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation
+            about the error or recommended remediation steps
+          type: object
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
     BlogAuthor:
       description: Model definition for a Blog Author.
       example:
@@ -2318,61 +2387,6 @@ components:
       - twitter
       - updated
       - website
-      type: object
-    Error:
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-      properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          example: An error occurred
-          type: string
-        correlationId:
-          description: A unique identifier for the request. Include this value with
-            any error reports or support tickets
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-          format: uuid
-          type: string
-        category:
-          description: The error category
-          type: string
-        subCategory:
-          description: A specific category that contains more specific detail about
-            the error
-          type: string
-        errors:
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type: array
-        context:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: Context about the error condition
-          example:
-            invalidPropertyName:
-            - propertyValue
-            missingScopes:
-            - scope1
-            - scope2
-          type: object
-        links:
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation
-            about the error or recommended remediation steps
-          type: object
-      required:
-      - category
-      - correlationId
-      - message
       type: object
     AttachToLangPrimaryRequestVNext:
       description: Request body object fro attaching objects to multi-language groups.
@@ -4084,9 +4098,9 @@ components:
             content: Read from and write to my Content
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
-    hapikey:
-      in: query
-      name: hapikey
+    private_apps_legacy:
+      in: header
+      name: private-app-legacy
       type: apiKey
 x-hubspot-available-client-libraries:
 - PHP

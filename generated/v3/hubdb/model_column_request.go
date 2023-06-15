@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ColumnRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ColumnRequest{}
+
 // ColumnRequest struct for ColumnRequest
 type ColumnRequest struct {
 	// Column Id
@@ -176,7 +179,7 @@ func (o *ColumnRequest) SetOptions(v []Option) {
 
 // GetForeignTableId returns the ForeignTableId field value if set, zero value otherwise.
 func (o *ColumnRequest) GetForeignTableId() int64 {
-	if o == nil || o.ForeignTableId == nil {
+	if o == nil || IsNil(o.ForeignTableId) {
 		var ret int64
 		return ret
 	}
@@ -186,7 +189,7 @@ func (o *ColumnRequest) GetForeignTableId() int64 {
 // GetForeignTableIdOk returns a tuple with the ForeignTableId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ColumnRequest) GetForeignTableIdOk() (*int64, bool) {
-	if o == nil || o.ForeignTableId == nil {
+	if o == nil || IsNil(o.ForeignTableId) {
 		return nil, false
 	}
 	return o.ForeignTableId, true
@@ -194,7 +197,7 @@ func (o *ColumnRequest) GetForeignTableIdOk() (*int64, bool) {
 
 // HasForeignTableId returns a boolean if a field has been set.
 func (o *ColumnRequest) HasForeignTableId() bool {
-	if o != nil && o.ForeignTableId != nil {
+	if o != nil && !IsNil(o.ForeignTableId) {
 		return true
 	}
 
@@ -208,7 +211,7 @@ func (o *ColumnRequest) SetForeignTableId(v int64) {
 
 // GetForeignColumnId returns the ForeignColumnId field value if set, zero value otherwise.
 func (o *ColumnRequest) GetForeignColumnId() int32 {
-	if o == nil || o.ForeignColumnId == nil {
+	if o == nil || IsNil(o.ForeignColumnId) {
 		var ret int32
 		return ret
 	}
@@ -218,7 +221,7 @@ func (o *ColumnRequest) GetForeignColumnId() int32 {
 // GetForeignColumnIdOk returns a tuple with the ForeignColumnId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ColumnRequest) GetForeignColumnIdOk() (*int32, bool) {
-	if o == nil || o.ForeignColumnId == nil {
+	if o == nil || IsNil(o.ForeignColumnId) {
 		return nil, false
 	}
 	return o.ForeignColumnId, true
@@ -226,7 +229,7 @@ func (o *ColumnRequest) GetForeignColumnIdOk() (*int32, bool) {
 
 // HasForeignColumnId returns a boolean if a field has been set.
 func (o *ColumnRequest) HasForeignColumnId() bool {
-	if o != nil && o.ForeignColumnId != nil {
+	if o != nil && !IsNil(o.ForeignColumnId) {
 		return true
 	}
 
@@ -239,29 +242,27 @@ func (o *ColumnRequest) SetForeignColumnId(v int32) {
 }
 
 func (o ColumnRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["type"] = o.Type
-	}
-	if true {
-		toSerialize["options"] = o.Options
-	}
-	if o.ForeignTableId != nil {
-		toSerialize["foreignTableId"] = o.ForeignTableId
-	}
-	if o.ForeignColumnId != nil {
-		toSerialize["foreignColumnId"] = o.ForeignColumnId
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ColumnRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	toSerialize["label"] = o.Label
+	toSerialize["type"] = o.Type
+	toSerialize["options"] = o.Options
+	if !IsNil(o.ForeignTableId) {
+		toSerialize["foreignTableId"] = o.ForeignTableId
+	}
+	if !IsNil(o.ForeignColumnId) {
+		toSerialize["foreignColumnId"] = o.ForeignColumnId
+	}
+	return toSerialize, nil
 }
 
 type NullableColumnRequest struct {

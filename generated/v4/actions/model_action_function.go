@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ActionFunction type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ActionFunction{}
+
 // ActionFunction A serverless function associated with this custom workflow action.
 type ActionFunction struct {
 	// The function source code.
@@ -93,7 +96,7 @@ func (o *ActionFunction) SetFunctionType(v string) {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *ActionFunction) GetId() string {
-	if o == nil || o.Id == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
@@ -103,7 +106,7 @@ func (o *ActionFunction) GetId() string {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ActionFunction) GetIdOk() (*string, bool) {
-	if o == nil || o.Id == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
 	return o.Id, true
@@ -111,7 +114,7 @@ func (o *ActionFunction) GetIdOk() (*string, bool) {
 
 // HasId returns a boolean if a field has been set.
 func (o *ActionFunction) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !IsNil(o.Id) {
 		return true
 	}
 
@@ -124,17 +127,21 @@ func (o *ActionFunction) SetId(v string) {
 }
 
 func (o ActionFunction) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["functionSource"] = o.FunctionSource
-	}
-	if true {
-		toSerialize["functionType"] = o.FunctionType
-	}
-	if o.Id != nil {
-		toSerialize["id"] = o.Id
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ActionFunction) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["functionSource"] = o.FunctionSource
+	toSerialize["functionType"] = o.FunctionType
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	return toSerialize, nil
 }
 
 type NullableActionFunction struct {

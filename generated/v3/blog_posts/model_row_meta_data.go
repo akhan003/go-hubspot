@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the RowMetaData type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &RowMetaData{}
+
 // RowMetaData struct for RowMetaData
 type RowMetaData struct {
 	Styles   Styles `json:"styles"`
@@ -88,14 +91,18 @@ func (o *RowMetaData) SetCssClass(v string) {
 }
 
 func (o RowMetaData) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["styles"] = o.Styles
-	}
-	if true {
-		toSerialize["cssClass"] = o.CssClass
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o RowMetaData) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["styles"] = o.Styles
+	toSerialize["cssClass"] = o.CssClass
+	return toSerialize, nil
 }
 
 type NullableRowMetaData struct {

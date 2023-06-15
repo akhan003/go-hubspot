@@ -14,11 +14,15 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicAssociationMulti type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicAssociationMulti{}
+
 // PublicAssociationMulti struct for PublicAssociationMulti
 type PublicAssociationMulti struct {
 	From PublicObjectId `json:"from"`
 	// The IDs of objects that are associated with the object identified by the ID in 'from'.
-	To []AssociatedId `json:"to"`
+	To     []AssociatedId `json:"to"`
+	Paging *Paging        `json:"paging,omitempty"`
 }
 
 // NewPublicAssociationMulti instantiates a new PublicAssociationMulti object
@@ -88,15 +92,54 @@ func (o *PublicAssociationMulti) SetTo(v []AssociatedId) {
 	o.To = v
 }
 
-func (o PublicAssociationMulti) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["from"] = o.From
+// GetPaging returns the Paging field value if set, zero value otherwise.
+func (o *PublicAssociationMulti) GetPaging() Paging {
+	if o == nil || IsNil(o.Paging) {
+		var ret Paging
+		return ret
 	}
-	if true {
-		toSerialize["to"] = o.To
+	return *o.Paging
+}
+
+// GetPagingOk returns a tuple with the Paging field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PublicAssociationMulti) GetPagingOk() (*Paging, bool) {
+	if o == nil || IsNil(o.Paging) {
+		return nil, false
+	}
+	return o.Paging, true
+}
+
+// HasPaging returns a boolean if a field has been set.
+func (o *PublicAssociationMulti) HasPaging() bool {
+	if o != nil && !IsNil(o.Paging) {
+		return true
+	}
+
+	return false
+}
+
+// SetPaging gets a reference to the given Paging and assigns it to the Paging field.
+func (o *PublicAssociationMulti) SetPaging(v Paging) {
+	o.Paging = &v
+}
+
+func (o PublicAssociationMulti) MarshalJSON() ([]byte, error) {
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicAssociationMulti) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["from"] = o.From
+	toSerialize["to"] = o.To
+	if !IsNil(o.Paging) {
+		toSerialize["paging"] = o.Paging
+	}
+	return toSerialize, nil
 }
 
 type NullablePublicAssociationMulti struct {

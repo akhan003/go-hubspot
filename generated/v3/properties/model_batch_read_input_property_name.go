@@ -14,20 +14,23 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchReadInputPropertyName type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchReadInputPropertyName{}
+
 // BatchReadInputPropertyName struct for BatchReadInputPropertyName
 type BatchReadInputPropertyName struct {
-	Inputs   []PropertyName `json:"inputs"`
 	Archived bool           `json:"archived"`
+	Inputs   []PropertyName `json:"inputs"`
 }
 
 // NewBatchReadInputPropertyName instantiates a new BatchReadInputPropertyName object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBatchReadInputPropertyName(inputs []PropertyName, archived bool) *BatchReadInputPropertyName {
+func NewBatchReadInputPropertyName(archived bool, inputs []PropertyName) *BatchReadInputPropertyName {
 	this := BatchReadInputPropertyName{}
-	this.Inputs = inputs
 	this.Archived = archived
+	this.Inputs = inputs
 	return &this
 }
 
@@ -37,30 +40,6 @@ func NewBatchReadInputPropertyName(inputs []PropertyName, archived bool) *BatchR
 func NewBatchReadInputPropertyNameWithDefaults() *BatchReadInputPropertyName {
 	this := BatchReadInputPropertyName{}
 	return &this
-}
-
-// GetInputs returns the Inputs field value
-func (o *BatchReadInputPropertyName) GetInputs() []PropertyName {
-	if o == nil {
-		var ret []PropertyName
-		return ret
-	}
-
-	return o.Inputs
-}
-
-// GetInputsOk returns a tuple with the Inputs field value
-// and a boolean to check if the value has been set.
-func (o *BatchReadInputPropertyName) GetInputsOk() ([]PropertyName, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Inputs, true
-}
-
-// SetInputs sets field value
-func (o *BatchReadInputPropertyName) SetInputs(v []PropertyName) {
-	o.Inputs = v
 }
 
 // GetArchived returns the Archived field value
@@ -87,15 +66,43 @@ func (o *BatchReadInputPropertyName) SetArchived(v bool) {
 	o.Archived = v
 }
 
-func (o BatchReadInputPropertyName) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+// GetInputs returns the Inputs field value
+func (o *BatchReadInputPropertyName) GetInputs() []PropertyName {
+	if o == nil {
+		var ret []PropertyName
+		return ret
 	}
-	if true {
-		toSerialize["archived"] = o.Archived
+
+	return o.Inputs
+}
+
+// GetInputsOk returns a tuple with the Inputs field value
+// and a boolean to check if the value has been set.
+func (o *BatchReadInputPropertyName) GetInputsOk() ([]PropertyName, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Inputs, true
+}
+
+// SetInputs sets field value
+func (o *BatchReadInputPropertyName) SetInputs(v []PropertyName) {
+	o.Inputs = v
+}
+
+func (o BatchReadInputPropertyName) MarshalJSON() ([]byte, error) {
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchReadInputPropertyName) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["archived"] = o.Archived
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchReadInputPropertyName struct {

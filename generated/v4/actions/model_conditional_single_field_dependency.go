@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ConditionalSingleFieldDependency type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ConditionalSingleFieldDependency{}
+
 // ConditionalSingleFieldDependency struct for ConditionalSingleFieldDependency
 type ConditionalSingleFieldDependency struct {
 	DependencyType        string   `json:"dependencyType"`
@@ -142,20 +145,20 @@ func (o *ConditionalSingleFieldDependency) SetControllingFieldValue(v string) {
 }
 
 func (o ConditionalSingleFieldDependency) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["dependencyType"] = o.DependencyType
-	}
-	if true {
-		toSerialize["dependentFieldNames"] = o.DependentFieldNames
-	}
-	if true {
-		toSerialize["controllingFieldName"] = o.ControllingFieldName
-	}
-	if true {
-		toSerialize["controllingFieldValue"] = o.ControllingFieldValue
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ConditionalSingleFieldDependency) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["dependencyType"] = o.DependencyType
+	toSerialize["dependentFieldNames"] = o.DependentFieldNames
+	toSerialize["controllingFieldName"] = o.ControllingFieldName
+	toSerialize["controllingFieldValue"] = o.ControllingFieldValue
+	return toSerialize, nil
 }
 
 type NullableConditionalSingleFieldDependency struct {

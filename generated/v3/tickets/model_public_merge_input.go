@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicMergeInput type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicMergeInput{}
+
 // PublicMergeInput struct for PublicMergeInput
 type PublicMergeInput struct {
 	PrimaryObjectId string `json:"primaryObjectId"`
@@ -88,14 +91,18 @@ func (o *PublicMergeInput) SetObjectIdToMerge(v string) {
 }
 
 func (o PublicMergeInput) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["primaryObjectId"] = o.PrimaryObjectId
-	}
-	if true {
-		toSerialize["objectIdToMerge"] = o.ObjectIdToMerge
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicMergeInput) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["primaryObjectId"] = o.PrimaryObjectId
+	toSerialize["objectIdToMerge"] = o.ObjectIdToMerge
+	return toSerialize, nil
 }
 
 type NullablePublicMergeInput struct {

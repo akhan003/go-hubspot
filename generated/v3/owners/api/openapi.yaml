@@ -66,9 +66,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
-      - oauth2_legacy:
+      - private_apps_legacy:
         - contacts
+      - private_apps:
+        - crm.objects.owners.read
       - oauth2:
         - crm.objects.owners.read
       summary: Get a page of owners
@@ -120,9 +121,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
-      - oauth2_legacy:
+      - private_apps_legacy:
         - contacts
+      - private_apps:
+        - crm.objects.owners.read
       - oauth2:
         - crm.objects.owners.read
       summary: Read an owner by given `id` or `userId`
@@ -176,6 +178,19 @@ components:
         next:
           $ref: '#/components/schemas/NextPage'
       type: object
+    PublicTeam:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        primary:
+          type: boolean
+      required:
+      - id
+      - name
+      - primary
+      type: object
     PublicOwner:
       example:
         id: "6166860"
@@ -222,19 +237,6 @@ components:
       - createdAt
       - id
       - updatedAt
-      type: object
-    PublicTeam:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        primary:
-          type: boolean
-      required:
-      - id
-      - name
-      - primary
       type: object
     Error:
       example:
@@ -351,18 +353,6 @@ components:
       - after
       type: object
   securitySchemes:
-    oauth2_legacy:
-      flows:
-        authorizationCode:
-          authorizationUrl: https://app.hubspot.com/oauth/authorize
-          scopes:
-            contacts: Read from and write to my Contacts
-          tokenUrl: https://api.hubapi.com/oauth/v1/token
-      type: oauth2
-    hapikey:
-      in: query
-      name: hapikey
-      type: apiKey
     oauth2:
       flows:
         authorizationCode:
@@ -371,6 +361,14 @@ components:
             crm.objects.owners.read: ' '
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
+    private_apps_legacy:
+      in: header
+      name: private-app-legacy
+      type: apiKey
+    private_apps:
+      in: header
+      name: private-app
+      type: apiKey
 x-hubspot-available-client-libraries:
 - PHP
 - Node

@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the BlogPost type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BlogPost{}
+
 // BlogPost Model definition for a Blog Post.
 type BlogPost struct {
 	// The unique ID of the Blog Post.
@@ -600,7 +603,7 @@ func (o *BlogPost) GetWidgetContainers() map[string]map[string]interface{} {
 // and a boolean to check if the value has been set.
 func (o *BlogPost) GetWidgetContainersOk() (map[string]map[string]interface{}, bool) {
 	if o == nil {
-		return nil, false
+		return map[string]map[string]interface{}{}, false
 	}
 	return o.WidgetContainers, true
 }
@@ -624,7 +627,7 @@ func (o *BlogPost) GetWidgets() map[string]map[string]interface{} {
 // and a boolean to check if the value has been set.
 func (o *BlogPost) GetWidgetsOk() (map[string]map[string]interface{}, bool) {
 	if o == nil {
-		return nil, false
+		return map[string]map[string]interface{}{}, false
 	}
 	return o.Widgets, true
 }
@@ -1488,7 +1491,7 @@ func (o *BlogPost) GetThemeSettingsValues() map[string]map[string]interface{} {
 // and a boolean to check if the value has been set.
 func (o *BlogPost) GetThemeSettingsValuesOk() (map[string]map[string]interface{}, bool) {
 	if o == nil {
-		return nil, false
+		return map[string]map[string]interface{}{}, false
 	}
 	return o.ThemeSettingsValues, true
 }
@@ -1667,191 +1670,77 @@ func (o *BlogPost) SetDeletedAt(v time.Time) {
 }
 
 func (o BlogPost) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["slug"] = o.Slug
-	}
-	if true {
-		toSerialize["contentGroupId"] = o.ContentGroupId
-	}
-	if true {
-		toSerialize["campaign"] = o.Campaign
-	}
-	if true {
-		toSerialize["categoryId"] = o.CategoryId
-	}
-	if true {
-		toSerialize["state"] = o.State
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["mabExperimentId"] = o.MabExperimentId
-	}
-	if true {
-		toSerialize["archived"] = o.Archived
-	}
-	if true {
-		toSerialize["authorName"] = o.AuthorName
-	}
-	if true {
-		toSerialize["abTestId"] = o.AbTestId
-	}
-	if true {
-		toSerialize["createdById"] = o.CreatedById
-	}
-	if true {
-		toSerialize["updatedById"] = o.UpdatedById
-	}
-	if true {
-		toSerialize["domain"] = o.Domain
-	}
-	if true {
-		toSerialize["abStatus"] = o.AbStatus
-	}
-	if true {
-		toSerialize["folderId"] = o.FolderId
-	}
-	if true {
-		toSerialize["widgetContainers"] = o.WidgetContainers
-	}
-	if true {
-		toSerialize["widgets"] = o.Widgets
-	}
-	if true {
-		toSerialize["language"] = o.Language
-	}
-	if true {
-		toSerialize["translatedFromId"] = o.TranslatedFromId
-	}
-	if true {
-		toSerialize["translations"] = o.Translations
-	}
-	if true {
-		toSerialize["dynamicPageDataSourceType"] = o.DynamicPageDataSourceType
-	}
-	if true {
-		toSerialize["dynamicPageDataSourceId"] = o.DynamicPageDataSourceId
-	}
-	if true {
-		toSerialize["blogAuthorId"] = o.BlogAuthorId
-	}
-	if true {
-		toSerialize["tagIds"] = o.TagIds
-	}
-	if true {
-		toSerialize["htmlTitle"] = o.HtmlTitle
-	}
-	if true {
-		toSerialize["enableGoogleAmpOutputOverride"] = o.EnableGoogleAmpOutputOverride
-	}
-	if true {
-		toSerialize["useFeaturedImage"] = o.UseFeaturedImage
-	}
-	if true {
-		toSerialize["postBody"] = o.PostBody
-	}
-	if true {
-		toSerialize["postSummary"] = o.PostSummary
-	}
-	if true {
-		toSerialize["rssBody"] = o.RssBody
-	}
-	if true {
-		toSerialize["rssSummary"] = o.RssSummary
-	}
-	if true {
-		toSerialize["currentlyPublished"] = o.CurrentlyPublished
-	}
-	if true {
-		toSerialize["pageExpiryEnabled"] = o.PageExpiryEnabled
-	}
-	if true {
-		toSerialize["pageExpiryRedirectId"] = o.PageExpiryRedirectId
-	}
-	if true {
-		toSerialize["pageExpiryRedirectUrl"] = o.PageExpiryRedirectUrl
-	}
-	if true {
-		toSerialize["pageExpiryDate"] = o.PageExpiryDate
-	}
-	if true {
-		toSerialize["includeDefaultCustomCss"] = o.IncludeDefaultCustomCss
-	}
-	if true {
-		toSerialize["enableLayoutStylesheets"] = o.EnableLayoutStylesheets
-	}
-	if true {
-		toSerialize["enableDomainStylesheets"] = o.EnableDomainStylesheets
-	}
-	if true {
-		toSerialize["publishImmediately"] = o.PublishImmediately
-	}
-	if true {
-		toSerialize["featuredImage"] = o.FeaturedImage
-	}
-	if true {
-		toSerialize["featuredImageAltText"] = o.FeaturedImageAltText
-	}
-	if true {
-		toSerialize["linkRelCanonicalUrl"] = o.LinkRelCanonicalUrl
-	}
-	if true {
-		toSerialize["contentTypeCategory"] = o.ContentTypeCategory
-	}
-	if true {
-		toSerialize["attachedStylesheets"] = o.AttachedStylesheets
-	}
-	if true {
-		toSerialize["metaDescription"] = o.MetaDescription
-	}
-	if true {
-		toSerialize["headHtml"] = o.HeadHtml
-	}
-	if true {
-		toSerialize["footerHtml"] = o.FooterHtml
-	}
-	if true {
-		toSerialize["archivedInDashboard"] = o.ArchivedInDashboard
-	}
-	if true {
-		toSerialize["publicAccessRulesEnabled"] = o.PublicAccessRulesEnabled
-	}
-	if true {
-		toSerialize["publicAccessRules"] = o.PublicAccessRules
-	}
-	if true {
-		toSerialize["layoutSections"] = o.LayoutSections
-	}
-	if true {
-		toSerialize["themeSettingsValues"] = o.ThemeSettingsValues
-	}
-	if true {
-		toSerialize["url"] = o.Url
-	}
-	if true {
-		toSerialize["password"] = o.Password
-	}
-	if true {
-		toSerialize["currentState"] = o.CurrentState
-	}
-	if true {
-		toSerialize["publishDate"] = o.PublishDate
-	}
-	if true {
-		toSerialize["created"] = o.Created
-	}
-	if true {
-		toSerialize["updated"] = o.Updated
-	}
-	if true {
-		toSerialize["deletedAt"] = o.DeletedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BlogPost) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["slug"] = o.Slug
+	toSerialize["contentGroupId"] = o.ContentGroupId
+	toSerialize["campaign"] = o.Campaign
+	toSerialize["categoryId"] = o.CategoryId
+	toSerialize["state"] = o.State
+	toSerialize["name"] = o.Name
+	toSerialize["mabExperimentId"] = o.MabExperimentId
+	toSerialize["archived"] = o.Archived
+	toSerialize["authorName"] = o.AuthorName
+	toSerialize["abTestId"] = o.AbTestId
+	toSerialize["createdById"] = o.CreatedById
+	toSerialize["updatedById"] = o.UpdatedById
+	toSerialize["domain"] = o.Domain
+	toSerialize["abStatus"] = o.AbStatus
+	toSerialize["folderId"] = o.FolderId
+	toSerialize["widgetContainers"] = o.WidgetContainers
+	toSerialize["widgets"] = o.Widgets
+	toSerialize["language"] = o.Language
+	toSerialize["translatedFromId"] = o.TranslatedFromId
+	toSerialize["translations"] = o.Translations
+	toSerialize["dynamicPageDataSourceType"] = o.DynamicPageDataSourceType
+	toSerialize["dynamicPageDataSourceId"] = o.DynamicPageDataSourceId
+	toSerialize["blogAuthorId"] = o.BlogAuthorId
+	toSerialize["tagIds"] = o.TagIds
+	toSerialize["htmlTitle"] = o.HtmlTitle
+	toSerialize["enableGoogleAmpOutputOverride"] = o.EnableGoogleAmpOutputOverride
+	toSerialize["useFeaturedImage"] = o.UseFeaturedImage
+	toSerialize["postBody"] = o.PostBody
+	toSerialize["postSummary"] = o.PostSummary
+	toSerialize["rssBody"] = o.RssBody
+	toSerialize["rssSummary"] = o.RssSummary
+	toSerialize["currentlyPublished"] = o.CurrentlyPublished
+	toSerialize["pageExpiryEnabled"] = o.PageExpiryEnabled
+	toSerialize["pageExpiryRedirectId"] = o.PageExpiryRedirectId
+	toSerialize["pageExpiryRedirectUrl"] = o.PageExpiryRedirectUrl
+	toSerialize["pageExpiryDate"] = o.PageExpiryDate
+	toSerialize["includeDefaultCustomCss"] = o.IncludeDefaultCustomCss
+	toSerialize["enableLayoutStylesheets"] = o.EnableLayoutStylesheets
+	toSerialize["enableDomainStylesheets"] = o.EnableDomainStylesheets
+	toSerialize["publishImmediately"] = o.PublishImmediately
+	toSerialize["featuredImage"] = o.FeaturedImage
+	toSerialize["featuredImageAltText"] = o.FeaturedImageAltText
+	toSerialize["linkRelCanonicalUrl"] = o.LinkRelCanonicalUrl
+	toSerialize["contentTypeCategory"] = o.ContentTypeCategory
+	toSerialize["attachedStylesheets"] = o.AttachedStylesheets
+	toSerialize["metaDescription"] = o.MetaDescription
+	toSerialize["headHtml"] = o.HeadHtml
+	toSerialize["footerHtml"] = o.FooterHtml
+	toSerialize["archivedInDashboard"] = o.ArchivedInDashboard
+	toSerialize["publicAccessRulesEnabled"] = o.PublicAccessRulesEnabled
+	toSerialize["publicAccessRules"] = o.PublicAccessRules
+	toSerialize["layoutSections"] = o.LayoutSections
+	toSerialize["themeSettingsValues"] = o.ThemeSettingsValues
+	toSerialize["url"] = o.Url
+	toSerialize["password"] = o.Password
+	toSerialize["currentState"] = o.CurrentState
+	toSerialize["publishDate"] = o.PublishDate
+	toSerialize["created"] = o.Created
+	toSerialize["updated"] = o.Updated
+	toSerialize["deletedAt"] = o.DeletedAt
+	return toSerialize, nil
 }
 
 type NullableBlogPost struct {

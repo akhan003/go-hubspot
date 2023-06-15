@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TaxSearchResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TaxSearchResponse{}
+
 // TaxSearchResponse A response to a search for taxes.
 type TaxSearchResponse struct {
 	// Designates if the response is a success ('OK') or failure ('ERR').
@@ -42,7 +45,7 @@ func NewTaxSearchResponseWithDefaults() *TaxSearchResponse {
 
 // GetResult returns the Result field value if set, zero value otherwise.
 func (o *TaxSearchResponse) GetResult() string {
-	if o == nil || o.Result == nil {
+	if o == nil || IsNil(o.Result) {
 		var ret string
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *TaxSearchResponse) GetResult() string {
 // GetResultOk returns a tuple with the Result field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TaxSearchResponse) GetResultOk() (*string, bool) {
-	if o == nil || o.Result == nil {
+	if o == nil || IsNil(o.Result) {
 		return nil, false
 	}
 	return o.Result, true
@@ -60,7 +63,7 @@ func (o *TaxSearchResponse) GetResultOk() (*string, bool) {
 
 // HasResult returns a boolean if a field has been set.
 func (o *TaxSearchResponse) HasResult() bool {
-	if o != nil && o.Result != nil {
+	if o != nil && !IsNil(o.Result) {
 		return true
 	}
 
@@ -97,14 +100,20 @@ func (o *TaxSearchResponse) SetTaxes(v []Tax) {
 }
 
 func (o TaxSearchResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Result != nil {
-		toSerialize["@result"] = o.Result
-	}
-	if true {
-		toSerialize["taxes"] = o.Taxes
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TaxSearchResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Result) {
+		toSerialize["@result"] = o.Result
+	}
+	toSerialize["taxes"] = o.Taxes
+	return toSerialize, nil
 }
 
 type NullableTaxSearchResponse struct {

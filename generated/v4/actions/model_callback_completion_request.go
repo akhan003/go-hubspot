@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CallbackCompletionRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CallbackCompletionRequest{}
+
 // CallbackCompletionRequest Any information to send back to Workflows when completing an action callback.
 type CallbackCompletionRequest struct {
 	// A map of action output names and values.
@@ -63,11 +66,17 @@ func (o *CallbackCompletionRequest) SetOutputFields(v map[string]string) {
 }
 
 func (o CallbackCompletionRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["outputFields"] = o.OutputFields
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CallbackCompletionRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["outputFields"] = o.OutputFields
+	return toSerialize, nil
 }
 
 type NullableCallbackCompletionRequest struct {

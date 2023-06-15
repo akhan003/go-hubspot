@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AccountingFeatures type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AccountingFeatures{}
+
 // AccountingFeatures Outlines the features that are supported by the external accounting system.
 type AccountingFeatures struct {
 	CreateInvoice CreateInvoiceFeature `json:"createInvoice"`
@@ -115,17 +118,19 @@ func (o *AccountingFeatures) SetSync(v map[string]ObjectSyncFeature) {
 }
 
 func (o AccountingFeatures) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["createInvoice"] = o.CreateInvoice
-	}
-	if true {
-		toSerialize["importInvoice"] = o.ImportInvoice
-	}
-	if true {
-		toSerialize["sync"] = o.Sync
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AccountingFeatures) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["createInvoice"] = o.CreateInvoice
+	toSerialize["importInvoice"] = o.ImportInvoice
+	toSerialize["sync"] = o.Sync
+	return toSerialize, nil
 }
 
 type NullableAccountingFeatures struct {

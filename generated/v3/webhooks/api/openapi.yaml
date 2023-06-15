@@ -458,6 +458,25 @@ components:
       required:
       - results
       type: object
+    SettingsChangeRequest:
+      description: New or updated webhook settings for an app.
+      example:
+        targetUrl: https://www.example.com/hubspot/target
+        throttling:
+          maxConcurrentRequests: 10
+          period: SECONDLY
+      properties:
+        targetUrl:
+          description: "A publicly available URL for Hubspot to call where event payloads\
+            \ will be delivered. See [link-so-some-doc](#) for details about the format\
+            \ of these event payloads."
+          type: string
+        throttling:
+          $ref: '#/components/schemas/ThrottlingSettings'
+      required:
+      - targetUrl
+      - throttling
+      type: object
     Error:
       example:
         message: Invalid input (details will vary based on the error)
@@ -512,25 +531,6 @@ components:
       - category
       - correlationId
       - message
-      type: object
-    SettingsChangeRequest:
-      description: New or updated webhook settings for an app.
-      example:
-        targetUrl: https://www.example.com/hubspot/target
-        throttling:
-          maxConcurrentRequests: 10
-          period: SECONDLY
-      properties:
-        targetUrl:
-          description: "A publicly available URL for Hubspot to call where event payloads\
-            \ will be delivered. See [link-so-some-doc](#) for details about the format\
-            \ of these event payloads."
-          type: string
-        throttling:
-          $ref: '#/components/schemas/ThrottlingSettings'
-      required:
-      - targetUrl
-      - throttling
       type: object
     SubscriptionPatchRequest:
       description: Updated details for the subscription.
@@ -644,6 +644,8 @@ components:
       type: object
     ErrorCategory:
       properties:
+        name:
+          type: string
         httpStatus:
           enum:
           - CONTINUE
@@ -709,8 +711,6 @@ components:
           - NOT_EXTENDED
           - NETWORK_AUTHENTICATION_REQUIRED
           type: string
-        name:
-          type: string
       required:
       - httpStatus
       - name
@@ -729,20 +729,6 @@ components:
           type: array
       required:
       - inputs
-      type: object
-    SubscriptionBatchUpdateRequest:
-      example:
-        active: true
-        id: 0
-      properties:
-        id:
-          format: int32
-          type: integer
-        active:
-          type: boolean
-      required:
-      - active
-      - id
       type: object
     SubscriptionResponse:
       description: Complete details for an event subscription.
@@ -782,6 +768,23 @@ components:
           - conversation.newMessage
           - conversation.privacyDeletion
           - conversation.propertyChange
+          - contact.merge
+          - company.merge
+          - deal.merge
+          - ticket.merge
+          - product.merge
+          - line_item.merge
+          - contact.restore
+          - company.restore
+          - deal.restore
+          - ticket.restore
+          - product.restore
+          - line_item.restore
+          - contact.associationChange
+          - company.associationChange
+          - deal.associationChange
+          - ticket.associationChange
+          - line_item.associationChange
           type: string
         propertyName:
           description: The internal name of the property being monitored for changes.
@@ -807,6 +810,20 @@ components:
       - active
       - createdAt
       - eventType
+      - id
+      type: object
+    SubscriptionBatchUpdateRequest:
+      example:
+        active: true
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+      required:
+      - active
       - id
       type: object
     SubscriptionCreateRequest:
@@ -844,6 +861,23 @@ components:
           - conversation.newMessage
           - conversation.privacyDeletion
           - conversation.propertyChange
+          - contact.merge
+          - company.merge
+          - deal.merge
+          - ticket.merge
+          - product.merge
+          - line_item.merge
+          - contact.restore
+          - company.restore
+          - deal.restore
+          - ticket.restore
+          - product.restore
+          - line_item.restore
+          - contact.associationChange
+          - company.associationChange
+          - deal.associationChange
+          - ticket.associationChange
+          - line_item.associationChange
           type: string
         propertyName:
           description: The internal name of the property to monitor for changes. Only

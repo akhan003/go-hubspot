@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SingleFieldDependency type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SingleFieldDependency{}
+
 // SingleFieldDependency struct for SingleFieldDependency
 type SingleFieldDependency struct {
 	DependencyType       string   `json:"dependencyType"`
@@ -116,17 +119,19 @@ func (o *SingleFieldDependency) SetControllingFieldName(v string) {
 }
 
 func (o SingleFieldDependency) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["dependencyType"] = o.DependencyType
-	}
-	if true {
-		toSerialize["dependentFieldNames"] = o.DependentFieldNames
-	}
-	if true {
-		toSerialize["controllingFieldName"] = o.ControllingFieldName
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SingleFieldDependency) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["dependencyType"] = o.DependencyType
+	toSerialize["dependentFieldNames"] = o.DependentFieldNames
+	toSerialize["controllingFieldName"] = o.ControllingFieldName
+	return toSerialize, nil
 }
 
 type NullableSingleFieldDependency struct {

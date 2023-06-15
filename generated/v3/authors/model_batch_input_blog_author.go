@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputBlogAuthor type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputBlogAuthor{}
+
 // BatchInputBlogAuthor Wrapper for providing an array of blog authors as inputs.
 type BatchInputBlogAuthor struct {
 	// Blog authors to input.
@@ -63,11 +66,17 @@ func (o *BatchInputBlogAuthor) SetInputs(v []BlogAuthor) {
 }
 
 func (o BatchInputBlogAuthor) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputBlogAuthor) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputBlogAuthor struct {

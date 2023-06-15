@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the IntegratorObjectResult type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &IntegratorObjectResult{}
+
 // IntegratorObjectResult struct for IntegratorObjectResult
 type IntegratorObjectResult struct {
 	Id      string                               `json:"id"`
@@ -94,7 +97,7 @@ func (o *IntegratorObjectResult) SetTitle(v string) {
 
 // GetLinkUrl returns the LinkUrl field value if set, zero value otherwise.
 func (o *IntegratorObjectResult) GetLinkUrl() string {
-	if o == nil || o.LinkUrl == nil {
+	if o == nil || IsNil(o.LinkUrl) {
 		var ret string
 		return ret
 	}
@@ -104,7 +107,7 @@ func (o *IntegratorObjectResult) GetLinkUrl() string {
 // GetLinkUrlOk returns a tuple with the LinkUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IntegratorObjectResult) GetLinkUrlOk() (*string, bool) {
-	if o == nil || o.LinkUrl == nil {
+	if o == nil || IsNil(o.LinkUrl) {
 		return nil, false
 	}
 	return o.LinkUrl, true
@@ -112,7 +115,7 @@ func (o *IntegratorObjectResult) GetLinkUrlOk() (*string, bool) {
 
 // HasLinkUrl returns a boolean if a field has been set.
 func (o *IntegratorObjectResult) HasLinkUrl() bool {
-	if o != nil && o.LinkUrl != nil {
+	if o != nil && !IsNil(o.LinkUrl) {
 		return true
 	}
 
@@ -173,23 +176,23 @@ func (o *IntegratorObjectResult) SetActions(v []IntegratorObjectResultActionsInn
 }
 
 func (o IntegratorObjectResult) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["title"] = o.Title
-	}
-	if o.LinkUrl != nil {
-		toSerialize["linkUrl"] = o.LinkUrl
-	}
-	if true {
-		toSerialize["tokens"] = o.Tokens
-	}
-	if true {
-		toSerialize["actions"] = o.Actions
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o IntegratorObjectResult) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["title"] = o.Title
+	if !IsNil(o.LinkUrl) {
+		toSerialize["linkUrl"] = o.LinkUrl
+	}
+	toSerialize["tokens"] = o.Tokens
+	toSerialize["actions"] = o.Actions
+	return toSerialize, nil
 }
 
 type NullableIntegratorObjectResult struct {

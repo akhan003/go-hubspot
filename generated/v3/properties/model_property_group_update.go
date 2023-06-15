@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PropertyGroupUpdate type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PropertyGroupUpdate{}
+
 // PropertyGroupUpdate struct for PropertyGroupUpdate
 type PropertyGroupUpdate struct {
 	// A human-readable label that will be shown in HubSpot.
@@ -41,7 +44,7 @@ func NewPropertyGroupUpdateWithDefaults() *PropertyGroupUpdate {
 
 // GetLabel returns the Label field value if set, zero value otherwise.
 func (o *PropertyGroupUpdate) GetLabel() string {
-	if o == nil || o.Label == nil {
+	if o == nil || IsNil(o.Label) {
 		var ret string
 		return ret
 	}
@@ -51,7 +54,7 @@ func (o *PropertyGroupUpdate) GetLabel() string {
 // GetLabelOk returns a tuple with the Label field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyGroupUpdate) GetLabelOk() (*string, bool) {
-	if o == nil || o.Label == nil {
+	if o == nil || IsNil(o.Label) {
 		return nil, false
 	}
 	return o.Label, true
@@ -59,7 +62,7 @@ func (o *PropertyGroupUpdate) GetLabelOk() (*string, bool) {
 
 // HasLabel returns a boolean if a field has been set.
 func (o *PropertyGroupUpdate) HasLabel() bool {
-	if o != nil && o.Label != nil {
+	if o != nil && !IsNil(o.Label) {
 		return true
 	}
 
@@ -73,7 +76,7 @@ func (o *PropertyGroupUpdate) SetLabel(v string) {
 
 // GetDisplayOrder returns the DisplayOrder field value if set, zero value otherwise.
 func (o *PropertyGroupUpdate) GetDisplayOrder() int32 {
-	if o == nil || o.DisplayOrder == nil {
+	if o == nil || IsNil(o.DisplayOrder) {
 		var ret int32
 		return ret
 	}
@@ -83,7 +86,7 @@ func (o *PropertyGroupUpdate) GetDisplayOrder() int32 {
 // GetDisplayOrderOk returns a tuple with the DisplayOrder field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PropertyGroupUpdate) GetDisplayOrderOk() (*int32, bool) {
-	if o == nil || o.DisplayOrder == nil {
+	if o == nil || IsNil(o.DisplayOrder) {
 		return nil, false
 	}
 	return o.DisplayOrder, true
@@ -91,7 +94,7 @@ func (o *PropertyGroupUpdate) GetDisplayOrderOk() (*int32, bool) {
 
 // HasDisplayOrder returns a boolean if a field has been set.
 func (o *PropertyGroupUpdate) HasDisplayOrder() bool {
-	if o != nil && o.DisplayOrder != nil {
+	if o != nil && !IsNil(o.DisplayOrder) {
 		return true
 	}
 
@@ -104,14 +107,22 @@ func (o *PropertyGroupUpdate) SetDisplayOrder(v int32) {
 }
 
 func (o PropertyGroupUpdate) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Label != nil {
-		toSerialize["label"] = o.Label
-	}
-	if o.DisplayOrder != nil {
-		toSerialize["displayOrder"] = o.DisplayOrder
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PropertyGroupUpdate) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Label) {
+		toSerialize["label"] = o.Label
+	}
+	if !IsNil(o.DisplayOrder) {
+		toSerialize["displayOrder"] = o.DisplayOrder
+	}
+	return toSerialize, nil
 }
 
 type NullablePropertyGroupUpdate struct {

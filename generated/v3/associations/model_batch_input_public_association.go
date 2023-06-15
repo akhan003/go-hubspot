@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputPublicAssociation type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputPublicAssociation{}
+
 // BatchInputPublicAssociation struct for BatchInputPublicAssociation
 type BatchInputPublicAssociation struct {
 	Inputs []PublicAssociation `json:"inputs"`
@@ -62,11 +65,17 @@ func (o *BatchInputPublicAssociation) SetInputs(v []PublicAssociation) {
 }
 
 func (o BatchInputPublicAssociation) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputPublicAssociation) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputPublicAssociation struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the VersionUser type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &VersionUser{}
+
 // VersionUser Model definition for a version user. Contains addition information about the user who created a version.
 type VersionUser struct {
 	// The unique ID of the User.
@@ -117,17 +120,19 @@ func (o *VersionUser) SetFullName(v string) {
 }
 
 func (o VersionUser) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if true {
-		toSerialize["fullName"] = o.FullName
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o VersionUser) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["email"] = o.Email
+	toSerialize["fullName"] = o.FullName
+	return toSerialize, nil
 }
 
 type NullableVersionUser struct {

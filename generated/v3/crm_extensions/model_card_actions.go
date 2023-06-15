@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CardActions type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CardActions{}
+
 // CardActions Configuration for custom user actions on cards.
 type CardActions struct {
 	// A list of URL prefixes that will be accepted for card action URLs. If your data fetch response includes an action URL that doesn't begin with one of these values, it will result in an error and the card will not be displayed.
@@ -63,11 +66,17 @@ func (o *CardActions) SetBaseUrls(v []string) {
 }
 
 func (o CardActions) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["baseUrls"] = o.BaseUrls
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CardActions) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["baseUrls"] = o.BaseUrls
+	return toSerialize, nil
 }
 
 type NullableCardActions struct {

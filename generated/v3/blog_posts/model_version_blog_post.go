@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the VersionBlogPost type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &VersionBlogPost{}
+
 // VersionBlogPost Model definition of a version of a blog post.
 type VersionBlogPost struct {
 	Object BlogPost    `json:"object"`
@@ -142,20 +145,20 @@ func (o *VersionBlogPost) SetUpdatedAt(v time.Time) {
 }
 
 func (o VersionBlogPost) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["object"] = o.Object
-	}
-	if true {
-		toSerialize["user"] = o.User
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o VersionBlogPost) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["object"] = o.Object
+	toSerialize["user"] = o.User
+	toSerialize["id"] = o.Id
+	toSerialize["updatedAt"] = o.UpdatedAt
+	return toSerialize, nil
 }
 
 type NullableVersionBlogPost struct {

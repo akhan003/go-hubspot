@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicTeam type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicTeam{}
+
 // PublicTeam struct for PublicTeam
 type PublicTeam struct {
 	Id      string `json:"id"`
@@ -114,17 +117,19 @@ func (o *PublicTeam) SetPrimary(v bool) {
 }
 
 func (o PublicTeam) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["primary"] = o.Primary
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicTeam) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	toSerialize["primary"] = o.Primary
+	return toSerialize, nil
 }
 
 type NullablePublicTeam struct {

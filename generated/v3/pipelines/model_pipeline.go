@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the Pipeline type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Pipeline{}
+
 // Pipeline A pipeline definition.
 type Pipeline struct {
 	// A unique label used to organize pipelines in HubSpot's UI
@@ -181,7 +184,7 @@ func (o *Pipeline) SetCreatedAt(v time.Time) {
 
 // GetArchivedAt returns the ArchivedAt field value if set, zero value otherwise.
 func (o *Pipeline) GetArchivedAt() time.Time {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -191,7 +194,7 @@ func (o *Pipeline) GetArchivedAt() time.Time {
 // GetArchivedAtOk returns a tuple with the ArchivedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Pipeline) GetArchivedAtOk() (*time.Time, bool) {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		return nil, false
 	}
 	return o.ArchivedAt, true
@@ -199,7 +202,7 @@ func (o *Pipeline) GetArchivedAtOk() (*time.Time, bool) {
 
 // HasArchivedAt returns a boolean if a field has been set.
 func (o *Pipeline) HasArchivedAt() bool {
-	if o != nil && o.ArchivedAt != nil {
+	if o != nil && !IsNil(o.ArchivedAt) {
 		return true
 	}
 
@@ -260,32 +263,26 @@ func (o *Pipeline) SetArchived(v bool) {
 }
 
 func (o Pipeline) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["displayOrder"] = o.DisplayOrder
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["stages"] = o.Stages
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.ArchivedAt != nil {
-		toSerialize["archivedAt"] = o.ArchivedAt
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
-	}
-	if true {
-		toSerialize["archived"] = o.Archived
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Pipeline) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["label"] = o.Label
+	toSerialize["displayOrder"] = o.DisplayOrder
+	toSerialize["id"] = o.Id
+	toSerialize["stages"] = o.Stages
+	toSerialize["createdAt"] = o.CreatedAt
+	if !IsNil(o.ArchivedAt) {
+		toSerialize["archivedAt"] = o.ArchivedAt
+	}
+	toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize["archived"] = o.Archived
+	return toSerialize, nil
 }
 
 type NullablePipeline struct {

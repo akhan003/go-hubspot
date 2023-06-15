@@ -101,7 +101,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - oauth2_legacy:
+        - cms.performance.read
+      - private_apps_legacy:
+        - cms.performance.read
       summary: View your website's performance.
       tags:
       - Public_Performance
@@ -197,7 +200,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
-      - hapikey: []
+      - oauth2_legacy:
+        - cms.performance.read
+      - private_apps_legacy:
+        - cms.performance.read
       summary: View your website's uptime.
       tags:
       - Public_Performance
@@ -534,7 +540,20 @@ components:
       - totalRequests
       type: object
   securitySchemes:
-    hapikey:
-      in: query
-      name: hapikey
+    oauth2_legacy:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          scopes:
+            cms.performance.read: Access the CMS Performance API
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+      type: oauth2
+    private_apps_legacy:
+      in: header
+      name: private-app-legacy
       type: apiKey
+x-hubspot-available-client-libraries:
+- PHP
+- Node
+- Python
+- Ruby

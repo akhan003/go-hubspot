@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputSimplePublicObjectId type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputSimplePublicObjectId{}
+
 // BatchInputSimplePublicObjectId struct for BatchInputSimplePublicObjectId
 type BatchInputSimplePublicObjectId struct {
 	Inputs []SimplePublicObjectId `json:"inputs"`
@@ -62,11 +65,17 @@ func (o *BatchInputSimplePublicObjectId) SetInputs(v []SimplePublicObjectId) {
 }
 
 func (o BatchInputSimplePublicObjectId) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputSimplePublicObjectId) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputSimplePublicObjectId struct {

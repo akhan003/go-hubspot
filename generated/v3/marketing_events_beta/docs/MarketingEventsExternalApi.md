@@ -4,24 +4,23 @@ All URIs are relative to *https://api.hubapi.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**Archive**](MarketingEventsExternalApi.md#Archive) | **Post** /marketing/v3/marketing-events/events/delete | 
+[**ArchiveBatch**](MarketingEventsExternalApi.md#ArchiveBatch) | **Post** /marketing/v3/marketing-events/events/delete | 
 [**Create**](MarketingEventsExternalApi.md#Create) | **Post** /marketing/v3/marketing-events/events | 
 [**ExternalArchive**](MarketingEventsExternalApi.md#ExternalArchive) | **Delete** /marketing/v3/marketing-events/events/{externalEventId} | 
 [**ExternalCancel**](MarketingEventsExternalApi.md#ExternalCancel) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/cancel | 
-[**ExternalComplete**](MarketingEventsExternalApi.md#ExternalComplete) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/complete | 
+[**ExternalCompleteComplete**](MarketingEventsExternalApi.md#ExternalCompleteComplete) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/complete | 
 [**ExternalEmailUpsertByID**](MarketingEventsExternalApi.md#ExternalEmailUpsertByID) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/{subscriberState}/email-upsert | 
 [**ExternalGetByID**](MarketingEventsExternalApi.md#ExternalGetByID) | **Get** /marketing/v3/marketing-events/events/{externalEventId} | 
 [**ExternalReplace**](MarketingEventsExternalApi.md#ExternalReplace) | **Put** /marketing/v3/marketing-events/events/{externalEventId} | 
 [**ExternalUpdate**](MarketingEventsExternalApi.md#ExternalUpdate) | **Patch** /marketing/v3/marketing-events/events/{externalEventId} | 
 [**ExternalUpsertByID**](MarketingEventsExternalApi.md#ExternalUpsertByID) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/{subscriberState}/upsert | 
-[**Search**](MarketingEventsExternalApi.md#Search) | **Get** /marketing/v3/marketing-events/events/search | 
 [**Upsert**](MarketingEventsExternalApi.md#Upsert) | **Post** /marketing/v3/marketing-events/events/upsert | 
 
 
 
-## Archive
+## ArchiveBatch
 
-> Error Archive(ctx).BatchInputMarketingEventExternalUniqueIdentifier(batchInputMarketingEventExternalUniqueIdentifier).Execute()
+> Error ArchiveBatch(ctx).BatchInputMarketingEventExternalUniqueIdentifier(batchInputMarketingEventExternalUniqueIdentifier).Execute()
 
 
 
@@ -34,7 +33,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -42,13 +41,13 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.MarketingEventsExternalApi.Archive(context.Background()).BatchInputMarketingEventExternalUniqueIdentifier(batchInputMarketingEventExternalUniqueIdentifier).Execute()
+    resp, r, err := apiClient.MarketingEventsExternalApi.ArchiveBatch(context.Background()).BatchInputMarketingEventExternalUniqueIdentifier(batchInputMarketingEventExternalUniqueIdentifier).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MarketingEventsExternalApi.Archive``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `MarketingEventsExternalApi.ArchiveBatch``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `Archive`: Error
-    fmt.Fprintf(os.Stdout, "Response from `MarketingEventsExternalApi.Archive`: %v\n", resp)
+    // response from `ArchiveBatch`: Error
+    fmt.Fprintf(os.Stdout, "Response from `MarketingEventsExternalApi.ArchiveBatch`: %v\n", resp)
 }
 ```
 
@@ -58,7 +57,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiArchiveRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiArchiveBatchRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -71,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -98,7 +97,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -135,7 +134,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -162,7 +161,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -171,7 +170,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.MarketingEventsExternalApi.ExternalArchive(context.Background(), externalEventId).ExternalAccountId(externalAccountId).Execute()
+    r, err := apiClient.MarketingEventsExternalApi.ExternalArchive(context.Background(), externalEventId).ExternalAccountId(externalAccountId).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `MarketingEventsExternalApi.ExternalArchive``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -203,7 +202,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -230,7 +229,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -273,7 +272,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -285,9 +284,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ExternalComplete
+## ExternalCompleteComplete
 
-> MarketingEventDefaultResponse ExternalComplete(ctx, externalEventId).ExternalAccountId(externalAccountId).MarketingEventCompleteRequestParams(marketingEventCompleteRequestParams).Execute()
+> MarketingEventDefaultResponse ExternalCompleteComplete(ctx, externalEventId).ExternalAccountId(externalAccountId).MarketingEventCompleteRequestParams(marketingEventCompleteRequestParams).Execute()
 
 
 
@@ -301,7 +300,7 @@ import (
     "fmt"
     "os"
     "time"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -311,13 +310,13 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.MarketingEventsExternalApi.ExternalComplete(context.Background(), externalEventId).ExternalAccountId(externalAccountId).MarketingEventCompleteRequestParams(marketingEventCompleteRequestParams).Execute()
+    resp, r, err := apiClient.MarketingEventsExternalApi.ExternalCompleteComplete(context.Background(), externalEventId).ExternalAccountId(externalAccountId).MarketingEventCompleteRequestParams(marketingEventCompleteRequestParams).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MarketingEventsExternalApi.ExternalComplete``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `MarketingEventsExternalApi.ExternalCompleteComplete``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `ExternalComplete`: MarketingEventDefaultResponse
-    fmt.Fprintf(os.Stdout, "Response from `MarketingEventsExternalApi.ExternalComplete`: %v\n", resp)
+    // response from `ExternalCompleteComplete`: MarketingEventDefaultResponse
+    fmt.Fprintf(os.Stdout, "Response from `MarketingEventsExternalApi.ExternalCompleteComplete`: %v\n", resp)
 }
 ```
 
@@ -331,7 +330,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiExternalCompleteRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiExternalCompleteCompleteRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -346,7 +345,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -373,7 +372,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -421,7 +420,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -448,7 +447,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -491,7 +490,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -518,7 +517,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -561,7 +560,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -588,7 +587,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -633,7 +632,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -660,7 +659,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -708,76 +707,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
 - **Content-Type**: application/json
 - **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## Search
-
-> CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging Search(ctx).Q(q).Execute()
-
-
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    q := "q_example" // string | 
-
-    configuration := openapiclient.NewConfiguration()
-    apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.MarketingEventsExternalApi.Search(context.Background()).Q(q).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MarketingEventsExternalApi.Search``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `Search`: CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging
-    fmt.Fprintf(os.Stdout, "Response from `MarketingEventsExternalApi.Search`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiSearchRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **q** | **string** |  | 
-
-### Return type
-
-[**CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging**](CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging.md)
-
-### Authorization
-
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json, */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -799,7 +734,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -836,7 +771,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 

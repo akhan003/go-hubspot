@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Gradient type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Gradient{}
+
 // Gradient struct for Gradient
 type Gradient struct {
 	SideOrCorner SideOrCorner `json:"sideOrCorner"`
@@ -114,17 +117,19 @@ func (o *Gradient) SetColors(v []ColorStop) {
 }
 
 func (o Gradient) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["sideOrCorner"] = o.SideOrCorner
-	}
-	if true {
-		toSerialize["angle"] = o.Angle
-	}
-	if true {
-		toSerialize["colors"] = o.Colors
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Gradient) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["sideOrCorner"] = o.SideOrCorner
+	toSerialize["angle"] = o.Angle
+	toSerialize["colors"] = o.Colors
+	return toSerialize, nil
 }
 
 type NullableGradient struct {

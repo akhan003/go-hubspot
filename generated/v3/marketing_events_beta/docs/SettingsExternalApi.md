@@ -24,7 +24,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[developer_hapikey](../README.md#developer_hapikey), [hapikey](../README.md#hapikey)
+[developer_hapikey](../README.md#developer_hapikey)
 
 ### HTTP request headers
 
@@ -94,7 +94,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -135,7 +135,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[developer_hapikey](../README.md#developer_hapikey), [hapikey](../README.md#hapikey)
+[developer_hapikey](../README.md#developer_hapikey)
 
 ### HTTP request headers
 

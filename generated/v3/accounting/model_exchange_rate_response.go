@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ExchangeRateResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ExchangeRateResponse{}
+
 // ExchangeRateResponse A response to the request for an exchange rate value. It represents the exchange rate from the source currency to the target currency.
 type ExchangeRateResponse struct {
 	// Designates if the response is a success ('OK') or failure ('ERR').
@@ -144,20 +147,20 @@ func (o *ExchangeRateResponse) SetTargetCurrencyCode(v string) {
 }
 
 func (o ExchangeRateResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["@result"] = o.Result
-	}
-	if true {
-		toSerialize["exchangeRate"] = o.ExchangeRate
-	}
-	if true {
-		toSerialize["sourceCurrencyCode"] = o.SourceCurrencyCode
-	}
-	if true {
-		toSerialize["targetCurrencyCode"] = o.TargetCurrencyCode
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ExchangeRateResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["@result"] = o.Result
+	toSerialize["exchangeRate"] = o.ExchangeRate
+	toSerialize["sourceCurrencyCode"] = o.SourceCurrencyCode
+	toSerialize["targetCurrencyCode"] = o.TargetCurrencyCode
+	return toSerialize, nil
 }
 
 type NullableExchangeRateResponse struct {

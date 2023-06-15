@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the AssociationDefinition type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AssociationDefinition{}
+
 // AssociationDefinition Defines an association between two object types.
 type AssociationDefinition struct {
 	// ID of the primary object type to link from.
@@ -101,7 +104,7 @@ func (o *AssociationDefinition) SetToObjectTypeId(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *AssociationDefinition) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -111,7 +114,7 @@ func (o *AssociationDefinition) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssociationDefinition) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
 	return o.Name, true
@@ -119,7 +122,7 @@ func (o *AssociationDefinition) GetNameOk() (*string, bool) {
 
 // HasName returns a boolean if a field has been set.
 func (o *AssociationDefinition) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !IsNil(o.Name) {
 		return true
 	}
 
@@ -157,7 +160,7 @@ func (o *AssociationDefinition) SetId(v string) {
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *AssociationDefinition) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -167,7 +170,7 @@ func (o *AssociationDefinition) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssociationDefinition) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
 	return o.CreatedAt, true
@@ -175,7 +178,7 @@ func (o *AssociationDefinition) GetCreatedAtOk() (*time.Time, bool) {
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *AssociationDefinition) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
@@ -189,7 +192,7 @@ func (o *AssociationDefinition) SetCreatedAt(v time.Time) {
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
 func (o *AssociationDefinition) GetUpdatedAt() time.Time {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -199,7 +202,7 @@ func (o *AssociationDefinition) GetUpdatedAt() time.Time {
 // GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssociationDefinition) GetUpdatedAtOk() (*time.Time, bool) {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		return nil, false
 	}
 	return o.UpdatedAt, true
@@ -207,7 +210,7 @@ func (o *AssociationDefinition) GetUpdatedAtOk() (*time.Time, bool) {
 
 // HasUpdatedAt returns a boolean if a field has been set.
 func (o *AssociationDefinition) HasUpdatedAt() bool {
-	if o != nil && o.UpdatedAt != nil {
+	if o != nil && !IsNil(o.UpdatedAt) {
 		return true
 	}
 
@@ -220,26 +223,28 @@ func (o *AssociationDefinition) SetUpdatedAt(v time.Time) {
 }
 
 func (o AssociationDefinition) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["fromObjectTypeId"] = o.FromObjectTypeId
-	}
-	if true {
-		toSerialize["toObjectTypeId"] = o.ToObjectTypeId
-	}
-	if o.Name != nil {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if o.CreatedAt != nil {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.UpdatedAt != nil {
-		toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AssociationDefinition) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["fromObjectTypeId"] = o.FromObjectTypeId
+	toSerialize["toObjectTypeId"] = o.ToObjectTypeId
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	toSerialize["id"] = o.Id
+	if !IsNil(o.CreatedAt) {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if !IsNil(o.UpdatedAt) {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	return toSerialize, nil
 }
 
 type NullableAssociationDefinition struct {

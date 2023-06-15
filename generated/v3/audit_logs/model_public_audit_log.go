@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the PublicAuditLog type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicAuditLog{}
+
 // PublicAuditLog struct for PublicAuditLog
 type PublicAuditLog struct {
 	// The ID of the object.
@@ -226,29 +229,23 @@ func (o *PublicAuditLog) SetObjectType(v string) {
 }
 
 func (o PublicAuditLog) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["objectId"] = o.ObjectId
-	}
-	if true {
-		toSerialize["userId"] = o.UserId
-	}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp
-	}
-	if true {
-		toSerialize["objectName"] = o.ObjectName
-	}
-	if true {
-		toSerialize["fullName"] = o.FullName
-	}
-	if true {
-		toSerialize["event"] = o.Event
-	}
-	if true {
-		toSerialize["objectType"] = o.ObjectType
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicAuditLog) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["objectId"] = o.ObjectId
+	toSerialize["userId"] = o.UserId
+	toSerialize["timestamp"] = o.Timestamp
+	toSerialize["objectName"] = o.ObjectName
+	toSerialize["fullName"] = o.FullName
+	toSerialize["event"] = o.Event
+	toSerialize["objectType"] = o.ObjectType
+	return toSerialize, nil
 }
 
 type NullablePublicAuditLog struct {

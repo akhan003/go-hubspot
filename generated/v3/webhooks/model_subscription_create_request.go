@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SubscriptionCreateRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SubscriptionCreateRequest{}
+
 // SubscriptionCreateRequest New webhook settings for an app.
 type SubscriptionCreateRequest struct {
 	// Type of event to listen for. Can be one of `create`, `delete`, `deletedForPrivacy`, or `propertyChange`.
@@ -68,7 +71,7 @@ func (o *SubscriptionCreateRequest) SetEventType(v string) {
 
 // GetPropertyName returns the PropertyName field value if set, zero value otherwise.
 func (o *SubscriptionCreateRequest) GetPropertyName() string {
-	if o == nil || o.PropertyName == nil {
+	if o == nil || IsNil(o.PropertyName) {
 		var ret string
 		return ret
 	}
@@ -78,7 +81,7 @@ func (o *SubscriptionCreateRequest) GetPropertyName() string {
 // GetPropertyNameOk returns a tuple with the PropertyName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SubscriptionCreateRequest) GetPropertyNameOk() (*string, bool) {
-	if o == nil || o.PropertyName == nil {
+	if o == nil || IsNil(o.PropertyName) {
 		return nil, false
 	}
 	return o.PropertyName, true
@@ -86,7 +89,7 @@ func (o *SubscriptionCreateRequest) GetPropertyNameOk() (*string, bool) {
 
 // HasPropertyName returns a boolean if a field has been set.
 func (o *SubscriptionCreateRequest) HasPropertyName() bool {
-	if o != nil && o.PropertyName != nil {
+	if o != nil && !IsNil(o.PropertyName) {
 		return true
 	}
 
@@ -100,7 +103,7 @@ func (o *SubscriptionCreateRequest) SetPropertyName(v string) {
 
 // GetActive returns the Active field value if set, zero value otherwise.
 func (o *SubscriptionCreateRequest) GetActive() bool {
-	if o == nil || o.Active == nil {
+	if o == nil || IsNil(o.Active) {
 		var ret bool
 		return ret
 	}
@@ -110,7 +113,7 @@ func (o *SubscriptionCreateRequest) GetActive() bool {
 // GetActiveOk returns a tuple with the Active field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SubscriptionCreateRequest) GetActiveOk() (*bool, bool) {
-	if o == nil || o.Active == nil {
+	if o == nil || IsNil(o.Active) {
 		return nil, false
 	}
 	return o.Active, true
@@ -118,7 +121,7 @@ func (o *SubscriptionCreateRequest) GetActiveOk() (*bool, bool) {
 
 // HasActive returns a boolean if a field has been set.
 func (o *SubscriptionCreateRequest) HasActive() bool {
-	if o != nil && o.Active != nil {
+	if o != nil && !IsNil(o.Active) {
 		return true
 	}
 
@@ -131,17 +134,23 @@ func (o *SubscriptionCreateRequest) SetActive(v bool) {
 }
 
 func (o SubscriptionCreateRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["eventType"] = o.EventType
-	}
-	if o.PropertyName != nil {
-		toSerialize["propertyName"] = o.PropertyName
-	}
-	if o.Active != nil {
-		toSerialize["active"] = o.Active
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SubscriptionCreateRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["eventType"] = o.EventType
+	if !IsNil(o.PropertyName) {
+		toSerialize["propertyName"] = o.PropertyName
+	}
+	if !IsNil(o.Active) {
+		toSerialize["active"] = o.Active
+	}
+	return toSerialize, nil
 }
 
 type NullableSubscriptionCreateRequest struct {

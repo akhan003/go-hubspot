@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TimelineEventTemplateTokenOption type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TimelineEventTemplateTokenOption{}
+
 // TimelineEventTemplateTokenOption struct for TimelineEventTemplateTokenOption
 type TimelineEventTemplateTokenOption struct {
 	Value string `json:"value"`
@@ -88,14 +91,18 @@ func (o *TimelineEventTemplateTokenOption) SetLabel(v string) {
 }
 
 func (o TimelineEventTemplateTokenOption) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["value"] = o.Value
-	}
-	if true {
-		toSerialize["label"] = o.Label
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TimelineEventTemplateTokenOption) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["value"] = o.Value
+	toSerialize["label"] = o.Label
+	return toSerialize, nil
 }
 
 type NullableTimelineEventTemplateTokenOption struct {

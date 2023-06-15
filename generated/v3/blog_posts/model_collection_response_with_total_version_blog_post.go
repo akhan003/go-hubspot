@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionResponseWithTotalVersionBlogPost type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionResponseWithTotalVersionBlogPost{}
+
 // CollectionResponseWithTotalVersionBlogPost Response object for collections of blog post versions with pagination information.
 type CollectionResponseWithTotalVersionBlogPost struct {
 	// Total number of blog post versions.
@@ -92,7 +95,7 @@ func (o *CollectionResponseWithTotalVersionBlogPost) SetResults(v []VersionBlogP
 
 // GetPaging returns the Paging field value if set, zero value otherwise.
 func (o *CollectionResponseWithTotalVersionBlogPost) GetPaging() Paging {
-	if o == nil || o.Paging == nil {
+	if o == nil || IsNil(o.Paging) {
 		var ret Paging
 		return ret
 	}
@@ -102,7 +105,7 @@ func (o *CollectionResponseWithTotalVersionBlogPost) GetPaging() Paging {
 // GetPagingOk returns a tuple with the Paging field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CollectionResponseWithTotalVersionBlogPost) GetPagingOk() (*Paging, bool) {
-	if o == nil || o.Paging == nil {
+	if o == nil || IsNil(o.Paging) {
 		return nil, false
 	}
 	return o.Paging, true
@@ -110,7 +113,7 @@ func (o *CollectionResponseWithTotalVersionBlogPost) GetPagingOk() (*Paging, boo
 
 // HasPaging returns a boolean if a field has been set.
 func (o *CollectionResponseWithTotalVersionBlogPost) HasPaging() bool {
-	if o != nil && o.Paging != nil {
+	if o != nil && !IsNil(o.Paging) {
 		return true
 	}
 
@@ -123,17 +126,21 @@ func (o *CollectionResponseWithTotalVersionBlogPost) SetPaging(v Paging) {
 }
 
 func (o CollectionResponseWithTotalVersionBlogPost) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["total"] = o.Total
-	}
-	if true {
-		toSerialize["results"] = o.Results
-	}
-	if o.Paging != nil {
-		toSerialize["paging"] = o.Paging
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionResponseWithTotalVersionBlogPost) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["total"] = o.Total
+	toSerialize["results"] = o.Results
+	if !IsNil(o.Paging) {
+		toSerialize["paging"] = o.Paging
+	}
+	return toSerialize, nil
 }
 
 type NullableCollectionResponseWithTotalVersionBlogPost struct {

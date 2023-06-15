@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MarketingEventSubscriber type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MarketingEventSubscriber{}
+
 // MarketingEventSubscriber struct for MarketingEventSubscriber
 type MarketingEventSubscriber struct {
 	// The date and time at which the contact subscribed to the event.
@@ -66,7 +69,7 @@ func (o *MarketingEventSubscriber) SetInteractionDateTime(v int64) {
 
 // GetProperties returns the Properties field value if set, zero value otherwise.
 func (o *MarketingEventSubscriber) GetProperties() map[string]string {
-	if o == nil || o.Properties == nil {
+	if o == nil || IsNil(o.Properties) {
 		var ret map[string]string
 		return ret
 	}
@@ -76,7 +79,7 @@ func (o *MarketingEventSubscriber) GetProperties() map[string]string {
 // GetPropertiesOk returns a tuple with the Properties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventSubscriber) GetPropertiesOk() (*map[string]string, bool) {
-	if o == nil || o.Properties == nil {
+	if o == nil || IsNil(o.Properties) {
 		return nil, false
 	}
 	return o.Properties, true
@@ -84,7 +87,7 @@ func (o *MarketingEventSubscriber) GetPropertiesOk() (*map[string]string, bool) 
 
 // HasProperties returns a boolean if a field has been set.
 func (o *MarketingEventSubscriber) HasProperties() bool {
-	if o != nil && o.Properties != nil {
+	if o != nil && !IsNil(o.Properties) {
 		return true
 	}
 
@@ -98,7 +101,7 @@ func (o *MarketingEventSubscriber) SetProperties(v map[string]string) {
 
 // GetVid returns the Vid field value if set, zero value otherwise.
 func (o *MarketingEventSubscriber) GetVid() int32 {
-	if o == nil || o.Vid == nil {
+	if o == nil || IsNil(o.Vid) {
 		var ret int32
 		return ret
 	}
@@ -108,7 +111,7 @@ func (o *MarketingEventSubscriber) GetVid() int32 {
 // GetVidOk returns a tuple with the Vid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MarketingEventSubscriber) GetVidOk() (*int32, bool) {
-	if o == nil || o.Vid == nil {
+	if o == nil || IsNil(o.Vid) {
 		return nil, false
 	}
 	return o.Vid, true
@@ -116,7 +119,7 @@ func (o *MarketingEventSubscriber) GetVidOk() (*int32, bool) {
 
 // HasVid returns a boolean if a field has been set.
 func (o *MarketingEventSubscriber) HasVid() bool {
-	if o != nil && o.Vid != nil {
+	if o != nil && !IsNil(o.Vid) {
 		return true
 	}
 
@@ -129,17 +132,23 @@ func (o *MarketingEventSubscriber) SetVid(v int32) {
 }
 
 func (o MarketingEventSubscriber) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["interactionDateTime"] = o.InteractionDateTime
-	}
-	if o.Properties != nil {
-		toSerialize["properties"] = o.Properties
-	}
-	if o.Vid != nil {
-		toSerialize["vid"] = o.Vid
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MarketingEventSubscriber) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["interactionDateTime"] = o.InteractionDateTime
+	if !IsNil(o.Properties) {
+		toSerialize["properties"] = o.Properties
+	}
+	if !IsNil(o.Vid) {
+		toSerialize["vid"] = o.Vid
+	}
+	return toSerialize, nil
 }
 
 type NullableMarketingEventSubscriber struct {

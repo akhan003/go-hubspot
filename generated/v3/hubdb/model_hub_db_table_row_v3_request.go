@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the HubDbTableRowV3Request type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &HubDbTableRowV3Request{}
+
 // HubDbTableRowV3Request struct for HubDbTableRowV3Request
 type HubDbTableRowV3Request struct {
 	// Specifies the value for `hs_path` column, which will be used as slug in the dynamic pages
@@ -23,7 +26,8 @@ type HubDbTableRowV3Request struct {
 	// Specifies the value for the column child table id
 	ChildTableId *int32 `json:"childTableId,omitempty"`
 	// List of key value pairs with the column name and column value
-	Values map[string]map[string]interface{} `json:"values"`
+	Values       map[string]map[string]interface{} `json:"values"`
+	DisplayIndex *int32                            `json:"displayIndex,omitempty"`
 }
 
 // NewHubDbTableRowV3Request instantiates a new HubDbTableRowV3Request object
@@ -46,7 +50,7 @@ func NewHubDbTableRowV3RequestWithDefaults() *HubDbTableRowV3Request {
 
 // GetPath returns the Path field value if set, zero value otherwise.
 func (o *HubDbTableRowV3Request) GetPath() string {
-	if o == nil || o.Path == nil {
+	if o == nil || IsNil(o.Path) {
 		var ret string
 		return ret
 	}
@@ -56,7 +60,7 @@ func (o *HubDbTableRowV3Request) GetPath() string {
 // GetPathOk returns a tuple with the Path field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HubDbTableRowV3Request) GetPathOk() (*string, bool) {
-	if o == nil || o.Path == nil {
+	if o == nil || IsNil(o.Path) {
 		return nil, false
 	}
 	return o.Path, true
@@ -64,7 +68,7 @@ func (o *HubDbTableRowV3Request) GetPathOk() (*string, bool) {
 
 // HasPath returns a boolean if a field has been set.
 func (o *HubDbTableRowV3Request) HasPath() bool {
-	if o != nil && o.Path != nil {
+	if o != nil && !IsNil(o.Path) {
 		return true
 	}
 
@@ -78,7 +82,7 @@ func (o *HubDbTableRowV3Request) SetPath(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *HubDbTableRowV3Request) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -88,7 +92,7 @@ func (o *HubDbTableRowV3Request) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HubDbTableRowV3Request) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
 	return o.Name, true
@@ -96,7 +100,7 @@ func (o *HubDbTableRowV3Request) GetNameOk() (*string, bool) {
 
 // HasName returns a boolean if a field has been set.
 func (o *HubDbTableRowV3Request) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !IsNil(o.Name) {
 		return true
 	}
 
@@ -110,7 +114,7 @@ func (o *HubDbTableRowV3Request) SetName(v string) {
 
 // GetChildTableId returns the ChildTableId field value if set, zero value otherwise.
 func (o *HubDbTableRowV3Request) GetChildTableId() int32 {
-	if o == nil || o.ChildTableId == nil {
+	if o == nil || IsNil(o.ChildTableId) {
 		var ret int32
 		return ret
 	}
@@ -120,7 +124,7 @@ func (o *HubDbTableRowV3Request) GetChildTableId() int32 {
 // GetChildTableIdOk returns a tuple with the ChildTableId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HubDbTableRowV3Request) GetChildTableIdOk() (*int32, bool) {
-	if o == nil || o.ChildTableId == nil {
+	if o == nil || IsNil(o.ChildTableId) {
 		return nil, false
 	}
 	return o.ChildTableId, true
@@ -128,7 +132,7 @@ func (o *HubDbTableRowV3Request) GetChildTableIdOk() (*int32, bool) {
 
 // HasChildTableId returns a boolean if a field has been set.
 func (o *HubDbTableRowV3Request) HasChildTableId() bool {
-	if o != nil && o.ChildTableId != nil {
+	if o != nil && !IsNil(o.ChildTableId) {
 		return true
 	}
 
@@ -164,21 +168,62 @@ func (o *HubDbTableRowV3Request) SetValues(v map[string]map[string]interface{}) 
 	o.Values = v
 }
 
+// GetDisplayIndex returns the DisplayIndex field value if set, zero value otherwise.
+func (o *HubDbTableRowV3Request) GetDisplayIndex() int32 {
+	if o == nil || IsNil(o.DisplayIndex) {
+		var ret int32
+		return ret
+	}
+	return *o.DisplayIndex
+}
+
+// GetDisplayIndexOk returns a tuple with the DisplayIndex field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HubDbTableRowV3Request) GetDisplayIndexOk() (*int32, bool) {
+	if o == nil || IsNil(o.DisplayIndex) {
+		return nil, false
+	}
+	return o.DisplayIndex, true
+}
+
+// HasDisplayIndex returns a boolean if a field has been set.
+func (o *HubDbTableRowV3Request) HasDisplayIndex() bool {
+	if o != nil && !IsNil(o.DisplayIndex) {
+		return true
+	}
+
+	return false
+}
+
+// SetDisplayIndex gets a reference to the given int32 and assigns it to the DisplayIndex field.
+func (o *HubDbTableRowV3Request) SetDisplayIndex(v int32) {
+	o.DisplayIndex = &v
+}
+
 func (o HubDbTableRowV3Request) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Path != nil {
-		toSerialize["path"] = o.Path
-	}
-	if o.Name != nil {
-		toSerialize["name"] = o.Name
-	}
-	if o.ChildTableId != nil {
-		toSerialize["childTableId"] = o.ChildTableId
-	}
-	if true {
-		toSerialize["values"] = o.Values
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o HubDbTableRowV3Request) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Path) {
+		toSerialize["path"] = o.Path
+	}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.ChildTableId) {
+		toSerialize["childTableId"] = o.ChildTableId
+	}
+	toSerialize["values"] = o.Values
+	if !IsNil(o.DisplayIndex) {
+		toSerialize["displayIndex"] = o.DisplayIndex
+	}
+	return toSerialize, nil
 }
 
 type NullableHubDbTableRowV3Request struct {

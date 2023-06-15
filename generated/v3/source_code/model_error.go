@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Error type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Error{}
+
 // Error struct for Error
 type Error struct {
 	// A human readable message describing the error along with remediation steps where appropriate
@@ -126,7 +129,7 @@ func (o *Error) SetCategory(v string) {
 
 // GetSubCategory returns the SubCategory field value if set, zero value otherwise.
 func (o *Error) GetSubCategory() string {
-	if o == nil || o.SubCategory == nil {
+	if o == nil || IsNil(o.SubCategory) {
 		var ret string
 		return ret
 	}
@@ -136,7 +139,7 @@ func (o *Error) GetSubCategory() string {
 // GetSubCategoryOk returns a tuple with the SubCategory field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Error) GetSubCategoryOk() (*string, bool) {
-	if o == nil || o.SubCategory == nil {
+	if o == nil || IsNil(o.SubCategory) {
 		return nil, false
 	}
 	return o.SubCategory, true
@@ -144,7 +147,7 @@ func (o *Error) GetSubCategoryOk() (*string, bool) {
 
 // HasSubCategory returns a boolean if a field has been set.
 func (o *Error) HasSubCategory() bool {
-	if o != nil && o.SubCategory != nil {
+	if o != nil && !IsNil(o.SubCategory) {
 		return true
 	}
 
@@ -158,7 +161,7 @@ func (o *Error) SetSubCategory(v string) {
 
 // GetErrors returns the Errors field value if set, zero value otherwise.
 func (o *Error) GetErrors() []ErrorDetail {
-	if o == nil || o.Errors == nil {
+	if o == nil || IsNil(o.Errors) {
 		var ret []ErrorDetail
 		return ret
 	}
@@ -168,7 +171,7 @@ func (o *Error) GetErrors() []ErrorDetail {
 // GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Error) GetErrorsOk() ([]ErrorDetail, bool) {
-	if o == nil || o.Errors == nil {
+	if o == nil || IsNil(o.Errors) {
 		return nil, false
 	}
 	return o.Errors, true
@@ -176,7 +179,7 @@ func (o *Error) GetErrorsOk() ([]ErrorDetail, bool) {
 
 // HasErrors returns a boolean if a field has been set.
 func (o *Error) HasErrors() bool {
-	if o != nil && o.Errors != nil {
+	if o != nil && !IsNil(o.Errors) {
 		return true
 	}
 
@@ -190,7 +193,7 @@ func (o *Error) SetErrors(v []ErrorDetail) {
 
 // GetContext returns the Context field value if set, zero value otherwise.
 func (o *Error) GetContext() map[string][]string {
-	if o == nil || o.Context == nil {
+	if o == nil || IsNil(o.Context) {
 		var ret map[string][]string
 		return ret
 	}
@@ -200,7 +203,7 @@ func (o *Error) GetContext() map[string][]string {
 // GetContextOk returns a tuple with the Context field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Error) GetContextOk() (*map[string][]string, bool) {
-	if o == nil || o.Context == nil {
+	if o == nil || IsNil(o.Context) {
 		return nil, false
 	}
 	return o.Context, true
@@ -208,7 +211,7 @@ func (o *Error) GetContextOk() (*map[string][]string, bool) {
 
 // HasContext returns a boolean if a field has been set.
 func (o *Error) HasContext() bool {
-	if o != nil && o.Context != nil {
+	if o != nil && !IsNil(o.Context) {
 		return true
 	}
 
@@ -222,7 +225,7 @@ func (o *Error) SetContext(v map[string][]string) {
 
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *Error) GetLinks() map[string]string {
-	if o == nil || o.Links == nil {
+	if o == nil || IsNil(o.Links) {
 		var ret map[string]string
 		return ret
 	}
@@ -232,7 +235,7 @@ func (o *Error) GetLinks() map[string]string {
 // GetLinksOk returns a tuple with the Links field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Error) GetLinksOk() (*map[string]string, bool) {
-	if o == nil || o.Links == nil {
+	if o == nil || IsNil(o.Links) {
 		return nil, false
 	}
 	return o.Links, true
@@ -240,7 +243,7 @@ func (o *Error) GetLinksOk() (*map[string]string, bool) {
 
 // HasLinks returns a boolean if a field has been set.
 func (o *Error) HasLinks() bool {
-	if o != nil && o.Links != nil {
+	if o != nil && !IsNil(o.Links) {
 		return true
 	}
 
@@ -253,29 +256,31 @@ func (o *Error) SetLinks(v map[string]string) {
 }
 
 func (o Error) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["message"] = o.Message
-	}
-	if true {
-		toSerialize["correlationId"] = o.CorrelationId
-	}
-	if true {
-		toSerialize["category"] = o.Category
-	}
-	if o.SubCategory != nil {
-		toSerialize["subCategory"] = o.SubCategory
-	}
-	if o.Errors != nil {
-		toSerialize["errors"] = o.Errors
-	}
-	if o.Context != nil {
-		toSerialize["context"] = o.Context
-	}
-	if o.Links != nil {
-		toSerialize["links"] = o.Links
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Error) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["message"] = o.Message
+	toSerialize["correlationId"] = o.CorrelationId
+	toSerialize["category"] = o.Category
+	if !IsNil(o.SubCategory) {
+		toSerialize["subCategory"] = o.SubCategory
+	}
+	if !IsNil(o.Errors) {
+		toSerialize["errors"] = o.Errors
+	}
+	if !IsNil(o.Context) {
+		toSerialize["context"] = o.Context
+	}
+	if !IsNil(o.Links) {
+		toSerialize["links"] = o.Links
+	}
+	return toSerialize, nil
 }
 
 type NullableError struct {

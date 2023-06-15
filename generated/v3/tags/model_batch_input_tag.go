@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputTag type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputTag{}
+
 // BatchInputTag Wrapper for providing an array of blog tags as inputs.
 type BatchInputTag struct {
 	// Blog tags to input.
@@ -63,11 +66,17 @@ func (o *BatchInputTag) SetInputs(v []Tag) {
 }
 
 func (o BatchInputTag) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputTag) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputTag struct {

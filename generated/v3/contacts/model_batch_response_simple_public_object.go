@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the BatchResponseSimplePublicObject type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchResponseSimplePublicObject{}
+
 // BatchResponseSimplePublicObject struct for BatchResponseSimplePublicObject
 type BatchResponseSimplePublicObject struct {
 	Status      string               `json:"status"`
@@ -96,7 +99,7 @@ func (o *BatchResponseSimplePublicObject) SetResults(v []SimplePublicObject) {
 
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
 func (o *BatchResponseSimplePublicObject) GetRequestedAt() time.Time {
-	if o == nil || o.RequestedAt == nil {
+	if o == nil || IsNil(o.RequestedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -106,7 +109,7 @@ func (o *BatchResponseSimplePublicObject) GetRequestedAt() time.Time {
 // GetRequestedAtOk returns a tuple with the RequestedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BatchResponseSimplePublicObject) GetRequestedAtOk() (*time.Time, bool) {
-	if o == nil || o.RequestedAt == nil {
+	if o == nil || IsNil(o.RequestedAt) {
 		return nil, false
 	}
 	return o.RequestedAt, true
@@ -114,7 +117,7 @@ func (o *BatchResponseSimplePublicObject) GetRequestedAtOk() (*time.Time, bool) 
 
 // HasRequestedAt returns a boolean if a field has been set.
 func (o *BatchResponseSimplePublicObject) HasRequestedAt() bool {
-	if o != nil && o.RequestedAt != nil {
+	if o != nil && !IsNil(o.RequestedAt) {
 		return true
 	}
 
@@ -176,7 +179,7 @@ func (o *BatchResponseSimplePublicObject) SetCompletedAt(v time.Time) {
 
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *BatchResponseSimplePublicObject) GetLinks() map[string]string {
-	if o == nil || o.Links == nil {
+	if o == nil || IsNil(o.Links) {
 		var ret map[string]string
 		return ret
 	}
@@ -186,7 +189,7 @@ func (o *BatchResponseSimplePublicObject) GetLinks() map[string]string {
 // GetLinksOk returns a tuple with the Links field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BatchResponseSimplePublicObject) GetLinksOk() (*map[string]string, bool) {
-	if o == nil || o.Links == nil {
+	if o == nil || IsNil(o.Links) {
 		return nil, false
 	}
 	return o.Links, true
@@ -194,7 +197,7 @@ func (o *BatchResponseSimplePublicObject) GetLinksOk() (*map[string]string, bool
 
 // HasLinks returns a boolean if a field has been set.
 func (o *BatchResponseSimplePublicObject) HasLinks() bool {
-	if o != nil && o.Links != nil {
+	if o != nil && !IsNil(o.Links) {
 		return true
 	}
 
@@ -207,26 +210,26 @@ func (o *BatchResponseSimplePublicObject) SetLinks(v map[string]string) {
 }
 
 func (o BatchResponseSimplePublicObject) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["results"] = o.Results
-	}
-	if o.RequestedAt != nil {
-		toSerialize["requestedAt"] = o.RequestedAt
-	}
-	if true {
-		toSerialize["startedAt"] = o.StartedAt
-	}
-	if true {
-		toSerialize["completedAt"] = o.CompletedAt
-	}
-	if o.Links != nil {
-		toSerialize["links"] = o.Links
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchResponseSimplePublicObject) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["status"] = o.Status
+	toSerialize["results"] = o.Results
+	if !IsNil(o.RequestedAt) {
+		toSerialize["requestedAt"] = o.RequestedAt
+	}
+	toSerialize["startedAt"] = o.StartedAt
+	toSerialize["completedAt"] = o.CompletedAt
+	if !IsNil(o.Links) {
+		toSerialize["links"] = o.Links
+	}
+	return toSerialize, nil
 }
 
 type NullableBatchResponseSimplePublicObject struct {

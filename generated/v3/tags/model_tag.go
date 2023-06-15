@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the Tag type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Tag{}
+
 // Tag Model definition for a Tag.
 type Tag struct {
 	// The unique ID of the Blog Tag.
@@ -224,29 +227,23 @@ func (o *Tag) SetDeletedAt(v time.Time) {
 }
 
 func (o Tag) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["language"] = o.Language
-	}
-	if true {
-		toSerialize["translatedFromId"] = o.TranslatedFromId
-	}
-	if true {
-		toSerialize["created"] = o.Created
-	}
-	if true {
-		toSerialize["updated"] = o.Updated
-	}
-	if true {
-		toSerialize["deletedAt"] = o.DeletedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Tag) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	toSerialize["language"] = o.Language
+	toSerialize["translatedFromId"] = o.TranslatedFromId
+	toSerialize["created"] = o.Created
+	toSerialize["updated"] = o.Updated
+	toSerialize["deletedAt"] = o.DeletedAt
+	return toSerialize, nil
 }
 
 type NullableTag struct {

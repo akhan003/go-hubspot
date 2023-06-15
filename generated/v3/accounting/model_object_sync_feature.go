@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ObjectSyncFeature type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ObjectSyncFeature{}
+
 // ObjectSyncFeature struct for ObjectSyncFeature
 type ObjectSyncFeature struct {
 	// Indicates if syncing the object type from the external accounting system into HubSpot is supported.
@@ -63,11 +66,17 @@ func (o *ObjectSyncFeature) SetToHubSpot(v bool) {
 }
 
 func (o ObjectSyncFeature) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["toHubSpot"] = o.ToHubSpot
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ObjectSyncFeature) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["toHubSpot"] = o.ToHubSpot
+	return toSerialize, nil
 }
 
 type NullableObjectSyncFeature struct {

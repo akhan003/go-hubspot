@@ -34,7 +34,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -43,7 +43,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackCreateCustomer(context.Background(), requestId).ResultIdAccountingResponse(resultIdAccountingResponse).Execute()
+    r, err := apiClient.CallbacksApi.CallbackCreateCustomer(context.Background(), requestId).ResultIdAccountingResponse(resultIdAccountingResponse).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackCreateCustomer``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -75,7 +75,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -104,7 +104,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -113,7 +113,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackCreateExchangeRate(context.Background(), requestId).ExchangeRateResponse(exchangeRateResponse).Execute()
+    r, err := apiClient.CallbacksApi.CallbackCreateExchangeRate(context.Background(), requestId).ExchangeRateResponse(exchangeRateResponse).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackCreateExchangeRate``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -145,7 +145,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -174,7 +174,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -183,7 +183,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackCreateInvoice(context.Background(), requestId).ResultIdAccountingResponse(resultIdAccountingResponse).Execute()
+    r, err := apiClient.CallbacksApi.CallbackCreateInvoice(context.Background(), requestId).ResultIdAccountingResponse(resultIdAccountingResponse).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackCreateInvoice``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -215,7 +215,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -244,7 +244,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -253,7 +253,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackCreateTerm(context.Background(), requestId).TermsResponse(termsResponse).Execute()
+    r, err := apiClient.CallbacksApi.CallbackCreateTerm(context.Background(), requestId).TermsResponse(termsResponse).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackCreateTerm``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -285,7 +285,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -315,7 +315,7 @@ import (
     "fmt"
     "os"
     "time"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -324,7 +324,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackDoInvoiceSearch(context.Background(), requestId).InvoiceSearchResponse(invoiceSearchResponse).Execute()
+    r, err := apiClient.CallbacksApi.CallbackDoInvoiceSearch(context.Background(), requestId).InvoiceSearchResponse(invoiceSearchResponse).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackDoInvoiceSearch``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -356,7 +356,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -385,7 +385,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -394,7 +394,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackDoProductSearch(context.Background(), requestId).ProductSearchResponse(productSearchResponse).Execute()
+    r, err := apiClient.CallbacksApi.CallbackDoProductSearch(context.Background(), requestId).ProductSearchResponse(productSearchResponse).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackDoProductSearch``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -426,7 +426,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -455,7 +455,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -464,7 +464,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackDoSearchCustomer(context.Background(), requestId).CustomerSearchResponseExternal(customerSearchResponseExternal).Execute()
+    r, err := apiClient.CallbacksApi.CallbackDoSearchCustomer(context.Background(), requestId).CustomerSearchResponseExternal(customerSearchResponseExternal).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackDoSearchCustomer``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -496,7 +496,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -525,7 +525,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -534,7 +534,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackDoTaxSearch(context.Background(), requestId).TaxSearchResponse(taxSearchResponse).Execute()
+    r, err := apiClient.CallbacksApi.CallbackDoTaxSearch(context.Background(), requestId).TaxSearchResponse(taxSearchResponse).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackDoTaxSearch``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -566,7 +566,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -596,7 +596,7 @@ import (
     "fmt"
     "os"
     "time"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -605,7 +605,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackGetByID(context.Background(), requestId).InvoicesResponseExternal(invoicesResponseExternal).Execute()
+    r, err := apiClient.CallbacksApi.CallbackGetByID(context.Background(), requestId).InvoicesResponseExternal(invoicesResponseExternal).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackGetByID``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -637,7 +637,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 
@@ -666,7 +666,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -675,7 +675,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CallbacksApi.CallbackInvoicePDF(context.Background(), requestId).InvoicePdfResponse(invoicePdfResponse).Execute()
+    r, err := apiClient.CallbacksApi.CallbackInvoicePDF(context.Background(), requestId).InvoicePdfResponse(invoicePdfResponse).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CallbacksApi.CallbackInvoicePDF``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -707,7 +707,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 

@@ -13,10 +13,8 @@ package marketing_events_beta
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"strings"
 )
@@ -24,29 +22,29 @@ import (
 // MarketingEventsExternalApiService MarketingEventsExternalApi service
 type MarketingEventsExternalApiService service
 
-type ApiArchiveRequest struct {
+type ApiArchiveBatchRequest struct {
 	ctx                                              context.Context
 	ApiService                                       *MarketingEventsExternalApiService
 	batchInputMarketingEventExternalUniqueIdentifier *BatchInputMarketingEventExternalUniqueIdentifier
 }
 
-func (r ApiArchiveRequest) BatchInputMarketingEventExternalUniqueIdentifier(batchInputMarketingEventExternalUniqueIdentifier BatchInputMarketingEventExternalUniqueIdentifier) ApiArchiveRequest {
+func (r ApiArchiveBatchRequest) BatchInputMarketingEventExternalUniqueIdentifier(batchInputMarketingEventExternalUniqueIdentifier BatchInputMarketingEventExternalUniqueIdentifier) ApiArchiveBatchRequest {
 	r.batchInputMarketingEventExternalUniqueIdentifier = &batchInputMarketingEventExternalUniqueIdentifier
 	return r
 }
 
-func (r ApiArchiveRequest) Execute() (*Error, *http.Response, error) {
-	return r.ApiService.ArchiveExecute(r)
+func (r ApiArchiveBatchRequest) Execute() (*Error, *http.Response, error) {
+	return r.ApiService.ArchiveBatchExecute(r)
 }
 
 /*
-Archive Method for Archive
+ArchiveBatch Method for ArchiveBatch
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiArchiveRequest
+ @return ApiArchiveBatchRequest
 */
-func (a *MarketingEventsExternalApiService) Archive(ctx context.Context) ApiArchiveRequest {
-	return ApiArchiveRequest{
+func (a *MarketingEventsExternalApiService) ArchiveBatch(ctx context.Context) ApiArchiveBatchRequest {
+	return ApiArchiveBatchRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -54,7 +52,7 @@ func (a *MarketingEventsExternalApiService) Archive(ctx context.Context) ApiArch
 
 // Execute executes the request
 //  @return Error
-func (a *MarketingEventsExternalApiService) ArchiveExecute(r ApiArchiveRequest) (*Error, *http.Response, error) {
+func (a *MarketingEventsExternalApiService) ArchiveBatchExecute(r ApiArchiveBatchRequest) (*Error, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -62,7 +60,7 @@ func (a *MarketingEventsExternalApiService) ArchiveExecute(r ApiArchiveRequest) 
 		localVarReturnValue *Error
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MarketingEventsExternalApiService.Archive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MarketingEventsExternalApiService.ArchiveBatch")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -97,12 +95,16 @@ func (a *MarketingEventsExternalApiService) ArchiveExecute(r ApiArchiveRequest) 
 	localVarPostBody = r.batchInputMarketingEventExternalUniqueIdentifier
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -115,9 +117,9 @@ func (a *MarketingEventsExternalApiService) ArchiveExecute(r ApiArchiveRequest) 
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -133,6 +135,7 @@ func (a *MarketingEventsExternalApiService) ArchiveExecute(r ApiArchiveRequest) 
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -222,12 +225,16 @@ func (a *MarketingEventsExternalApiService) CreateExecute(r ApiCreateRequest) (*
 	localVarPostBody = r.marketingEventCreateRequestParams
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -240,9 +247,9 @@ func (a *MarketingEventsExternalApiService) CreateExecute(r ApiCreateRequest) (*
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -258,6 +265,7 @@ func (a *MarketingEventsExternalApiService) CreateExecute(r ApiCreateRequest) (*
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -319,7 +327,7 @@ func (a *MarketingEventsExternalApiService) ExternalArchiveExecute(r ApiExternal
 	}
 
 	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/{externalEventId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterToString(r.externalEventId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterValueToString(r.externalEventId, "externalEventId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -328,7 +336,7 @@ func (a *MarketingEventsExternalApiService) ExternalArchiveExecute(r ApiExternal
 		return nil, reportError("externalAccountId is required and must be specified")
 	}
 
-	localVarQueryParams.Add("externalAccountId", parameterToString(*r.externalAccountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "externalAccountId", r.externalAccountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -348,12 +356,16 @@ func (a *MarketingEventsExternalApiService) ExternalArchiveExecute(r ApiExternal
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -366,9 +378,9 @@ func (a *MarketingEventsExternalApiService) ExternalArchiveExecute(r ApiExternal
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -384,6 +396,7 @@ func (a *MarketingEventsExternalApiService) ExternalArchiveExecute(r ApiExternal
 			newErr.error = err.Error()
 			return localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
@@ -438,7 +451,7 @@ func (a *MarketingEventsExternalApiService) ExternalCancelExecute(r ApiExternalC
 	}
 
 	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/{externalEventId}/cancel"
-	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterToString(r.externalEventId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterValueToString(r.externalEventId, "externalEventId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -447,7 +460,7 @@ func (a *MarketingEventsExternalApiService) ExternalCancelExecute(r ApiExternalC
 		return localVarReturnValue, nil, reportError("externalAccountId is required and must be specified")
 	}
 
-	localVarQueryParams.Add("externalAccountId", parameterToString(*r.externalAccountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "externalAccountId", r.externalAccountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -467,12 +480,16 @@ func (a *MarketingEventsExternalApiService) ExternalCancelExecute(r ApiExternalC
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -485,9 +502,9 @@ func (a *MarketingEventsExternalApiService) ExternalCancelExecute(r ApiExternalC
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -503,6 +520,7 @@ func (a *MarketingEventsExternalApiService) ExternalCancelExecute(r ApiExternalC
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -519,7 +537,7 @@ func (a *MarketingEventsExternalApiService) ExternalCancelExecute(r ApiExternalC
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiExternalCompleteRequest struct {
+type ApiExternalCompleteCompleteRequest struct {
 	ctx                                 context.Context
 	ApiService                          *MarketingEventsExternalApiService
 	externalEventId                     string
@@ -527,29 +545,29 @@ type ApiExternalCompleteRequest struct {
 	marketingEventCompleteRequestParams *MarketingEventCompleteRequestParams
 }
 
-func (r ApiExternalCompleteRequest) ExternalAccountId(externalAccountId string) ApiExternalCompleteRequest {
+func (r ApiExternalCompleteCompleteRequest) ExternalAccountId(externalAccountId string) ApiExternalCompleteCompleteRequest {
 	r.externalAccountId = &externalAccountId
 	return r
 }
 
-func (r ApiExternalCompleteRequest) MarketingEventCompleteRequestParams(marketingEventCompleteRequestParams MarketingEventCompleteRequestParams) ApiExternalCompleteRequest {
+func (r ApiExternalCompleteCompleteRequest) MarketingEventCompleteRequestParams(marketingEventCompleteRequestParams MarketingEventCompleteRequestParams) ApiExternalCompleteCompleteRequest {
 	r.marketingEventCompleteRequestParams = &marketingEventCompleteRequestParams
 	return r
 }
 
-func (r ApiExternalCompleteRequest) Execute() (*MarketingEventDefaultResponse, *http.Response, error) {
-	return r.ApiService.ExternalCompleteExecute(r)
+func (r ApiExternalCompleteCompleteRequest) Execute() (*MarketingEventDefaultResponse, *http.Response, error) {
+	return r.ApiService.ExternalCompleteCompleteExecute(r)
 }
 
 /*
-ExternalComplete Method for ExternalComplete
+ExternalCompleteComplete Method for ExternalCompleteComplete
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param externalEventId
- @return ApiExternalCompleteRequest
+ @return ApiExternalCompleteCompleteRequest
 */
-func (a *MarketingEventsExternalApiService) ExternalComplete(ctx context.Context, externalEventId string) ApiExternalCompleteRequest {
-	return ApiExternalCompleteRequest{
+func (a *MarketingEventsExternalApiService) ExternalCompleteComplete(ctx context.Context, externalEventId string) ApiExternalCompleteCompleteRequest {
+	return ApiExternalCompleteCompleteRequest{
 		ApiService:      a,
 		ctx:             ctx,
 		externalEventId: externalEventId,
@@ -558,7 +576,7 @@ func (a *MarketingEventsExternalApiService) ExternalComplete(ctx context.Context
 
 // Execute executes the request
 //  @return MarketingEventDefaultResponse
-func (a *MarketingEventsExternalApiService) ExternalCompleteExecute(r ApiExternalCompleteRequest) (*MarketingEventDefaultResponse, *http.Response, error) {
+func (a *MarketingEventsExternalApiService) ExternalCompleteCompleteExecute(r ApiExternalCompleteCompleteRequest) (*MarketingEventDefaultResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -566,13 +584,13 @@ func (a *MarketingEventsExternalApiService) ExternalCompleteExecute(r ApiExterna
 		localVarReturnValue *MarketingEventDefaultResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MarketingEventsExternalApiService.ExternalComplete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MarketingEventsExternalApiService.ExternalCompleteComplete")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/{externalEventId}/complete"
-	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterToString(r.externalEventId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterValueToString(r.externalEventId, "externalEventId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -584,7 +602,7 @@ func (a *MarketingEventsExternalApiService) ExternalCompleteExecute(r ApiExterna
 		return localVarReturnValue, nil, reportError("marketingEventCompleteRequestParams is required and must be specified")
 	}
 
-	localVarQueryParams.Add("externalAccountId", parameterToString(*r.externalAccountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "externalAccountId", r.externalAccountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
 
@@ -606,12 +624,16 @@ func (a *MarketingEventsExternalApiService) ExternalCompleteExecute(r ApiExterna
 	localVarPostBody = r.marketingEventCompleteRequestParams
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -624,9 +646,9 @@ func (a *MarketingEventsExternalApiService) ExternalCompleteExecute(r ApiExterna
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -642,6 +664,7 @@ func (a *MarketingEventsExternalApiService) ExternalCompleteExecute(r ApiExterna
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -714,8 +737,8 @@ func (a *MarketingEventsExternalApiService) ExternalEmailUpsertByIDExecute(r Api
 	}
 
 	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/{externalEventId}/{subscriberState}/email-upsert"
-	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterToString(r.externalEventId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"subscriberState"+"}", url.PathEscape(parameterToString(r.subscriberState, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterValueToString(r.externalEventId, "externalEventId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"subscriberState"+"}", url.PathEscape(parameterValueToString(r.subscriberState, "subscriberState")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -727,7 +750,7 @@ func (a *MarketingEventsExternalApiService) ExternalEmailUpsertByIDExecute(r Api
 		return localVarReturnValue, nil, reportError("batchInputMarketingEventEmailSubscriber is required and must be specified")
 	}
 
-	localVarQueryParams.Add("externalAccountId", parameterToString(*r.externalAccountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "externalAccountId", r.externalAccountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
 
@@ -749,12 +772,16 @@ func (a *MarketingEventsExternalApiService) ExternalEmailUpsertByIDExecute(r Api
 	localVarPostBody = r.batchInputMarketingEventEmailSubscriber
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -767,9 +794,9 @@ func (a *MarketingEventsExternalApiService) ExternalEmailUpsertByIDExecute(r Api
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -785,6 +812,7 @@ func (a *MarketingEventsExternalApiService) ExternalEmailUpsertByIDExecute(r Api
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -848,7 +876,7 @@ func (a *MarketingEventsExternalApiService) ExternalGetByIDExecute(r ApiExternal
 	}
 
 	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/{externalEventId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterToString(r.externalEventId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterValueToString(r.externalEventId, "externalEventId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -857,7 +885,7 @@ func (a *MarketingEventsExternalApiService) ExternalGetByIDExecute(r ApiExternal
 		return localVarReturnValue, nil, reportError("externalAccountId is required and must be specified")
 	}
 
-	localVarQueryParams.Add("externalAccountId", parameterToString(*r.externalAccountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "externalAccountId", r.externalAccountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -877,12 +905,16 @@ func (a *MarketingEventsExternalApiService) ExternalGetByIDExecute(r ApiExternal
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -895,9 +927,9 @@ func (a *MarketingEventsExternalApiService) ExternalGetByIDExecute(r ApiExternal
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -913,6 +945,7 @@ func (a *MarketingEventsExternalApiService) ExternalGetByIDExecute(r ApiExternal
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -976,7 +1009,7 @@ func (a *MarketingEventsExternalApiService) ExternalReplaceExecute(r ApiExternal
 	}
 
 	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/{externalEventId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterToString(r.externalEventId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterValueToString(r.externalEventId, "externalEventId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1006,12 +1039,16 @@ func (a *MarketingEventsExternalApiService) ExternalReplaceExecute(r ApiExternal
 	localVarPostBody = r.marketingEventCreateRequestParams
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -1024,9 +1061,9 @@ func (a *MarketingEventsExternalApiService) ExternalReplaceExecute(r ApiExternal
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1042,6 +1079,7 @@ func (a *MarketingEventsExternalApiService) ExternalReplaceExecute(r ApiExternal
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1111,7 +1149,7 @@ func (a *MarketingEventsExternalApiService) ExternalUpdateExecute(r ApiExternalU
 	}
 
 	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/{externalEventId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterToString(r.externalEventId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterValueToString(r.externalEventId, "externalEventId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1123,7 +1161,7 @@ func (a *MarketingEventsExternalApiService) ExternalUpdateExecute(r ApiExternalU
 		return localVarReturnValue, nil, reportError("marketingEventUpdateRequestParams is required and must be specified")
 	}
 
-	localVarQueryParams.Add("externalAccountId", parameterToString(*r.externalAccountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "externalAccountId", r.externalAccountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
 
@@ -1145,12 +1183,16 @@ func (a *MarketingEventsExternalApiService) ExternalUpdateExecute(r ApiExternalU
 	localVarPostBody = r.marketingEventUpdateRequestParams
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -1163,9 +1205,9 @@ func (a *MarketingEventsExternalApiService) ExternalUpdateExecute(r ApiExternalU
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1181,6 +1223,7 @@ func (a *MarketingEventsExternalApiService) ExternalUpdateExecute(r ApiExternalU
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1253,8 +1296,8 @@ func (a *MarketingEventsExternalApiService) ExternalUpsertByIDExecute(r ApiExter
 	}
 
 	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/{externalEventId}/{subscriberState}/upsert"
-	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterToString(r.externalEventId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"subscriberState"+"}", url.PathEscape(parameterToString(r.subscriberState, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"externalEventId"+"}", url.PathEscape(parameterValueToString(r.externalEventId, "externalEventId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"subscriberState"+"}", url.PathEscape(parameterValueToString(r.subscriberState, "subscriberState")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1266,7 +1309,7 @@ func (a *MarketingEventsExternalApiService) ExternalUpsertByIDExecute(r ApiExter
 		return localVarReturnValue, nil, reportError("batchInputMarketingEventSubscriber is required and must be specified")
 	}
 
-	localVarQueryParams.Add("externalAccountId", parameterToString(*r.externalAccountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "externalAccountId", r.externalAccountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
 
@@ -1288,12 +1331,16 @@ func (a *MarketingEventsExternalApiService) ExternalUpsertByIDExecute(r ApiExter
 	localVarPostBody = r.batchInputMarketingEventSubscriber
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -1306,9 +1353,9 @@ func (a *MarketingEventsExternalApiService) ExternalUpsertByIDExecute(r ApiExter
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1324,130 +1371,7 @@ func (a *MarketingEventsExternalApiService) ExternalUpsertByIDExecute(r ApiExter
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiSearchRequest struct {
-	ctx        context.Context
-	ApiService *MarketingEventsExternalApiService
-	q          *string
-}
-
-func (r ApiSearchRequest) Q(q string) ApiSearchRequest {
-	r.q = &q
-	return r
-}
-
-func (r ApiSearchRequest) Execute() (*CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging, *http.Response, error) {
-	return r.ApiService.SearchExecute(r)
-}
-
-/*
-Search Method for Search
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSearchRequest
-*/
-func (a *MarketingEventsExternalApiService) Search(ctx context.Context) ApiSearchRequest {
-	return ApiSearchRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//  @return CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging
-func (a *MarketingEventsExternalApiService) SearchExecute(r ApiSearchRequest) (*CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MarketingEventsExternalApiService.Search")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/marketing/v3/marketing-events/events/search"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.q == nil {
-		return localVarReturnValue, nil, reportError("q is required and must be specified")
-	}
-
-	localVarQueryParams.Add("q", parameterToString(*r.q, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1537,12 +1461,16 @@ func (a *MarketingEventsExternalApiService) UpsertExecute(r ApiUpsertRequest) (*
 	localVarPostBody = r.batchInputMarketingEventCreateRequestParams
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -1555,9 +1483,9 @@ func (a *MarketingEventsExternalApiService) UpsertExecute(r ApiUpsertRequest) (*
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1573,6 +1501,7 @@ func (a *MarketingEventsExternalApiService) UpsertExecute(r ApiUpsertRequest) (*
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

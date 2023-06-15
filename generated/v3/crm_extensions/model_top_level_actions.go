@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TopLevelActions type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TopLevelActions{}
+
 // TopLevelActions struct for TopLevelActions
 type TopLevelActions struct {
 	Settings  *IFrameActionBody                    `json:"settings,omitempty"`
@@ -41,7 +44,7 @@ func NewTopLevelActionsWithDefaults() *TopLevelActions {
 
 // GetSettings returns the Settings field value if set, zero value otherwise.
 func (o *TopLevelActions) GetSettings() IFrameActionBody {
-	if o == nil || o.Settings == nil {
+	if o == nil || IsNil(o.Settings) {
 		var ret IFrameActionBody
 		return ret
 	}
@@ -51,7 +54,7 @@ func (o *TopLevelActions) GetSettings() IFrameActionBody {
 // GetSettingsOk returns a tuple with the Settings field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TopLevelActions) GetSettingsOk() (*IFrameActionBody, bool) {
-	if o == nil || o.Settings == nil {
+	if o == nil || IsNil(o.Settings) {
 		return nil, false
 	}
 	return o.Settings, true
@@ -59,7 +62,7 @@ func (o *TopLevelActions) GetSettingsOk() (*IFrameActionBody, bool) {
 
 // HasSettings returns a boolean if a field has been set.
 func (o *TopLevelActions) HasSettings() bool {
-	if o != nil && o.Settings != nil {
+	if o != nil && !IsNil(o.Settings) {
 		return true
 	}
 
@@ -73,7 +76,7 @@ func (o *TopLevelActions) SetSettings(v IFrameActionBody) {
 
 // GetPrimary returns the Primary field value if set, zero value otherwise.
 func (o *TopLevelActions) GetPrimary() IntegratorObjectResultActionsInner {
-	if o == nil || o.Primary == nil {
+	if o == nil || IsNil(o.Primary) {
 		var ret IntegratorObjectResultActionsInner
 		return ret
 	}
@@ -83,7 +86,7 @@ func (o *TopLevelActions) GetPrimary() IntegratorObjectResultActionsInner {
 // GetPrimaryOk returns a tuple with the Primary field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TopLevelActions) GetPrimaryOk() (*IntegratorObjectResultActionsInner, bool) {
-	if o == nil || o.Primary == nil {
+	if o == nil || IsNil(o.Primary) {
 		return nil, false
 	}
 	return o.Primary, true
@@ -91,7 +94,7 @@ func (o *TopLevelActions) GetPrimaryOk() (*IntegratorObjectResultActionsInner, b
 
 // HasPrimary returns a boolean if a field has been set.
 func (o *TopLevelActions) HasPrimary() bool {
-	if o != nil && o.Primary != nil {
+	if o != nil && !IsNil(o.Primary) {
 		return true
 	}
 
@@ -128,17 +131,23 @@ func (o *TopLevelActions) SetSecondary(v []IntegratorObjectResultActionsInner) {
 }
 
 func (o TopLevelActions) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Settings != nil {
-		toSerialize["settings"] = o.Settings
-	}
-	if o.Primary != nil {
-		toSerialize["primary"] = o.Primary
-	}
-	if true {
-		toSerialize["secondary"] = o.Secondary
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TopLevelActions) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Settings) {
+		toSerialize["settings"] = o.Settings
+	}
+	if !IsNil(o.Primary) {
+		toSerialize["primary"] = o.Primary
+	}
+	toSerialize["secondary"] = o.Secondary
+	return toSerialize, nil
 }
 
 type NullableTopLevelActions struct {

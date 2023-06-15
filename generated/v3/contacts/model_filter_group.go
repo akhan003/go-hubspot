@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the FilterGroup type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &FilterGroup{}
+
 // FilterGroup struct for FilterGroup
 type FilterGroup struct {
 	Filters []Filter `json:"filters"`
@@ -62,11 +65,17 @@ func (o *FilterGroup) SetFilters(v []Filter) {
 }
 
 func (o FilterGroup) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["filters"] = o.Filters
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o FilterGroup) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["filters"] = o.Filters
+	return toSerialize, nil
 }
 
 type NullableFilterGroup struct {

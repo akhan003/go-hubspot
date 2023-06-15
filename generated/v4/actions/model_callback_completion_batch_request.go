@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CallbackCompletionBatchRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CallbackCompletionBatchRequest{}
+
 // CallbackCompletionBatchRequest Any information to send back to Workflows when completing an action callback as part of a batch request.
 type CallbackCompletionBatchRequest struct {
 	// The ID of the callback to complete.
@@ -90,14 +93,18 @@ func (o *CallbackCompletionBatchRequest) SetOutputFields(v map[string]string) {
 }
 
 func (o CallbackCompletionBatchRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["callbackId"] = o.CallbackId
-	}
-	if true {
-		toSerialize["outputFields"] = o.OutputFields
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CallbackCompletionBatchRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["callbackId"] = o.CallbackId
+	toSerialize["outputFields"] = o.OutputFields
+	return toSerialize, nil
 }
 
 type NullableCallbackCompletionBatchRequest struct {

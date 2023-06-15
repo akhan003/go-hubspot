@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ImportResult type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ImportResult{}
+
 // ImportResult The result of import operation
 type ImportResult struct {
 	// List of errors during import
@@ -144,20 +147,20 @@ func (o *ImportResult) SetRowLimitExceeded(v bool) {
 }
 
 func (o ImportResult) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["errors"] = o.Errors
-	}
-	if true {
-		toSerialize["rowsImported"] = o.RowsImported
-	}
-	if true {
-		toSerialize["duplicateRows"] = o.DuplicateRows
-	}
-	if true {
-		toSerialize["rowLimitExceeded"] = o.RowLimitExceeded
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ImportResult) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["errors"] = o.Errors
+	toSerialize["rowsImported"] = o.RowsImported
+	toSerialize["duplicateRows"] = o.DuplicateRows
+	toSerialize["rowLimitExceeded"] = o.RowLimitExceeded
+	return toSerialize, nil
 }
 
 type NullableImportResult struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the IFrameActionBody type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &IFrameActionBody{}
+
 // IFrameActionBody struct for IFrameActionBody
 type IFrameActionBody struct {
 	Type                  string   `json:"type"`
@@ -146,7 +149,7 @@ func (o *IFrameActionBody) SetUrl(v string) {
 
 // GetLabel returns the Label field value if set, zero value otherwise.
 func (o *IFrameActionBody) GetLabel() string {
-	if o == nil || o.Label == nil {
+	if o == nil || IsNil(o.Label) {
 		var ret string
 		return ret
 	}
@@ -156,7 +159,7 @@ func (o *IFrameActionBody) GetLabel() string {
 // GetLabelOk returns a tuple with the Label field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IFrameActionBody) GetLabelOk() (*string, bool) {
-	if o == nil || o.Label == nil {
+	if o == nil || IsNil(o.Label) {
 		return nil, false
 	}
 	return o.Label, true
@@ -164,7 +167,7 @@ func (o *IFrameActionBody) GetLabelOk() (*string, bool) {
 
 // HasLabel returns a boolean if a field has been set.
 func (o *IFrameActionBody) HasLabel() bool {
-	if o != nil && o.Label != nil {
+	if o != nil && !IsNil(o.Label) {
 		return true
 	}
 
@@ -201,26 +204,24 @@ func (o *IFrameActionBody) SetPropertyNamesIncluded(v []string) {
 }
 
 func (o IFrameActionBody) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["type"] = o.Type
-	}
-	if true {
-		toSerialize["width"] = o.Width
-	}
-	if true {
-		toSerialize["height"] = o.Height
-	}
-	if true {
-		toSerialize["url"] = o.Url
-	}
-	if o.Label != nil {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["propertyNamesIncluded"] = o.PropertyNamesIncluded
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o IFrameActionBody) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["type"] = o.Type
+	toSerialize["width"] = o.Width
+	toSerialize["height"] = o.Height
+	toSerialize["url"] = o.Url
+	if !IsNil(o.Label) {
+		toSerialize["label"] = o.Label
+	}
+	toSerialize["propertyNamesIncluded"] = o.PropertyNamesIncluded
+	return toSerialize, nil
 }
 
 type NullableIFrameActionBody struct {

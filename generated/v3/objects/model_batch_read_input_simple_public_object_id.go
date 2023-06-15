@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchReadInputSimplePublicObjectId type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchReadInputSimplePublicObjectId{}
+
 // BatchReadInputSimplePublicObjectId struct for BatchReadInputSimplePublicObjectId
 type BatchReadInputSimplePublicObjectId struct {
 	Properties            []string               `json:"properties"`
@@ -92,7 +95,7 @@ func (o *BatchReadInputSimplePublicObjectId) SetPropertiesWithHistory(v []string
 
 // GetIdProperty returns the IdProperty field value if set, zero value otherwise.
 func (o *BatchReadInputSimplePublicObjectId) GetIdProperty() string {
-	if o == nil || o.IdProperty == nil {
+	if o == nil || IsNil(o.IdProperty) {
 		var ret string
 		return ret
 	}
@@ -102,7 +105,7 @@ func (o *BatchReadInputSimplePublicObjectId) GetIdProperty() string {
 // GetIdPropertyOk returns a tuple with the IdProperty field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BatchReadInputSimplePublicObjectId) GetIdPropertyOk() (*string, bool) {
-	if o == nil || o.IdProperty == nil {
+	if o == nil || IsNil(o.IdProperty) {
 		return nil, false
 	}
 	return o.IdProperty, true
@@ -110,7 +113,7 @@ func (o *BatchReadInputSimplePublicObjectId) GetIdPropertyOk() (*string, bool) {
 
 // HasIdProperty returns a boolean if a field has been set.
 func (o *BatchReadInputSimplePublicObjectId) HasIdProperty() bool {
-	if o != nil && o.IdProperty != nil {
+	if o != nil && !IsNil(o.IdProperty) {
 		return true
 	}
 
@@ -147,20 +150,22 @@ func (o *BatchReadInputSimplePublicObjectId) SetInputs(v []SimplePublicObjectId)
 }
 
 func (o BatchReadInputSimplePublicObjectId) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["properties"] = o.Properties
-	}
-	if true {
-		toSerialize["propertiesWithHistory"] = o.PropertiesWithHistory
-	}
-	if o.IdProperty != nil {
-		toSerialize["idProperty"] = o.IdProperty
-	}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchReadInputSimplePublicObjectId) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["properties"] = o.Properties
+	toSerialize["propertiesWithHistory"] = o.PropertiesWithHistory
+	if !IsNil(o.IdProperty) {
+		toSerialize["idProperty"] = o.IdProperty
+	}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchReadInputSimplePublicObjectId struct {

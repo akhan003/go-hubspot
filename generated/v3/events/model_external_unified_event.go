@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the ExternalUnifiedEvent type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ExternalUnifiedEvent{}
+
 // ExternalUnifiedEvent Used to represent any event. With this format, the `objectType` and `eventType` values are stringified CRM types. Example object: <br/> ```  {       \"objectType\": \"CONTACT\",       \"objectId\": 208451632,       \"eventType\": \"e_visited_page\",       \"occurredAt\": 1567377501421,       \"id\": \"leviathan-be3335d3-46f1-3985-988e-ff38e6e7b9d8\",       \"properties\": {           \"hs_url\": \"https://some-website.com/\",           \"hs_title\": \"Home\",           \"hs_referrer\": \"https://some-other-website.com/blog/why-we-love-big-data-and-you-should-too\",           \"hs_userAgent\": \"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36\",           \"hs_city\": \"lund\",           \"hs_region\": \"m\",           \"hs_country\": \"se\",           \"hs_session_id\" : \"leviathan-be3335d3-46f1-3985-988e-ff38e6e7b9d8\",           \"hs_session_source\" : \"DIRECT\"       }   }       ```
 type ExternalUnifiedEvent struct {
 	// The objectType for the object which did the event.
@@ -198,26 +201,22 @@ func (o *ExternalUnifiedEvent) SetProperties(v map[string]string) {
 }
 
 func (o ExternalUnifiedEvent) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["objectType"] = o.ObjectType
-	}
-	if true {
-		toSerialize["objectId"] = o.ObjectId
-	}
-	if true {
-		toSerialize["eventType"] = o.EventType
-	}
-	if true {
-		toSerialize["occurredAt"] = o.OccurredAt
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["properties"] = o.Properties
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ExternalUnifiedEvent) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["objectType"] = o.ObjectType
+	toSerialize["objectId"] = o.ObjectId
+	toSerialize["eventType"] = o.EventType
+	toSerialize["occurredAt"] = o.OccurredAt
+	toSerialize["id"] = o.Id
+	toSerialize["properties"] = o.Properties
+	return toSerialize, nil
 }
 
 type NullableExternalUnifiedEvent struct {

@@ -26,7 +26,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey)
+No authorization required
 
 ### HTTP request headers
 
@@ -96,7 +96,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -105,7 +105,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.SettingsApi.SettingsReplace(context.Background(), appId).AccountingAppSettings(accountingAppSettings).Execute()
+    r, err := apiClient.SettingsApi.SettingsReplace(context.Background(), appId).AccountingAppSettings(accountingAppSettings).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `SettingsApi.SettingsReplace``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -137,7 +137,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey)
+No authorization required
 
 ### HTTP request headers
 

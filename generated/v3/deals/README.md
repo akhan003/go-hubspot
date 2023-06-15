@@ -78,9 +78,6 @@ All URIs are relative to *https://api.hubapi.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AssociationsApi* | [**AssociationsArchive**](docs/AssociationsApi.md#associationsarchive) | **Delete** /crm/v3/objects/deals/{dealId}/associations/{toObjectType}/{toObjectId}/{associationType} | Remove an association between two deals
-*AssociationsApi* | [**AssociationsCreate**](docs/AssociationsApi.md#associationscreate) | **Put** /crm/v3/objects/deals/{dealId}/associations/{toObjectType}/{toObjectId}/{associationType} | Associate a deal with another object
-*AssociationsApi* | [**AssociationsGetAll**](docs/AssociationsApi.md#associationsgetall) | **Get** /crm/v3/objects/deals/{dealId}/associations/{toObjectType} | List associations of a deal by type
 *BasicApi* | [**Archive**](docs/BasicApi.md#archive) | **Delete** /crm/v3/objects/deals/{dealId} | Archive
 *BasicApi* | [**Create**](docs/BasicApi.md#create) | **Post** /crm/v3/objects/deals | Create
 *BasicApi* | [**GetByID**](docs/BasicApi.md#getbyid) | **Get** /crm/v3/objects/deals/{dealId} | Read
@@ -97,14 +94,14 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AssociatedId](docs/AssociatedId.md)
+ - [AssociationSpec](docs/AssociationSpec.md)
  - [BatchInputSimplePublicObjectBatchInput](docs/BatchInputSimplePublicObjectBatchInput.md)
  - [BatchInputSimplePublicObjectId](docs/BatchInputSimplePublicObjectId.md)
- - [BatchInputSimplePublicObjectInput](docs/BatchInputSimplePublicObjectInput.md)
+ - [BatchInputSimplePublicObjectInputForCreate](docs/BatchInputSimplePublicObjectInputForCreate.md)
  - [BatchReadInputSimplePublicObjectId](docs/BatchReadInputSimplePublicObjectId.md)
  - [BatchResponseSimplePublicObject](docs/BatchResponseSimplePublicObject.md)
  - [BatchResponseSimplePublicObjectWithErrors](docs/BatchResponseSimplePublicObjectWithErrors.md)
  - [CollectionResponseAssociatedId](docs/CollectionResponseAssociatedId.md)
- - [CollectionResponseAssociatedIdForwardPaging](docs/CollectionResponseAssociatedIdForwardPaging.md)
  - [CollectionResponseSimplePublicObjectWithAssociationsForwardPaging](docs/CollectionResponseSimplePublicObjectWithAssociationsForwardPaging.md)
  - [CollectionResponseWithTotalSimplePublicObjectForwardPaging](docs/CollectionResponseWithTotalSimplePublicObjectForwardPaging.md)
  - [Error](docs/Error.md)
@@ -116,12 +113,15 @@ Class | Method | HTTP request | Description
  - [NextPage](docs/NextPage.md)
  - [Paging](docs/Paging.md)
  - [PreviousPage](docs/PreviousPage.md)
+ - [PublicAssociationsForObject](docs/PublicAssociationsForObject.md)
  - [PublicMergeInput](docs/PublicMergeInput.md)
+ - [PublicObjectId](docs/PublicObjectId.md)
  - [PublicObjectSearchRequest](docs/PublicObjectSearchRequest.md)
  - [SimplePublicObject](docs/SimplePublicObject.md)
  - [SimplePublicObjectBatchInput](docs/SimplePublicObjectBatchInput.md)
  - [SimplePublicObjectId](docs/SimplePublicObjectId.md)
  - [SimplePublicObjectInput](docs/SimplePublicObjectInput.md)
+ - [SimplePublicObjectInputForCreate](docs/SimplePublicObjectInputForCreate.md)
  - [SimplePublicObjectWithAssociations](docs/SimplePublicObjectWithAssociations.md)
  - [StandardError](docs/StandardError.md)
  - [ValueWithTimestamp](docs/ValueWithTimestamp.md)
@@ -130,16 +130,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Authorization
 
 
-
-### hapikey
-
-- **Type**: API key
-- **API key parameter name**: hapikey
-- **Location**: URL query string
-
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: hapikey and passed in as the auth context for each request.
-
-
+Authentication schemes defined for the API:
 ### oauth2
 
 
@@ -169,34 +160,21 @@ auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
 
+### private_apps_legacy
 
-### oauth2_legacy
+- **Type**: API key
+- **API key parameter name**: private-app-legacy
+- **Location**: HTTP header
 
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: private-app-legacy and passed in as the auth context for each request.
 
-- **Type**: OAuth
-- **Flow**: accessCode
-- **Authorization URL**: https://app.hubspot.com/oauth/authorize
-- **Scopes**: 
- - **contacts**: Read from and write to my Contacts
+### private_apps
 
-Example
+- **Type**: API key
+- **API key parameter name**: private-app
+- **Location**: HTTP header
 
-```golang
-auth := context.WithValue(context.Background(), sw.ContextAccessToken, "ACCESSTOKENSTRING")
-r, err := client.Service.Operation(auth, args)
-```
-
-Or via OAuth2 module to automatically refresh tokens and perform user authentication.
-
-```golang
-import "golang.org/x/oauth2"
-
-/* Perform OAuth2 round trip request and obtain a token */
-
-tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
-auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
-r, err := client.Service.Operation(auth, args)
-```
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: private-app and passed in as the auth context for each request.
 
 
 ## Documentation for Utility Methods

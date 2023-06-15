@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AccountingExtensionCustomer type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AccountingExtensionCustomer{}
+
 // AccountingExtensionCustomer Representation of a customer in the external accounting system.
 type AccountingExtensionCustomer struct {
 	// The customer's email address
@@ -48,7 +51,7 @@ func NewAccountingExtensionCustomerWithDefaults() *AccountingExtensionCustomer {
 
 // GetEmailAddress returns the EmailAddress field value if set, zero value otherwise.
 func (o *AccountingExtensionCustomer) GetEmailAddress() string {
-	if o == nil || o.EmailAddress == nil {
+	if o == nil || IsNil(o.EmailAddress) {
 		var ret string
 		return ret
 	}
@@ -58,7 +61,7 @@ func (o *AccountingExtensionCustomer) GetEmailAddress() string {
 // GetEmailAddressOk returns a tuple with the EmailAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingExtensionCustomer) GetEmailAddressOk() (*string, bool) {
-	if o == nil || o.EmailAddress == nil {
+	if o == nil || IsNil(o.EmailAddress) {
 		return nil, false
 	}
 	return o.EmailAddress, true
@@ -66,7 +69,7 @@ func (o *AccountingExtensionCustomer) GetEmailAddressOk() (*string, bool) {
 
 // HasEmailAddress returns a boolean if a field has been set.
 func (o *AccountingExtensionCustomer) HasEmailAddress() bool {
-	if o != nil && o.EmailAddress != nil {
+	if o != nil && !IsNil(o.EmailAddress) {
 		return true
 	}
 
@@ -128,7 +131,7 @@ func (o *AccountingExtensionCustomer) SetId(v string) {
 
 // GetBillingAddress returns the BillingAddress field value if set, zero value otherwise.
 func (o *AccountingExtensionCustomer) GetBillingAddress() Address {
-	if o == nil || o.BillingAddress == nil {
+	if o == nil || IsNil(o.BillingAddress) {
 		var ret Address
 		return ret
 	}
@@ -138,7 +141,7 @@ func (o *AccountingExtensionCustomer) GetBillingAddress() Address {
 // GetBillingAddressOk returns a tuple with the BillingAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingExtensionCustomer) GetBillingAddressOk() (*Address, bool) {
-	if o == nil || o.BillingAddress == nil {
+	if o == nil || IsNil(o.BillingAddress) {
 		return nil, false
 	}
 	return o.BillingAddress, true
@@ -146,7 +149,7 @@ func (o *AccountingExtensionCustomer) GetBillingAddressOk() (*Address, bool) {
 
 // HasBillingAddress returns a boolean if a field has been set.
 func (o *AccountingExtensionCustomer) HasBillingAddress() bool {
-	if o != nil && o.BillingAddress != nil {
+	if o != nil && !IsNil(o.BillingAddress) {
 		return true
 	}
 
@@ -160,7 +163,7 @@ func (o *AccountingExtensionCustomer) SetBillingAddress(v Address) {
 
 // GetCurrencyCode returns the CurrencyCode field value if set, zero value otherwise.
 func (o *AccountingExtensionCustomer) GetCurrencyCode() string {
-	if o == nil || o.CurrencyCode == nil {
+	if o == nil || IsNil(o.CurrencyCode) {
 		var ret string
 		return ret
 	}
@@ -170,7 +173,7 @@ func (o *AccountingExtensionCustomer) GetCurrencyCode() string {
 // GetCurrencyCodeOk returns a tuple with the CurrencyCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountingExtensionCustomer) GetCurrencyCodeOk() (*string, bool) {
-	if o == nil || o.CurrencyCode == nil {
+	if o == nil || IsNil(o.CurrencyCode) {
 		return nil, false
 	}
 	return o.CurrencyCode, true
@@ -178,7 +181,7 @@ func (o *AccountingExtensionCustomer) GetCurrencyCodeOk() (*string, bool) {
 
 // HasCurrencyCode returns a boolean if a field has been set.
 func (o *AccountingExtensionCustomer) HasCurrencyCode() bool {
-	if o != nil && o.CurrencyCode != nil {
+	if o != nil && !IsNil(o.CurrencyCode) {
 		return true
 	}
 
@@ -191,23 +194,27 @@ func (o *AccountingExtensionCustomer) SetCurrencyCode(v string) {
 }
 
 func (o AccountingExtensionCustomer) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.EmailAddress != nil {
-		toSerialize["emailAddress"] = o.EmailAddress
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if o.BillingAddress != nil {
-		toSerialize["billingAddress"] = o.BillingAddress
-	}
-	if o.CurrencyCode != nil {
-		toSerialize["currencyCode"] = o.CurrencyCode
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AccountingExtensionCustomer) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.EmailAddress) {
+		toSerialize["emailAddress"] = o.EmailAddress
+	}
+	toSerialize["name"] = o.Name
+	toSerialize["id"] = o.Id
+	if !IsNil(o.BillingAddress) {
+		toSerialize["billingAddress"] = o.BillingAddress
+	}
+	if !IsNil(o.CurrencyCode) {
+		toSerialize["currencyCode"] = o.CurrencyCode
+	}
+	return toSerialize, nil
 }
 
 type NullableAccountingExtensionCustomer struct {

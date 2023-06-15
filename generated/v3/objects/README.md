@@ -112,9 +112,10 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AssociatedId](docs/AssociatedId.md)
+ - [AssociationSpec](docs/AssociationSpec.md)
  - [BatchInputSimplePublicObjectBatchInput](docs/BatchInputSimplePublicObjectBatchInput.md)
  - [BatchInputSimplePublicObjectId](docs/BatchInputSimplePublicObjectId.md)
- - [BatchInputSimplePublicObjectInput](docs/BatchInputSimplePublicObjectInput.md)
+ - [BatchInputSimplePublicObjectInputForCreate](docs/BatchInputSimplePublicObjectInputForCreate.md)
  - [BatchReadInputSimplePublicObjectId](docs/BatchReadInputSimplePublicObjectId.md)
  - [BatchResponseSimplePublicObject](docs/BatchResponseSimplePublicObject.md)
  - [BatchResponseSimplePublicObjectWithErrors](docs/BatchResponseSimplePublicObjectWithErrors.md)
@@ -131,13 +132,16 @@ Class | Method | HTTP request | Description
  - [NextPage](docs/NextPage.md)
  - [Paging](docs/Paging.md)
  - [PreviousPage](docs/PreviousPage.md)
+ - [PublicAssociationsForObject](docs/PublicAssociationsForObject.md)
  - [PublicGdprDeleteInput](docs/PublicGdprDeleteInput.md)
  - [PublicMergeInput](docs/PublicMergeInput.md)
+ - [PublicObjectId](docs/PublicObjectId.md)
  - [PublicObjectSearchRequest](docs/PublicObjectSearchRequest.md)
  - [SimplePublicObject](docs/SimplePublicObject.md)
  - [SimplePublicObjectBatchInput](docs/SimplePublicObjectBatchInput.md)
  - [SimplePublicObjectId](docs/SimplePublicObjectId.md)
  - [SimplePublicObjectInput](docs/SimplePublicObjectInput.md)
+ - [SimplePublicObjectInputForCreate](docs/SimplePublicObjectInputForCreate.md)
  - [SimplePublicObjectWithAssociations](docs/SimplePublicObjectWithAssociations.md)
  - [StandardError](docs/StandardError.md)
  - [ValueWithTimestamp](docs/ValueWithTimestamp.md)
@@ -146,15 +150,39 @@ Class | Method | HTTP request | Description
 ## Documentation For Authorization
 
 
+Authentication schemes defined for the API:
+### oauth2_legacy
 
-### hapikey
 
-- **Type**: API key
-- **API key parameter name**: hapikey
-- **Location**: URL query string
+- **Type**: OAuth
+- **Flow**: accessCode
+- **Authorization URL**: https://app.hubspot.com/oauth/authorize
+- **Scopes**: 
+ - **e-commerce**: e-commerce
+ - **crm.objects.custom.write**: Change custom object records
+ - **crm.objects.custom.read**: View custom object records
+ - **crm.objects.goals.read**: Read goals
+ - **tickets**: Read and write tickets
+ - **media_bridge.read**: Read media and media events
 
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: hapikey and passed in as the auth context for each request.
+Example
 
+```golang
+auth := context.WithValue(context.Background(), sw.ContextAccessToken, "ACCESSTOKENSTRING")
+r, err := client.Service.Operation(auth, args)
+```
+
+Or via OAuth2 module to automatically refresh tokens and perform user authentication.
+
+```golang
+import "golang.org/x/oauth2"
+
+/* Perform OAuth2 round trip request and obtain a token */
+
+tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
+auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
+r, err := client.Service.Operation(auth, args)
+```
 
 ### oauth2
 
@@ -163,16 +191,16 @@ Note, each API key must be added to a map of `map[string]APIKey` where the key i
 - **Flow**: accessCode
 - **Authorization URL**: https://app.hubspot.com/oauth/authorize
 - **Scopes**: 
- - **crm.objects.quotes.write**: Quotes
- - **crm.objects.contacts.read**:  
- - **crm.objects.contacts.write**:  
  - **crm.objects.companies.write**:  
- - **crm.objects.companies.read**:  
- - **crm.objects.line_items.write**: Line Items
- - **crm.objects.quotes.read**: Quotes
- - **crm.objects.deals.write**:  
- - **crm.objects.line_items.read**: Line Items
+ - **crm.objects.contacts.write**:  
+ - **crm.objects.contacts.read**:  
+ - **crm.objects.quotes.write**: Quotes
  - **crm.objects.deals.read**:  
+ - **crm.objects.line_items.read**: Line Items
+ - **crm.objects.deals.write**:  
+ - **crm.objects.quotes.read**: Quotes
+ - **crm.objects.line_items.write**: Line Items
+ - **crm.objects.companies.read**:  
 
 Example
 
@@ -193,39 +221,21 @@ auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
 
+### private_apps_legacy
 
-### oauth2_legacy
+- **Type**: API key
+- **API key parameter name**: private-app-legacy
+- **Location**: HTTP header
 
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: private-app-legacy and passed in as the auth context for each request.
 
-- **Type**: OAuth
-- **Flow**: accessCode
-- **Authorization URL**: https://app.hubspot.com/oauth/authorize
-- **Scopes**: 
- - **crm.objects.custom.read**: View custom object records
- - **contacts**: Read from and write to my Contacts
- - **crm.objects.custom.write**: Change custom object records
- - **e-commerce**: e-commerce
- - **media_bridge.read**: Read media and media events
- - **tickets**: Read and write tickets
+### private_apps
 
-Example
+- **Type**: API key
+- **API key parameter name**: private-app
+- **Location**: HTTP header
 
-```golang
-auth := context.WithValue(context.Background(), sw.ContextAccessToken, "ACCESSTOKENSTRING")
-r, err := client.Service.Operation(auth, args)
-```
-
-Or via OAuth2 module to automatically refresh tokens and perform user authentication.
-
-```golang
-import "golang.org/x/oauth2"
-
-/* Perform OAuth2 round trip request and obtain a token */
-
-tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
-auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
-r, err := client.Service.Operation(auth, args)
-```
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: private-app and passed in as the auth context for each request.
 
 
 ## Documentation for Utility Methods

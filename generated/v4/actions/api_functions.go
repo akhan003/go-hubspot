@@ -13,7 +13,7 @@ package actions
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -72,10 +72,10 @@ func (a *FunctionsApiService) FunctionsArchiveExecute(r ApiFunctionsArchiveReque
 	}
 
 	localVarPath := localBasePath + "/automation/v4/actions/{appId}/{definitionId}/functions/{functionType}/{functionId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterToString(r.definitionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterToString(r.functionType, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionId"+"}", url.PathEscape(parameterToString(r.functionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterValueToString(r.definitionId, "definitionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterValueToString(r.functionType, "functionType")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionId"+"}", url.PathEscape(parameterValueToString(r.functionId, "functionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -122,9 +122,9 @@ func (a *FunctionsApiService) FunctionsArchiveExecute(r ApiFunctionsArchiveReque
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -140,6 +140,7 @@ func (a *FunctionsApiService) FunctionsArchiveExecute(r ApiFunctionsArchiveReque
 			newErr.error = err.Error()
 			return localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
@@ -194,9 +195,9 @@ func (a *FunctionsApiService) FunctionsArchiveByTypeExecute(r ApiFunctionsArchiv
 	}
 
 	localVarPath := localBasePath + "/automation/v4/actions/{appId}/{definitionId}/functions/{functionType}"
-	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterToString(r.definitionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterToString(r.functionType, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterValueToString(r.definitionId, "definitionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterValueToString(r.functionType, "functionType")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -243,9 +244,9 @@ func (a *FunctionsApiService) FunctionsArchiveByTypeExecute(r ApiFunctionsArchiv
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -261,6 +262,7 @@ func (a *FunctionsApiService) FunctionsArchiveByTypeExecute(r ApiFunctionsArchiv
 			newErr.error = err.Error()
 			return localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
@@ -327,10 +329,10 @@ func (a *FunctionsApiService) FunctionsCreateOrReplaceExecute(r ApiFunctionsCrea
 	}
 
 	localVarPath := localBasePath + "/automation/v4/actions/{appId}/{definitionId}/functions/{functionType}/{functionId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterToString(r.definitionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterToString(r.functionType, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionId"+"}", url.PathEscape(parameterToString(r.functionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterValueToString(r.definitionId, "definitionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterValueToString(r.functionType, "functionType")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionId"+"}", url.PathEscape(parameterValueToString(r.functionId, "functionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -382,9 +384,9 @@ func (a *FunctionsApiService) FunctionsCreateOrReplaceExecute(r ApiFunctionsCrea
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -400,6 +402,7 @@ func (a *FunctionsApiService) FunctionsCreateOrReplaceExecute(r ApiFunctionsCrea
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -472,9 +475,9 @@ func (a *FunctionsApiService) FunctionsCreateOrReplaceByTypeExecute(r ApiFunctio
 	}
 
 	localVarPath := localBasePath + "/automation/v4/actions/{appId}/{definitionId}/functions/{functionType}"
-	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterToString(r.definitionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterToString(r.functionType, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterValueToString(r.definitionId, "definitionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterValueToString(r.functionType, "functionType")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -526,9 +529,9 @@ func (a *FunctionsApiService) FunctionsCreateOrReplaceByTypeExecute(r ApiFunctio
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -544,6 +547,7 @@ func (a *FunctionsApiService) FunctionsCreateOrReplaceByTypeExecute(r ApiFunctio
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -612,10 +616,10 @@ func (a *FunctionsApiService) FunctionsGetByIDExecute(r ApiFunctionsGetByIDReque
 	}
 
 	localVarPath := localBasePath + "/automation/v4/actions/{appId}/{definitionId}/functions/{functionType}/{functionId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterToString(r.definitionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterToString(r.functionType, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionId"+"}", url.PathEscape(parameterToString(r.functionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterValueToString(r.definitionId, "definitionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterValueToString(r.functionType, "functionType")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionId"+"}", url.PathEscape(parameterValueToString(r.functionId, "functionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -662,9 +666,9 @@ func (a *FunctionsApiService) FunctionsGetByIDExecute(r ApiFunctionsGetByIDReque
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -680,6 +684,7 @@ func (a *FunctionsApiService) FunctionsGetByIDExecute(r ApiFunctionsGetByIDReque
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -745,9 +750,9 @@ func (a *FunctionsApiService) FunctionsGetByTypeExecute(r ApiFunctionsGetByTypeR
 	}
 
 	localVarPath := localBasePath + "/automation/v4/actions/{appId}/{definitionId}/functions/{functionType}"
-	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterToString(r.definitionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterToString(r.functionType, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterValueToString(r.definitionId, "definitionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"functionType"+"}", url.PathEscape(parameterValueToString(r.functionType, "functionType")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -794,9 +799,9 @@ func (a *FunctionsApiService) FunctionsGetByTypeExecute(r ApiFunctionsGetByTypeR
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -812,6 +817,7 @@ func (a *FunctionsApiService) FunctionsGetByTypeExecute(r ApiFunctionsGetByTypeR
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -874,8 +880,8 @@ func (a *FunctionsApiService) FunctionsGetPageExecute(r ApiFunctionsGetPageReque
 	}
 
 	localVarPath := localBasePath + "/automation/v4/actions/{appId}/{definitionId}/functions"
-	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterToString(r.definitionId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterToString(r.appId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"definitionId"+"}", url.PathEscape(parameterValueToString(r.definitionId, "definitionId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"appId"+"}", url.PathEscape(parameterValueToString(r.appId, "appId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -922,9 +928,9 @@ func (a *FunctionsApiService) FunctionsGetPageExecute(r ApiFunctionsGetPageReque
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -940,6 +946,7 @@ func (a *FunctionsApiService) FunctionsGetPageExecute(r ApiFunctionsGetPageReque
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

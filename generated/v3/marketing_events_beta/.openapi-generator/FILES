@@ -4,6 +4,7 @@ README.md
 api/openapi.yaml
 api_attendance_subscriber_state_changes.go
 api_marketing_events_external.go
+api_search.go
 api_settings_external.go
 client.go
 configuration.go
@@ -32,6 +33,7 @@ docs/MarketingEventSubscriber.md
 docs/MarketingEventUpdateRequestParams.md
 docs/MarketingEventsExternalApi.md
 docs/PropertyValue.md
+docs/SearchApi.md
 docs/SettingsExternalApi.md
 docs/StandardError.md
 docs/SubscriberEmailResponse.md

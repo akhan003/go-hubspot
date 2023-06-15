@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the TimelineEventTemplate type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TimelineEventTemplate{}
+
 // TimelineEventTemplate The current state of the template definition.
 type TimelineEventTemplate struct {
 	// The template name.
@@ -82,7 +85,7 @@ func (o *TimelineEventTemplate) SetName(v string) {
 
 // GetHeaderTemplate returns the HeaderTemplate field value if set, zero value otherwise.
 func (o *TimelineEventTemplate) GetHeaderTemplate() string {
-	if o == nil || o.HeaderTemplate == nil {
+	if o == nil || IsNil(o.HeaderTemplate) {
 		var ret string
 		return ret
 	}
@@ -92,7 +95,7 @@ func (o *TimelineEventTemplate) GetHeaderTemplate() string {
 // GetHeaderTemplateOk returns a tuple with the HeaderTemplate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplate) GetHeaderTemplateOk() (*string, bool) {
-	if o == nil || o.HeaderTemplate == nil {
+	if o == nil || IsNil(o.HeaderTemplate) {
 		return nil, false
 	}
 	return o.HeaderTemplate, true
@@ -100,7 +103,7 @@ func (o *TimelineEventTemplate) GetHeaderTemplateOk() (*string, bool) {
 
 // HasHeaderTemplate returns a boolean if a field has been set.
 func (o *TimelineEventTemplate) HasHeaderTemplate() bool {
-	if o != nil && o.HeaderTemplate != nil {
+	if o != nil && !IsNil(o.HeaderTemplate) {
 		return true
 	}
 
@@ -114,7 +117,7 @@ func (o *TimelineEventTemplate) SetHeaderTemplate(v string) {
 
 // GetDetailTemplate returns the DetailTemplate field value if set, zero value otherwise.
 func (o *TimelineEventTemplate) GetDetailTemplate() string {
-	if o == nil || o.DetailTemplate == nil {
+	if o == nil || IsNil(o.DetailTemplate) {
 		var ret string
 		return ret
 	}
@@ -124,7 +127,7 @@ func (o *TimelineEventTemplate) GetDetailTemplate() string {
 // GetDetailTemplateOk returns a tuple with the DetailTemplate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplate) GetDetailTemplateOk() (*string, bool) {
-	if o == nil || o.DetailTemplate == nil {
+	if o == nil || IsNil(o.DetailTemplate) {
 		return nil, false
 	}
 	return o.DetailTemplate, true
@@ -132,7 +135,7 @@ func (o *TimelineEventTemplate) GetDetailTemplateOk() (*string, bool) {
 
 // HasDetailTemplate returns a boolean if a field has been set.
 func (o *TimelineEventTemplate) HasDetailTemplate() bool {
-	if o != nil && o.DetailTemplate != nil {
+	if o != nil && !IsNil(o.DetailTemplate) {
 		return true
 	}
 
@@ -218,7 +221,7 @@ func (o *TimelineEventTemplate) SetObjectType(v string) {
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *TimelineEventTemplate) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -228,7 +231,7 @@ func (o *TimelineEventTemplate) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplate) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
 	return o.CreatedAt, true
@@ -236,7 +239,7 @@ func (o *TimelineEventTemplate) GetCreatedAtOk() (*time.Time, bool) {
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *TimelineEventTemplate) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
@@ -250,7 +253,7 @@ func (o *TimelineEventTemplate) SetCreatedAt(v time.Time) {
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
 func (o *TimelineEventTemplate) GetUpdatedAt() time.Time {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -260,7 +263,7 @@ func (o *TimelineEventTemplate) GetUpdatedAt() time.Time {
 // GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TimelineEventTemplate) GetUpdatedAtOk() (*time.Time, bool) {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		return nil, false
 	}
 	return o.UpdatedAt, true
@@ -268,7 +271,7 @@ func (o *TimelineEventTemplate) GetUpdatedAtOk() (*time.Time, bool) {
 
 // HasUpdatedAt returns a boolean if a field has been set.
 func (o *TimelineEventTemplate) HasUpdatedAt() bool {
-	if o != nil && o.UpdatedAt != nil {
+	if o != nil && !IsNil(o.UpdatedAt) {
 		return true
 	}
 
@@ -281,32 +284,32 @@ func (o *TimelineEventTemplate) SetUpdatedAt(v time.Time) {
 }
 
 func (o TimelineEventTemplate) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if o.HeaderTemplate != nil {
-		toSerialize["headerTemplate"] = o.HeaderTemplate
-	}
-	if o.DetailTemplate != nil {
-		toSerialize["detailTemplate"] = o.DetailTemplate
-	}
-	if true {
-		toSerialize["tokens"] = o.Tokens
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["objectType"] = o.ObjectType
-	}
-	if o.CreatedAt != nil {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.UpdatedAt != nil {
-		toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TimelineEventTemplate) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	if !IsNil(o.HeaderTemplate) {
+		toSerialize["headerTemplate"] = o.HeaderTemplate
+	}
+	if !IsNil(o.DetailTemplate) {
+		toSerialize["detailTemplate"] = o.DetailTemplate
+	}
+	toSerialize["tokens"] = o.Tokens
+	toSerialize["id"] = o.Id
+	toSerialize["objectType"] = o.ObjectType
+	if !IsNil(o.CreatedAt) {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if !IsNil(o.UpdatedAt) {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	return toSerialize, nil
 }
 
 type NullableTimelineEventTemplate struct {

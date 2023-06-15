@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the SettingsResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SettingsResponse{}
+
 // SettingsResponse Webhook settings for an app.
 type SettingsResponse struct {
 	// A publicly available URL for Hubspot to call where event payloads will be delivered. See [link-so-some-doc](#) for details about the format of these event payloads.
@@ -120,7 +123,7 @@ func (o *SettingsResponse) SetCreatedAt(v time.Time) {
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
 func (o *SettingsResponse) GetUpdatedAt() time.Time {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -130,7 +133,7 @@ func (o *SettingsResponse) GetUpdatedAt() time.Time {
 // GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SettingsResponse) GetUpdatedAtOk() (*time.Time, bool) {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		return nil, false
 	}
 	return o.UpdatedAt, true
@@ -138,7 +141,7 @@ func (o *SettingsResponse) GetUpdatedAtOk() (*time.Time, bool) {
 
 // HasUpdatedAt returns a boolean if a field has been set.
 func (o *SettingsResponse) HasUpdatedAt() bool {
-	if o != nil && o.UpdatedAt != nil {
+	if o != nil && !IsNil(o.UpdatedAt) {
 		return true
 	}
 
@@ -151,20 +154,22 @@ func (o *SettingsResponse) SetUpdatedAt(v time.Time) {
 }
 
 func (o SettingsResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["targetUrl"] = o.TargetUrl
-	}
-	if true {
-		toSerialize["throttling"] = o.Throttling
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.UpdatedAt != nil {
-		toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SettingsResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["targetUrl"] = o.TargetUrl
+	toSerialize["throttling"] = o.Throttling
+	toSerialize["createdAt"] = o.CreatedAt
+	if !IsNil(o.UpdatedAt) {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	return toSerialize, nil
 }
 
 type NullableSettingsResponse struct {

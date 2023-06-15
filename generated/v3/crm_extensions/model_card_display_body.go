@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CardDisplayBody type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CardDisplayBody{}
+
 // CardDisplayBody Configuration for displayed info on a card
 type CardDisplayBody struct {
 	// Card display properties. These will will be rendered as \"label : value\" pairs in the card UI. See the [example card](#) in the overview docs for more details.
@@ -63,11 +66,17 @@ func (o *CardDisplayBody) SetProperties(v []CardDisplayProperty) {
 }
 
 func (o CardDisplayBody) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["properties"] = o.Properties
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CardDisplayBody) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["properties"] = o.Properties
+	return toSerialize, nil
 }
 
 type NullableCardDisplayBody struct {

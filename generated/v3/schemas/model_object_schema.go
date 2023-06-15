@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the ObjectSchema type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ObjectSchema{}
+
 // ObjectSchema Defines an object schema, including its properties and associations.
 type ObjectSchema struct {
 	Labels ObjectTypeDefinitionLabels `json:"labels"`
@@ -146,7 +149,7 @@ func (o *ObjectSchema) SetSearchableProperties(v []string) {
 
 // GetPrimaryDisplayProperty returns the PrimaryDisplayProperty field value if set, zero value otherwise.
 func (o *ObjectSchema) GetPrimaryDisplayProperty() string {
-	if o == nil || o.PrimaryDisplayProperty == nil {
+	if o == nil || IsNil(o.PrimaryDisplayProperty) {
 		var ret string
 		return ret
 	}
@@ -156,7 +159,7 @@ func (o *ObjectSchema) GetPrimaryDisplayProperty() string {
 // GetPrimaryDisplayPropertyOk returns a tuple with the PrimaryDisplayProperty field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ObjectSchema) GetPrimaryDisplayPropertyOk() (*string, bool) {
-	if o == nil || o.PrimaryDisplayProperty == nil {
+	if o == nil || IsNil(o.PrimaryDisplayProperty) {
 		return nil, false
 	}
 	return o.PrimaryDisplayProperty, true
@@ -164,7 +167,7 @@ func (o *ObjectSchema) GetPrimaryDisplayPropertyOk() (*string, bool) {
 
 // HasPrimaryDisplayProperty returns a boolean if a field has been set.
 func (o *ObjectSchema) HasPrimaryDisplayProperty() bool {
-	if o != nil && o.PrimaryDisplayProperty != nil {
+	if o != nil && !IsNil(o.PrimaryDisplayProperty) {
 		return true
 	}
 
@@ -274,7 +277,7 @@ func (o *ObjectSchema) SetFullyQualifiedName(v string) {
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *ObjectSchema) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -284,7 +287,7 @@ func (o *ObjectSchema) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ObjectSchema) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
 	return o.CreatedAt, true
@@ -292,7 +295,7 @@ func (o *ObjectSchema) GetCreatedAtOk() (*time.Time, bool) {
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *ObjectSchema) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
@@ -306,7 +309,7 @@ func (o *ObjectSchema) SetCreatedAt(v time.Time) {
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
 func (o *ObjectSchema) GetUpdatedAt() time.Time {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -316,7 +319,7 @@ func (o *ObjectSchema) GetUpdatedAt() time.Time {
 // GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ObjectSchema) GetUpdatedAtOk() (*time.Time, bool) {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || IsNil(o.UpdatedAt) {
 		return nil, false
 	}
 	return o.UpdatedAt, true
@@ -324,7 +327,7 @@ func (o *ObjectSchema) GetUpdatedAtOk() (*time.Time, bool) {
 
 // HasUpdatedAt returns a boolean if a field has been set.
 func (o *ObjectSchema) HasUpdatedAt() bool {
-	if o != nil && o.UpdatedAt != nil {
+	if o != nil && !IsNil(o.UpdatedAt) {
 		return true
 	}
 
@@ -433,50 +436,36 @@ func (o *ObjectSchema) SetName(v string) {
 }
 
 func (o ObjectSchema) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["labels"] = o.Labels
-	}
-	if true {
-		toSerialize["requiredProperties"] = o.RequiredProperties
-	}
-	if true {
-		toSerialize["searchableProperties"] = o.SearchableProperties
-	}
-	if o.PrimaryDisplayProperty != nil {
-		toSerialize["primaryDisplayProperty"] = o.PrimaryDisplayProperty
-	}
-	if true {
-		toSerialize["secondaryDisplayProperties"] = o.SecondaryDisplayProperties
-	}
-	if true {
-		toSerialize["archived"] = o.Archived
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["fullyQualifiedName"] = o.FullyQualifiedName
-	}
-	if o.CreatedAt != nil {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if o.UpdatedAt != nil {
-		toSerialize["updatedAt"] = o.UpdatedAt
-	}
-	if true {
-		toSerialize["objectTypeId"] = o.ObjectTypeId
-	}
-	if true {
-		toSerialize["properties"] = o.Properties
-	}
-	if true {
-		toSerialize["associations"] = o.Associations
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ObjectSchema) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["labels"] = o.Labels
+	toSerialize["requiredProperties"] = o.RequiredProperties
+	toSerialize["searchableProperties"] = o.SearchableProperties
+	if !IsNil(o.PrimaryDisplayProperty) {
+		toSerialize["primaryDisplayProperty"] = o.PrimaryDisplayProperty
+	}
+	toSerialize["secondaryDisplayProperties"] = o.SecondaryDisplayProperties
+	toSerialize["archived"] = o.Archived
+	toSerialize["id"] = o.Id
+	toSerialize["fullyQualifiedName"] = o.FullyQualifiedName
+	if !IsNil(o.CreatedAt) {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if !IsNil(o.UpdatedAt) {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	toSerialize["objectTypeId"] = o.ObjectTypeId
+	toSerialize["properties"] = o.Properties
+	toSerialize["associations"] = o.Associations
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableObjectSchema struct {

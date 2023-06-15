@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ExtensionActionDefinition type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ExtensionActionDefinition{}
+
 // ExtensionActionDefinition Configuration for custom workflow action.
 type ExtensionActionDefinition struct {
 	// The ID of the custom action.
@@ -185,7 +188,7 @@ func (o *ExtensionActionDefinition) SetPublished(v bool) {
 
 // GetArchivedAt returns the ArchivedAt field value if set, zero value otherwise.
 func (o *ExtensionActionDefinition) GetArchivedAt() int64 {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		var ret int64
 		return ret
 	}
@@ -195,7 +198,7 @@ func (o *ExtensionActionDefinition) GetArchivedAt() int64 {
 // GetArchivedAtOk returns a tuple with the ArchivedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExtensionActionDefinition) GetArchivedAtOk() (*int64, bool) {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		return nil, false
 	}
 	return o.ArchivedAt, true
@@ -203,7 +206,7 @@ func (o *ExtensionActionDefinition) GetArchivedAtOk() (*int64, bool) {
 
 // HasArchivedAt returns a boolean if a field has been set.
 func (o *ExtensionActionDefinition) HasArchivedAt() bool {
-	if o != nil && o.ArchivedAt != nil {
+	if o != nil && !IsNil(o.ArchivedAt) {
 		return true
 	}
 
@@ -241,7 +244,7 @@ func (o *ExtensionActionDefinition) SetInputFields(v []InputFieldDefinition) {
 
 // GetObjectRequestOptions returns the ObjectRequestOptions field value if set, zero value otherwise.
 func (o *ExtensionActionDefinition) GetObjectRequestOptions() ObjectRequestOptions {
-	if o == nil || o.ObjectRequestOptions == nil {
+	if o == nil || IsNil(o.ObjectRequestOptions) {
 		var ret ObjectRequestOptions
 		return ret
 	}
@@ -251,7 +254,7 @@ func (o *ExtensionActionDefinition) GetObjectRequestOptions() ObjectRequestOptio
 // GetObjectRequestOptionsOk returns a tuple with the ObjectRequestOptions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExtensionActionDefinition) GetObjectRequestOptionsOk() (*ObjectRequestOptions, bool) {
-	if o == nil || o.ObjectRequestOptions == nil {
+	if o == nil || IsNil(o.ObjectRequestOptions) {
 		return nil, false
 	}
 	return o.ObjectRequestOptions, true
@@ -259,7 +262,7 @@ func (o *ExtensionActionDefinition) GetObjectRequestOptionsOk() (*ObjectRequestO
 
 // HasObjectRequestOptions returns a boolean if a field has been set.
 func (o *ExtensionActionDefinition) HasObjectRequestOptions() bool {
-	if o != nil && o.ObjectRequestOptions != nil {
+	if o != nil && !IsNil(o.ObjectRequestOptions) {
 		return true
 	}
 
@@ -273,7 +276,7 @@ func (o *ExtensionActionDefinition) SetObjectRequestOptions(v ObjectRequestOptio
 
 // GetInputFieldDependencies returns the InputFieldDependencies field value if set, zero value otherwise.
 func (o *ExtensionActionDefinition) GetInputFieldDependencies() []ExtensionActionDefinitionPatchInputFieldDependenciesInner {
-	if o == nil || o.InputFieldDependencies == nil {
+	if o == nil || IsNil(o.InputFieldDependencies) {
 		var ret []ExtensionActionDefinitionPatchInputFieldDependenciesInner
 		return ret
 	}
@@ -283,7 +286,7 @@ func (o *ExtensionActionDefinition) GetInputFieldDependencies() []ExtensionActio
 // GetInputFieldDependenciesOk returns a tuple with the InputFieldDependencies field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExtensionActionDefinition) GetInputFieldDependenciesOk() ([]ExtensionActionDefinitionPatchInputFieldDependenciesInner, bool) {
-	if o == nil || o.InputFieldDependencies == nil {
+	if o == nil || IsNil(o.InputFieldDependencies) {
 		return nil, false
 	}
 	return o.InputFieldDependencies, true
@@ -291,7 +294,7 @@ func (o *ExtensionActionDefinition) GetInputFieldDependenciesOk() ([]ExtensionAc
 
 // HasInputFieldDependencies returns a boolean if a field has been set.
 func (o *ExtensionActionDefinition) HasInputFieldDependencies() bool {
-	if o != nil && o.InputFieldDependencies != nil {
+	if o != nil && !IsNil(o.InputFieldDependencies) {
 		return true
 	}
 
@@ -352,41 +355,33 @@ func (o *ExtensionActionDefinition) SetObjectTypes(v []string) {
 }
 
 func (o ExtensionActionDefinition) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["revisionId"] = o.RevisionId
-	}
-	if true {
-		toSerialize["functions"] = o.Functions
-	}
-	if true {
-		toSerialize["actionUrl"] = o.ActionUrl
-	}
-	if true {
-		toSerialize["published"] = o.Published
-	}
-	if o.ArchivedAt != nil {
-		toSerialize["archivedAt"] = o.ArchivedAt
-	}
-	if true {
-		toSerialize["inputFields"] = o.InputFields
-	}
-	if o.ObjectRequestOptions != nil {
-		toSerialize["objectRequestOptions"] = o.ObjectRequestOptions
-	}
-	if o.InputFieldDependencies != nil {
-		toSerialize["inputFieldDependencies"] = o.InputFieldDependencies
-	}
-	if true {
-		toSerialize["labels"] = o.Labels
-	}
-	if true {
-		toSerialize["objectTypes"] = o.ObjectTypes
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ExtensionActionDefinition) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["revisionId"] = o.RevisionId
+	toSerialize["functions"] = o.Functions
+	toSerialize["actionUrl"] = o.ActionUrl
+	toSerialize["published"] = o.Published
+	if !IsNil(o.ArchivedAt) {
+		toSerialize["archivedAt"] = o.ArchivedAt
+	}
+	toSerialize["inputFields"] = o.InputFields
+	if !IsNil(o.ObjectRequestOptions) {
+		toSerialize["objectRequestOptions"] = o.ObjectRequestOptions
+	}
+	if !IsNil(o.InputFieldDependencies) {
+		toSerialize["inputFieldDependencies"] = o.InputFieldDependencies
+	}
+	toSerialize["labels"] = o.Labels
+	toSerialize["objectTypes"] = o.ObjectTypes
+	return toSerialize, nil
 }
 
 type NullableExtensionActionDefinition struct {

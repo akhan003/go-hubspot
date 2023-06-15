@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the UrlMapping type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &UrlMapping{}
+
 // UrlMapping struct for UrlMapping
 type UrlMapping struct {
 	// The unique ID of this URL redirect.
@@ -337,7 +340,7 @@ func (o *UrlMapping) SetPrecedence(v int32) {
 
 // GetCreated returns the Created field value if set, zero value otherwise.
 func (o *UrlMapping) GetCreated() time.Time {
-	if o == nil || o.Created == nil {
+	if o == nil || IsNil(o.Created) {
 		var ret time.Time
 		return ret
 	}
@@ -347,7 +350,7 @@ func (o *UrlMapping) GetCreated() time.Time {
 // GetCreatedOk returns a tuple with the Created field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UrlMapping) GetCreatedOk() (*time.Time, bool) {
-	if o == nil || o.Created == nil {
+	if o == nil || IsNil(o.Created) {
 		return nil, false
 	}
 	return o.Created, true
@@ -355,7 +358,7 @@ func (o *UrlMapping) GetCreatedOk() (*time.Time, bool) {
 
 // HasCreated returns a boolean if a field has been set.
 func (o *UrlMapping) HasCreated() bool {
-	if o != nil && o.Created != nil {
+	if o != nil && !IsNil(o.Created) {
 		return true
 	}
 
@@ -369,7 +372,7 @@ func (o *UrlMapping) SetCreated(v time.Time) {
 
 // GetUpdated returns the Updated field value if set, zero value otherwise.
 func (o *UrlMapping) GetUpdated() time.Time {
-	if o == nil || o.Updated == nil {
+	if o == nil || IsNil(o.Updated) {
 		var ret time.Time
 		return ret
 	}
@@ -379,7 +382,7 @@ func (o *UrlMapping) GetUpdated() time.Time {
 // GetUpdatedOk returns a tuple with the Updated field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UrlMapping) GetUpdatedOk() (*time.Time, bool) {
-	if o == nil || o.Updated == nil {
+	if o == nil || IsNil(o.Updated) {
 		return nil, false
 	}
 	return o.Updated, true
@@ -387,7 +390,7 @@ func (o *UrlMapping) GetUpdatedOk() (*time.Time, bool) {
 
 // HasUpdated returns a boolean if a field has been set.
 func (o *UrlMapping) HasUpdated() bool {
-	if o != nil && o.Updated != nil {
+	if o != nil && !IsNil(o.Updated) {
 		return true
 	}
 
@@ -400,47 +403,33 @@ func (o *UrlMapping) SetUpdated(v time.Time) {
 }
 
 func (o UrlMapping) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["routePrefix"] = o.RoutePrefix
-	}
-	if true {
-		toSerialize["destination"] = o.Destination
-	}
-	if true {
-		toSerialize["redirectStyle"] = o.RedirectStyle
-	}
-	if true {
-		toSerialize["isOnlyAfterNotFound"] = o.IsOnlyAfterNotFound
-	}
-	if true {
-		toSerialize["isMatchFullUrl"] = o.IsMatchFullUrl
-	}
-	if true {
-		toSerialize["isMatchQueryString"] = o.IsMatchQueryString
-	}
-	if true {
-		toSerialize["isPattern"] = o.IsPattern
-	}
-	if true {
-		toSerialize["isTrailingSlashOptional"] = o.IsTrailingSlashOptional
-	}
-	if true {
-		toSerialize["isProtocolAgnostic"] = o.IsProtocolAgnostic
-	}
-	if true {
-		toSerialize["precedence"] = o.Precedence
-	}
-	if o.Created != nil {
-		toSerialize["created"] = o.Created
-	}
-	if o.Updated != nil {
-		toSerialize["updated"] = o.Updated
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o UrlMapping) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["routePrefix"] = o.RoutePrefix
+	toSerialize["destination"] = o.Destination
+	toSerialize["redirectStyle"] = o.RedirectStyle
+	toSerialize["isOnlyAfterNotFound"] = o.IsOnlyAfterNotFound
+	toSerialize["isMatchFullUrl"] = o.IsMatchFullUrl
+	toSerialize["isMatchQueryString"] = o.IsMatchQueryString
+	toSerialize["isPattern"] = o.IsPattern
+	toSerialize["isTrailingSlashOptional"] = o.IsTrailingSlashOptional
+	toSerialize["isProtocolAgnostic"] = o.IsProtocolAgnostic
+	toSerialize["precedence"] = o.Precedence
+	if !IsNil(o.Created) {
+		toSerialize["created"] = o.Created
+	}
+	if !IsNil(o.Updated) {
+		toSerialize["updated"] = o.Updated
+	}
+	return toSerialize, nil
 }
 
 type NullableUrlMapping struct {

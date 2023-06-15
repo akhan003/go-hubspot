@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicGdprDeleteInput type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicGdprDeleteInput{}
+
 // PublicGdprDeleteInput struct for PublicGdprDeleteInput
 type PublicGdprDeleteInput struct {
 	ObjectId   string  `json:"objectId"`
@@ -64,7 +67,7 @@ func (o *PublicGdprDeleteInput) SetObjectId(v string) {
 
 // GetIdProperty returns the IdProperty field value if set, zero value otherwise.
 func (o *PublicGdprDeleteInput) GetIdProperty() string {
-	if o == nil || o.IdProperty == nil {
+	if o == nil || IsNil(o.IdProperty) {
 		var ret string
 		return ret
 	}
@@ -74,7 +77,7 @@ func (o *PublicGdprDeleteInput) GetIdProperty() string {
 // GetIdPropertyOk returns a tuple with the IdProperty field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicGdprDeleteInput) GetIdPropertyOk() (*string, bool) {
-	if o == nil || o.IdProperty == nil {
+	if o == nil || IsNil(o.IdProperty) {
 		return nil, false
 	}
 	return o.IdProperty, true
@@ -82,7 +85,7 @@ func (o *PublicGdprDeleteInput) GetIdPropertyOk() (*string, bool) {
 
 // HasIdProperty returns a boolean if a field has been set.
 func (o *PublicGdprDeleteInput) HasIdProperty() bool {
-	if o != nil && o.IdProperty != nil {
+	if o != nil && !IsNil(o.IdProperty) {
 		return true
 	}
 
@@ -95,14 +98,20 @@ func (o *PublicGdprDeleteInput) SetIdProperty(v string) {
 }
 
 func (o PublicGdprDeleteInput) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["objectId"] = o.ObjectId
-	}
-	if o.IdProperty != nil {
-		toSerialize["idProperty"] = o.IdProperty
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicGdprDeleteInput) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["objectId"] = o.ObjectId
+	if !IsNil(o.IdProperty) {
+		toSerialize["idProperty"] = o.IdProperty
+	}
+	return toSerialize, nil
 }
 
 type NullablePublicGdprDeleteInput struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ImportInvoiceFeature type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ImportInvoiceFeature{}
+
 // ImportInvoiceFeature Indicates if importing invoices from the external account system into HubSpot is supported for the integration.
 type ImportInvoiceFeature struct {
 	// Indicates if importing invoices from the external account system into HubSpot.
@@ -63,11 +66,17 @@ func (o *ImportInvoiceFeature) SetEnabled(v bool) {
 }
 
 func (o ImportInvoiceFeature) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["enabled"] = o.Enabled
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ImportInvoiceFeature) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["enabled"] = o.Enabled
+	return toSerialize, nil
 }
 
 type NullableImportInvoiceFeature struct {

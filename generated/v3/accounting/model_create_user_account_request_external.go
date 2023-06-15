@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateUserAccountRequestExternal type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateUserAccountRequestExternal{}
+
 // CreateUserAccountRequestExternal Information about the account in your external account system.
 type CreateUserAccountRequestExternal struct {
 	// The id of the account in your system.
@@ -117,17 +120,19 @@ func (o *CreateUserAccountRequestExternal) SetCurrencyCode(v string) {
 }
 
 func (o CreateUserAccountRequestExternal) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["accountId"] = o.AccountId
-	}
-	if true {
-		toSerialize["accountName"] = o.AccountName
-	}
-	if true {
-		toSerialize["currencyCode"] = o.CurrencyCode
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateUserAccountRequestExternal) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["accountId"] = o.AccountId
+	toSerialize["accountName"] = o.AccountName
+	toSerialize["currencyCode"] = o.CurrencyCode
+	return toSerialize, nil
 }
 
 type NullableCreateUserAccountRequestExternal struct {

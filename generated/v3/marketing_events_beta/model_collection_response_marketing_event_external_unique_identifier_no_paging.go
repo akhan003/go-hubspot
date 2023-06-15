@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging{}
+
 // CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging struct for CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging
 type CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging struct {
 	Results []MarketingEventExternalUniqueIdentifier `json:"results"`
@@ -62,11 +65,17 @@ func (o *CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging) SetRe
 }
 
 func (o CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["results"] = o.Results
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["results"] = o.Results
+	return toSerialize, nil
 }
 
 type NullableCollectionResponseMarketingEventExternalUniqueIdentifierNoPaging struct {

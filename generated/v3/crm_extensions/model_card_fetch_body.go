@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CardFetchBody type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CardFetchBody{}
+
 // CardFetchBody Configuration for this card's data fetch request.
 type CardFetchBody struct {
 	// URL to a service endpoints that will respond with card details. HubSpot will call this endpoint each time a user visits a CRM record page where this card should be displayed.
@@ -90,14 +93,18 @@ func (o *CardFetchBody) SetObjectTypes(v []CardObjectTypeBody) {
 }
 
 func (o CardFetchBody) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["targetUrl"] = o.TargetUrl
-	}
-	if true {
-		toSerialize["objectTypes"] = o.ObjectTypes
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CardFetchBody) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["targetUrl"] = o.TargetUrl
+	toSerialize["objectTypes"] = o.ObjectTypes
+	return toSerialize, nil
 }
 
 type NullableCardFetchBody struct {

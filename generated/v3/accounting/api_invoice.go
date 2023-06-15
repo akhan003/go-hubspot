@@ -13,10 +13,8 @@ package accounting
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"strings"
 )
@@ -81,7 +79,7 @@ func (a *InvoiceApiService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymen
 	}
 
 	localVarPath := localBasePath + "/crm/v3/extensions/accounting/invoice/{invoiceId}/payment"
-	localVarPath = strings.Replace(localVarPath, "{"+"invoiceId"+"}", url.PathEscape(parameterToString(r.invoiceId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"invoiceId"+"}", url.PathEscape(parameterValueToString(r.invoiceId, "invoiceId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -91,7 +89,7 @@ func (a *InvoiceApiService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymen
 	}
 
 	if r.accountId != nil {
-		localVarQueryParams.Add("accountId", parameterToString(*r.accountId, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "accountId", r.accountId, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -114,12 +112,16 @@ func (a *InvoiceApiService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymen
 	localVarPostBody = r.invoiceCreatePaymentRequest
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -132,9 +134,9 @@ func (a *InvoiceApiService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymen
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -150,6 +152,7 @@ func (a *InvoiceApiService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymen
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -216,7 +219,7 @@ func (a *InvoiceApiService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*
 	}
 
 	localVarPath := localBasePath + "/crm/v3/extensions/accounting/invoice/{invoiceId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"invoiceId"+"}", url.PathEscape(parameterToString(r.invoiceId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"invoiceId"+"}", url.PathEscape(parameterValueToString(r.invoiceId, "invoiceId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -225,7 +228,7 @@ func (a *InvoiceApiService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*
 		return localVarReturnValue, nil, reportError("accountId is required and must be specified")
 	}
 
-	localVarQueryParams.Add("accountId", parameterToString(*r.accountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "accountId", r.accountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -245,12 +248,16 @@ func (a *InvoiceApiService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -263,9 +270,9 @@ func (a *InvoiceApiService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -281,6 +288,7 @@ func (a *InvoiceApiService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -354,7 +362,7 @@ func (a *InvoiceApiService) InvoiceUpdateExecute(r ApiInvoiceUpdateRequest) (*In
 	}
 
 	localVarPath := localBasePath + "/crm/v3/extensions/accounting/invoice/{invoiceId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"invoiceId"+"}", url.PathEscape(parameterToString(r.invoiceId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"invoiceId"+"}", url.PathEscape(parameterValueToString(r.invoiceId, "invoiceId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -366,7 +374,7 @@ func (a *InvoiceApiService) InvoiceUpdateExecute(r ApiInvoiceUpdateRequest) (*In
 		return localVarReturnValue, nil, reportError("invoiceUpdateRequest is required and must be specified")
 	}
 
-	localVarQueryParams.Add("accountId", parameterToString(*r.accountId, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "accountId", r.accountId, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
 
@@ -388,12 +396,16 @@ func (a *InvoiceApiService) InvoiceUpdateExecute(r ApiInvoiceUpdateRequest) (*In
 	localVarPostBody = r.invoiceUpdateRequest
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -406,9 +418,9 @@ func (a *InvoiceApiService) InvoiceUpdateExecute(r ApiInvoiceUpdateRequest) (*In
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -424,6 +436,7 @@ func (a *InvoiceApiService) InvoiceUpdateExecute(r ApiInvoiceUpdateRequest) (*In
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

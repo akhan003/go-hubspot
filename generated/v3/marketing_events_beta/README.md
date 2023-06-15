@@ -82,20 +82,20 @@ All URIs are relative to *https://api.hubapi.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AttendanceSubscriberStateChangesApi* | [**AttendanceCreate**](docs/AttendanceSubscriberStateChangesApi.md#attendancecreate) | **Post** /marketing/v3/marketing-events/attendance/{externalEventId}/{subscriberState}/create | Record
-*AttendanceSubscriberStateChangesApi* | [**AttendanceEmailCreate**](docs/AttendanceSubscriberStateChangesApi.md#attendanceemailcreate) | **Post** /marketing/v3/marketing-events/attendance/{externalEventId}/{subscriberState}/email-create | Record
-*MarketingEventsExternalApi* | [**Archive**](docs/MarketingEventsExternalApi.md#archive) | **Post** /marketing/v3/marketing-events/events/delete | 
+*AttendanceSubscriberStateChangesApi* | [**AttendanceCreateCreate**](docs/AttendanceSubscriberStateChangesApi.md#attendancecreatecreate) | **Post** /marketing/v3/marketing-events/attendance/{externalEventId}/{subscriberState}/create | Record
+*AttendanceSubscriberStateChangesApi* | [**AttendanceEmailCreateCreateByEmail**](docs/AttendanceSubscriberStateChangesApi.md#attendanceemailcreatecreatebyemail) | **Post** /marketing/v3/marketing-events/attendance/{externalEventId}/{subscriberState}/email-create | Record
+*MarketingEventsExternalApi* | [**ArchiveBatch**](docs/MarketingEventsExternalApi.md#archivebatch) | **Post** /marketing/v3/marketing-events/events/delete | 
 *MarketingEventsExternalApi* | [**Create**](docs/MarketingEventsExternalApi.md#create) | **Post** /marketing/v3/marketing-events/events | 
 *MarketingEventsExternalApi* | [**ExternalArchive**](docs/MarketingEventsExternalApi.md#externalarchive) | **Delete** /marketing/v3/marketing-events/events/{externalEventId} | 
 *MarketingEventsExternalApi* | [**ExternalCancel**](docs/MarketingEventsExternalApi.md#externalcancel) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/cancel | 
-*MarketingEventsExternalApi* | [**ExternalComplete**](docs/MarketingEventsExternalApi.md#externalcomplete) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/complete | 
+*MarketingEventsExternalApi* | [**ExternalCompleteComplete**](docs/MarketingEventsExternalApi.md#externalcompletecomplete) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/complete | 
 *MarketingEventsExternalApi* | [**ExternalEmailUpsertByID**](docs/MarketingEventsExternalApi.md#externalemailupsertbyid) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/{subscriberState}/email-upsert | 
 *MarketingEventsExternalApi* | [**ExternalGetByID**](docs/MarketingEventsExternalApi.md#externalgetbyid) | **Get** /marketing/v3/marketing-events/events/{externalEventId} | 
 *MarketingEventsExternalApi* | [**ExternalReplace**](docs/MarketingEventsExternalApi.md#externalreplace) | **Put** /marketing/v3/marketing-events/events/{externalEventId} | 
 *MarketingEventsExternalApi* | [**ExternalUpdate**](docs/MarketingEventsExternalApi.md#externalupdate) | **Patch** /marketing/v3/marketing-events/events/{externalEventId} | 
 *MarketingEventsExternalApi* | [**ExternalUpsertByID**](docs/MarketingEventsExternalApi.md#externalupsertbyid) | **Post** /marketing/v3/marketing-events/events/{externalEventId}/{subscriberState}/upsert | 
-*MarketingEventsExternalApi* | [**Search**](docs/MarketingEventsExternalApi.md#search) | **Get** /marketing/v3/marketing-events/events/search | 
 *MarketingEventsExternalApi* | [**Upsert**](docs/MarketingEventsExternalApi.md#upsert) | **Post** /marketing/v3/marketing-events/events/upsert | 
+*SearchApi* | [**Search**](docs/SearchApi.md#search) | **Get** /marketing/v3/marketing-events/events/search | Search for marketing events
 *SettingsExternalApi* | [**SettingsCreate**](docs/SettingsExternalApi.md#settingscreate) | **Post** /marketing/v3/marketing-events/{appId}/settings | 
 *SettingsExternalApi* | [**SettingsGetAll**](docs/SettingsExternalApi.md#settingsgetall) | **Get** /marketing/v3/marketing-events/{appId}/settings | 
 
@@ -133,25 +133,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Authorization
 
 
-
-### developer_hapikey
-
-- **Type**: API key
-- **API key parameter name**: hapikey
-- **Location**: URL query string
-
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: hapikey and passed in as the auth context for each request.
-
-
-### hapikey
-
-- **Type**: API key
-- **API key parameter name**: hapikey
-- **Location**: URL query string
-
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: hapikey and passed in as the auth context for each request.
-
-
+Authentication schemes defined for the API:
 ### oauth2_legacy
 
 
@@ -180,6 +162,22 @@ tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
 auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
+
+### developer_hapikey
+
+- **Type**: API key
+- **API key parameter name**: hapikey
+- **Location**: URL query string
+
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: hapikey and passed in as the auth context for each request.
+
+### private_apps_legacy
+
+- **Type**: API key
+- **API key parameter name**: private-app-legacy
+- **Location**: HTTP header
+
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: private-app-legacy and passed in as the auth context for each request.
 
 
 ## Documentation for Utility Methods

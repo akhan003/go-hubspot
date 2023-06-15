@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PerformanceView type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PerformanceView{}
+
 // PerformanceView An individual time series performance data point.
 type PerformanceView struct {
 	// The timestamp in milliseconds of the start of this interval.
@@ -627,74 +630,38 @@ func (o *PerformanceView) SetVar99th(v int32) {
 }
 
 func (o PerformanceView) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["startTimestamp"] = o.StartTimestamp
-	}
-	if true {
-		toSerialize["endTimestamp"] = o.EndTimestamp
-	}
-	if true {
-		toSerialize["startDatetime"] = o.StartDatetime
-	}
-	if true {
-		toSerialize["endDatetime"] = o.EndDatetime
-	}
-	if true {
-		toSerialize["totalRequests"] = o.TotalRequests
-	}
-	if true {
-		toSerialize["cacheHits"] = o.CacheHits
-	}
-	if true {
-		toSerialize["cacheHitRate"] = o.CacheHitRate
-	}
-	if true {
-		toSerialize["totalRequestTime"] = o.TotalRequestTime
-	}
-	if true {
-		toSerialize["avgOriginResponseTime"] = o.AvgOriginResponseTime
-	}
-	if true {
-		toSerialize["responseTimeMs"] = o.ResponseTimeMs
-	}
-	if true {
-		toSerialize["100X"] = o.Var100X
-	}
-	if true {
-		toSerialize["20X"] = o.Var20X
-	}
-	if true {
-		toSerialize["30X"] = o.Var30X
-	}
-	if true {
-		toSerialize["40X"] = o.Var40X
-	}
-	if true {
-		toSerialize["50X"] = o.Var50X
-	}
-	if true {
-		toSerialize["403"] = o.Var403
-	}
-	if true {
-		toSerialize["404"] = o.Var404
-	}
-	if true {
-		toSerialize["500"] = o.Var500
-	}
-	if true {
-		toSerialize["504"] = o.Var504
-	}
-	if true {
-		toSerialize["50th"] = o.Var50th
-	}
-	if true {
-		toSerialize["95th"] = o.Var95th
-	}
-	if true {
-		toSerialize["99th"] = o.Var99th
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PerformanceView) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["startTimestamp"] = o.StartTimestamp
+	toSerialize["endTimestamp"] = o.EndTimestamp
+	toSerialize["startDatetime"] = o.StartDatetime
+	toSerialize["endDatetime"] = o.EndDatetime
+	toSerialize["totalRequests"] = o.TotalRequests
+	toSerialize["cacheHits"] = o.CacheHits
+	toSerialize["cacheHitRate"] = o.CacheHitRate
+	toSerialize["totalRequestTime"] = o.TotalRequestTime
+	toSerialize["avgOriginResponseTime"] = o.AvgOriginResponseTime
+	toSerialize["responseTimeMs"] = o.ResponseTimeMs
+	toSerialize["100X"] = o.Var100X
+	toSerialize["20X"] = o.Var20X
+	toSerialize["30X"] = o.Var30X
+	toSerialize["40X"] = o.Var40X
+	toSerialize["50X"] = o.Var50X
+	toSerialize["403"] = o.Var403
+	toSerialize["404"] = o.Var404
+	toSerialize["500"] = o.Var500
+	toSerialize["504"] = o.Var504
+	toSerialize["50th"] = o.Var50th
+	toSerialize["95th"] = o.Var95th
+	toSerialize["99th"] = o.Var99th
+	return toSerialize, nil
 }
 
 type NullablePerformanceView struct {

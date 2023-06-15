@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicObjectSearchRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicObjectSearchRequest{}
+
 // PublicObjectSearchRequest struct for PublicObjectSearchRequest
 type PublicObjectSearchRequest struct {
 	FilterGroups []FilterGroup `json:"filterGroups"`
@@ -96,7 +99,7 @@ func (o *PublicObjectSearchRequest) SetSorts(v []string) {
 
 // GetQuery returns the Query field value if set, zero value otherwise.
 func (o *PublicObjectSearchRequest) GetQuery() string {
-	if o == nil || o.Query == nil {
+	if o == nil || IsNil(o.Query) {
 		var ret string
 		return ret
 	}
@@ -106,7 +109,7 @@ func (o *PublicObjectSearchRequest) GetQuery() string {
 // GetQueryOk returns a tuple with the Query field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicObjectSearchRequest) GetQueryOk() (*string, bool) {
-	if o == nil || o.Query == nil {
+	if o == nil || IsNil(o.Query) {
 		return nil, false
 	}
 	return o.Query, true
@@ -114,7 +117,7 @@ func (o *PublicObjectSearchRequest) GetQueryOk() (*string, bool) {
 
 // HasQuery returns a boolean if a field has been set.
 func (o *PublicObjectSearchRequest) HasQuery() bool {
-	if o != nil && o.Query != nil {
+	if o != nil && !IsNil(o.Query) {
 		return true
 	}
 
@@ -199,26 +202,24 @@ func (o *PublicObjectSearchRequest) SetAfter(v int32) {
 }
 
 func (o PublicObjectSearchRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["filterGroups"] = o.FilterGroups
-	}
-	if true {
-		toSerialize["sorts"] = o.Sorts
-	}
-	if o.Query != nil {
-		toSerialize["query"] = o.Query
-	}
-	if true {
-		toSerialize["properties"] = o.Properties
-	}
-	if true {
-		toSerialize["limit"] = o.Limit
-	}
-	if true {
-		toSerialize["after"] = o.After
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicObjectSearchRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["filterGroups"] = o.FilterGroups
+	toSerialize["sorts"] = o.Sorts
+	if !IsNil(o.Query) {
+		toSerialize["query"] = o.Query
+	}
+	toSerialize["properties"] = o.Properties
+	toSerialize["limit"] = o.Limit
+	toSerialize["after"] = o.After
+	return toSerialize, nil
 }
 
 type NullablePublicObjectSearchRequest struct {

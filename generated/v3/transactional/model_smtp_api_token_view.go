@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the SmtpApiTokenView type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SmtpApiTokenView{}
+
 // SmtpApiTokenView A SMTP API token provides both an ID and password that can be used to send email through the HubSpot SMTP API.
 type SmtpApiTokenView struct {
 	// User name to log into the HubSpot SMTP server.
@@ -106,7 +109,7 @@ func (o *SmtpApiTokenView) SetCreatedBy(v string) {
 
 // GetPassword returns the Password field value if set, zero value otherwise.
 func (o *SmtpApiTokenView) GetPassword() string {
-	if o == nil || o.Password == nil {
+	if o == nil || IsNil(o.Password) {
 		var ret string
 		return ret
 	}
@@ -116,7 +119,7 @@ func (o *SmtpApiTokenView) GetPassword() string {
 // GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SmtpApiTokenView) GetPasswordOk() (*string, bool) {
-	if o == nil || o.Password == nil {
+	if o == nil || IsNil(o.Password) {
 		return nil, false
 	}
 	return o.Password, true
@@ -124,7 +127,7 @@ func (o *SmtpApiTokenView) GetPasswordOk() (*string, bool) {
 
 // HasPassword returns a boolean if a field has been set.
 func (o *SmtpApiTokenView) HasPassword() bool {
-	if o != nil && o.Password != nil {
+	if o != nil && !IsNil(o.Password) {
 		return true
 	}
 
@@ -233,29 +236,25 @@ func (o *SmtpApiTokenView) SetCampaignName(v string) {
 }
 
 func (o SmtpApiTokenView) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["createdBy"] = o.CreatedBy
-	}
-	if o.Password != nil {
-		toSerialize["password"] = o.Password
-	}
-	if true {
-		toSerialize["emailCampaignId"] = o.EmailCampaignId
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["createContact"] = o.CreateContact
-	}
-	if true {
-		toSerialize["campaignName"] = o.CampaignName
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SmtpApiTokenView) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["createdBy"] = o.CreatedBy
+	if !IsNil(o.Password) {
+		toSerialize["password"] = o.Password
+	}
+	toSerialize["emailCampaignId"] = o.EmailCampaignId
+	toSerialize["createdAt"] = o.CreatedAt
+	toSerialize["createContact"] = o.CreateContact
+	toSerialize["campaignName"] = o.CampaignName
+	return toSerialize, nil
 }
 
 type NullableSmtpApiTokenView struct {

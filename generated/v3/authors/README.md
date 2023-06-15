@@ -118,16 +118,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Authorization
 
 
-
-### hapikey
-
-- **Type**: API key
-- **API key parameter name**: hapikey
-- **Location**: URL query string
-
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: hapikey and passed in as the auth context for each request.
-
-
+Authentication schemes defined for the API:
 ### oauth2_legacy
 
 
@@ -155,6 +146,14 @@ tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
 auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
+
+### private_apps_legacy
+
+- **Type**: API key
+- **API key parameter name**: private-app-legacy
+- **Location**: HTTP header
+
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: private-app-legacy and passed in as the auth context for each request.
 
 
 ## Documentation for Utility Methods

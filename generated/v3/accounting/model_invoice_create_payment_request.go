@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the InvoiceCreatePaymentRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &InvoiceCreatePaymentRequest{}
+
 // InvoiceCreatePaymentRequest struct for InvoiceCreatePaymentRequest
 type InvoiceCreatePaymentRequest struct {
 	// The amount that this payment is for.
@@ -145,20 +148,20 @@ func (o *InvoiceCreatePaymentRequest) SetExternalPaymentId(v string) {
 }
 
 func (o InvoiceCreatePaymentRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amountPaid"] = o.AmountPaid
-	}
-	if true {
-		toSerialize["currencyCode"] = o.CurrencyCode
-	}
-	if true {
-		toSerialize["paymentDateTime"] = o.PaymentDateTime
-	}
-	if true {
-		toSerialize["externalPaymentId"] = o.ExternalPaymentId
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o InvoiceCreatePaymentRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amountPaid"] = o.AmountPaid
+	toSerialize["currencyCode"] = o.CurrencyCode
+	toSerialize["paymentDateTime"] = o.PaymentDateTime
+	toSerialize["externalPaymentId"] = o.ExternalPaymentId
+	return toSerialize, nil
 }
 
 type NullableInvoiceCreatePaymentRequest struct {

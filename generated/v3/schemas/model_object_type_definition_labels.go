@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ObjectTypeDefinitionLabels type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ObjectTypeDefinitionLabels{}
+
 // ObjectTypeDefinitionLabels Singular and plural labels for the object. Used in CRM display.
 type ObjectTypeDefinitionLabels struct {
 	// The word for one object. (There’s no way to change this later.)
@@ -41,7 +44,7 @@ func NewObjectTypeDefinitionLabelsWithDefaults() *ObjectTypeDefinitionLabels {
 
 // GetSingular returns the Singular field value if set, zero value otherwise.
 func (o *ObjectTypeDefinitionLabels) GetSingular() string {
-	if o == nil || o.Singular == nil {
+	if o == nil || IsNil(o.Singular) {
 		var ret string
 		return ret
 	}
@@ -51,7 +54,7 @@ func (o *ObjectTypeDefinitionLabels) GetSingular() string {
 // GetSingularOk returns a tuple with the Singular field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ObjectTypeDefinitionLabels) GetSingularOk() (*string, bool) {
-	if o == nil || o.Singular == nil {
+	if o == nil || IsNil(o.Singular) {
 		return nil, false
 	}
 	return o.Singular, true
@@ -59,7 +62,7 @@ func (o *ObjectTypeDefinitionLabels) GetSingularOk() (*string, bool) {
 
 // HasSingular returns a boolean if a field has been set.
 func (o *ObjectTypeDefinitionLabels) HasSingular() bool {
-	if o != nil && o.Singular != nil {
+	if o != nil && !IsNil(o.Singular) {
 		return true
 	}
 
@@ -73,7 +76,7 @@ func (o *ObjectTypeDefinitionLabels) SetSingular(v string) {
 
 // GetPlural returns the Plural field value if set, zero value otherwise.
 func (o *ObjectTypeDefinitionLabels) GetPlural() string {
-	if o == nil || o.Plural == nil {
+	if o == nil || IsNil(o.Plural) {
 		var ret string
 		return ret
 	}
@@ -83,7 +86,7 @@ func (o *ObjectTypeDefinitionLabels) GetPlural() string {
 // GetPluralOk returns a tuple with the Plural field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ObjectTypeDefinitionLabels) GetPluralOk() (*string, bool) {
-	if o == nil || o.Plural == nil {
+	if o == nil || IsNil(o.Plural) {
 		return nil, false
 	}
 	return o.Plural, true
@@ -91,7 +94,7 @@ func (o *ObjectTypeDefinitionLabels) GetPluralOk() (*string, bool) {
 
 // HasPlural returns a boolean if a field has been set.
 func (o *ObjectTypeDefinitionLabels) HasPlural() bool {
-	if o != nil && o.Plural != nil {
+	if o != nil && !IsNil(o.Plural) {
 		return true
 	}
 
@@ -104,14 +107,22 @@ func (o *ObjectTypeDefinitionLabels) SetPlural(v string) {
 }
 
 func (o ObjectTypeDefinitionLabels) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Singular != nil {
-		toSerialize["singular"] = o.Singular
-	}
-	if o.Plural != nil {
-		toSerialize["plural"] = o.Plural
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ObjectTypeDefinitionLabels) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Singular) {
+		toSerialize["singular"] = o.Singular
+	}
+	if !IsNil(o.Plural) {
+		toSerialize["plural"] = o.Plural
+	}
+	return toSerialize, nil
 }
 
 type NullableObjectTypeDefinitionLabels struct {

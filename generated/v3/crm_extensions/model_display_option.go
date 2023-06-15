@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the DisplayOption type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &DisplayOption{}
+
 // DisplayOption Option definition for STATUS dataTypes.
 type DisplayOption struct {
 	// JSON-friendly unique name for option.
@@ -117,17 +120,19 @@ func (o *DisplayOption) SetType(v string) {
 }
 
 func (o DisplayOption) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["type"] = o.Type
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o DisplayOption) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["label"] = o.Label
+	toSerialize["type"] = o.Type
+	return toSerialize, nil
 }
 
 type NullableDisplayOption struct {

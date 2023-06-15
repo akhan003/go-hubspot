@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CardObjectTypeBody type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CardObjectTypeBody{}
+
 // CardObjectTypeBody struct for CardObjectTypeBody
 type CardObjectTypeBody struct {
 	// A CRM object type where this card should be displayed.
@@ -90,14 +93,18 @@ func (o *CardObjectTypeBody) SetPropertiesToSend(v []string) {
 }
 
 func (o CardObjectTypeBody) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["propertiesToSend"] = o.PropertiesToSend
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CardObjectTypeBody) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["propertiesToSend"] = o.PropertiesToSend
+	return toSerialize, nil
 }
 
 type NullableCardObjectTypeBody struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ResultIdAccountingResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ResultIdAccountingResponse{}
+
 // ResultIdAccountingResponse A response to the creation of an entity (eg. invoice, customer).
 type ResultIdAccountingResponse struct {
 	// Designates if the response is a success ('OK') or failure ('ERR').
@@ -90,14 +93,18 @@ func (o *ResultIdAccountingResponse) SetId(v string) {
 }
 
 func (o ResultIdAccountingResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["@result"] = o.Result
-	}
-	if true {
-		toSerialize["id"] = o.Id
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ResultIdAccountingResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["@result"] = o.Result
+	toSerialize["id"] = o.Id
+	return toSerialize, nil
 }
 
 type NullableResultIdAccountingResponse struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicObjectListRecord type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicObjectListRecord{}
+
 // PublicObjectListRecord A summary detailing which list contains the imported objects.
 type PublicObjectListRecord struct {
 	// The ID of the list containing the imported objects.
@@ -90,14 +93,18 @@ func (o *PublicObjectListRecord) SetObjectType(v string) {
 }
 
 func (o PublicObjectListRecord) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["listId"] = o.ListId
-	}
-	if true {
-		toSerialize["objectType"] = o.ObjectType
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicObjectListRecord) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["listId"] = o.ListId
+	toSerialize["objectType"] = o.ObjectType
+	return toSerialize, nil
 }
 
 type NullablePublicObjectListRecord struct {

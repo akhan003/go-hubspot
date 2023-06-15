@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicSubscriptionStatusesResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicSubscriptionStatusesResponse{}
+
 // PublicSubscriptionStatusesResponse A collection of subscription statuses for a contact.
 type PublicSubscriptionStatusesResponse struct {
 	// Email address of the contact.
@@ -90,14 +93,18 @@ func (o *PublicSubscriptionStatusesResponse) SetSubscriptionStatuses(v []PublicS
 }
 
 func (o PublicSubscriptionStatusesResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["recipient"] = o.Recipient
-	}
-	if true {
-		toSerialize["subscriptionStatuses"] = o.SubscriptionStatuses
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicSubscriptionStatusesResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["recipient"] = o.Recipient
+	toSerialize["subscriptionStatuses"] = o.SubscriptionStatuses
+	return toSerialize, nil
 }
 
 type NullablePublicSubscriptionStatusesResponse struct {

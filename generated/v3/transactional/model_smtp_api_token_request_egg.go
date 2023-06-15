@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SmtpApiTokenRequestEgg type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SmtpApiTokenRequestEgg{}
+
 // SmtpApiTokenRequestEgg A request object to create a SMTP API token
 type SmtpApiTokenRequestEgg struct {
 	// Indicates whether a contact should be created for email recipients.
@@ -90,14 +93,18 @@ func (o *SmtpApiTokenRequestEgg) SetCampaignName(v string) {
 }
 
 func (o SmtpApiTokenRequestEgg) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["createContact"] = o.CreateContact
-	}
-	if true {
-		toSerialize["campaignName"] = o.CampaignName
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SmtpApiTokenRequestEgg) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["createContact"] = o.CreateContact
+	toSerialize["campaignName"] = o.CampaignName
+	return toSerialize, nil
 }
 
 type NullableSmtpApiTokenRequestEgg struct {

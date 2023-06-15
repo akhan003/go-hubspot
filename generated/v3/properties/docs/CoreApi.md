@@ -29,7 +29,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -38,7 +38,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CoreApi.Archive(context.Background(), objectType, propertyName).Execute()
+    r, err := apiClient.CoreApi.Archive(context.Background(), objectType, propertyName).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CoreApi.Archive``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2](../README.md#oauth2), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [oauth2](../README.md#oauth2), [private_apps_legacy](../README.md#private_apps_legacy), [private_apps](../README.md#private_apps)
 
 ### HTTP request headers
 
@@ -100,7 +100,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -143,7 +143,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2](../README.md#oauth2), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [oauth2](../README.md#oauth2), [private_apps_legacy](../README.md#private_apps_legacy), [private_apps](../README.md#private_apps)
 
 ### HTTP request headers
 
@@ -157,7 +157,7 @@ Name | Type | Description  | Notes
 
 ## GetAll
 
-> CollectionResponseProperty GetAll(ctx, objectType).Archived(archived).Execute()
+> CollectionResponsePropertyNoPaging GetAll(ctx, objectType).Archived(archived).Properties(properties).Execute()
 
 Read all properties
 
@@ -172,21 +172,22 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
     objectType := "objectType_example" // string | 
     archived := true // bool | Whether to return only results that have been archived. (optional) (default to false)
+    properties := "properties_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CoreApi.GetAll(context.Background(), objectType).Archived(archived).Execute()
+    resp, r, err := apiClient.CoreApi.GetAll(context.Background(), objectType).Archived(archived).Properties(properties).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CoreApi.GetAll``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetAll`: CollectionResponseProperty
+    // response from `GetAll`: CollectionResponsePropertyNoPaging
     fmt.Fprintf(os.Stdout, "Response from `CoreApi.GetAll`: %v\n", resp)
 }
 ```
@@ -208,14 +209,15 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
  **archived** | **bool** | Whether to return only results that have been archived. | [default to false]
+ **properties** | **string** |  | 
 
 ### Return type
 
-[**CollectionResponseProperty**](CollectionResponseProperty.md)
+[**CollectionResponsePropertyNoPaging**](CollectionResponsePropertyNoPaging.md)
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2](../README.md#oauth2), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [oauth2](../README.md#oauth2), [private_apps_legacy](../README.md#private_apps_legacy), [private_apps](../README.md#private_apps)
 
 ### HTTP request headers
 
@@ -229,7 +231,7 @@ Name | Type | Description  | Notes
 
 ## GetByName
 
-> Property GetByName(ctx, objectType, propertyName).Archived(archived).Execute()
+> Property GetByName(ctx, objectType, propertyName).Archived(archived).Properties(properties).Execute()
 
 Read a property
 
@@ -244,17 +246,18 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
     objectType := "objectType_example" // string | 
     propertyName := "propertyName_example" // string | 
     archived := true // bool | Whether to return only results that have been archived. (optional) (default to false)
+    properties := "properties_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.CoreApi.GetByName(context.Background(), objectType, propertyName).Archived(archived).Execute()
+    resp, r, err := apiClient.CoreApi.GetByName(context.Background(), objectType, propertyName).Archived(archived).Properties(properties).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `CoreApi.GetByName``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -283,6 +286,7 @@ Name | Type | Description  | Notes
 
 
  **archived** | **bool** | Whether to return only results that have been archived. | [default to false]
+ **properties** | **string** |  | 
 
 ### Return type
 
@@ -290,7 +294,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2](../README.md#oauth2), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [oauth2](../README.md#oauth2), [private_apps_legacy](../README.md#private_apps_legacy), [private_apps](../README.md#private_apps)
 
 ### HTTP request headers
 
@@ -319,7 +323,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -365,7 +369,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2](../README.md#oauth2), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [oauth2](../README.md#oauth2), [private_apps_legacy](../README.md#private_apps_legacy), [private_apps](../README.md#private_apps)
 
 ### HTTP request headers
 

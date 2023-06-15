@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the LayoutSection type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &LayoutSection{}
+
 // LayoutSection struct for LayoutSection
 type LayoutSection struct {
 	X     int32  `json:"x"`
@@ -196,7 +199,7 @@ func (o *LayoutSection) GetParams() map[string]map[string]interface{} {
 // and a boolean to check if the value has been set.
 func (o *LayoutSection) GetParamsOk() (map[string]map[string]interface{}, bool) {
 	if o == nil {
-		return nil, false
+		return map[string]map[string]interface{}{}, false
 	}
 	return o.Params, true
 }
@@ -375,47 +378,29 @@ func (o *LayoutSection) SetStyles(v Styles) {
 }
 
 func (o LayoutSection) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["x"] = o.X
-	}
-	if true {
-		toSerialize["w"] = o.W
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["type"] = o.Type
-	}
-	if true {
-		toSerialize["params"] = o.Params
-	}
-	if true {
-		toSerialize["rows"] = o.Rows
-	}
-	if true {
-		toSerialize["rowMetaData"] = o.RowMetaData
-	}
-	if true {
-		toSerialize["cells"] = o.Cells
-	}
-	if true {
-		toSerialize["cssClass"] = o.CssClass
-	}
-	if true {
-		toSerialize["cssStyle"] = o.CssStyle
-	}
-	if true {
-		toSerialize["cssId"] = o.CssId
-	}
-	if true {
-		toSerialize["styles"] = o.Styles
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o LayoutSection) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["x"] = o.X
+	toSerialize["w"] = o.W
+	toSerialize["name"] = o.Name
+	toSerialize["label"] = o.Label
+	toSerialize["type"] = o.Type
+	toSerialize["params"] = o.Params
+	toSerialize["rows"] = o.Rows
+	toSerialize["rowMetaData"] = o.RowMetaData
+	toSerialize["cells"] = o.Cells
+	toSerialize["cssClass"] = o.CssClass
+	toSerialize["cssStyle"] = o.CssStyle
+	toSerialize["cssId"] = o.CssId
+	toSerialize["styles"] = o.Styles
+	return toSerialize, nil
 }
 
 type NullableLayoutSection struct {

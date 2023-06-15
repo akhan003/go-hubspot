@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CustomerSearchResponseExternal type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CustomerSearchResponseExternal{}
+
 // CustomerSearchResponseExternal A response to a search for customers.
 type CustomerSearchResponseExternal struct {
 	// Designates if the response is a success ('OK') or failure ('ERR').
@@ -90,14 +93,18 @@ func (o *CustomerSearchResponseExternal) SetCustomers(v []AccountingExtensionCus
 }
 
 func (o CustomerSearchResponseExternal) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["@result"] = o.Result
-	}
-	if true {
-		toSerialize["customers"] = o.Customers
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CustomerSearchResponseExternal) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["@result"] = o.Result
+	toSerialize["customers"] = o.Customers
+	return toSerialize, nil
 }
 
 type NullableCustomerSearchResponseExternal struct {

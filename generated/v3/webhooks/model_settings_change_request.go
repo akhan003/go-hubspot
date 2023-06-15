@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SettingsChangeRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SettingsChangeRequest{}
+
 // SettingsChangeRequest New or updated webhook settings for an app.
 type SettingsChangeRequest struct {
 	// A publicly available URL for Hubspot to call where event payloads will be delivered. See [link-so-some-doc](#) for details about the format of these event payloads.
@@ -89,14 +92,18 @@ func (o *SettingsChangeRequest) SetThrottling(v ThrottlingSettings) {
 }
 
 func (o SettingsChangeRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["targetUrl"] = o.TargetUrl
-	}
-	if true {
-		toSerialize["throttling"] = o.Throttling
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SettingsChangeRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["targetUrl"] = o.TargetUrl
+	toSerialize["throttling"] = o.Throttling
+	return toSerialize, nil
 }
 
 type NullableSettingsChangeRequest struct {

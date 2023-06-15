@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ObjectRequestOptions type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ObjectRequestOptions{}
+
 // ObjectRequestOptions Configures what properties of the enrolled CRM object are included in the action execution request
 type ObjectRequestOptions struct {
 	// A list of properties of the CRM object to include with the request to the `actionUrl`.
@@ -63,11 +66,17 @@ func (o *ObjectRequestOptions) SetProperties(v []string) {
 }
 
 func (o ObjectRequestOptions) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["properties"] = o.Properties
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ObjectRequestOptions) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["properties"] = o.Properties
+	return toSerialize, nil
 }
 
 type NullableObjectRequestOptions struct {

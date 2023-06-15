@@ -99,15 +99,14 @@ Class | Method | HTTP request | Description
  - [BatchInputPropertyName](docs/BatchInputPropertyName.md)
  - [BatchReadInputPropertyName](docs/BatchReadInputPropertyName.md)
  - [BatchResponseProperty](docs/BatchResponseProperty.md)
- - [CollectionResponseProperty](docs/CollectionResponseProperty.md)
- - [CollectionResponsePropertyGroup](docs/CollectionResponsePropertyGroup.md)
+ - [BatchResponsePropertyWithErrors](docs/BatchResponsePropertyWithErrors.md)
+ - [CollectionResponsePropertyGroupNoPaging](docs/CollectionResponsePropertyGroupNoPaging.md)
+ - [CollectionResponsePropertyNoPaging](docs/CollectionResponsePropertyNoPaging.md)
  - [Error](docs/Error.md)
  - [ErrorCategory](docs/ErrorCategory.md)
  - [ErrorDetail](docs/ErrorDetail.md)
- - [NextPage](docs/NextPage.md)
  - [Option](docs/Option.md)
  - [OptionInput](docs/OptionInput.md)
- - [Paging](docs/Paging.md)
  - [Property](docs/Property.md)
  - [PropertyCreate](docs/PropertyCreate.md)
  - [PropertyGroup](docs/PropertyGroup.md)
@@ -122,15 +121,39 @@ Class | Method | HTTP request | Description
 ## Documentation For Authorization
 
 
+Authentication schemes defined for the API:
+### oauth2_legacy
 
-### hapikey
 
-- **Type**: API key
-- **API key parameter name**: hapikey
-- **Location**: URL query string
+- **Type**: OAuth
+- **Flow**: accessCode
+- **Authorization URL**: https://app.hubspot.com/oauth/authorize
+- **Scopes**: 
+ - **tickets**: Read and write tickets
+ - **crm.objects.goals.read**: Read goals
+ - **media_bridge.read**: Read media and media events
+ - **e-commerce**: e-commerce
+ - **timeline**: Create timeline events
+ - **crm.schemas.custom.read**: View custom object definitions
 
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: hapikey and passed in as the auth context for each request.
+Example
 
+```golang
+auth := context.WithValue(context.Background(), sw.ContextAccessToken, "ACCESSTOKENSTRING")
+r, err := client.Service.Operation(auth, args)
+```
+
+Or via OAuth2 module to automatically refresh tokens and perform user authentication.
+
+```golang
+import "golang.org/x/oauth2"
+
+/* Perform OAuth2 round trip request and obtain a token */
+
+tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
+auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
+r, err := client.Service.Operation(auth, args)
+```
 
 ### oauth2
 
@@ -139,8 +162,6 @@ Note, each API key must be added to a map of `map[string]APIKey` where the key i
 - **Flow**: accessCode
 - **Authorization URL**: https://app.hubspot.com/oauth/authorize
 - **Scopes**: 
- - **crm.schemas.companies.read**:  
- - **crm.objects.deals.read**:  
  - **crm.schemas.line_items.read**: Line Items schemas
  - **crm.objects.deals.write**:  
  - **crm.schemas.deals.read**:  
@@ -150,9 +171,11 @@ Note, each API key must be added to a map of `map[string]APIKey` where the key i
  - **crm.schemas.contacts.read**:  
  - **crm.objects.companies.write**:  
  - **crm.objects.companies.read**:  
+ - **crm.schemas.companies.read**:  
+ - **crm.objects.deals.read**:  
+ - **crm.schemas.companies.write**:  
  - **crm.schemas.deals.write**:  
  - **crm.schemas.contacts.write**:  
- - **crm.schemas.companies.write**:  
 
 Example
 
@@ -173,39 +196,21 @@ auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
 
+### private_apps_legacy
 
-### oauth2_legacy
+- **Type**: API key
+- **API key parameter name**: private-app-legacy
+- **Location**: HTTP header
 
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: private-app-legacy and passed in as the auth context for each request.
 
-- **Type**: OAuth
-- **Flow**: accessCode
-- **Authorization URL**: https://app.hubspot.com/oauth/authorize
-- **Scopes**: 
- - **media_bridge.read**: Read media and media events
- - **contacts**: Read from and write to my Contacts
- - **e-commerce**: e-commerce
- - **timeline**: Create timeline events
- - **crm.schemas.custom.read**: View custom object definitions
- - **tickets**: Read and write tickets
+### private_apps
 
-Example
+- **Type**: API key
+- **API key parameter name**: private-app
+- **Location**: HTTP header
 
-```golang
-auth := context.WithValue(context.Background(), sw.ContextAccessToken, "ACCESSTOKENSTRING")
-r, err := client.Service.Operation(auth, args)
-```
-
-Or via OAuth2 module to automatically refresh tokens and perform user authentication.
-
-```golang
-import "golang.org/x/oauth2"
-
-/* Perform OAuth2 round trip request and obtain a token */
-
-tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
-auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
-r, err := client.Service.Operation(auth, args)
-```
+Note, each API key must be added to a map of `map[string]APIKey` where the key is: private-app and passed in as the auth context for each request.
 
 
 ## Documentation for Utility Methods

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BackgroundImage type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BackgroundImage{}
+
 // BackgroundImage struct for BackgroundImage
 type BackgroundImage struct {
 	ImageUrl           string `json:"imageUrl"`
@@ -114,17 +117,19 @@ func (o *BackgroundImage) SetBackgroundPosition(v string) {
 }
 
 func (o BackgroundImage) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["imageUrl"] = o.ImageUrl
-	}
-	if true {
-		toSerialize["backgroundSize"] = o.BackgroundSize
-	}
-	if true {
-		toSerialize["backgroundPosition"] = o.BackgroundPosition
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BackgroundImage) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["imageUrl"] = o.ImageUrl
+	toSerialize["backgroundSize"] = o.BackgroundSize
+	toSerialize["backgroundPosition"] = o.BackgroundPosition
+	return toSerialize, nil
 }
 
 type NullableBackgroundImage struct {

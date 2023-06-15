@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Tax type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Tax{}
+
 // Tax Representation of a tax defined in the external accounting system.
 type Tax struct {
 	// The code/ID of the tax in the external accounting system.
@@ -117,17 +120,19 @@ func (o *Tax) SetName(v string) {
 }
 
 func (o Tax) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["code"] = o.Code
-	}
-	if true {
-		toSerialize["percentage"] = o.Percentage
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Tax) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["code"] = o.Code
+	toSerialize["percentage"] = o.Percentage
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableTax struct {

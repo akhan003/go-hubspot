@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the StandardError type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &StandardError{}
+
 // StandardError struct for StandardError
 type StandardError struct {
 	Status      string                 `json:"status"`
@@ -75,7 +78,7 @@ func (o *StandardError) SetStatus(v string) {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *StandardError) GetId() string {
-	if o == nil || o.Id == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
@@ -85,7 +88,7 @@ func (o *StandardError) GetId() string {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StandardError) GetIdOk() (*string, bool) {
-	if o == nil || o.Id == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
 	return o.Id, true
@@ -93,7 +96,7 @@ func (o *StandardError) GetIdOk() (*string, bool) {
 
 // HasId returns a boolean if a field has been set.
 func (o *StandardError) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !IsNil(o.Id) {
 		return true
 	}
 
@@ -119,7 +122,7 @@ func (o *StandardError) GetCategory() map[string]interface{} {
 // and a boolean to check if the value has been set.
 func (o *StandardError) GetCategoryOk() (map[string]interface{}, bool) {
 	if o == nil {
-		return nil, false
+		return map[string]interface{}{}, false
 	}
 	return o.Category, true
 }
@@ -131,7 +134,7 @@ func (o *StandardError) SetCategory(v map[string]interface{}) {
 
 // GetSubCategory returns the SubCategory field value if set, zero value otherwise.
 func (o *StandardError) GetSubCategory() map[string]interface{} {
-	if o == nil || o.SubCategory == nil {
+	if o == nil || IsNil(o.SubCategory) {
 		var ret map[string]interface{}
 		return ret
 	}
@@ -141,15 +144,15 @@ func (o *StandardError) GetSubCategory() map[string]interface{} {
 // GetSubCategoryOk returns a tuple with the SubCategory field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StandardError) GetSubCategoryOk() (map[string]interface{}, bool) {
-	if o == nil || o.SubCategory == nil {
-		return nil, false
+	if o == nil || IsNil(o.SubCategory) {
+		return map[string]interface{}{}, false
 	}
 	return o.SubCategory, true
 }
 
 // HasSubCategory returns a boolean if a field has been set.
 func (o *StandardError) HasSubCategory() bool {
-	if o != nil && o.SubCategory != nil {
+	if o != nil && !IsNil(o.SubCategory) {
 		return true
 	}
 
@@ -258,32 +261,28 @@ func (o *StandardError) SetLinks(v map[string]string) {
 }
 
 func (o StandardError) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if o.Id != nil {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["category"] = o.Category
-	}
-	if o.SubCategory != nil {
-		toSerialize["subCategory"] = o.SubCategory
-	}
-	if true {
-		toSerialize["message"] = o.Message
-	}
-	if true {
-		toSerialize["errors"] = o.Errors
-	}
-	if true {
-		toSerialize["context"] = o.Context
-	}
-	if true {
-		toSerialize["links"] = o.Links
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o StandardError) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["status"] = o.Status
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	toSerialize["category"] = o.Category
+	if !IsNil(o.SubCategory) {
+		toSerialize["subCategory"] = o.SubCategory
+	}
+	toSerialize["message"] = o.Message
+	toSerialize["errors"] = o.Errors
+	toSerialize["context"] = o.Context
+	toSerialize["links"] = o.Links
+	return toSerialize, nil
 }
 
 type NullableStandardError struct {

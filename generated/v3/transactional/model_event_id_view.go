@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the EventIdView type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &EventIdView{}
+
 // EventIdView The ID of a send event.
 type EventIdView struct {
 	// Time of event creation.
@@ -91,14 +94,18 @@ func (o *EventIdView) SetId(v string) {
 }
 
 func (o EventIdView) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["created"] = o.Created
-	}
-	if true {
-		toSerialize["id"] = o.Id
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o EventIdView) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["created"] = o.Created
+	toSerialize["id"] = o.Id
+	return toSerialize, nil
 }
 
 type NullableEventIdView struct {

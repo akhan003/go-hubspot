@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionResponseTimelineEventTemplateNoPaging type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionResponseTimelineEventTemplateNoPaging{}
+
 // CollectionResponseTimelineEventTemplateNoPaging struct for CollectionResponseTimelineEventTemplateNoPaging
 type CollectionResponseTimelineEventTemplateNoPaging struct {
 	Results []TimelineEventTemplate `json:"results"`
@@ -62,11 +65,17 @@ func (o *CollectionResponseTimelineEventTemplateNoPaging) SetResults(v []Timelin
 }
 
 func (o CollectionResponseTimelineEventTemplateNoPaging) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["results"] = o.Results
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionResponseTimelineEventTemplateNoPaging) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["results"] = o.Results
+	return toSerialize, nil
 }
 
 type NullableCollectionResponseTimelineEventTemplateNoPaging struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PipelineStageInput type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PipelineStageInput{}
+
 // PipelineStageInput An input used to create or replace a pipeline stage's definition.
 type PipelineStageInput struct {
 	// A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline.
@@ -117,17 +120,19 @@ func (o *PipelineStageInput) SetMetadata(v map[string]string) {
 }
 
 func (o PipelineStageInput) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["label"] = o.Label
-	}
-	if true {
-		toSerialize["displayOrder"] = o.DisplayOrder
-	}
-	if true {
-		toSerialize["metadata"] = o.Metadata
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PipelineStageInput) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["label"] = o.Label
+	toSerialize["displayOrder"] = o.DisplayOrder
+	toSerialize["metadata"] = o.Metadata
+	return toSerialize, nil
 }
 
 type NullablePipelineStageInput struct {

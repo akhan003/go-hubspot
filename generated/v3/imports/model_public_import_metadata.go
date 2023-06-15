@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicImportMetadata type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicImportMetadata{}
+
 // PublicImportMetadata An object detailing a summary of the import record outputs
 type PublicImportMetadata struct {
 	// The lists containing the imported objects.
@@ -117,17 +120,19 @@ func (o *PublicImportMetadata) SetFileIds(v []string) {
 }
 
 func (o PublicImportMetadata) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["objectLists"] = o.ObjectLists
-	}
-	if true {
-		toSerialize["counters"] = o.Counters
-	}
-	if true {
-		toSerialize["fileIds"] = o.FileIds
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicImportMetadata) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["objectLists"] = o.ObjectLists
+	toSerialize["counters"] = o.Counters
+	toSerialize["fileIds"] = o.FileIds
+	return toSerialize, nil
 }
 
 type NullablePublicImportMetadata struct {

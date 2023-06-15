@@ -126,9 +126,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get all published tables
       tags:
       - Tables
@@ -157,9 +158,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Create a new table
       tags:
       - Tables
@@ -276,9 +278,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Return all draft tables
       tags:
       - Tables
@@ -307,9 +310,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Archive a table
       tags:
       - Tables
@@ -328,19 +332,19 @@ paths:
         schema:
           type: string
         style: simple
+      - description: Set this to `true` to populate foreign ID values in the result.
+        explode: true
+        in: query
+        name: includeForeignIds
+        required: false
+        schema:
+          type: boolean
+        style: form
       - description: Set this to `true` to return details for an archived table. Defaults
           to `false`.
         explode: true
         in: query
         name: archived
-        required: false
-        schema:
-          type: boolean
-        style: form
-      - description: Set this to `true` to populate foreign ID values in the result.
-        explode: true
-        in: query
-        name: includeForeignIds
         required: false
         schema:
           type: boolean
@@ -359,9 +363,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get details for a published table
       tags:
       - Tables
@@ -380,18 +385,18 @@ paths:
         schema:
           type: string
         style: simple
-      - description: Set this to `true` to return an archived table. Defaults to `false`.
-        explode: true
-        in: query
-        name: archived
-        required: false
-        schema:
-          type: boolean
-        style: form
       - description: Set this to `true` to populate foreign ID values in the result.
         explode: true
         in: query
         name: includeForeignIds
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Set this to `true` to return an archived table. Defaults to `false`.
+        explode: true
+        in: query
+        name: archived
         required: false
         schema:
           type: boolean
@@ -410,9 +415,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get details for a draft table
       tags:
       - Tables
@@ -430,18 +436,18 @@ paths:
         schema:
           type: string
         style: simple
-      - description: Specifies whether to return archived tables. Defaults to `false`.
-        explode: true
-        in: query
-        name: archived
-        required: false
-        schema:
-          type: boolean
-        style: form
       - description: Set this to `true` to populate foreign ID values in the result.
         explode: true
         in: query
         name: includeForeignIds
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Specifies whether to return archived tables. Defaults to `false`.
+        explode: true
+        in: query
+        name: archived
         required: false
         schema:
           type: boolean
@@ -467,9 +473,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Update an existing table
       tags:
       - Tables
@@ -511,9 +518,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Clone a table
       tags:
       - Tables
@@ -558,9 +566,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Export a draft table
       tags:
       - Tables
@@ -598,9 +607,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Import data into draft table
       tags:
       - Tables
@@ -641,9 +651,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Publish a table from draft
       tags:
       - Tables
@@ -684,9 +695,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Reset a draft table
       tags:
       - Tables
@@ -731,9 +743,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Export a published version of a table
       tags:
       - Tables
@@ -807,9 +820,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get rows for a table
       tags:
       - Rows
@@ -848,9 +862,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Add a new row to a table
       tags:
       - Rows
@@ -859,7 +874,7 @@ paths:
       description: |-
         Returns rows in the `published` version of the specified table, given a set of row ids.
         **Note:** This endpoint can be accessed without any authentication if the table is set to be allowed for public access.
-      operationId: BatchReadTableRows
+      operationId: "post-/cms/v3/hubdb/tables/{tableIdOrName}/rows/batch/read_readTableRows"
       parameters:
       - description: The ID or name of the table to query.
         explode: false
@@ -896,9 +911,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get a set of rows
       tags:
       - Rows Batch
@@ -976,9 +992,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get rows from draft table
       tags:
       - Rows
@@ -986,7 +1003,7 @@ paths:
     post:
       description: "Clones rows in the `draft` version of the specified table, given\
         \ a set of row ids."
-      operationId: BatchCloneDraftTableRows
+      operationId: "post-/cms/v3/hubdb/tables/{tableIdOrName}/rows/draft/batch/clone_cloneDraftTableRows"
       parameters:
       - description: The ID or name of the table
         explode: false
@@ -1017,9 +1034,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Clone rows in batch
       tags:
       - Rows Batch
@@ -1028,7 +1046,7 @@ paths:
       description: "Creates rows in the `draft` version of the specified table, given\
         \ an array of row objects. See the overview section for more details with\
         \ an example."
-      operationId: BatchCreateDraftTableRows
+      operationId: "post-/cms/v3/hubdb/tables/{tableIdOrName}/rows/draft/batch/create_createDraftTableRows"
       parameters:
       - description: The ID or name of the table
         explode: false
@@ -1065,9 +1083,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Create rows in batch
       tags:
       - Rows Batch
@@ -1075,7 +1094,7 @@ paths:
     post:
       description: "Permanently deletes rows from the `draft` version of the table,\
         \ given a set of row ids."
-      operationId: BatchPurgeDraftTableRows
+      operationId: "post-/cms/v3/hubdb/tables/{tableIdOrName}/rows/draft/batch/purge_purgeDraftTableRows"
       parameters:
       - description: The ID or name of the table
         explode: false
@@ -1103,9 +1122,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Permanently deletes rows
       tags:
       - Rows Batch
@@ -1113,7 +1133,7 @@ paths:
     post:
       description: "Returns rows in the `draft` version of the specified table, given\
         \ a set of row ids."
-      operationId: BatchReadDraftTableRows
+      operationId: "post-/cms/v3/hubdb/tables/{tableIdOrName}/rows/draft/batch/read_readDraftTableRows"
       parameters:
       - description: The ID or name of the table
         explode: false
@@ -1150,9 +1170,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get a set of rows from draft table
       tags:
       - Rows Batch
@@ -1161,7 +1182,7 @@ paths:
       description: "Replaces multiple rows as a batch in the `draft` version of the\
         \ table. See the endpoint `PUT /tables/{tableIdOrName}/rows/{rowId}/draft`\
         \ for details on updating a single row."
-      operationId: BatchReplaceDraftTableRows
+      operationId: "post-/cms/v3/hubdb/tables/{tableIdOrName}/rows/draft/batch/replace_replaceDraftTableRows"
       parameters:
       - description: The ID or name of the table
         explode: false
@@ -1175,7 +1196,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputHubDbTableRowV3Request'
+              $ref: '#/components/schemas/BatchInputHubDbTableRowV3BatchUpdateRequest'
         description: JSON array of row objects.
         required: true
       responses:
@@ -1198,9 +1219,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Replace rows in batch in draft table
       tags:
       - Rows Batch
@@ -1209,7 +1231,7 @@ paths:
       description: "Updates multiple rows as a batch in the `draft` version of the\
         \ table. See the endpoint `PATCH /tables/{tableIdOrName}/rows/{rowId}/draft`\
         \ for details on updating a single row."
-      operationId: BatchUpdateDraftTableRows
+      operationId: "post-/cms/v3/hubdb/tables/{tableIdOrName}/rows/draft/batch/update_updateDraftTableRows"
       parameters:
       - description: The ID or name of the table
         explode: false
@@ -1223,7 +1245,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputJsonNode'
+              $ref: '#/components/schemas/BatchInputHubDbTableRowV3BatchUpdateRequest'
         description: JSON array of row objects.
         required: true
       responses:
@@ -1246,9 +1268,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Update rows in batch in draft table
       tags:
       - Rows Batch
@@ -1290,9 +1313,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get a table row
       tags:
       - Rows
@@ -1329,9 +1353,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Permanently deletes a row
       tags:
       - Rows
@@ -1370,9 +1395,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Get a row from the draft table
       tags:
       - Rows
@@ -1422,9 +1448,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Updates an existing row
       tags:
       - Rows
@@ -1473,9 +1500,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Replaces an existing row
       tags:
       - Rows
@@ -1515,9 +1543,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Clone a row
       tags:
       - Rows
@@ -1557,9 +1586,10 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: An error occurred.
       security:
+      - private_apps_legacy:
+        - hubdb
       - oauth2_legacy:
         - hubdb
-      - hapikey: []
       summary: Unpublish a table
       tags:
       - Tables
@@ -1620,19 +1650,21 @@ components:
       - message
       - status
       type: object
-    BatchInputJsonNode:
-      example:
-        inputs:
-        - "{}"
-        - "{}"
+    SimpleUser:
       properties:
-        inputs:
-          items:
-            properties: {}
-            type: object
-          type: array
+        id:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
       required:
-      - inputs
+      - email
+      - firstName
+      - id
+      - lastName
       type: object
     HubDbTableCloneRequest:
       example:
@@ -1651,22 +1683,6 @@ components:
           type: boolean
       required:
       - copyRows
-      type: object
-    SimpleUser:
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-      required:
-      - email
-      - firstName
-      - id
-      - lastName
       type: object
     CollectionResponseWithTotalHubDbTableV3ForwardPaging:
       example:
@@ -1889,6 +1905,13 @@ components:
         id:
           description: Column Id
           type: string
+        deleted:
+          type: boolean
+        options:
+          description: Options to choose for select and multi-select columns
+          items:
+            $ref: '#/components/schemas/Option'
+          type: array
         width:
           description: Column width for HubDB UI
           format: int32
@@ -1901,21 +1924,13 @@ components:
           description: Foreign Column id
           format: int32
           type: integer
+        description:
+          type: string
         foreignIds:
           description: Foreign Ids
           items:
             $ref: '#/components/schemas/ForeignId'
           type: array
-        foreignIdsById:
-          additionalProperties:
-            $ref: '#/components/schemas/ForeignId'
-          description: Foreign ids
-          type: object
-        foreignIdsByName:
-          additionalProperties:
-            $ref: '#/components/schemas/ForeignId'
-          description: Foreign ids by name
-          type: object
         type:
           description: Type of the column
           enum:
@@ -1935,19 +1950,22 @@ components:
           - FOREIGN_ID
           - VIDEO
           - CTA
+          - FILE
           type: string
+        foreignIdsByName:
+          additionalProperties:
+            $ref: '#/components/schemas/ForeignId'
+          description: Foreign ids by name
+          type: object
+        foreignIdsById:
+          additionalProperties:
+            $ref: '#/components/schemas/ForeignId'
+          description: Foreign ids
+          type: object
         optionCount:
           description: Number of options available
           format: int32
           type: integer
-        archived:
-          description: Specifies whether the column is archived
-          type: boolean
-        options:
-          description: Options to choose for select and multi-select columns
-          items:
-            $ref: '#/components/schemas/Option'
-          type: array
       required:
       - label
       - name
@@ -1995,6 +2013,8 @@ components:
           type: array
         published:
           type: boolean
+        deleted:
+          type: boolean
         columnCount:
           description: Number of columns including deleted
           format: int32
@@ -2007,10 +2027,19 @@ components:
           $ref: '#/components/schemas/SimpleUser'
         updatedBy:
           $ref: '#/components/schemas/SimpleUser'
-        publishedAt:
-          description: Timestamp at which the table is published recently
-          format: date-time
-          type: string
+        useForPages:
+          description: Specifies whether the table can be used for creation of dynamic
+            pages
+          type: boolean
+        allowChildTables:
+          description: Specifies whether child tables can be created
+          type: boolean
+        enableChildTablePages:
+          description: Specifies creation of multi-level dynamic pages using child
+            tables
+          type: boolean
+        isOrderedManually:
+          type: boolean
         dynamicMetaTags:
           additionalProperties:
             format: int32
@@ -2018,27 +2047,17 @@ components:
           description: Specifies the key value pairs of the metadata fields with the
             associated column ids
           type: object
+        allowPublicApiAccess:
+          description: Specifies whether the table can be read by public without authorization
+          type: boolean
         createdAt:
           description: Timestamp at which the table is created
           format: date-time
           type: string
-        archived:
-          description: Specifies whether table is archived or not
-          type: boolean
-        allowPublicApiAccess:
-          description: Specifies whether the table can be read by public without authorization
-          type: boolean
-        useForPages:
-          description: Specifies whether the table can be used for creation of dynamic
-            pages
-          type: boolean
-        enableChildTablePages:
-          description: Specifies creation of multi-level dynamic pages using child
-            tables
-          type: boolean
-        allowChildTables:
-          description: Specifies whether child tables can be created
-          type: boolean
+        publishedAt:
+          description: Timestamp at which the table is published recently
+          format: date-time
+          type: string
         updatedAt:
           description: Timestamp at which the table is updated recently
           format: date-time
@@ -2316,6 +2335,8 @@ components:
       - startedAt
       - status
       type: object
+    Variant:
+      type: object
     ColumnRequest:
       example:
         name: text_column
@@ -2353,6 +2374,7 @@ components:
           - FOREIGN_ID
           - VIDEO
           - CTA
+          - FILE
           type: string
         options:
           description: Options to choose for select and multi-select columns
@@ -2375,15 +2397,9 @@ components:
       - options
       - type
       type: object
-    Variant:
-      type: object
-    ErrorCategory:
-      type: object
-    HubDbTableRowV3:
+    HubDbTableRowV3BatchUpdateRequest:
       example:
         id: "4099275931"
-        createdAt: 2020-03-30T20:39:52.328Z
-        updatedAt: 2020-03-30T20:39:52.328Z
         values:
           text_column: sample text value
           number_column: 76
@@ -2400,9 +2416,6 @@ components:
         name: test_title
         childTableId: "1902373"
       properties:
-        id:
-          description: The id of the table row
-          type: string
         path:
           description: "Specifies the value for `hs_path` column, which will be used\
             \ as slug in the dynamic pages"
@@ -2411,25 +2424,27 @@ components:
           description: "Specifies the value for `hs_name` column, which will be used\
             \ as title in the dynamic pages"
           type: string
-        createdAt:
-          description: Timestamp at which the row is created
-          format: date-time
-          type: string
-        updatedAt:
-          description: Timestamp at which the row is updated last time
-          format: date-time
-          type: string
         childTableId:
           description: Specifies the value for the column child table id
-          type: string
+          format: int32
+          type: integer
         values:
           additionalProperties:
-            properties: {}
-            type: object
+            $ref: '#/components/schemas/Variant'
           description: List of key value pairs with the column name and column value
           type: object
+        displayIndex:
+          format: int32
+          type: integer
+        id:
+          description: The id of the table row
+          format: int64
+          type: integer
       required:
+      - id
       - values
+      type: object
+    ErrorCategory:
       type: object
     HubDbTableRowV3Request:
       example:
@@ -2466,6 +2481,64 @@ components:
             $ref: '#/components/schemas/Variant'
           description: List of key value pairs with the column name and column value
           type: object
+        displayIndex:
+          format: int32
+          type: integer
+      required:
+      - values
+      type: object
+    HubDbTableRowV3:
+      example:
+        id: "4099275931"
+        createdAt: 2020-03-30T20:39:52.328Z
+        updatedAt: 2020-03-30T20:39:52.328Z
+        values:
+          text_column: sample text value
+          number_column: 76
+          multiselect:
+          - id: "1"
+            name: Option 1
+            type: option
+            order: 0
+          - id: "2"
+            name: Option 2
+            type: option
+            order: 1
+        path: test_path
+        name: test_title
+        childTableId: "1902373"
+      properties:
+        id:
+          description: The id of the table row
+          type: string
+        values:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: List of key value pairs with the column name and column value
+          type: object
+        path:
+          description: "Specifies the value for `hs_path` column, which will be used\
+            \ as slug in the dynamic pages"
+          type: string
+        name:
+          description: "Specifies the value for `hs_name` column, which will be used\
+            \ as title in the dynamic pages"
+          type: string
+        childTableId:
+          description: Specifies the value for the column child table id
+          type: string
+        createdAt:
+          description: Timestamp at which the row is created
+          format: date-time
+          type: string
+        updatedAt:
+          description: Timestamp at which the row is updated last time
+          format: date-time
+          type: string
+        publishedAt:
+          format: date-time
+          type: string
       required:
       - values
       type: object
@@ -2474,6 +2547,8 @@ components:
         id:
           type: string
         name:
+          type: string
+        label:
           type: string
         type:
           type: string
@@ -2498,6 +2573,49 @@ components:
       required:
       - after
       type: object
+    BatchInputHubDbTableRowV3BatchUpdateRequest:
+      example:
+        inputs:
+        - id: "4099275931"
+          values:
+            text_column: sample text value
+            number_column: 76
+            multiselect:
+            - id: "1"
+              name: Option 1
+              type: option
+              order: 0
+            - id: "2"
+              name: Option 2
+              type: option
+              order: 1
+          path: test_path
+          name: test_title
+          childTableId: "1902373"
+        - id: "4099275931"
+          values:
+            text_column: sample text value
+            number_column: 76
+            multiselect:
+            - id: "1"
+              name: Option 1
+              type: option
+              order: 0
+            - id: "2"
+              name: Option 2
+              type: option
+              order: 1
+          path: test_path
+          name: test_title
+          childTableId: "1902373"
+      properties:
+        inputs:
+          items:
+            $ref: '#/components/schemas/HubDbTableRowV3BatchUpdateRequest'
+          type: array
+      required:
+      - inputs
+      type: object
     ImportDraftTable_request:
       properties:
         config:
@@ -2516,9 +2634,9 @@ components:
             hubdb: Read from and write to my HubDB
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
-    hapikey:
-      in: query
-      name: hapikey
+    private_apps_legacy:
+      in: header
+      name: private-app-legacy
       type: apiKey
 x-hubspot-available-client-libraries:
 - PHP

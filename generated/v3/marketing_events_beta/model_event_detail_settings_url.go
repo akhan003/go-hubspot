@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the EventDetailSettingsUrl type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &EventDetailSettingsUrl{}
+
 // EventDetailSettingsUrl struct for EventDetailSettingsUrl
 type EventDetailSettingsUrl struct {
 	// The url that will be used to fetch marketing event details by id. Must contain a `%s` character sequence that will be substituted with the event id. For example: `https://my.event.app/events/%s`
@@ -63,11 +66,17 @@ func (o *EventDetailSettingsUrl) SetEventDetailsUrl(v string) {
 }
 
 func (o EventDetailSettingsUrl) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["eventDetailsUrl"] = o.EventDetailsUrl
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o EventDetailSettingsUrl) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["eventDetailsUrl"] = o.EventDetailsUrl
+	return toSerialize, nil
 }
 
 type NullableEventDetailSettingsUrl struct {

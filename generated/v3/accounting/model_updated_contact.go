@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the UpdatedContact type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &UpdatedContact{}
+
 // UpdatedContact A request to import external accounting contact properties in HubSpot
 type UpdatedContact struct {
 	// The operation to be performed.
@@ -148,7 +151,7 @@ func (o *UpdatedContact) SetId(v string) {
 
 // GetCustomerType returns the CustomerType field value if set, zero value otherwise.
 func (o *UpdatedContact) GetCustomerType() string {
-	if o == nil || o.CustomerType == nil {
+	if o == nil || IsNil(o.CustomerType) {
 		var ret string
 		return ret
 	}
@@ -158,7 +161,7 @@ func (o *UpdatedContact) GetCustomerType() string {
 // GetCustomerTypeOk returns a tuple with the CustomerType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UpdatedContact) GetCustomerTypeOk() (*string, bool) {
-	if o == nil || o.CustomerType == nil {
+	if o == nil || IsNil(o.CustomerType) {
 		return nil, false
 	}
 	return o.CustomerType, true
@@ -166,7 +169,7 @@ func (o *UpdatedContact) GetCustomerTypeOk() (*string, bool) {
 
 // HasCustomerType returns a boolean if a field has been set.
 func (o *UpdatedContact) HasCustomerType() bool {
-	if o != nil && o.CustomerType != nil {
+	if o != nil && !IsNil(o.CustomerType) {
 		return true
 	}
 
@@ -179,23 +182,23 @@ func (o *UpdatedContact) SetCustomerType(v string) {
 }
 
 func (o UpdatedContact) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["syncAction"] = o.SyncAction
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
-	}
-	if true {
-		toSerialize["emailAddress"] = o.EmailAddress
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if o.CustomerType != nil {
-		toSerialize["customerType"] = o.CustomerType
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o UpdatedContact) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["syncAction"] = o.SyncAction
+	toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize["emailAddress"] = o.EmailAddress
+	toSerialize["id"] = o.Id
+	if !IsNil(o.CustomerType) {
+		toSerialize["customerType"] = o.CustomerType
+	}
+	return toSerialize, nil
 }
 
 type NullableUpdatedContact struct {

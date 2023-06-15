@@ -262,7 +262,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -504,7 +504,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "content" ]
         }, {
           "oauth2_legacy" : [ "content" ]
         } ]
@@ -545,6 +545,37 @@
             "example" : {
               "missingScopes" : [ "scope1", "scope2" ]
             }
+          }
+        }
+      },
+      "PublicSearchResults" : {
+        "required" : [ "limit", "offset", "page", "results", "total" ],
+        "type" : "object",
+        "properties" : {
+          "total" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "offset" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "limit" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "results" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ContentSearchResult"
+            }
+          },
+          "searchTerm" : {
+            "type" : "string"
+          },
+          "page" : {
+            "type" : "integer",
+            "format" : "int32"
           }
         }
       },
@@ -631,37 +662,6 @@
           }
         },
         "description" : "An individual search result."
-      },
-      "PublicSearchResults" : {
-        "required" : [ "limit", "offset", "page", "results", "total" ],
-        "type" : "object",
-        "properties" : {
-          "total" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "offset" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "limit" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ContentSearchResult"
-            }
-          },
-          "searchTerm" : {
-            "type" : "string"
-          },
-          "page" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
-        }
       },
       "IndexedData" : {
         "required" : [ "fields", "id", "type" ],
@@ -796,11 +796,12 @@
           }
         }
       },
-      "hapikey" : {
+      "private_apps_legacy" : {
         "type" : "apiKey",
-        "name" : "hapikey",
-        "in" : "query"
+        "name" : "private-app-legacy",
+        "in" : "header"
       }
     }
-  }
+  },
+  "x-hubspot-available-client-libraries" : [ "PHP", "Node", "Python", "Ruby" ]
 }

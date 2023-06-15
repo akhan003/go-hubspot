@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the UpdatedProduct type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &UpdatedProduct{}
+
 // UpdatedProduct A request to import external accounting product properties in HubSpot
 type UpdatedProduct struct {
 	// The operation to be performed.
@@ -127,7 +130,7 @@ func (o *UpdatedProduct) SetPrice(v float32) {
 
 // GetCurrencyCode returns the CurrencyCode field value if set, zero value otherwise.
 func (o *UpdatedProduct) GetCurrencyCode() string {
-	if o == nil || o.CurrencyCode == nil {
+	if o == nil || IsNil(o.CurrencyCode) {
 		var ret string
 		return ret
 	}
@@ -137,7 +140,7 @@ func (o *UpdatedProduct) GetCurrencyCode() string {
 // GetCurrencyCodeOk returns a tuple with the CurrencyCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UpdatedProduct) GetCurrencyCodeOk() (*string, bool) {
-	if o == nil || o.CurrencyCode == nil {
+	if o == nil || IsNil(o.CurrencyCode) {
 		return nil, false
 	}
 	return o.CurrencyCode, true
@@ -145,7 +148,7 @@ func (o *UpdatedProduct) GetCurrencyCodeOk() (*string, bool) {
 
 // HasCurrencyCode returns a boolean if a field has been set.
 func (o *UpdatedProduct) HasCurrencyCode() bool {
-	if o != nil && o.CurrencyCode != nil {
+	if o != nil && !IsNil(o.CurrencyCode) {
 		return true
 	}
 
@@ -206,26 +209,24 @@ func (o *UpdatedProduct) SetProperties(v map[string]string) {
 }
 
 func (o UpdatedProduct) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["syncAction"] = o.SyncAction
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
-	}
-	if true {
-		toSerialize["price"] = o.Price
-	}
-	if o.CurrencyCode != nil {
-		toSerialize["currencyCode"] = o.CurrencyCode
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["properties"] = o.Properties
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o UpdatedProduct) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["syncAction"] = o.SyncAction
+	toSerialize["updatedAt"] = o.UpdatedAt
+	toSerialize["price"] = o.Price
+	if !IsNil(o.CurrencyCode) {
+		toSerialize["currencyCode"] = o.CurrencyCode
+	}
+	toSerialize["id"] = o.Id
+	toSerialize["properties"] = o.Properties
+	return toSerialize, nil
 }
 
 type NullableUpdatedProduct struct {

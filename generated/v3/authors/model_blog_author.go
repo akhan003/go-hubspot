@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the BlogAuthor type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BlogAuthor{}
+
 // BlogAuthor Model definition for a Blog Author.
 type BlogAuthor struct {
 	// The unique ID of the Blog Author.
@@ -491,59 +494,33 @@ func (o *BlogAuthor) SetDeletedAt(v time.Time) {
 }
 
 func (o BlogAuthor) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["fullName"] = o.FullName
-	}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if true {
-		toSerialize["slug"] = o.Slug
-	}
-	if true {
-		toSerialize["language"] = o.Language
-	}
-	if true {
-		toSerialize["translatedFromId"] = o.TranslatedFromId
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["displayName"] = o.DisplayName
-	}
-	if true {
-		toSerialize["bio"] = o.Bio
-	}
-	if true {
-		toSerialize["website"] = o.Website
-	}
-	if true {
-		toSerialize["twitter"] = o.Twitter
-	}
-	if true {
-		toSerialize["facebook"] = o.Facebook
-	}
-	if true {
-		toSerialize["linkedin"] = o.Linkedin
-	}
-	if true {
-		toSerialize["avatar"] = o.Avatar
-	}
-	if true {
-		toSerialize["created"] = o.Created
-	}
-	if true {
-		toSerialize["updated"] = o.Updated
-	}
-	if true {
-		toSerialize["deletedAt"] = o.DeletedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BlogAuthor) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["fullName"] = o.FullName
+	toSerialize["email"] = o.Email
+	toSerialize["slug"] = o.Slug
+	toSerialize["language"] = o.Language
+	toSerialize["translatedFromId"] = o.TranslatedFromId
+	toSerialize["name"] = o.Name
+	toSerialize["displayName"] = o.DisplayName
+	toSerialize["bio"] = o.Bio
+	toSerialize["website"] = o.Website
+	toSerialize["twitter"] = o.Twitter
+	toSerialize["facebook"] = o.Facebook
+	toSerialize["linkedin"] = o.Linkedin
+	toSerialize["avatar"] = o.Avatar
+	toSerialize["created"] = o.Created
+	toSerialize["updated"] = o.Updated
+	toSerialize["deletedAt"] = o.DeletedAt
+	return toSerialize, nil
 }
 
 type NullableBlogAuthor struct {

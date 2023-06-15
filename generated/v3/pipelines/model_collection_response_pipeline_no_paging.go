@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionResponsePipelineNoPaging type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionResponsePipelineNoPaging{}
+
 // CollectionResponsePipelineNoPaging struct for CollectionResponsePipelineNoPaging
 type CollectionResponsePipelineNoPaging struct {
 	Results []Pipeline `json:"results"`
@@ -62,11 +65,17 @@ func (o *CollectionResponsePipelineNoPaging) SetResults(v []Pipeline) {
 }
 
 func (o CollectionResponsePipelineNoPaging) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["results"] = o.Results
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionResponsePipelineNoPaging) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["results"] = o.Results
+	return toSerialize, nil
 }
 
 type NullableCollectionResponsePipelineNoPaging struct {

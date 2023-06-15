@@ -13,10 +13,8 @@ package associations
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"strings"
 )
@@ -31,7 +29,7 @@ type ApiGetAllRequest struct {
 	toObjectType   string
 }
 
-func (r ApiGetAllRequest) Execute() (*CollectionResponsePublicAssociationDefiniton, *http.Response, error) {
+func (r ApiGetAllRequest) Execute() (*CollectionResponsePublicAssociationDefinitionNoPaging, *http.Response, error) {
 	return r.ApiService.GetAllExecute(r)
 }
 
@@ -55,13 +53,13 @@ func (a *TypesApiService) GetAll(ctx context.Context, fromObjectType string, toO
 }
 
 // Execute executes the request
-//  @return CollectionResponsePublicAssociationDefiniton
-func (a *TypesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponsePublicAssociationDefiniton, *http.Response, error) {
+//  @return CollectionResponsePublicAssociationDefinitionNoPaging
+func (a *TypesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponsePublicAssociationDefinitionNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *CollectionResponsePublicAssociationDefiniton
+		localVarReturnValue *CollectionResponsePublicAssociationDefinitionNoPaging
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TypesApiService.GetAll")
@@ -70,8 +68,8 @@ func (a *TypesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponse
 	}
 
 	localVarPath := localBasePath + "/crm/v3/associations/{fromObjectType}/{toObjectType}/types"
-	localVarPath = strings.Replace(localVarPath, "{"+"fromObjectType"+"}", url.PathEscape(parameterToString(r.fromObjectType, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"toObjectType"+"}", url.PathEscape(parameterToString(r.toObjectType, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"fromObjectType"+"}", url.PathEscape(parameterValueToString(r.fromObjectType, "fromObjectType")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"toObjectType"+"}", url.PathEscape(parameterValueToString(r.toObjectType, "toObjectType")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -96,12 +94,30 @@ func (a *TypesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponse
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -114,9 +130,9 @@ func (a *TypesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponse
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -132,6 +148,7 @@ func (a *TypesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponse
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

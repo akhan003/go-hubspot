@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the NextPage type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &NextPage{}
+
 // NextPage struct for NextPage
 type NextPage struct {
 	After string  `json:"after"`
@@ -64,7 +67,7 @@ func (o *NextPage) SetAfter(v string) {
 
 // GetLink returns the Link field value if set, zero value otherwise.
 func (o *NextPage) GetLink() string {
-	if o == nil || o.Link == nil {
+	if o == nil || IsNil(o.Link) {
 		var ret string
 		return ret
 	}
@@ -74,7 +77,7 @@ func (o *NextPage) GetLink() string {
 // GetLinkOk returns a tuple with the Link field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NextPage) GetLinkOk() (*string, bool) {
-	if o == nil || o.Link == nil {
+	if o == nil || IsNil(o.Link) {
 		return nil, false
 	}
 	return o.Link, true
@@ -82,7 +85,7 @@ func (o *NextPage) GetLinkOk() (*string, bool) {
 
 // HasLink returns a boolean if a field has been set.
 func (o *NextPage) HasLink() bool {
-	if o != nil && o.Link != nil {
+	if o != nil && !IsNil(o.Link) {
 		return true
 	}
 
@@ -95,14 +98,20 @@ func (o *NextPage) SetLink(v string) {
 }
 
 func (o NextPage) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["after"] = o.After
-	}
-	if o.Link != nil {
-		toSerialize["link"] = o.Link
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o NextPage) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["after"] = o.After
+	if !IsNil(o.Link) {
+		toSerialize["link"] = o.Link
+	}
+	return toSerialize, nil
 }
 
 type NullableNextPage struct {

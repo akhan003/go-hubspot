@@ -517,7 +517,12 @@ func retrieveSchema(url string) (string, error) {
 		return "", err
 	}
 
-	defer res.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err = Body.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(res.Body)
 
 	schema, err := io.ReadAll(res.Body)
 
@@ -537,6 +542,8 @@ func preProcessSchema(group string, schema string) (string, error) {
 		pattern := regexp.MustCompile(entry.old)
 		schema = pattern.ReplaceAllString(schema, entry.new)
 	}
+
+	group = strings.ReplaceAll(group, " ", "-") // TODO: replace spaces with dashes
 
 	filename := "./schema/" + group + ".json"
 	err := ioutil.WriteFile(filename, []byte(schema), 0644)
@@ -579,7 +586,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	generator, err := exec.LookPath("openapi-generator")
+	generator, err := exec.LookPath("openapi-generator-cli")
 	if err != nil {
 		panic(err)
 	}
@@ -588,21 +595,21 @@ func main() {
 	//outer:
 	for _, group := range r.Results {
 		for name, feature := range group.Features {
-			schema, err := retrieveSchema(feature.OpenAPI)
+			schema, err1 := retrieveSchema(feature.OpenAPI)
 
-			if err != nil {
+			if err1 != nil {
 				panic(err)
 			}
 
-			filename, err := preProcessSchema(name, schema)
+			filename, err2 := preProcessSchema(name, schema)
 
-			if err != nil {
+			if err2 != nil {
 				panic(err)
 			}
 
-			version, err := versionFromSchema(schema)
+			version, err3 := versionFromSchema(schema)
 
-			if err != nil {
+			if err3 != nil {
 				panic(err)
 			}
 
@@ -611,7 +618,7 @@ func main() {
 			//}
 			name = replacer.Replace(strings.ToLower(name))
 			fmt.Printf("generating group/feature %s/%s\n", strings.ToLower(group.Name), name)
-			_, err = exec.Command(generator, "generate",
+			_, e := exec.Command(generator, "generate",
 				"-i", filename,
 				"-g", "go",
 				"--package-name", name,
@@ -619,8 +626,8 @@ func main() {
 				"--skip-validate-spec",
 				"-o", "./generated/"+version+"/"+name,
 			).CombinedOutput()
-			if err != nil {
-				panic(err)
+			if e != nil {
+				panic(e)
 			}
 			//i++
 		}
@@ -641,11 +648,16 @@ func main() {
 			// Open the file, read it, then close it
 			var b []byte
 			err = func() error {
-				file, err := os.Open(path)
-				if err != nil {
+				file, err1 := os.Open(path)
+				if err1 != nil {
 					return err
 				}
-				defer file.Close()
+				defer func(file *os.File) {
+					err = file.Close()
+					if err != nil {
+						panic(err)
+					}
+				}(file)
 				b, err = ioutil.ReadAll(file)
 				if err != nil {
 					return err
@@ -668,11 +680,16 @@ func main() {
 				}
 
 				err = os.Remove(path)
-				file, err := os.Create(path)
-				if err != nil {
+				file, err1 := os.Create(path)
+				if err1 != nil {
 					return err
 				}
-				defer file.Close()
+				defer func(file *os.File) {
+					err = file.Close()
+					if err != nil {
+						panic(err)
+					}
+				}(file)
 				_, err = file.Write(b)
 				if err != nil {
 					return err

@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the ContentLanguageVariation type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ContentLanguageVariation{}
+
 // ContentLanguageVariation struct for ContentLanguageVariation
 type ContentLanguageVariation struct {
 	Id                       int64                    `json:"id"`
@@ -281,7 +284,7 @@ func (o *ContentLanguageVariation) SetCampaign(v string) {
 
 // GetTagIds returns the TagIds field value if set, zero value otherwise.
 func (o *ContentLanguageVariation) GetTagIds() []int64 {
-	if o == nil || o.TagIds == nil {
+	if o == nil || IsNil(o.TagIds) {
 		var ret []int64
 		return ret
 	}
@@ -291,7 +294,7 @@ func (o *ContentLanguageVariation) GetTagIds() []int64 {
 // GetTagIdsOk returns a tuple with the TagIds field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ContentLanguageVariation) GetTagIdsOk() ([]int64, bool) {
-	if o == nil || o.TagIds == nil {
+	if o == nil || IsNil(o.TagIds) {
 		return nil, false
 	}
 	return o.TagIds, true
@@ -299,7 +302,7 @@ func (o *ContentLanguageVariation) GetTagIdsOk() ([]int64, bool) {
 
 // HasTagIds returns a boolean if a field has been set.
 func (o *ContentLanguageVariation) HasTagIds() bool {
-	if o != nil && o.TagIds != nil {
+	if o != nil && !IsNil(o.TagIds) {
 		return true
 	}
 
@@ -408,50 +411,32 @@ func (o *ContentLanguageVariation) SetPublishDate(v time.Time) {
 }
 
 func (o ContentLanguageVariation) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["slug"] = o.Slug
-	}
-	if true {
-		toSerialize["state"] = o.State
-	}
-	if true {
-		toSerialize["authorName"] = o.AuthorName
-	}
-	if true {
-		toSerialize["password"] = o.Password
-	}
-	if true {
-		toSerialize["publicAccessRulesEnabled"] = o.PublicAccessRulesEnabled
-	}
-	if true {
-		toSerialize["publicAccessRules"] = o.PublicAccessRules
-	}
-	if true {
-		toSerialize["campaign"] = o.Campaign
-	}
-	if o.TagIds != nil {
-		toSerialize["tagIds"] = o.TagIds
-	}
-	if true {
-		toSerialize["archivedInDashboard"] = o.ArchivedInDashboard
-	}
-	if true {
-		toSerialize["created"] = o.Created
-	}
-	if true {
-		toSerialize["updated"] = o.Updated
-	}
-	if true {
-		toSerialize["publishDate"] = o.PublishDate
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ContentLanguageVariation) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	toSerialize["slug"] = o.Slug
+	toSerialize["state"] = o.State
+	toSerialize["authorName"] = o.AuthorName
+	toSerialize["password"] = o.Password
+	toSerialize["publicAccessRulesEnabled"] = o.PublicAccessRulesEnabled
+	toSerialize["publicAccessRules"] = o.PublicAccessRules
+	toSerialize["campaign"] = o.Campaign
+	if !IsNil(o.TagIds) {
+		toSerialize["tagIds"] = o.TagIds
+	}
+	toSerialize["archivedInDashboard"] = o.ArchivedInDashboard
+	toSerialize["created"] = o.Created
+	toSerialize["updated"] = o.Updated
+	toSerialize["publishDate"] = o.PublishDate
+	return toSerialize, nil
 }
 
 type NullableContentLanguageVariation struct {

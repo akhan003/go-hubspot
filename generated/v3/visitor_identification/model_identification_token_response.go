@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the IdentificationTokenResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &IdentificationTokenResponse{}
+
 // IdentificationTokenResponse The identification token to be passed to the Conversations JS API to identify the visitor
 type IdentificationTokenResponse struct {
 	Token string `json:"token"`
@@ -62,11 +65,17 @@ func (o *IdentificationTokenResponse) SetToken(v string) {
 }
 
 func (o IdentificationTokenResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["token"] = o.Token
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o IdentificationTokenResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["token"] = o.Token
+	return toSerialize, nil
 }
 
 type NullableIdentificationTokenResponse struct {

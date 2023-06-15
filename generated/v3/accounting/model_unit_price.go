@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the UnitPrice type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &UnitPrice{}
+
 // UnitPrice Represents a unit price
 type UnitPrice struct {
 	// The actual unit price amount.
@@ -42,7 +45,7 @@ func NewUnitPriceWithDefaults() *UnitPrice {
 
 // GetAmount returns the Amount field value if set, zero value otherwise.
 func (o *UnitPrice) GetAmount() float32 {
-	if o == nil || o.Amount == nil {
+	if o == nil || IsNil(o.Amount) {
 		var ret float32
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *UnitPrice) GetAmount() float32 {
 // GetAmountOk returns a tuple with the Amount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UnitPrice) GetAmountOk() (*float32, bool) {
-	if o == nil || o.Amount == nil {
+	if o == nil || IsNil(o.Amount) {
 		return nil, false
 	}
 	return o.Amount, true
@@ -60,7 +63,7 @@ func (o *UnitPrice) GetAmountOk() (*float32, bool) {
 
 // HasAmount returns a boolean if a field has been set.
 func (o *UnitPrice) HasAmount() bool {
-	if o != nil && o.Amount != nil {
+	if o != nil && !IsNil(o.Amount) {
 		return true
 	}
 
@@ -97,14 +100,20 @@ func (o *UnitPrice) SetTaxIncluded(v bool) {
 }
 
 func (o UnitPrice) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Amount != nil {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["taxIncluded"] = o.TaxIncluded
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o UnitPrice) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Amount) {
+		toSerialize["amount"] = o.Amount
+	}
+	toSerialize["taxIncluded"] = o.TaxIncluded
+	return toSerialize, nil
 }
 
 type NullableUnitPrice struct {

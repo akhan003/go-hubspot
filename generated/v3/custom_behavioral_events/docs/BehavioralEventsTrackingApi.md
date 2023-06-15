@@ -25,7 +25,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.BehavioralEventsTrackingApi.Send(context.Background()).BehavioralEventHttpCompletionRequest(behavioralEventHttpCompletionRequest).Execute()
+    r, err := apiClient.BehavioralEventsTrackingApi.Send(context.Background()).BehavioralEventHttpCompletionRequest(behavioralEventHttpCompletionRequest).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `BehavioralEventsTrackingApi.Send``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -60,7 +60,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[hapikey](../README.md#hapikey), [oauth2_legacy](../README.md#oauth2_legacy)
+[oauth2_legacy](../README.md#oauth2_legacy), [private_apps_legacy](../README.md#private_apps_legacy)
 
 ### HTTP request headers
 

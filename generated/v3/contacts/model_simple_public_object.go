@@ -15,6 +15,9 @@ import (
 	"time"
 )
 
+// checks if the SimplePublicObject type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SimplePublicObject{}
+
 // SimplePublicObject struct for SimplePublicObject
 type SimplePublicObject struct {
 	Id                    string                           `json:"id"`
@@ -97,7 +100,7 @@ func (o *SimplePublicObject) SetProperties(v map[string]string) {
 
 // GetPropertiesWithHistory returns the PropertiesWithHistory field value if set, zero value otherwise.
 func (o *SimplePublicObject) GetPropertiesWithHistory() map[string][]ValueWithTimestamp {
-	if o == nil || o.PropertiesWithHistory == nil {
+	if o == nil || IsNil(o.PropertiesWithHistory) {
 		var ret map[string][]ValueWithTimestamp
 		return ret
 	}
@@ -107,7 +110,7 @@ func (o *SimplePublicObject) GetPropertiesWithHistory() map[string][]ValueWithTi
 // GetPropertiesWithHistoryOk returns a tuple with the PropertiesWithHistory field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SimplePublicObject) GetPropertiesWithHistoryOk() (*map[string][]ValueWithTimestamp, bool) {
-	if o == nil || o.PropertiesWithHistory == nil {
+	if o == nil || IsNil(o.PropertiesWithHistory) {
 		return nil, false
 	}
 	return o.PropertiesWithHistory, true
@@ -115,7 +118,7 @@ func (o *SimplePublicObject) GetPropertiesWithHistoryOk() (*map[string][]ValueWi
 
 // HasPropertiesWithHistory returns a boolean if a field has been set.
 func (o *SimplePublicObject) HasPropertiesWithHistory() bool {
-	if o != nil && o.PropertiesWithHistory != nil {
+	if o != nil && !IsNil(o.PropertiesWithHistory) {
 		return true
 	}
 
@@ -177,7 +180,7 @@ func (o *SimplePublicObject) SetUpdatedAt(v time.Time) {
 
 // GetArchived returns the Archived field value if set, zero value otherwise.
 func (o *SimplePublicObject) GetArchived() bool {
-	if o == nil || o.Archived == nil {
+	if o == nil || IsNil(o.Archived) {
 		var ret bool
 		return ret
 	}
@@ -187,7 +190,7 @@ func (o *SimplePublicObject) GetArchived() bool {
 // GetArchivedOk returns a tuple with the Archived field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SimplePublicObject) GetArchivedOk() (*bool, bool) {
-	if o == nil || o.Archived == nil {
+	if o == nil || IsNil(o.Archived) {
 		return nil, false
 	}
 	return o.Archived, true
@@ -195,7 +198,7 @@ func (o *SimplePublicObject) GetArchivedOk() (*bool, bool) {
 
 // HasArchived returns a boolean if a field has been set.
 func (o *SimplePublicObject) HasArchived() bool {
-	if o != nil && o.Archived != nil {
+	if o != nil && !IsNil(o.Archived) {
 		return true
 	}
 
@@ -209,7 +212,7 @@ func (o *SimplePublicObject) SetArchived(v bool) {
 
 // GetArchivedAt returns the ArchivedAt field value if set, zero value otherwise.
 func (o *SimplePublicObject) GetArchivedAt() time.Time {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -219,7 +222,7 @@ func (o *SimplePublicObject) GetArchivedAt() time.Time {
 // GetArchivedAtOk returns a tuple with the ArchivedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SimplePublicObject) GetArchivedAtOk() (*time.Time, bool) {
-	if o == nil || o.ArchivedAt == nil {
+	if o == nil || IsNil(o.ArchivedAt) {
 		return nil, false
 	}
 	return o.ArchivedAt, true
@@ -227,7 +230,7 @@ func (o *SimplePublicObject) GetArchivedAtOk() (*time.Time, bool) {
 
 // HasArchivedAt returns a boolean if a field has been set.
 func (o *SimplePublicObject) HasArchivedAt() bool {
-	if o != nil && o.ArchivedAt != nil {
+	if o != nil && !IsNil(o.ArchivedAt) {
 		return true
 	}
 
@@ -240,29 +243,29 @@ func (o *SimplePublicObject) SetArchivedAt(v time.Time) {
 }
 
 func (o SimplePublicObject) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["properties"] = o.Properties
-	}
-	if o.PropertiesWithHistory != nil {
-		toSerialize["propertiesWithHistory"] = o.PropertiesWithHistory
-	}
-	if true {
-		toSerialize["createdAt"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["updatedAt"] = o.UpdatedAt
-	}
-	if o.Archived != nil {
-		toSerialize["archived"] = o.Archived
-	}
-	if o.ArchivedAt != nil {
-		toSerialize["archivedAt"] = o.ArchivedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SimplePublicObject) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["properties"] = o.Properties
+	if !IsNil(o.PropertiesWithHistory) {
+		toSerialize["propertiesWithHistory"] = o.PropertiesWithHistory
+	}
+	toSerialize["createdAt"] = o.CreatedAt
+	toSerialize["updatedAt"] = o.UpdatedAt
+	if !IsNil(o.Archived) {
+		toSerialize["archived"] = o.Archived
+	}
+	if !IsNil(o.ArchivedAt) {
+		toSerialize["archivedAt"] = o.ArchivedAt
+	}
+	return toSerialize, nil
 }
 
 type NullableSimplePublicObject struct {

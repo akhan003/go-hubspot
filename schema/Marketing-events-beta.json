@@ -9,6 +9,9 @@
     "url" : "https://api.hubapi.com/"
   } ],
   "tags" : [ {
+    "name" : "Search",
+    "description" : "Endpoints that allow you to search for Marketing Events in HubSpot."
+  }, {
     "name" : "Attendance Subscriber State Changes",
     "description" : "Operations to mark HubSpot contacts as registered, attended or cancelled a registration to a Marketing Event."
   }, {
@@ -22,7 +25,7 @@
         "tags" : [ "Attendance Subscriber State Changes" ],
         "summary" : "Record",
         "description" : "Record a subscription state between multiple HubSpot contacts and a marketing event, using HubSpot contact ids.",
-        "operationId" : "AttendanceCreate",
+        "operationId" : "AttendanceCreate_create",
         "parameters" : [ {
           "name" : "externalEventId",
           "in" : "path",
@@ -36,7 +39,7 @@
         }, {
           "name" : "subscriberState",
           "in" : "path",
-          "description" : "The new subscriber state for the HubSpot contacts and the specified marketing event",
+          "description" : "The new subscriber state for the HubSpot contacts and the specified marketing event. For example: 'register', 'attend' or 'cancel'.",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -81,7 +84,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -92,7 +95,7 @@
         "tags" : [ "Attendance Subscriber State Changes" ],
         "summary" : "Record",
         "description" : "Record a subscription state between multiple HubSpot contacts and a marketing event, using contact email addresses. If contact is not present it will be automatically created. If you set params ",
-        "operationId" : "AttendanceEmailCreate",
+        "operationId" : "AttendanceEmailCreate_createByEmail",
         "parameters" : [ {
           "name" : "externalEventId",
           "in" : "path",
@@ -106,7 +109,7 @@
         }, {
           "name" : "subscriberState",
           "in" : "path",
-          "description" : "The new subscriber state for the HubSpot contacts and the specified marketing event",
+          "description" : "The new subscriber state for the HubSpot contacts and the specified marketing event. For example: 'register', 'attend' or 'cancel'.",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -151,7 +154,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -187,7 +190,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -196,7 +199,7 @@
     "/marketing/v3/marketing-events/events/delete" : {
       "post" : {
         "tags" : [ "Marketing_Events_External" ],
-        "operationId" : "Archive",
+        "operationId" : "ArchiveBatch",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -213,7 +216,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -221,11 +224,14 @@
     },
     "/marketing/v3/marketing-events/events/search" : {
       "get" : {
-        "tags" : [ "Marketing_Events_External" ],
+        "tags" : [ "Search" ],
+        "summary" : "Search for marketing events",
+        "description" : "Search for marketing events that have an event id that starts with the query string",
         "operationId" : "Search",
         "parameters" : [ {
           "name" : "q",
           "in" : "query",
+          "description" : "The id of the marketing event in the external event application",
           "required" : true,
           "style" : "form",
           "explode" : true,
@@ -249,9 +255,9 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
-        }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.read" ]
+        }, {
+          "private_apps_legacy" : [ "crm.objects.marketing_events.read" ]
         } ]
       }
     },
@@ -285,7 +291,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -330,9 +336,9 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
-        }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.read" ]
+        }, {
+          "private_apps_legacy" : [ "crm.objects.marketing_events.read" ]
         } ]
       },
       "put" : {
@@ -374,7 +380,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -411,7 +417,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -464,7 +470,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -509,7 +515,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -518,7 +524,7 @@
     "/marketing/v3/marketing-events/events/{externalEventId}/complete" : {
       "post" : {
         "tags" : [ "Marketing_Events_External" ],
-        "operationId" : "ExternalComplete",
+        "operationId" : "ExternalComplete_complete",
         "parameters" : [ {
           "name" : "externalEventId",
           "in" : "path",
@@ -564,7 +570,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -618,7 +624,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -672,7 +678,7 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
+          "private_apps_legacy" : [ "crm.objects.marketing_events.write" ]
         }, {
           "oauth2_legacy" : [ "crm.objects.marketing_events.write" ]
         } ]
@@ -709,8 +715,6 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
-        }, {
           "developer_hapikey" : [ ]
         } ]
       },
@@ -754,8 +758,6 @@
           }
         },
         "security" : [ {
-          "hapikey" : [ ]
-        }, {
           "developer_hapikey" : [ ]
         } ]
       }
@@ -1018,6 +1020,33 @@
           }
         }
       },
+      "MarketingEventEmailSubscriber" : {
+        "required" : [ "email", "interactionDateTime" ],
+        "type" : "object",
+        "properties" : {
+          "interactionDateTime" : {
+            "type" : "integer",
+            "description" : "The date and time at which the contact subscribed to the event.",
+            "format" : "int64"
+          },
+          "properties" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "The email address of the contact in HubSpot to associate with the event. Note that the contact must already exist in HubSpot; a contact will not be created."
+          },
+          "contactProperties" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
       "ErrorDetail" : {
         "required" : [ "message" ],
         "type" : "object",
@@ -1049,33 +1078,6 @@
             "description" : "Context about the error condition",
             "example" : {
               "missingScopes" : [ "scope1", "scope2" ]
-            }
-          }
-        }
-      },
-      "MarketingEventEmailSubscriber" : {
-        "required" : [ "email", "interactionDateTime" ],
-        "type" : "object",
-        "properties" : {
-          "interactionDateTime" : {
-            "type" : "integer",
-            "description" : "The date and time at which the contact subscribed to the event.",
-            "format" : "int64"
-          },
-          "properties" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string"
-            }
-          },
-          "email" : {
-            "type" : "string",
-            "description" : "The email address of the contact in HubSpot to associate with the event. Note that the contact must already exist in HubSpot; a contact will not be created."
-          },
-          "contactProperties" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string"
             }
           }
         }
@@ -1145,6 +1147,64 @@
           }
         }
       },
+      "PropertyValue" : {
+        "required" : [ "name", "requestId", "selectedByUser", "selectedByUserTimestamp", "source", "sourceId", "sourceLabel", "sourceMetadata", "sourceVid", "timestamp", "value" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          },
+          "timestamp" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "sourceId" : {
+            "type" : "string"
+          },
+          "sourceLabel" : {
+            "type" : "string"
+          },
+          "source" : {
+            "type" : "string",
+            "enum" : [ "IMPORT", "API", "FORM", "ANALYTICS", "MIGRATION", "SALESFORCE", "INTEGRATION", "CONTACTS_WEB", "WAL_INCREMENTAL", "TASK", "EMAIL", "WORKFLOWS", "CALCULATED", "SOCIAL", "BATCH_UPDATE", "SIGNALS", "BIDEN", "DEFAULT", "COMPANIES", "DEALS", "ASSISTS", "PRESENTATIONS", "TALLY", "SIDEKICK", "CRM_UI", "MERGE_CONTACTS", "PORTAL_USER_ASSOCIATOR", "INTEGRATIONS_PLATFORM", "BCC_TO_CRM", "FORWARD_TO_CRM", "ENGAGEMENTS", "SALES", "HEISENBERG", "LEADIN", "GMAIL_INTEGRATION", "ACADEMY", "SALES_MESSAGES", "AVATARS_SERVICE", "MERGE_COMPANIES", "SEQUENCES", "COMPANY_FAMILIES", "MOBILE_IOS", "MOBILE_ANDROID", "CONTACTS", "ASSOCIATIONS", "EXTENSION", "SUCCESS", "BOT", "INTEGRATIONS_SYNC", "AUTOMATION_PLATFORM", "CONVERSATIONS", "EMAIL_INTEGRATION", "CONTENT_MEMBERSHIP", "QUOTES", "BET_ASSIGNMENT", "QUOTAS", "BET_CRM_CONNECTOR", "MEETINGS", "MERGE_OBJECTS", "RECYCLING_BIN", "ADS", "AI_GROUP", "COMMUNICATOR", "SETTINGS", "PROPERTY_SETTINGS", "PIPELINE_SETTINGS", "COMPANY_INSIGHTS", "BEHAVIORAL_EVENTS", "PAYMENTS", "GOALS", "PORTAL_OBJECT_SYNC", "APPROVALS", "FILE_MANAGER", "MARKETPLACE", "INTERNAL_PROCESSING", "FORECASTING", "SLACK_INTEGRATION", "CRM_UI_BULK_ACTION", "WORKFLOW_CONTACT_DELETE_ACTION" ]
+          },
+          "selectedByUser" : {
+            "type" : "boolean"
+          },
+          "selectedByUserTimestamp" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "sourceVid" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          },
+          "sourceMetadata" : {
+            "type" : "string",
+            "description" : "Source metadata encoded as a base64 string. For example: `ZXhhbXBsZSBzdHJpbmc=`"
+          },
+          "requestId" : {
+            "type" : "string"
+          },
+          "updatedByUserId" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "persistenceTimestamp" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "useTimestampAsPersistenceTimestamp" : {
+            "type" : "boolean"
+          }
+        }
+      },
       "Error" : {
         "required" : [ "category", "correlationId", "message" ],
         "type" : "object",
@@ -1203,57 +1263,6 @@
           "category" : "VALIDATION_ERROR",
           "links" : {
             "knowledge-base" : "https://www.hubspot.com/products/service/knowledge-base"
-          }
-        }
-      },
-      "PropertyValue" : {
-        "required" : [ "name", "requestId", "selectedByUser", "selectedByUserTimestamp", "source", "sourceId", "sourceLabel", "sourceMetadata", "sourceVid", "timestamp", "value" ],
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "string"
-          },
-          "timestamp" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "sourceId" : {
-            "type" : "string"
-          },
-          "sourceLabel" : {
-            "type" : "string"
-          },
-          "source" : {
-            "type" : "string",
-            "enum" : [ "IMPORT", "API", "FORM", "ANALYTICS", "MIGRATION", "SALESFORCE", "INTEGRATION", "CONTACTS_WEB", "WAL_INCREMENTAL", "TASK", "EMAIL", "WORKFLOWS", "CALCULATED", "SOCIAL", "BATCH_UPDATE", "SIGNALS", "BIDEN", "DEFAULT", "COMPANIES", "DEALS", "ASSISTS", "PRESENTATIONS", "TALLY", "SIDEKICK", "CRM_UI", "MERGE_CONTACTS", "PORTAL_USER_ASSOCIATOR", "INTEGRATIONS_PLATFORM", "BCC_TO_CRM", "FORWARD_TO_CRM", "ENGAGEMENTS", "SALES", "HEISENBERG", "LEADIN", "GMAIL_INTEGRATION", "ACADEMY", "SALES_MESSAGES", "AVATARS_SERVICE", "MERGE_COMPANIES", "SEQUENCES", "COMPANY_FAMILIES", "MOBILE_IOS", "MOBILE_ANDROID", "CONTACTS", "ASSOCIATIONS", "EXTENSION", "SUCCESS", "BOT", "INTEGRATIONS_SYNC", "AUTOMATION_PLATFORM", "CONVERSATIONS", "EMAIL_INTEGRATION", "CONTENT_MEMBERSHIP", "QUOTES", "BET_ASSIGNMENT", "QUOTAS", "BET_CRM_CONNECTOR", "MEETINGS", "MERGE_OBJECTS", "RECYCLING_BIN", "ADS", "AI_GROUP", "COMMUNICATOR", "SETTINGS", "PROPERTY_SETTINGS", "PIPELINE_SETTINGS", "COMPANY_INSIGHTS", "BEHAVIORAL_EVENTS", "PAYMENTS", "GOALS", "PORTAL_OBJECT_SYNC", "APPROVALS", "FILE_MANAGER", "MARKETPLACE", "INTERNAL_PROCESSING", "FORECASTING", "SLACK_INTEGRATION", "CRM_UI_BULK_ACTION", "WORKFLOW_CONTACT_DELETE_ACTION" ]
-          },
-          "selectedByUser" : {
-            "type" : "boolean"
-          },
-          "selectedByUserTimestamp" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "sourceVid" : {
-            "type" : "array",
-            "items" : {
-              "type" : "integer",
-              "format" : "int64"
-            }
-          },
-          "sourceMetadata" : {
-            "type" : "string",
-            "description" : "Source metadata encoded as a base64 string. For example: `ZXhhbXBsZSBzdHJpbmc=`"
-          },
-          "requestId" : {
-            "type" : "string"
-          },
-          "updatedByUserId" : {
-            "type" : "integer",
-            "format" : "int32"
           }
         }
       },
@@ -1430,50 +1439,6 @@
           }
         }
       },
-      "BatchResponseSubscriberVidResponse" : {
-        "required" : [ "completedAt", "results", "startedAt", "status" ],
-        "type" : "object",
-        "properties" : {
-          "status" : {
-            "type" : "string",
-            "enum" : [ "PENDING", "PROCESSING", "CANCELED", "COMPLETE" ]
-          },
-          "results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/SubscriberVidResponse"
-            }
-          },
-          "numErrors" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "errors" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/StandardError"
-            }
-          },
-          "requestedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "startedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "completedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "links" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string"
-            }
-          }
-        }
-      },
       "MarketingEventDefaultResponse" : {
         "required" : [ "eventName", "eventOrganizer" ],
         "type" : "object",
@@ -1517,6 +1482,50 @@
             "description" : "A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account's definition of the MarketingEvent Object. If they don't they will be filtered out and not set.\nIn order to do this you'll need to create a new PropertyGroup on the HubSpot account's MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.\n",
             "items" : {
               "$ref" : "#/components/schemas/PropertyValue"
+            }
+          }
+        }
+      },
+      "BatchResponseSubscriberVidResponse" : {
+        "required" : [ "completedAt", "results", "startedAt", "status" ],
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "PROCESSING", "CANCELED", "COMPLETE" ]
+          },
+          "results" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SubscriberVidResponse"
+            }
+          },
+          "numErrors" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/StandardError"
+            }
+          },
+          "requestedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "startedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "completedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "links" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
             }
           }
         }
@@ -1606,16 +1615,17 @@
           }
         }
       },
-      "hapikey" : {
-        "type" : "apiKey",
-        "name" : "hapikey",
-        "in" : "query"
-      },
       "developer_hapikey" : {
         "type" : "apiKey",
         "name" : "hapikey",
         "in" : "query"
+      },
+      "private_apps_legacy" : {
+        "type" : "apiKey",
+        "name" : "private-app-legacy",
+        "in" : "header"
       }
     }
-  }
+  },
+  "x-hubspot-available-client-libraries" : [ "PHP", "Node", "Python", "Ruby" ]
 }

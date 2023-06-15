@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the FieldTypeDefinition type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &FieldTypeDefinition{}
+
 // FieldTypeDefinition The data type expected by an input field.
 type FieldTypeDefinition struct {
 	// The input field name.
@@ -100,7 +103,7 @@ func (o *FieldTypeDefinition) SetType(v string) {
 
 // GetFieldType returns the FieldType field value if set, zero value otherwise.
 func (o *FieldTypeDefinition) GetFieldType() string {
-	if o == nil || o.FieldType == nil {
+	if o == nil || IsNil(o.FieldType) {
 		var ret string
 		return ret
 	}
@@ -110,7 +113,7 @@ func (o *FieldTypeDefinition) GetFieldType() string {
 // GetFieldTypeOk returns a tuple with the FieldType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FieldTypeDefinition) GetFieldTypeOk() (*string, bool) {
-	if o == nil || o.FieldType == nil {
+	if o == nil || IsNil(o.FieldType) {
 		return nil, false
 	}
 	return o.FieldType, true
@@ -118,7 +121,7 @@ func (o *FieldTypeDefinition) GetFieldTypeOk() (*string, bool) {
 
 // HasFieldType returns a boolean if a field has been set.
 func (o *FieldTypeDefinition) HasFieldType() bool {
-	if o != nil && o.FieldType != nil {
+	if o != nil && !IsNil(o.FieldType) {
 		return true
 	}
 
@@ -156,7 +159,7 @@ func (o *FieldTypeDefinition) SetOptions(v []Option) {
 
 // GetOptionsUrl returns the OptionsUrl field value if set, zero value otherwise.
 func (o *FieldTypeDefinition) GetOptionsUrl() string {
-	if o == nil || o.OptionsUrl == nil {
+	if o == nil || IsNil(o.OptionsUrl) {
 		var ret string
 		return ret
 	}
@@ -166,7 +169,7 @@ func (o *FieldTypeDefinition) GetOptionsUrl() string {
 // GetOptionsUrlOk returns a tuple with the OptionsUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FieldTypeDefinition) GetOptionsUrlOk() (*string, bool) {
-	if o == nil || o.OptionsUrl == nil {
+	if o == nil || IsNil(o.OptionsUrl) {
 		return nil, false
 	}
 	return o.OptionsUrl, true
@@ -174,7 +177,7 @@ func (o *FieldTypeDefinition) GetOptionsUrlOk() (*string, bool) {
 
 // HasOptionsUrl returns a boolean if a field has been set.
 func (o *FieldTypeDefinition) HasOptionsUrl() bool {
-	if o != nil && o.OptionsUrl != nil {
+	if o != nil && !IsNil(o.OptionsUrl) {
 		return true
 	}
 
@@ -188,7 +191,7 @@ func (o *FieldTypeDefinition) SetOptionsUrl(v string) {
 
 // GetReferencedObjectType returns the ReferencedObjectType field value if set, zero value otherwise.
 func (o *FieldTypeDefinition) GetReferencedObjectType() string {
-	if o == nil || o.ReferencedObjectType == nil {
+	if o == nil || IsNil(o.ReferencedObjectType) {
 		var ret string
 		return ret
 	}
@@ -198,7 +201,7 @@ func (o *FieldTypeDefinition) GetReferencedObjectType() string {
 // GetReferencedObjectTypeOk returns a tuple with the ReferencedObjectType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FieldTypeDefinition) GetReferencedObjectTypeOk() (*string, bool) {
-	if o == nil || o.ReferencedObjectType == nil {
+	if o == nil || IsNil(o.ReferencedObjectType) {
 		return nil, false
 	}
 	return o.ReferencedObjectType, true
@@ -206,7 +209,7 @@ func (o *FieldTypeDefinition) GetReferencedObjectTypeOk() (*string, bool) {
 
 // HasReferencedObjectType returns a boolean if a field has been set.
 func (o *FieldTypeDefinition) HasReferencedObjectType() bool {
-	if o != nil && o.ReferencedObjectType != nil {
+	if o != nil && !IsNil(o.ReferencedObjectType) {
 		return true
 	}
 
@@ -219,26 +222,28 @@ func (o *FieldTypeDefinition) SetReferencedObjectType(v string) {
 }
 
 func (o FieldTypeDefinition) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["type"] = o.Type
-	}
-	if o.FieldType != nil {
-		toSerialize["fieldType"] = o.FieldType
-	}
-	if true {
-		toSerialize["options"] = o.Options
-	}
-	if o.OptionsUrl != nil {
-		toSerialize["optionsUrl"] = o.OptionsUrl
-	}
-	if o.ReferencedObjectType != nil {
-		toSerialize["referencedObjectType"] = o.ReferencedObjectType
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o FieldTypeDefinition) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["type"] = o.Type
+	if !IsNil(o.FieldType) {
+		toSerialize["fieldType"] = o.FieldType
+	}
+	toSerialize["options"] = o.Options
+	if !IsNil(o.OptionsUrl) {
+		toSerialize["optionsUrl"] = o.OptionsUrl
+	}
+	if !IsNil(o.ReferencedObjectType) {
+		toSerialize["referencedObjectType"] = o.ReferencedObjectType
+	}
+	return toSerialize, nil
 }
 
 type NullableFieldTypeDefinition struct {

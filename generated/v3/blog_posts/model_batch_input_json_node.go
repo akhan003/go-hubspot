@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the BatchInputJsonNode type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BatchInputJsonNode{}
+
 // BatchInputJsonNode Wrapper for providing an array of JSON nodes as inputs.
 type BatchInputJsonNode struct {
 	// JSON nodes to input.
@@ -63,11 +66,17 @@ func (o *BatchInputJsonNode) SetInputs(v []map[string]interface{}) {
 }
 
 func (o BatchInputJsonNode) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["inputs"] = o.Inputs
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BatchInputJsonNode) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["inputs"] = o.Inputs
+	return toSerialize, nil
 }
 
 type NullableBatchInputJsonNode struct {

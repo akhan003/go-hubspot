@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SyncProductsRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SyncProductsRequest{}
+
 // SyncProductsRequest A request to import external accounting product properties in HubSpot
 type SyncProductsRequest struct {
 	// The ID of the account in the external accounting system. This is the value that will be passed as `accountId` for all outbound calls for the user from HubSpot to the external accounting system.
@@ -90,14 +93,18 @@ func (o *SyncProductsRequest) SetProducts(v []UpdatedProduct) {
 }
 
 func (o SyncProductsRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["accountId"] = o.AccountId
-	}
-	if true {
-		toSerialize["products"] = o.Products
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SyncProductsRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["accountId"] = o.AccountId
+	toSerialize["products"] = o.Products
+	return toSerialize, nil
 }
 
 type NullableSyncProductsRequest struct {

@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the IndexedData type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &IndexedData{}
+
 // IndexedData The indexed data in HubSpot
 type IndexedData struct {
 	// The ID of the document in HubSpot.
@@ -117,17 +120,19 @@ func (o *IndexedData) SetFields(v map[string]IndexedField) {
 }
 
 func (o IndexedData) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["type"] = o.Type
-	}
-	if true {
-		toSerialize["fields"] = o.Fields
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o IndexedData) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["type"] = o.Type
+	toSerialize["fields"] = o.Fields
+	return toSerialize, nil
 }
 
 type NullableIndexedData struct {

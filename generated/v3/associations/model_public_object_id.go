@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the PublicObjectId type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PublicObjectId{}
+
 // PublicObjectId struct for PublicObjectId
 type PublicObjectId struct {
 	// The unique ID that identifies an object.
@@ -63,11 +66,17 @@ func (o *PublicObjectId) SetId(v string) {
 }
 
 func (o PublicObjectId) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o PublicObjectId) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	return toSerialize, nil
 }
 
 type NullablePublicObjectId struct {

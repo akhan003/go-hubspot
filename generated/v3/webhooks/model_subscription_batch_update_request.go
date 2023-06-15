@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SubscriptionBatchUpdateRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SubscriptionBatchUpdateRequest{}
+
 // SubscriptionBatchUpdateRequest struct for SubscriptionBatchUpdateRequest
 type SubscriptionBatchUpdateRequest struct {
 	Id     int32 `json:"id"`
@@ -88,14 +91,18 @@ func (o *SubscriptionBatchUpdateRequest) SetActive(v bool) {
 }
 
 func (o SubscriptionBatchUpdateRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["active"] = o.Active
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SubscriptionBatchUpdateRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["active"] = o.Active
+	return toSerialize, nil
 }
 
 type NullableSubscriptionBatchUpdateRequest struct {

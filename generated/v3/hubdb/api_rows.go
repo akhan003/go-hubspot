@@ -13,10 +13,8 @@ package hubdb
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
-
-	"github.com/clarkmcc/go-hubspot"
 	"net/url"
 	"reflect"
 	"strings"
@@ -71,8 +69,8 @@ func (a *RowsApiService) CloneDraftTableRowExecute(r ApiCloneDraftTableRowReques
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows/{rowId}/draft/clone"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterToString(r.rowId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterValueToString(r.rowId, "rowId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -97,12 +95,16 @@ func (a *RowsApiService) CloneDraftTableRowExecute(r ApiCloneDraftTableRowReques
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -115,9 +117,9 @@ func (a *RowsApiService) CloneDraftTableRowExecute(r ApiCloneDraftTableRowReques
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -133,6 +135,7 @@ func (a *RowsApiService) CloneDraftTableRowExecute(r ApiCloneDraftTableRowReques
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -199,7 +202,7 @@ func (a *RowsApiService) CreateTableRowExecute(r ApiCreateTableRowRequest) (*Hub
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -229,12 +232,16 @@ func (a *RowsApiService) CreateTableRowExecute(r ApiCreateTableRowRequest) (*Hub
 	localVarPostBody = r.hubDbTableRowV3Request
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -247,9 +254,9 @@ func (a *RowsApiService) CreateTableRowExecute(r ApiCreateTableRowRequest) (*Hub
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -265,6 +272,7 @@ func (a *RowsApiService) CreateTableRowExecute(r ApiCreateTableRowRequest) (*Hub
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -327,8 +335,8 @@ func (a *RowsApiService) GetDraftTableRowByIDExecute(r ApiGetDraftTableRowByIDRe
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows/{rowId}/draft"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterToString(r.rowId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterValueToString(r.rowId, "rowId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -353,12 +361,16 @@ func (a *RowsApiService) GetDraftTableRowByIDExecute(r ApiGetDraftTableRowByIDRe
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -371,9 +383,9 @@ func (a *RowsApiService) GetDraftTableRowByIDExecute(r ApiGetDraftTableRowByIDRe
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -389,6 +401,7 @@ func (a *RowsApiService) GetDraftTableRowByIDExecute(r ApiGetDraftTableRowByIDRe
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -452,8 +465,8 @@ func (a *RowsApiService) GetTableRowExecute(r ApiGetTableRowRequest) (*HubDbTabl
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows/{rowId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterToString(r.rowId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterValueToString(r.rowId, "rowId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -478,12 +491,16 @@ func (a *RowsApiService) GetTableRowExecute(r ApiGetTableRowRequest) (*HubDbTabl
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -496,9 +513,9 @@ func (a *RowsApiService) GetTableRowExecute(r ApiGetTableRowRequest) (*HubDbTabl
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -514,6 +531,7 @@ func (a *RowsApiService) GetTableRowExecute(r ApiGetTableRowRequest) (*HubDbTabl
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -602,7 +620,7 @@ func (a *RowsApiService) GetTableRowsExecute(r ApiGetTableRowsRequest) (*Collect
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -613,27 +631,27 @@ func (a *RowsApiService) GetTableRowsExecute(r ApiGetTableRowsRequest) (*Collect
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("sort", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("sort", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "sort", t, "multi")
 		}
 	}
 	if r.after != nil {
-		localVarQueryParams.Add("after", parameterToString(*r.after, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "after", r.after, "")
 	}
 	if r.limit != nil {
-		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	if r.properties != nil {
 		t := *r.properties
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("properties", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("properties", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "properties", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -655,12 +673,16 @@ func (a *RowsApiService) GetTableRowsExecute(r ApiGetTableRowsRequest) (*Collect
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -673,9 +695,9 @@ func (a *RowsApiService) GetTableRowsExecute(r ApiGetTableRowsRequest) (*Collect
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -691,6 +713,7 @@ func (a *RowsApiService) GetTableRowsExecute(r ApiGetTableRowsRequest) (*Collect
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -751,8 +774,8 @@ func (a *RowsApiService) PurgeDraftTableRowExecute(r ApiPurgeDraftTableRowReques
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows/{rowId}/draft"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterToString(r.rowId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterValueToString(r.rowId, "rowId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -777,12 +800,16 @@ func (a *RowsApiService) PurgeDraftTableRowExecute(r ApiPurgeDraftTableRowReques
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -795,9 +822,9 @@ func (a *RowsApiService) PurgeDraftTableRowExecute(r ApiPurgeDraftTableRowReques
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -813,6 +840,7 @@ func (a *RowsApiService) PurgeDraftTableRowExecute(r ApiPurgeDraftTableRowReques
 			newErr.error = err.Error()
 			return localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
@@ -891,7 +919,7 @@ func (a *RowsApiService) ReadDraftTableRowsExecute(r ApiReadDraftTableRowsReques
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows/draft"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -902,27 +930,27 @@ func (a *RowsApiService) ReadDraftTableRowsExecute(r ApiReadDraftTableRowsReques
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("sort", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("sort", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "sort", t, "multi")
 		}
 	}
 	if r.after != nil {
-		localVarQueryParams.Add("after", parameterToString(*r.after, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "after", r.after, "")
 	}
 	if r.limit != nil {
-		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	if r.properties != nil {
 		t := *r.properties
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("properties", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("properties", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "properties", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -944,12 +972,16 @@ func (a *RowsApiService) ReadDraftTableRowsExecute(r ApiReadDraftTableRowsReques
 	}
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -962,9 +994,9 @@ func (a *RowsApiService) ReadDraftTableRowsExecute(r ApiReadDraftTableRowsReques
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -980,6 +1012,7 @@ func (a *RowsApiService) ReadDraftTableRowsExecute(r ApiReadDraftTableRowsReques
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1051,8 +1084,8 @@ func (a *RowsApiService) ReplaceDraftTableRowExecute(r ApiReplaceDraftTableRowRe
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows/{rowId}/draft"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterToString(r.rowId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterValueToString(r.rowId, "rowId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1082,12 +1115,16 @@ func (a *RowsApiService) ReplaceDraftTableRowExecute(r ApiReplaceDraftTableRowRe
 	localVarPostBody = r.hubDbTableRowV3Request
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -1100,9 +1137,9 @@ func (a *RowsApiService) ReplaceDraftTableRowExecute(r ApiReplaceDraftTableRowRe
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1118,6 +1155,7 @@ func (a *RowsApiService) ReplaceDraftTableRowExecute(r ApiReplaceDraftTableRowRe
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1189,8 +1227,8 @@ func (a *RowsApiService) UpdateDraftTableRowExecute(r ApiUpdateDraftTableRowRequ
 	}
 
 	localVarPath := localBasePath + "/cms/v3/hubdb/tables/{tableIdOrName}/rows/{rowId}/draft"
-	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterToString(r.tableIdOrName, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterToString(r.rowId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"tableIdOrName"+"}", url.PathEscape(parameterValueToString(r.tableIdOrName, "tableIdOrName")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"rowId"+"}", url.PathEscape(parameterValueToString(r.rowId, "rowId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1220,12 +1258,16 @@ func (a *RowsApiService) UpdateDraftTableRowExecute(r ApiUpdateDraftTableRowRequ
 	localVarPostBody = r.hubDbTableRowV3Request
 	if r.ctx != nil {
 		// API Key Authentication
-		if auth, ok := r.ctx.Value(hubspot.ContextKey).(hubspot.Authorizer); ok {
-			auth.Apply(hubspot.AuthorizationRequest{
-				QueryParams: localVarQueryParams,
-				FormParams:  localVarFormParams,
-				Headers:     localVarHeaderParams,
-			})
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
 		}
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -1238,9 +1280,9 @@ func (a *RowsApiService) UpdateDraftTableRowExecute(r ApiUpdateDraftTableRowRequ
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1256,6 +1298,7 @@ func (a *RowsApiService) UpdateDraftTableRowExecute(r ApiUpdateDraftTableRowRequ
 			newErr.error = err.Error()
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

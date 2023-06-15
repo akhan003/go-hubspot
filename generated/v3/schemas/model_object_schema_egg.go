@@ -14,6 +14,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ObjectSchemaEgg type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ObjectSchemaEgg{}
+
 // ObjectSchemaEgg Defines a new object type, its properties, and associations.
 type ObjectSchemaEgg struct {
 	Labels ObjectTypeDefinitionLabels `json:"labels"`
@@ -131,7 +134,7 @@ func (o *ObjectSchemaEgg) SetSearchableProperties(v []string) {
 
 // GetPrimaryDisplayProperty returns the PrimaryDisplayProperty field value if set, zero value otherwise.
 func (o *ObjectSchemaEgg) GetPrimaryDisplayProperty() string {
-	if o == nil || o.PrimaryDisplayProperty == nil {
+	if o == nil || IsNil(o.PrimaryDisplayProperty) {
 		var ret string
 		return ret
 	}
@@ -141,7 +144,7 @@ func (o *ObjectSchemaEgg) GetPrimaryDisplayProperty() string {
 // GetPrimaryDisplayPropertyOk returns a tuple with the PrimaryDisplayProperty field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ObjectSchemaEgg) GetPrimaryDisplayPropertyOk() (*string, bool) {
-	if o == nil || o.PrimaryDisplayProperty == nil {
+	if o == nil || IsNil(o.PrimaryDisplayProperty) {
 		return nil, false
 	}
 	return o.PrimaryDisplayProperty, true
@@ -149,7 +152,7 @@ func (o *ObjectSchemaEgg) GetPrimaryDisplayPropertyOk() (*string, bool) {
 
 // HasPrimaryDisplayProperty returns a boolean if a field has been set.
 func (o *ObjectSchemaEgg) HasPrimaryDisplayProperty() bool {
-	if o != nil && o.PrimaryDisplayProperty != nil {
+	if o != nil && !IsNil(o.PrimaryDisplayProperty) {
 		return true
 	}
 
@@ -258,32 +261,26 @@ func (o *ObjectSchemaEgg) SetName(v string) {
 }
 
 func (o ObjectSchemaEgg) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["labels"] = o.Labels
-	}
-	if true {
-		toSerialize["requiredProperties"] = o.RequiredProperties
-	}
-	if true {
-		toSerialize["searchableProperties"] = o.SearchableProperties
-	}
-	if o.PrimaryDisplayProperty != nil {
-		toSerialize["primaryDisplayProperty"] = o.PrimaryDisplayProperty
-	}
-	if true {
-		toSerialize["secondaryDisplayProperties"] = o.SecondaryDisplayProperties
-	}
-	if true {
-		toSerialize["properties"] = o.Properties
-	}
-	if true {
-		toSerialize["associatedObjects"] = o.AssociatedObjects
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ObjectSchemaEgg) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["labels"] = o.Labels
+	toSerialize["requiredProperties"] = o.RequiredProperties
+	toSerialize["searchableProperties"] = o.SearchableProperties
+	if !IsNil(o.PrimaryDisplayProperty) {
+		toSerialize["primaryDisplayProperty"] = o.PrimaryDisplayProperty
+	}
+	toSerialize["secondaryDisplayProperties"] = o.SecondaryDisplayProperties
+	toSerialize["properties"] = o.Properties
+	toSerialize["associatedObjects"] = o.AssociatedObjects
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableObjectSchemaEgg struct {
