@@ -578,7 +578,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = os.Setenv("GIT_USER_ID", "clarkmcc")
+	//err = os.Setenv("GIT_USER_ID", "clarkmcc")
+	err = os.Setenv("GIT_USER_ID", "akhan003")
 	if err != nil {
 		panic(err)
 	}
@@ -676,7 +677,8 @@ func main() {
 				// Add imports for authorization package
 				idx := bytes.Index(b, []byte("\"net/url\""))
 				if idx >= 0 {
-					b = bytes.Join([][]byte{b[:idx], []byte("\t\"github.com/clarkmcc/go-hubspot\""), b[idx:]}, []byte("\n"))
+					//b = bytes.Join([][]byte{b[:idx], []byte("\t\"github.com/clarkmcc/go-hubspot\""), b[idx:]}, []byte("\n"))
+					b = bytes.Join([][]byte{b[:idx], []byte("\t\"github.com/akhan003/go-hubspot\""), b[idx:]}, []byte("\n"))
 				}
 
 				err = os.Remove(path)
