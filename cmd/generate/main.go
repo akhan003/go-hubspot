@@ -579,7 +579,8 @@ func main() {
 		panic(err)
 	}
 	//err = os.Setenv("GIT_USER_ID", "clarkmcc")
-	err = os.Setenv("GIT_USER_ID", "akhan003")
+	//err = os.Setenv("GIT_USER_ID", "akhan003")
+	err = os.Setenv("GIT_USER_ID", "threecolts")
 	if err != nil {
 		panic(err)
 	}
@@ -678,7 +679,8 @@ func main() {
 				idx := bytes.Index(b, []byte("\"net/url\""))
 				if idx >= 0 {
 					//b = bytes.Join([][]byte{b[:idx], []byte("\t\"github.com/clarkmcc/go-hubspot\""), b[idx:]}, []byte("\n"))
-					b = bytes.Join([][]byte{b[:idx], []byte("\t\"github.com/akhan003/go-hubspot\""), b[idx:]}, []byte("\n"))
+					//b = bytes.Join([][]byte{b[:idx], []byte("\t\"github.com/akhan003/go-hubspot\""), b[idx:]}, []byte("\n"))
+					b = bytes.Join([][]byte{b[:idx], []byte("\t\"github.com/threecolts/go-hubspot\""), b[idx:]}, []byte("\n"))
 				}
 
 				err = os.Remove(path)

@@ -1,5 +1,6 @@
 //module github.com/clarkmcc/go-hubspot
-module github.com/akhan003/go-hubspot
+//module github.com/akhan003/go-hubspot
+module github.com/threecolts/go-hubspot
 
 go 1.17
 
