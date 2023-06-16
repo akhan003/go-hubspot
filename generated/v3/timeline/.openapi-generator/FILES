@@ -50,4 +50,7 @@ model_timeline_event_template_token_option.go
 model_timeline_event_template_token_update_request.go
 model_timeline_event_template_update_request.go
 response.go
+test/api_events_test.go
+test/api_templates_test.go
+test/api_tokens_test.go
 utils.go

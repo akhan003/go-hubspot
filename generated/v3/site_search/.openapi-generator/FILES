@@ -22,4 +22,5 @@ model_indexed_data.go
 model_indexed_field.go
 model_public_search_results.go
 response.go
+test/api_public_test.go
 utils.go

@@ -22,4 +22,5 @@ model_external_unified_event.go
 model_next_page.go
 model_paging.go
 response.go
+test/api_events_test.go
 utils.go

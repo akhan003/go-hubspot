@@ -68,4 +68,8 @@ model_standard_error.go
 model_subscriber_email_response.go
 model_subscriber_vid_response.go
 response.go
+test/api_attendance_subscriber_state_changes_test.go
+test/api_marketing_events_external_test.go
+test/api_search_test.go
+test/api_settings_external_test.go
 utils.go

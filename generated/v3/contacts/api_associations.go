@@ -13,6 +13,7 @@ package contacts
 import (
 	"bytes"
 	"context"
+	"github.com/threecolts/go-hubspot/utils"
 	"io/ioutil"
 	"net/http"
 

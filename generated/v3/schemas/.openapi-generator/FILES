@@ -42,4 +42,6 @@ model_option_input.go
 model_property.go
 model_property_modification_metadata.go
 response.go
+test/api_core_test.go
+test/api_public_object_schemas_test.go
 utils.go

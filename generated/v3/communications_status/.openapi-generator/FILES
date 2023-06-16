@@ -26,4 +26,6 @@ model_public_update_subscription_status_request.go
 model_subscription_definition.go
 model_subscription_definitions_response.go
 response.go
+test/api_definition_test.go
+test/api_status_test.go
 utils.go

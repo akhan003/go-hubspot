@@ -64,4 +64,8 @@ model_object_request_options.go
 model_option.go
 model_single_field_dependency.go
 response.go
+test/api_callbacks_test.go
+test/api_definitions_test.go
+test/api_functions_test.go
+test/api_revisions_test.go
 utils.go

@@ -118,8 +118,8 @@ Authentication schemes defined for the API:
 - **Flow**: accessCode
 - **Authorization URL**: https://app.hubspot.com/oauth/authorize
 - **Scopes**: 
- - **crm.schemas.custom.read**: View custom object definitions
  - **crm.objects.custom.read**: View custom object records
+ - **crm.schemas.custom.read**: View custom object definitions
 
 Example
 

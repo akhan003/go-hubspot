@@ -44,4 +44,5 @@ model_set_new_language_primary_request_v_next.go
 model_standard_error.go
 model_update_languages_request_v_next.go
 response.go
+test/api_blog_authors_test.go
 utils.go

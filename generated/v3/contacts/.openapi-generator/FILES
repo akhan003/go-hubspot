@@ -84,4 +84,9 @@ model_simple_public_object_with_associations.go
 model_standard_error.go
 model_value_with_timestamp.go
 response.go
+test/api_basic_test.go
+test/api_batch_test.go
+test/api_gdpr_test.go
+test/api_public_object_test.go
+test/api_search_test.go
 utils.go

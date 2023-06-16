@@ -44,4 +44,5 @@ model_tag.go
 model_tag_clone_request_v_next.go
 model_update_languages_request_v_next.go
 response.go
+test/api_blog_tags_test.go
 utils.go

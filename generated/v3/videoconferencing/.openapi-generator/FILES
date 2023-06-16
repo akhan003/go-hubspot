@@ -16,4 +16,5 @@ model_error.go
 model_error_detail.go
 model_external_settings.go
 response.go
+test/api_settings_test.go
 utils.go

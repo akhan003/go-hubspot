@@ -78,4 +78,5 @@ model_update_languages_request_v_next.go
 model_version_blog_post.go
 model_version_user.go
 response.go
+test/api_blog_posts_test.go
 utils.go

@@ -62,4 +62,7 @@ model_option.go
 model_simple_user.go
 model_standard_error.go
 response.go
+test/api_rows_batch_test.go
+test/api_rows_test.go
+test/api_tables_test.go
 utils.go

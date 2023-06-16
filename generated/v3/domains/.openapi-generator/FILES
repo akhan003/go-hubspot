@@ -22,4 +22,5 @@ model_error_detail.go
 model_forward_paging.go
 model_next_page.go
 response.go
+test/api_domains_test.go
 utils.go

@@ -20,4 +20,5 @@ model_settings_patch_request.go
 model_settings_request.go
 model_settings_response.go
 response.go
+test/api_settings_test.go
 utils.go

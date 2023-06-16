@@ -40,4 +40,8 @@ model_pipeline_stage_input.go
 model_pipeline_stage_patch_input.go
 model_public_audit_info.go
 response.go
+test/api_pipeline_audits_test.go
+test/api_pipeline_stage_audits_test.go
+test/api_pipeline_stages_test.go
+test/api_pipelines_test.go
 utils.go

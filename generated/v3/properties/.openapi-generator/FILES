@@ -56,4 +56,7 @@ model_property_name.go
 model_property_update.go
 model_standard_error.go
 response.go
+test/api_batch_test.go
+test/api_core_test.go
+test/api_groups_test.go
 utils.go

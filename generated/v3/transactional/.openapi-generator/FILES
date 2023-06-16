@@ -34,4 +34,6 @@ model_public_single_send_request_egg.go
 model_smtp_api_token_request_egg.go
 model_smtp_api_token_view.go
 response.go
+test/api_public_smtp_tokens_test.go
+test/api_single_send_test.go
 utils.go

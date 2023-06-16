@@ -40,4 +40,6 @@ model_public_import_metadata.go
 model_public_import_response.go
 model_public_object_list_record.go
 response.go
+test/api_core_test.go
+test/api_public_imports_test.go
 utils.go

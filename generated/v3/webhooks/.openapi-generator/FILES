@@ -42,4 +42,6 @@ model_subscription_patch_request.go
 model_subscription_response.go
 model_throttling_settings.go
 response.go
+test/api_settings_test.go
+test/api_subscriptions_test.go
 utils.go

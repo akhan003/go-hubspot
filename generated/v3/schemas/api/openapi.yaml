@@ -78,8 +78,8 @@ paths:
           description: An error occurred.
       security:
       - private_apps_legacy:
-        - crm.schemas.custom.write
         - crm.objects.custom.write
+        - crm.schemas.custom.write
       - private_apps_legacy:
         - crm.schemas.custom.write
       summary: Create a new schema
@@ -195,8 +195,8 @@ paths:
           description: An error occurred.
       security:
       - private_apps_legacy:
-        - crm.schemas.custom.write
         - crm.objects.custom.write
+        - crm.schemas.custom.write
       - private_apps_legacy:
         - crm.schemas.custom.write
       summary: Update a schema
@@ -238,8 +238,8 @@ paths:
           description: An error occurred.
       security:
       - private_apps_legacy:
-        - crm.schemas.custom.write
         - crm.objects.custom.write
+        - crm.schemas.custom.write
       - private_apps_legacy:
         - crm.schemas.custom.write
       summary: Create an association
@@ -1111,8 +1111,8 @@ components:
         authorizationCode:
           authorizationUrl: https://app.hubspot.com/oauth/authorize
           scopes:
-            crm.schemas.custom.read: View custom object definitions
             crm.objects.custom.read: View custom object records
+            crm.schemas.custom.read: View custom object definitions
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
     private_apps_legacy:

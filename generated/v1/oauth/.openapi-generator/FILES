@@ -24,4 +24,7 @@ model_error_detail.go
 model_refresh_token_info_response.go
 model_token_response_if.go
 response.go
+test/api_access_tokens_test.go
+test/api_refresh_tokens_test.go
+test/api_tokens_test.go
 utils.go

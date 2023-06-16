@@ -18,4 +18,5 @@ model_error_detail.go
 model_performance_view.go
 model_public_performance_response.go
 response.go
+test/api_public_performance_test.go
 utils.go

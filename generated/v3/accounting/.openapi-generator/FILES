@@ -90,4 +90,9 @@ model_unit_price.go
 model_updated_contact.go
 model_updated_product.go
 response.go
+test/api_callbacks_test.go
+test/api_invoice_test.go
+test/api_settings_test.go
+test/api_sync_test.go
+test/api_user_accounts_test.go
 utils.go

@@ -22,4 +22,5 @@ model_next_page.go
 model_paging.go
 model_public_audit_log.go
 response.go
+test/api_audit_logs_test.go
 utils.go

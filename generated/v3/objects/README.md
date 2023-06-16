@@ -158,11 +158,11 @@ Authentication schemes defined for the API:
 - **Flow**: accessCode
 - **Authorization URL**: https://app.hubspot.com/oauth/authorize
 - **Scopes**: 
- - **e-commerce**: e-commerce
- - **crm.objects.custom.write**: Change custom object records
- - **crm.objects.custom.read**: View custom object records
- - **crm.objects.goals.read**: Read goals
  - **tickets**: Read and write tickets
+ - **crm.objects.goals.read**: Read goals
+ - **crm.objects.custom.read**: View custom object records
+ - **crm.objects.custom.write**: Change custom object records
+ - **e-commerce**: e-commerce
  - **media_bridge.read**: Read media and media events
 
 Example
@@ -191,16 +191,16 @@ r, err := client.Service.Operation(auth, args)
 - **Flow**: accessCode
 - **Authorization URL**: https://app.hubspot.com/oauth/authorize
 - **Scopes**: 
- - **crm.objects.companies.write**:  
- - **crm.objects.contacts.write**:  
- - **crm.objects.contacts.read**:  
- - **crm.objects.quotes.write**: Quotes
- - **crm.objects.deals.read**:  
  - **crm.objects.line_items.read**: Line Items
- - **crm.objects.deals.write**:  
- - **crm.objects.quotes.read**: Quotes
- - **crm.objects.line_items.write**: Line Items
+ - **crm.objects.deals.read**:  
+ - **crm.objects.quotes.write**: Quotes
+ - **crm.objects.contacts.read**:  
+ - **crm.objects.contacts.write**:  
+ - **crm.objects.companies.write**:  
  - **crm.objects.companies.read**:  
+ - **crm.objects.line_items.write**: Line Items
+ - **crm.objects.quotes.read**: Quotes
+ - **crm.objects.deals.write**:  
 
 Example
 

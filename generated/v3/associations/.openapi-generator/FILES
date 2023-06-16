@@ -50,4 +50,6 @@ model_public_association_multi.go
 model_public_object_id.go
 model_standard_error.go
 response.go
+test/api_batch_test.go
+test/api_types_test.go
 utils.go

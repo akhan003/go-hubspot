@@ -24,4 +24,5 @@ model_next_page.go
 model_url_mapping.go
 model_url_mapping_create_request_body.go
 response.go
+test/api_redirects_test.go
 utils.go
