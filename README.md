@@ -3,7 +3,7 @@ This is a HubSpot Go client generated using [openapi-generator](https://github.c
 
 ## Installing
 ```shell
-go get github.com/akhan003/go-hubspot@refactor
+go get github.com/akhan003/go-hubspot
 ```
 
 ## Re-generating Clients
