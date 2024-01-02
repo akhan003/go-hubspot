@@ -11,7 +11,9 @@ API version: v3
 package accounting
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the AccountingExtensionCustomer type satisfies the MappedNullable interface at compile time
@@ -29,6 +31,8 @@ type AccountingExtensionCustomer struct {
 	// The ISO 4217 currency code that represents the currency the customer should be billed in.
 	CurrencyCode *string `json:"currencyCode,omitempty"`
 }
+
+type _AccountingExtensionCustomer AccountingExtensionCustomer
 
 // NewAccountingExtensionCustomer instantiates a new AccountingExtensionCustomer object
 // This constructor will assign default values to properties that have it defined,
@@ -215,6 +219,44 @@ func (o AccountingExtensionCustomer) ToMap() (map[string]interface{}, error) {
 		toSerialize["currencyCode"] = o.CurrencyCode
 	}
 	return toSerialize, nil
+}
+
+func (o *AccountingExtensionCustomer) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAccountingExtensionCustomer := _AccountingExtensionCustomer{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAccountingExtensionCustomer)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AccountingExtensionCustomer(varAccountingExtensionCustomer)
+
+	return err
 }
 
 type NullableAccountingExtensionCustomer struct {

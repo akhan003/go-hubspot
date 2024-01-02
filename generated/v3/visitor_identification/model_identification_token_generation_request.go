@@ -1,5 +1,5 @@
 /*
-Visitor Identification
+Conversations Visitor Identification
 
 The Visitor Identification API allows you to pass identification information to the HubSpot chat widget for otherwise unknown visitors that were verified by your own authentication system.
 
@@ -11,7 +11,9 @@ API version: v3
 package visitor_identification
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the IdentificationTokenGenerationRequest type satisfies the MappedNullable interface at compile time
@@ -19,13 +21,15 @@ var _ MappedNullable = &IdentificationTokenGenerationRequest{}
 
 // IdentificationTokenGenerationRequest Information used to generate a token
 type IdentificationTokenGenerationRequest struct {
-	// The email of the visitor that you wish to identify
-	Email string `json:"email"`
 	// The first name of the visitor that you wish to identify. This value will only be set in HubSpot for new contacts and existing contacts where first name is unknown. Optional.
 	FirstName *string `json:"firstName,omitempty"`
 	// The last name of the visitor that you wish to identify. This value will only be set in HubSpot for new contacts and existing contacts where last name is unknown. Optional.
 	LastName *string `json:"lastName,omitempty"`
+	// The email of the visitor that you wish to identify
+	Email string `json:"email"`
 }
+
+type _IdentificationTokenGenerationRequest IdentificationTokenGenerationRequest
 
 // NewIdentificationTokenGenerationRequest instantiates a new IdentificationTokenGenerationRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -43,30 +47,6 @@ func NewIdentificationTokenGenerationRequest(email string) *IdentificationTokenG
 func NewIdentificationTokenGenerationRequestWithDefaults() *IdentificationTokenGenerationRequest {
 	this := IdentificationTokenGenerationRequest{}
 	return &this
-}
-
-// GetEmail returns the Email field value
-func (o *IdentificationTokenGenerationRequest) GetEmail() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Email
-}
-
-// GetEmailOk returns a tuple with the Email field value
-// and a boolean to check if the value has been set.
-func (o *IdentificationTokenGenerationRequest) GetEmailOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Email, true
-}
-
-// SetEmail sets field value
-func (o *IdentificationTokenGenerationRequest) SetEmail(v string) {
-	o.Email = v
 }
 
 // GetFirstName returns the FirstName field value if set, zero value otherwise.
@@ -133,6 +113,30 @@ func (o *IdentificationTokenGenerationRequest) SetLastName(v string) {
 	o.LastName = &v
 }
 
+// GetEmail returns the Email field value
+func (o *IdentificationTokenGenerationRequest) GetEmail() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Email
+}
+
+// GetEmailOk returns a tuple with the Email field value
+// and a boolean to check if the value has been set.
+func (o *IdentificationTokenGenerationRequest) GetEmailOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Email, true
+}
+
+// SetEmail sets field value
+func (o *IdentificationTokenGenerationRequest) SetEmail(v string) {
+	o.Email = v
+}
+
 func (o IdentificationTokenGenerationRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -143,14 +147,51 @@ func (o IdentificationTokenGenerationRequest) MarshalJSON() ([]byte, error) {
 
 func (o IdentificationTokenGenerationRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["email"] = o.Email
 	if !IsNil(o.FirstName) {
 		toSerialize["firstName"] = o.FirstName
 	}
 	if !IsNil(o.LastName) {
 		toSerialize["lastName"] = o.LastName
 	}
+	toSerialize["email"] = o.Email
 	return toSerialize, nil
+}
+
+func (o *IdentificationTokenGenerationRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"email",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varIdentificationTokenGenerationRequest := _IdentificationTokenGenerationRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varIdentificationTokenGenerationRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IdentificationTokenGenerationRequest(varIdentificationTokenGenerationRequest)
+
+	return err
 }
 
 type NullableIdentificationTokenGenerationRequest struct {

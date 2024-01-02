@@ -11,7 +11,9 @@ API version: v3
 package site_search
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PublicSearchResults type satisfies the MappedNullable interface at compile time
@@ -20,24 +22,26 @@ var _ MappedNullable = &PublicSearchResults{}
 // PublicSearchResults struct for PublicSearchResults
 type PublicSearchResults struct {
 	Total      int32                 `json:"total"`
+	SearchTerm *string               `json:"searchTerm,omitempty"`
 	Offset     int32                 `json:"offset"`
 	Limit      int32                 `json:"limit"`
-	Results    []ContentSearchResult `json:"results"`
-	SearchTerm *string               `json:"searchTerm,omitempty"`
 	Page       int32                 `json:"page"`
+	Results    []ContentSearchResult `json:"results"`
 }
+
+type _PublicSearchResults PublicSearchResults
 
 // NewPublicSearchResults instantiates a new PublicSearchResults object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPublicSearchResults(total int32, offset int32, limit int32, results []ContentSearchResult, page int32) *PublicSearchResults {
+func NewPublicSearchResults(total int32, offset int32, limit int32, page int32, results []ContentSearchResult) *PublicSearchResults {
 	this := PublicSearchResults{}
 	this.Total = total
 	this.Offset = offset
 	this.Limit = limit
-	this.Results = results
 	this.Page = page
+	this.Results = results
 	return &this
 }
 
@@ -71,6 +75,38 @@ func (o *PublicSearchResults) GetTotalOk() (*int32, bool) {
 // SetTotal sets field value
 func (o *PublicSearchResults) SetTotal(v int32) {
 	o.Total = v
+}
+
+// GetSearchTerm returns the SearchTerm field value if set, zero value otherwise.
+func (o *PublicSearchResults) GetSearchTerm() string {
+	if o == nil || IsNil(o.SearchTerm) {
+		var ret string
+		return ret
+	}
+	return *o.SearchTerm
+}
+
+// GetSearchTermOk returns a tuple with the SearchTerm field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PublicSearchResults) GetSearchTermOk() (*string, bool) {
+	if o == nil || IsNil(o.SearchTerm) {
+		return nil, false
+	}
+	return o.SearchTerm, true
+}
+
+// HasSearchTerm returns a boolean if a field has been set.
+func (o *PublicSearchResults) HasSearchTerm() bool {
+	if o != nil && !IsNil(o.SearchTerm) {
+		return true
+	}
+
+	return false
+}
+
+// SetSearchTerm gets a reference to the given string and assigns it to the SearchTerm field.
+func (o *PublicSearchResults) SetSearchTerm(v string) {
+	o.SearchTerm = &v
 }
 
 // GetOffset returns the Offset field value
@@ -121,62 +157,6 @@ func (o *PublicSearchResults) SetLimit(v int32) {
 	o.Limit = v
 }
 
-// GetResults returns the Results field value
-func (o *PublicSearchResults) GetResults() []ContentSearchResult {
-	if o == nil {
-		var ret []ContentSearchResult
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *PublicSearchResults) GetResultsOk() ([]ContentSearchResult, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *PublicSearchResults) SetResults(v []ContentSearchResult) {
-	o.Results = v
-}
-
-// GetSearchTerm returns the SearchTerm field value if set, zero value otherwise.
-func (o *PublicSearchResults) GetSearchTerm() string {
-	if o == nil || IsNil(o.SearchTerm) {
-		var ret string
-		return ret
-	}
-	return *o.SearchTerm
-}
-
-// GetSearchTermOk returns a tuple with the SearchTerm field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PublicSearchResults) GetSearchTermOk() (*string, bool) {
-	if o == nil || IsNil(o.SearchTerm) {
-		return nil, false
-	}
-	return o.SearchTerm, true
-}
-
-// HasSearchTerm returns a boolean if a field has been set.
-func (o *PublicSearchResults) HasSearchTerm() bool {
-	if o != nil && !IsNil(o.SearchTerm) {
-		return true
-	}
-
-	return false
-}
-
-// SetSearchTerm gets a reference to the given string and assigns it to the SearchTerm field.
-func (o *PublicSearchResults) SetSearchTerm(v string) {
-	o.SearchTerm = &v
-}
-
 // GetPage returns the Page field value
 func (o *PublicSearchResults) GetPage() int32 {
 	if o == nil {
@@ -201,6 +181,30 @@ func (o *PublicSearchResults) SetPage(v int32) {
 	o.Page = v
 }
 
+// GetResults returns the Results field value
+func (o *PublicSearchResults) GetResults() []ContentSearchResult {
+	if o == nil {
+		var ret []ContentSearchResult
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *PublicSearchResults) GetResultsOk() ([]ContentSearchResult, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *PublicSearchResults) SetResults(v []ContentSearchResult) {
+	o.Results = v
+}
+
 func (o PublicSearchResults) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -212,14 +216,55 @@ func (o PublicSearchResults) MarshalJSON() ([]byte, error) {
 func (o PublicSearchResults) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["total"] = o.Total
-	toSerialize["offset"] = o.Offset
-	toSerialize["limit"] = o.Limit
-	toSerialize["results"] = o.Results
 	if !IsNil(o.SearchTerm) {
 		toSerialize["searchTerm"] = o.SearchTerm
 	}
+	toSerialize["offset"] = o.Offset
+	toSerialize["limit"] = o.Limit
 	toSerialize["page"] = o.Page
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *PublicSearchResults) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"total",
+		"offset",
+		"limit",
+		"page",
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPublicSearchResults := _PublicSearchResults{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPublicSearchResults)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicSearchResults(varPublicSearchResults)
+
+	return err
 }
 
 type NullablePublicSearchResults struct {

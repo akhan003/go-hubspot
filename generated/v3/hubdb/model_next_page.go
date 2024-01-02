@@ -1,5 +1,5 @@
 /*
-HubDB endpoints
+Hubdb
 
 HubDB is a relational data store that presents data as rows, columns, and cells in a table, much like a spreadsheet. HubDB tables can be added or modified [in the HubSpot CMS](https://knowledge.hubspot.com/cos-general/how-to-edit-hubdb-tables), but you can also use the API endpoints documented here. For more information on HubDB tables and using their data on a HubSpot site, see the [CMS developers site](https://designers.hubspot.com/docs/tools/hubdb). You can also see the [documentation for dynamic pages](https://designers.hubspot.com/docs/tutorials/how-to-build-dynamic-pages-with-hubdb) for more details about the `useForPages` field.  HubDB tables support `draft` and `published` versions. This allows you to update data in the table, either for testing or to allow for a manual approval process, without affecting any live pages using the existing data. Draft data can be reviewed, and published by a user working in HubSpot or published via the API. Draft data can also be discarded, allowing users to go back to the published version of the data without disrupting it. If a table is set to be `allowed for public access`, you can access the published version of the table and rows without any authentication by specifying the portal id via the query parameter `portalId`.
 
@@ -11,7 +11,9 @@ API version: v3
 package hubdb
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the NextPage type satisfies the MappedNullable interface at compile time
@@ -19,9 +21,13 @@ var _ MappedNullable = &NextPage{}
 
 // NextPage struct for NextPage
 type NextPage struct {
-	After string  `json:"after"`
-	Link  *string `json:"link,omitempty"`
+	//
+	Link *string `json:"link,omitempty"`
+	//
+	After string `json:"after"`
 }
+
+type _NextPage NextPage
 
 // NewNextPage instantiates a new NextPage object
 // This constructor will assign default values to properties that have it defined,
@@ -39,30 +45,6 @@ func NewNextPage(after string) *NextPage {
 func NewNextPageWithDefaults() *NextPage {
 	this := NextPage{}
 	return &this
-}
-
-// GetAfter returns the After field value
-func (o *NextPage) GetAfter() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.After
-}
-
-// GetAfterOk returns a tuple with the After field value
-// and a boolean to check if the value has been set.
-func (o *NextPage) GetAfterOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.After, true
-}
-
-// SetAfter sets field value
-func (o *NextPage) SetAfter(v string) {
-	o.After = v
 }
 
 // GetLink returns the Link field value if set, zero value otherwise.
@@ -97,6 +79,30 @@ func (o *NextPage) SetLink(v string) {
 	o.Link = &v
 }
 
+// GetAfter returns the After field value
+func (o *NextPage) GetAfter() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.After
+}
+
+// GetAfterOk returns a tuple with the After field value
+// and a boolean to check if the value has been set.
+func (o *NextPage) GetAfterOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.After, true
+}
+
+// SetAfter sets field value
+func (o *NextPage) SetAfter(v string) {
+	o.After = v
+}
+
 func (o NextPage) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,11 +113,48 @@ func (o NextPage) MarshalJSON() ([]byte, error) {
 
 func (o NextPage) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["after"] = o.After
 	if !IsNil(o.Link) {
 		toSerialize["link"] = o.Link
 	}
+	toSerialize["after"] = o.After
 	return toSerialize, nil
+}
+
+func (o *NextPage) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"after",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varNextPage := _NextPage{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varNextPage)
+
+	if err != nil {
+		return err
+	}
+
+	*o = NextPage(varNextPage)
+
+	return err
 }
 
 type NullableNextPage struct {

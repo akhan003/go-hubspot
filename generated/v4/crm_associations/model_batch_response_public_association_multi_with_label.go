@@ -11,7 +11,9 @@ API version: v4
 package crm_associations
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -27,6 +29,8 @@ type BatchResponsePublicAssociationMultiWithLabel struct {
 	CompletedAt time.Time                         `json:"completedAt"`
 	Links       *map[string]string                `json:"links,omitempty"`
 }
+
+type _BatchResponsePublicAssociationMultiWithLabel BatchResponsePublicAssociationMultiWithLabel
 
 // NewBatchResponsePublicAssociationMultiWithLabel instantiates a new BatchResponsePublicAssociationMultiWithLabel object
 // This constructor will assign default values to properties that have it defined,
@@ -230,6 +234,46 @@ func (o BatchResponsePublicAssociationMultiWithLabel) ToMap() (map[string]interf
 		toSerialize["links"] = o.Links
 	}
 	return toSerialize, nil
+}
+
+func (o *BatchResponsePublicAssociationMultiWithLabel) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"status",
+		"results",
+		"startedAt",
+		"completedAt",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchResponsePublicAssociationMultiWithLabel := _BatchResponsePublicAssociationMultiWithLabel{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchResponsePublicAssociationMultiWithLabel)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchResponsePublicAssociationMultiWithLabel(varBatchResponsePublicAssociationMultiWithLabel)
+
+	return err
 }
 
 type NullableBatchResponsePublicAssociationMultiWithLabel struct {

@@ -4,16 +4,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Errors** | [**[]Error**](Error.md) | List of errors during import | 
-**RowsImported** | **int32** | Specifies number of rows imported | 
-**DuplicateRows** | **int32** | Specifies number of duplicate rows | 
 **RowLimitExceeded** | **bool** | Specifies whether row limit exceeded during import | 
+**DuplicateRows** | **int32** | Specifies number of duplicate rows | 
+**RowsImported** | **int32** | Specifies number of rows imported | 
+**Errors** | [**[]Error**](Error.md) | List of errors during import | 
 
 ## Methods
 
 ### NewImportResult
 
-`func NewImportResult(errors []Error, rowsImported int32, duplicateRows int32, rowLimitExceeded bool, ) *ImportResult`
+`func NewImportResult(rowLimitExceeded bool, duplicateRows int32, rowsImported int32, errors []Error, ) *ImportResult`
 
 NewImportResult instantiates a new ImportResult object
 This constructor will assign default values to properties that have it defined,
@@ -28,44 +28,24 @@ NewImportResultWithDefaults instantiates a new ImportResult object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetErrors
+### GetRowLimitExceeded
 
-`func (o *ImportResult) GetErrors() []Error`
+`func (o *ImportResult) GetRowLimitExceeded() bool`
 
-GetErrors returns the Errors field if non-nil, zero value otherwise.
+GetRowLimitExceeded returns the RowLimitExceeded field if non-nil, zero value otherwise.
 
-### GetErrorsOk
+### GetRowLimitExceededOk
 
-`func (o *ImportResult) GetErrorsOk() (*[]Error, bool)`
+`func (o *ImportResult) GetRowLimitExceededOk() (*bool, bool)`
 
-GetErrorsOk returns a tuple with the Errors field if it's non-nil, zero value otherwise
+GetRowLimitExceededOk returns a tuple with the RowLimitExceeded field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetErrors
+### SetRowLimitExceeded
 
-`func (o *ImportResult) SetErrors(v []Error)`
+`func (o *ImportResult) SetRowLimitExceeded(v bool)`
 
-SetErrors sets Errors field to given value.
-
-
-### GetRowsImported
-
-`func (o *ImportResult) GetRowsImported() int32`
-
-GetRowsImported returns the RowsImported field if non-nil, zero value otherwise.
-
-### GetRowsImportedOk
-
-`func (o *ImportResult) GetRowsImportedOk() (*int32, bool)`
-
-GetRowsImportedOk returns a tuple with the RowsImported field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetRowsImported
-
-`func (o *ImportResult) SetRowsImported(v int32)`
-
-SetRowsImported sets RowsImported field to given value.
+SetRowLimitExceeded sets RowLimitExceeded field to given value.
 
 
 ### GetDuplicateRows
@@ -88,24 +68,44 @@ and a boolean to check if the value has been set.
 SetDuplicateRows sets DuplicateRows field to given value.
 
 
-### GetRowLimitExceeded
+### GetRowsImported
 
-`func (o *ImportResult) GetRowLimitExceeded() bool`
+`func (o *ImportResult) GetRowsImported() int32`
 
-GetRowLimitExceeded returns the RowLimitExceeded field if non-nil, zero value otherwise.
+GetRowsImported returns the RowsImported field if non-nil, zero value otherwise.
 
-### GetRowLimitExceededOk
+### GetRowsImportedOk
 
-`func (o *ImportResult) GetRowLimitExceededOk() (*bool, bool)`
+`func (o *ImportResult) GetRowsImportedOk() (*int32, bool)`
 
-GetRowLimitExceededOk returns a tuple with the RowLimitExceeded field if it's non-nil, zero value otherwise
+GetRowsImportedOk returns a tuple with the RowsImported field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetRowLimitExceeded
+### SetRowsImported
 
-`func (o *ImportResult) SetRowLimitExceeded(v bool)`
+`func (o *ImportResult) SetRowsImported(v int32)`
 
-SetRowLimitExceeded sets RowLimitExceeded field to given value.
+SetRowsImported sets RowsImported field to given value.
+
+
+### GetErrors
+
+`func (o *ImportResult) GetErrors() []Error`
+
+GetErrors returns the Errors field if non-nil, zero value otherwise.
+
+### GetErrorsOk
+
+`func (o *ImportResult) GetErrorsOk() (*[]Error, bool)`
+
+GetErrorsOk returns a tuple with the Errors field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetErrors
+
+`func (o *ImportResult) SetErrors(v []Error)`
+
+SetErrors sets Errors field to given value.
 
 
 

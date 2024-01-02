@@ -18,12 +18,12 @@ import (
 	"net/url"
 )
 
-// SampleResponseApiService SampleResponseApi service
-type SampleResponseApiService service
+// SampleResponseAPIService SampleResponseAPI service
+type SampleResponseAPIService service
 
 type ApiCardsGetSampleRequest struct {
 	ctx        context.Context
-	ApiService *SampleResponseApiService
+	ApiService *SampleResponseAPIService
 }
 
 func (r ApiCardsGetSampleRequest) Execute() (*IntegratorCardPayloadResponse, *http.Response, error) {
@@ -35,10 +35,10 @@ CardsGetSample Get sample card detail response
 
 Returns an example card detail response. This is the payload with displayed details for a card that will be shown to a user. An app should send this in response to the data fetch request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCardsGetSampleRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCardsGetSampleRequest
 */
-func (a *SampleResponseApiService) CardsGetSample(ctx context.Context) ApiCardsGetSampleRequest {
+func (a *SampleResponseAPIService) CardsGetSample(ctx context.Context) ApiCardsGetSampleRequest {
 	return ApiCardsGetSampleRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -46,8 +46,9 @@ func (a *SampleResponseApiService) CardsGetSample(ctx context.Context) ApiCardsG
 }
 
 // Execute executes the request
-//  @return IntegratorCardPayloadResponse
-func (a *SampleResponseApiService) CardsGetSampleExecute(r ApiCardsGetSampleRequest) (*IntegratorCardPayloadResponse, *http.Response, error) {
+//
+//	@return IntegratorCardPayloadResponse
+func (a *SampleResponseAPIService) CardsGetSampleExecute(r ApiCardsGetSampleRequest) (*IntegratorCardPayloadResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -55,7 +56,7 @@ func (a *SampleResponseApiService) CardsGetSampleExecute(r ApiCardsGetSampleRequ
 		localVarReturnValue *IntegratorCardPayloadResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SampleResponseApiService.CardsGetSample")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SampleResponseAPIService.CardsGetSample")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -1,5 +1,5 @@
 /*
-Timeline events
+CRM Timeline
 
 This feature allows an app to create and configure custom events that can show up in the timelines of certain CRM objects like contacts, companies, tickets, or deals. You'll find multiple use cases for this API in the sections below.
 
@@ -19,66 +19,65 @@ import (
 	"strings"
 )
 
-// EventsApiService EventsApi service
-type EventsApiService service
+// EventsAPIService EventsAPI service
+type EventsAPIService service
 
-type ApiBatchCreateRequest struct {
-	ctx                     context.Context
-	ApiService              *EventsApiService
-	batchInputTimelineEvent *BatchInputTimelineEvent
+type ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRequest struct {
+	ctx             context.Context
+	ApiService      *EventsAPIService
+	eventTemplateId string
+	eventId         string
 }
 
-// The timeline event definition.
-func (r ApiBatchCreateRequest) BatchInputTimelineEvent(batchInputTimelineEvent BatchInputTimelineEvent) ApiBatchCreateRequest {
-	r.batchInputTimelineEvent = &batchInputTimelineEvent
-	return r
-}
-
-func (r ApiBatchCreateRequest) Execute() (*BatchResponseTimelineEventResponse, *http.Response, error) {
-	return r.ApiService.BatchCreateExecute(r)
+func (r ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRequest) Execute() (*TimelineEventResponse, *http.Response, error) {
+	return r.ApiService.GetCrmV3TimelineEventsEventTemplateIdEventIdExecute(r)
 }
 
 /*
-BatchCreate Creates multiple events
+GetCrmV3TimelineEventsEventTemplateIdEventId Gets the event
 
-Creates multiple instances of timeline events based on an event template. Once created, these event are immutable on the object timeline and cannot be modified. If the event template was configured to update object properties via `objectPropertyName`, this call will also attempt to updates those properties, or add them if they don't exist.
+This returns the previously created event. It contains all existing info for the event, but not necessarily the CRM object.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param eventTemplateId The event template ID.
+	@param eventId The event ID.
+	@return ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRequest
 */
-func (a *EventsApiService) BatchCreate(ctx context.Context) ApiBatchCreateRequest {
-	return ApiBatchCreateRequest{
-		ApiService: a,
-		ctx:        ctx,
+func (a *EventsAPIService) GetCrmV3TimelineEventsEventTemplateIdEventId(ctx context.Context, eventTemplateId string, eventId string) ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRequest {
+	return ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRequest{
+		ApiService:      a,
+		ctx:             ctx,
+		eventTemplateId: eventTemplateId,
+		eventId:         eventId,
 	}
 }
 
 // Execute executes the request
-//  @return BatchResponseTimelineEventResponse
-func (a *EventsApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchResponseTimelineEventResponse, *http.Response, error) {
+//
+//	@return TimelineEventResponse
+func (a *EventsAPIService) GetCrmV3TimelineEventsEventTemplateIdEventIdExecute(r ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRequest) (*TimelineEventResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *BatchResponseTimelineEventResponse
+		localVarReturnValue *TimelineEventResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsApiService.BatchCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsAPIService.GetCrmV3TimelineEventsEventTemplateIdEventId")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/crm/v3/timeline/events/batch/create"
+	localVarPath := localBasePath + "/crm/v3/timeline/events/{eventTemplateId}/{eventId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"eventId"+"}", url.PathEscape(parameterValueToString(r.eventId, "eventId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.batchInputTimelineEvent == nil {
-		return localVarReturnValue, nil, reportError("batchInputTimelineEvent is required and must be specified")
-	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -94,8 +93,6 @@ func (a *EventsApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.batchInputTimelineEvent
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -169,40 +166,339 @@ func (a *EventsApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRe
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiCreateRequest struct {
+type ApiGetCrmV3TimelineEventsEventTemplateIdEventIdDetailRequest struct {
+	ctx             context.Context
+	ApiService      *EventsAPIService
+	eventTemplateId string
+	eventId         string
+}
+
+func (r ApiGetCrmV3TimelineEventsEventTemplateIdEventIdDetailRequest) Execute() (*EventDetail, *http.Response, error) {
+	return r.ApiService.GetCrmV3TimelineEventsEventTemplateIdEventIdDetailExecute(r)
+}
+
+/*
+GetCrmV3TimelineEventsEventTemplateIdEventIdDetail Gets the detailTemplate as rendered
+
+This will take the `detailTemplate` from the event template and return an object rendering the specified event. If the template references `extraData` that isn't found in the event, it will be ignored and we'll render without it.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param eventTemplateId The event template ID.
+	@param eventId The event ID.
+	@return ApiGetCrmV3TimelineEventsEventTemplateIdEventIdDetailRequest
+*/
+func (a *EventsAPIService) GetCrmV3TimelineEventsEventTemplateIdEventIdDetail(ctx context.Context, eventTemplateId string, eventId string) ApiGetCrmV3TimelineEventsEventTemplateIdEventIdDetailRequest {
+	return ApiGetCrmV3TimelineEventsEventTemplateIdEventIdDetailRequest{
+		ApiService:      a,
+		ctx:             ctx,
+		eventTemplateId: eventTemplateId,
+		eventId:         eventId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return EventDetail
+func (a *EventsAPIService) GetCrmV3TimelineEventsEventTemplateIdEventIdDetailExecute(r ApiGetCrmV3TimelineEventsEventTemplateIdEventIdDetailRequest) (*EventDetail, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *EventDetail
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsAPIService.GetCrmV3TimelineEventsEventTemplateIdEventIdDetail")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/crm/v3/timeline/events/{eventTemplateId}/{eventId}/detail"
+	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"eventId"+"}", url.PathEscape(parameterValueToString(r.eventId, "eventId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRenderRequest struct {
+	ctx             context.Context
+	ApiService      *EventsAPIService
+	eventTemplateId string
+	eventId         string
+	detail          *bool
+}
+
+// Set to &#39;true&#39;, we want to render the &#x60;detailTemplate&#x60; instead of the &#x60;headerTemplate&#x60;.
+func (r ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRenderRequest) Detail(detail bool) ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRenderRequest {
+	r.detail = &detail
+	return r
+}
+
+func (r ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRenderRequest) Execute() (string, *http.Response, error) {
+	return r.ApiService.GetCrmV3TimelineEventsEventTemplateIdEventIdRenderExecute(r)
+}
+
+/*
+GetCrmV3TimelineEventsEventTemplateIdEventIdRender Renders the header or detail as HTML
+
+This will take either the `headerTemplate` or `detailTemplate` from the event template and render for the specified event as HTML. If the template references `extraData` that isn't found in the event, it will be ignored and we'll render without it.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param eventTemplateId The event template ID.
+	@param eventId The event ID.
+	@return ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRenderRequest
+*/
+func (a *EventsAPIService) GetCrmV3TimelineEventsEventTemplateIdEventIdRender(ctx context.Context, eventTemplateId string, eventId string) ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRenderRequest {
+	return ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRenderRequest{
+		ApiService:      a,
+		ctx:             ctx,
+		eventTemplateId: eventTemplateId,
+		eventId:         eventId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return string
+func (a *EventsAPIService) GetCrmV3TimelineEventsEventTemplateIdEventIdRenderExecute(r ApiGetCrmV3TimelineEventsEventTemplateIdEventIdRenderRequest) (string, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsAPIService.GetCrmV3TimelineEventsEventTemplateIdEventIdRender")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/crm/v3/timeline/events/{eventTemplateId}/{eventId}/render"
+	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"eventId"+"}", url.PathEscape(parameterValueToString(r.eventId, "eventId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.detail != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "detail", r.detail, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"text/html", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPostCrmV3TimelineEventsRequest struct {
 	ctx           context.Context
-	ApiService    *EventsApiService
+	ApiService    *EventsAPIService
 	timelineEvent *TimelineEvent
 }
 
 // The timeline event definition.
-func (r ApiCreateRequest) TimelineEvent(timelineEvent TimelineEvent) ApiCreateRequest {
+func (r ApiPostCrmV3TimelineEventsRequest) TimelineEvent(timelineEvent TimelineEvent) ApiPostCrmV3TimelineEventsRequest {
 	r.timelineEvent = &timelineEvent
 	return r
 }
 
-func (r ApiCreateRequest) Execute() (*TimelineEventResponse, *http.Response, error) {
-	return r.ApiService.CreateExecute(r)
+func (r ApiPostCrmV3TimelineEventsRequest) Execute() (*TimelineEventResponse, *http.Response, error) {
+	return r.ApiService.PostCrmV3TimelineEventsExecute(r)
 }
 
 /*
-Create Create a single event
+PostCrmV3TimelineEvents Create a single event
 
 Creates an instance of a timeline event based on an event template. Once created, this event is immutable on the object timeline and cannot be modified. If the event template was configured to update object properties via `objectPropertyName`, this call will also attempt to updates those properties, or add them if they don't exist.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCrmV3TimelineEventsRequest
 */
-func (a *EventsApiService) Create(ctx context.Context) ApiCreateRequest {
-	return ApiCreateRequest{
+func (a *EventsAPIService) PostCrmV3TimelineEvents(ctx context.Context) ApiPostCrmV3TimelineEventsRequest {
+	return ApiPostCrmV3TimelineEventsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return TimelineEventResponse
-func (a *EventsApiService) CreateExecute(r ApiCreateRequest) (*TimelineEventResponse, *http.Response, error) {
+//
+//	@return TimelineEventResponse
+func (a *EventsAPIService) PostCrmV3TimelineEventsExecute(r ApiPostCrmV3TimelineEventsRequest) (*TimelineEventResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -210,7 +506,7 @@ func (a *EventsApiService) CreateExecute(r ApiCreateRequest) (*TimelineEventResp
 		localVarReturnValue *TimelineEventResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsApiService.Create")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsAPIService.PostCrmV3TimelineEvents")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -316,357 +612,61 @@ func (a *EventsApiService) CreateExecute(r ApiCreateRequest) (*TimelineEventResp
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetByIDRequest struct {
-	ctx             context.Context
-	ApiService      *EventsApiService
-	eventTemplateId string
-	eventId         string
+type ApiPostCrmV3TimelineEventsBatchCreateRequest struct {
+	ctx                     context.Context
+	ApiService              *EventsAPIService
+	batchInputTimelineEvent *BatchInputTimelineEvent
 }
 
-func (r ApiGetByIDRequest) Execute() (*TimelineEventResponse, *http.Response, error) {
-	return r.ApiService.GetByIDExecute(r)
-}
-
-/*
-GetByID Gets the event
-
-This returns the previously created event. It contains all existing info for the event, but not necessarily the CRM object.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param eventTemplateId The event template ID.
- @param eventId The event ID.
- @return ApiGetByIDRequest
-*/
-func (a *EventsApiService) GetByID(ctx context.Context, eventTemplateId string, eventId string) ApiGetByIDRequest {
-	return ApiGetByIDRequest{
-		ApiService:      a,
-		ctx:             ctx,
-		eventTemplateId: eventTemplateId,
-		eventId:         eventId,
-	}
-}
-
-// Execute executes the request
-//  @return TimelineEventResponse
-func (a *EventsApiService) GetByIDExecute(r ApiGetByIDRequest) (*TimelineEventResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *TimelineEventResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsApiService.GetByID")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/crm/v3/timeline/events/{eventTemplateId}/{eventId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"eventId"+"}", url.PathEscape(parameterValueToString(r.eventId, "eventId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetDetailByIDRequest struct {
-	ctx             context.Context
-	ApiService      *EventsApiService
-	eventTemplateId string
-	eventId         string
-}
-
-func (r ApiGetDetailByIDRequest) Execute() (*EventDetail, *http.Response, error) {
-	return r.ApiService.GetDetailByIDExecute(r)
-}
-
-/*
-GetDetailByID Gets the detailTemplate as rendered
-
-This will take the `detailTemplate` from the event template and return an object rendering the specified event. If the template references `extraData` that isn't found in the event, it will be ignored and we'll render without it.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param eventTemplateId The event template ID.
- @param eventId The event ID.
- @return ApiGetDetailByIDRequest
-*/
-func (a *EventsApiService) GetDetailByID(ctx context.Context, eventTemplateId string, eventId string) ApiGetDetailByIDRequest {
-	return ApiGetDetailByIDRequest{
-		ApiService:      a,
-		ctx:             ctx,
-		eventTemplateId: eventTemplateId,
-		eventId:         eventId,
-	}
-}
-
-// Execute executes the request
-//  @return EventDetail
-func (a *EventsApiService) GetDetailByIDExecute(r ApiGetDetailByIDRequest) (*EventDetail, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *EventDetail
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsApiService.GetDetailByID")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/crm/v3/timeline/events/{eventTemplateId}/{eventId}/detail"
-	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"eventId"+"}", url.PathEscape(parameterValueToString(r.eventId, "eventId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetRenderByIDRequest struct {
-	ctx             context.Context
-	ApiService      *EventsApiService
-	eventTemplateId string
-	eventId         string
-	detail          *bool
-}
-
-// Set to &#39;true&#39;, we want to render the &#x60;detailTemplate&#x60; instead of the &#x60;headerTemplate&#x60;.
-func (r ApiGetRenderByIDRequest) Detail(detail bool) ApiGetRenderByIDRequest {
-	r.detail = &detail
+// The timeline event definition.
+func (r ApiPostCrmV3TimelineEventsBatchCreateRequest) BatchInputTimelineEvent(batchInputTimelineEvent BatchInputTimelineEvent) ApiPostCrmV3TimelineEventsBatchCreateRequest {
+	r.batchInputTimelineEvent = &batchInputTimelineEvent
 	return r
 }
 
-func (r ApiGetRenderByIDRequest) Execute() (string, *http.Response, error) {
-	return r.ApiService.GetRenderByIDExecute(r)
+func (r ApiPostCrmV3TimelineEventsBatchCreateRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostCrmV3TimelineEventsBatchCreateExecute(r)
 }
 
 /*
-GetRenderByID Renders the header or detail as HTML
+PostCrmV3TimelineEventsBatchCreate Creates multiple events
 
-This will take either the `headerTemplate` or `detailTemplate` from the event template and render for the specified event as HTML. If the template references `extraData` that isn't found in the event, it will be ignored and we'll render without it.
+Creates multiple instances of timeline events based on an event template. Once created, these event are immutable on the object timeline and cannot be modified. If the event template was configured to update object properties via `objectPropertyName`, this call will also attempt to updates those properties, or add them if they don't exist.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param eventTemplateId The event template ID.
- @param eventId The event ID.
- @return ApiGetRenderByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCrmV3TimelineEventsBatchCreateRequest
 */
-func (a *EventsApiService) GetRenderByID(ctx context.Context, eventTemplateId string, eventId string) ApiGetRenderByIDRequest {
-	return ApiGetRenderByIDRequest{
-		ApiService:      a,
-		ctx:             ctx,
-		eventTemplateId: eventTemplateId,
-		eventId:         eventId,
+func (a *EventsAPIService) PostCrmV3TimelineEventsBatchCreate(ctx context.Context) ApiPostCrmV3TimelineEventsBatchCreateRequest {
+	return ApiPostCrmV3TimelineEventsBatchCreateRequest{
+		ApiService: a,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return string
-func (a *EventsApiService) GetRenderByIDExecute(r ApiGetRenderByIDRequest) (string, *http.Response, error) {
+func (a *EventsAPIService) PostCrmV3TimelineEventsBatchCreateExecute(r ApiPostCrmV3TimelineEventsBatchCreateRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue string
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsApiService.GetRenderByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventsAPIService.PostCrmV3TimelineEventsBatchCreate")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/crm/v3/timeline/events/{eventTemplateId}/{eventId}/render"
-	localVarPath = strings.Replace(localVarPath, "{"+"eventTemplateId"+"}", url.PathEscape(parameterValueToString(r.eventTemplateId, "eventTemplateId")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"eventId"+"}", url.PathEscape(parameterValueToString(r.eventId, "eventId")), -1)
+	localVarPath := localBasePath + "/crm/v3/timeline/events/batch/create"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	if r.detail != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "detail", r.detail, "")
+	if r.batchInputTimelineEvent == nil {
+		return nil, reportError("batchInputTimelineEvent is required and must be specified")
 	}
+
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -675,13 +675,15 @@ func (a *EventsApiService) GetRenderByIDExecute(r ApiGetRenderByIDRequest) (stri
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"text/html", "*/*"}
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.batchInputTimelineEvent
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -712,19 +714,19 @@ func (a *EventsApiService) GetRenderByIDExecute(r ApiGetRenderByIDRequest) (stri
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -736,21 +738,12 @@ func (a *EventsApiService) GetRenderByIDExecute(r ApiGetRenderByIDRequest) (stri
 		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 		if err != nil {
 			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
+			return localVarHTTPResponse, newErr
 		}
 		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarHTTPResponse, nil
 }

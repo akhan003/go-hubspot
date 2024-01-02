@@ -1,5 +1,5 @@
 /*
-Business Unit
+Business Units Business Units
 
 Retrieve Business Unit information.
 
@@ -19,12 +19,12 @@ var _ MappedNullable = &PublicBusinessUnitLogoMetadata{}
 
 // PublicBusinessUnitLogoMetadata A Business Unit's logo metadata
 type PublicBusinessUnitLogoMetadata struct {
-	// The logo's url
-	LogoUrl *string `json:"logoUrl,omitempty"`
 	// The logo's alt text
 	LogoAltText *string `json:"logoAltText,omitempty"`
 	// The logo's resized url
 	ResizedUrl *string `json:"resizedUrl,omitempty"`
+	// The logo's url
+	LogoUrl *string `json:"logoUrl,omitempty"`
 }
 
 // NewPublicBusinessUnitLogoMetadata instantiates a new PublicBusinessUnitLogoMetadata object
@@ -42,38 +42,6 @@ func NewPublicBusinessUnitLogoMetadata() *PublicBusinessUnitLogoMetadata {
 func NewPublicBusinessUnitLogoMetadataWithDefaults() *PublicBusinessUnitLogoMetadata {
 	this := PublicBusinessUnitLogoMetadata{}
 	return &this
-}
-
-// GetLogoUrl returns the LogoUrl field value if set, zero value otherwise.
-func (o *PublicBusinessUnitLogoMetadata) GetLogoUrl() string {
-	if o == nil || IsNil(o.LogoUrl) {
-		var ret string
-		return ret
-	}
-	return *o.LogoUrl
-}
-
-// GetLogoUrlOk returns a tuple with the LogoUrl field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PublicBusinessUnitLogoMetadata) GetLogoUrlOk() (*string, bool) {
-	if o == nil || IsNil(o.LogoUrl) {
-		return nil, false
-	}
-	return o.LogoUrl, true
-}
-
-// HasLogoUrl returns a boolean if a field has been set.
-func (o *PublicBusinessUnitLogoMetadata) HasLogoUrl() bool {
-	if o != nil && !IsNil(o.LogoUrl) {
-		return true
-	}
-
-	return false
-}
-
-// SetLogoUrl gets a reference to the given string and assigns it to the LogoUrl field.
-func (o *PublicBusinessUnitLogoMetadata) SetLogoUrl(v string) {
-	o.LogoUrl = &v
 }
 
 // GetLogoAltText returns the LogoAltText field value if set, zero value otherwise.
@@ -140,6 +108,38 @@ func (o *PublicBusinessUnitLogoMetadata) SetResizedUrl(v string) {
 	o.ResizedUrl = &v
 }
 
+// GetLogoUrl returns the LogoUrl field value if set, zero value otherwise.
+func (o *PublicBusinessUnitLogoMetadata) GetLogoUrl() string {
+	if o == nil || IsNil(o.LogoUrl) {
+		var ret string
+		return ret
+	}
+	return *o.LogoUrl
+}
+
+// GetLogoUrlOk returns a tuple with the LogoUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PublicBusinessUnitLogoMetadata) GetLogoUrlOk() (*string, bool) {
+	if o == nil || IsNil(o.LogoUrl) {
+		return nil, false
+	}
+	return o.LogoUrl, true
+}
+
+// HasLogoUrl returns a boolean if a field has been set.
+func (o *PublicBusinessUnitLogoMetadata) HasLogoUrl() bool {
+	if o != nil && !IsNil(o.LogoUrl) {
+		return true
+	}
+
+	return false
+}
+
+// SetLogoUrl gets a reference to the given string and assigns it to the LogoUrl field.
+func (o *PublicBusinessUnitLogoMetadata) SetLogoUrl(v string) {
+	o.LogoUrl = &v
+}
+
 func (o PublicBusinessUnitLogoMetadata) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -150,14 +150,14 @@ func (o PublicBusinessUnitLogoMetadata) MarshalJSON() ([]byte, error) {
 
 func (o PublicBusinessUnitLogoMetadata) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.LogoUrl) {
-		toSerialize["logoUrl"] = o.LogoUrl
-	}
 	if !IsNil(o.LogoAltText) {
 		toSerialize["logoAltText"] = o.LogoAltText
 	}
 	if !IsNil(o.ResizedUrl) {
 		toSerialize["resizedUrl"] = o.ResizedUrl
+	}
+	if !IsNil(o.LogoUrl) {
+		toSerialize["logoUrl"] = o.LogoUrl
 	}
 	return toSerialize, nil
 }

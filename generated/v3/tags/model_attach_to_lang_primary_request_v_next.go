@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Tags
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,32 +11,36 @@ API version: v3
 package tags
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the AttachToLangPrimaryRequestVNext type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &AttachToLangPrimaryRequestVNext{}
 
-// AttachToLangPrimaryRequestVNext Request body object fro attaching objects to multi-language groups.
+// AttachToLangPrimaryRequestVNext Request body object for attaching objects to multi-language groups.
 type AttachToLangPrimaryRequestVNext struct {
-	// ID of the object to add to a multi-language group.
-	Id string `json:"id"`
 	// Designated language of the object to add to a multi-language group.
 	Language string `json:"language"`
+	// ID of the object to add to a multi-language group.
+	Id string `json:"id"`
 	// ID of primary language object in multi-language group.
 	PrimaryId string `json:"primaryId"`
 	// Primary language of the multi-language group.
 	PrimaryLanguage *string `json:"primaryLanguage,omitempty"`
 }
 
+type _AttachToLangPrimaryRequestVNext AttachToLangPrimaryRequestVNext
+
 // NewAttachToLangPrimaryRequestVNext instantiates a new AttachToLangPrimaryRequestVNext object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAttachToLangPrimaryRequestVNext(id string, language string, primaryId string) *AttachToLangPrimaryRequestVNext {
+func NewAttachToLangPrimaryRequestVNext(language string, id string, primaryId string) *AttachToLangPrimaryRequestVNext {
 	this := AttachToLangPrimaryRequestVNext{}
-	this.Id = id
 	this.Language = language
+	this.Id = id
 	this.PrimaryId = primaryId
 	return &this
 }
@@ -47,30 +51,6 @@ func NewAttachToLangPrimaryRequestVNext(id string, language string, primaryId st
 func NewAttachToLangPrimaryRequestVNextWithDefaults() *AttachToLangPrimaryRequestVNext {
 	this := AttachToLangPrimaryRequestVNext{}
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *AttachToLangPrimaryRequestVNext) GetId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *AttachToLangPrimaryRequestVNext) GetIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *AttachToLangPrimaryRequestVNext) SetId(v string) {
-	o.Id = v
 }
 
 // GetLanguage returns the Language field value
@@ -95,6 +75,30 @@ func (o *AttachToLangPrimaryRequestVNext) GetLanguageOk() (*string, bool) {
 // SetLanguage sets field value
 func (o *AttachToLangPrimaryRequestVNext) SetLanguage(v string) {
 	o.Language = v
+}
+
+// GetId returns the Id field value
+func (o *AttachToLangPrimaryRequestVNext) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *AttachToLangPrimaryRequestVNext) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *AttachToLangPrimaryRequestVNext) SetId(v string) {
+	o.Id = v
 }
 
 // GetPrimaryId returns the PrimaryId field value
@@ -163,13 +167,52 @@ func (o AttachToLangPrimaryRequestVNext) MarshalJSON() ([]byte, error) {
 
 func (o AttachToLangPrimaryRequestVNext) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
 	toSerialize["language"] = o.Language
+	toSerialize["id"] = o.Id
 	toSerialize["primaryId"] = o.PrimaryId
 	if !IsNil(o.PrimaryLanguage) {
 		toSerialize["primaryLanguage"] = o.PrimaryLanguage
 	}
 	return toSerialize, nil
+}
+
+func (o *AttachToLangPrimaryRequestVNext) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"language",
+		"id",
+		"primaryId",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAttachToLangPrimaryRequestVNext := _AttachToLangPrimaryRequestVNext{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAttachToLangPrimaryRequestVNext)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AttachToLangPrimaryRequestVNext(varAttachToLangPrimaryRequestVNext)
+
+	return err
 }
 
 type NullableAttachToLangPrimaryRequestVNext struct {

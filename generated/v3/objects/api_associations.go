@@ -39,13 +39,13 @@ func (r ApiAssociationsArchiveRequest) Execute() (*http.Response, error) {
 /*
 AssociationsArchive Remove an association between two objects
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param objectId
- @param toObjectType
- @param toObjectId
- @param associationType
- @return ApiAssociationsArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param objectId
+	@param toObjectType
+	@param toObjectId
+	@param associationType
+	@return ApiAssociationsArchiveRequest
 */
 func (a *AssociationsApiService) AssociationsArchive(ctx context.Context, objectType string, objectId string, toObjectType string, toObjectId string, associationType string) ApiAssociationsArchiveRequest {
 	return ApiAssociationsArchiveRequest{
@@ -181,13 +181,13 @@ func (r ApiAssociationsCreateRequest) Execute() (*SimplePublicObjectWithAssociat
 /*
 AssociationsCreate Associate an object with another object
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param objectId
- @param toObjectType
- @param toObjectId
- @param associationType
- @return ApiAssociationsCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param objectId
+	@param toObjectType
+	@param toObjectId
+	@param associationType
+	@return ApiAssociationsCreateRequest
 */
 func (a *AssociationsApiService) AssociationsCreate(ctx context.Context, objectType string, objectId string, toObjectType string, toObjectId string, associationType string) ApiAssociationsCreateRequest {
 	return ApiAssociationsCreateRequest{
@@ -202,7 +202,8 @@ func (a *AssociationsApiService) AssociationsCreate(ctx context.Context, objectT
 }
 
 // Execute executes the request
-//  @return SimplePublicObjectWithAssociations
+//
+//	@return SimplePublicObjectWithAssociations
 func (a *AssociationsApiService) AssociationsCreateExecute(r ApiAssociationsCreateRequest) (*SimplePublicObjectWithAssociations, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
@@ -346,11 +347,11 @@ func (r ApiAssociationsGetAllRequest) Execute() (*CollectionResponseAssociatedId
 /*
 AssociationsGetAll List associations of an object by type
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param objectId
- @param toObjectType
- @return ApiAssociationsGetAllRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param objectId
+	@param toObjectType
+	@return ApiAssociationsGetAllRequest
 */
 func (a *AssociationsApiService) AssociationsGetAll(ctx context.Context, objectType string, objectId string, toObjectType string) ApiAssociationsGetAllRequest {
 	return ApiAssociationsGetAllRequest{
@@ -363,7 +364,8 @@ func (a *AssociationsApiService) AssociationsGetAll(ctx context.Context, objectT
 }
 
 // Execute executes the request
-//  @return CollectionResponseAssociatedIdForwardPaging
+//
+//	@return CollectionResponseAssociatedIdForwardPaging
 func (a *AssociationsApiService) AssociationsGetAllExecute(r ApiAssociationsGetAllRequest) (*CollectionResponseAssociatedIdForwardPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet

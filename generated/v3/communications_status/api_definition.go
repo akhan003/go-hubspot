@@ -1,5 +1,5 @@
 /*
-Subscriptions
+Communication Preferences Subscriptions
 
 Subscriptions allow contacts to control what forms of communications they receive. Contacts can decide whether they want to receive communication pertaining to a specific topic, brand, or an entire HubSpot account.
 
@@ -18,36 +18,37 @@ import (
 	"net/url"
 )
 
-// DefinitionApiService DefinitionApi service
-type DefinitionApiService service
+// DefinitionAPIService DefinitionAPI service
+type DefinitionAPIService service
 
-type ApiGetPageRequest struct {
+type ApiGetCommunicationPreferencesV3DefinitionsRequest struct {
 	ctx        context.Context
-	ApiService *DefinitionApiService
+	ApiService *DefinitionAPIService
 }
 
-func (r ApiGetPageRequest) Execute() (*SubscriptionDefinitionsResponse, *http.Response, error) {
-	return r.ApiService.GetPageExecute(r)
+func (r ApiGetCommunicationPreferencesV3DefinitionsRequest) Execute() (*SubscriptionDefinitionsResponse, *http.Response, error) {
+	return r.ApiService.GetCommunicationPreferencesV3DefinitionsExecute(r)
 }
 
 /*
-GetPage Get subscription definitions
+GetCommunicationPreferencesV3Definitions Get subscription definitions
 
 Get a list of all subscription definitions for the portal
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetPageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCommunicationPreferencesV3DefinitionsRequest
 */
-func (a *DefinitionApiService) GetPage(ctx context.Context) ApiGetPageRequest {
-	return ApiGetPageRequest{
+func (a *DefinitionAPIService) GetCommunicationPreferencesV3Definitions(ctx context.Context) ApiGetCommunicationPreferencesV3DefinitionsRequest {
+	return ApiGetCommunicationPreferencesV3DefinitionsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return SubscriptionDefinitionsResponse
-func (a *DefinitionApiService) GetPageExecute(r ApiGetPageRequest) (*SubscriptionDefinitionsResponse, *http.Response, error) {
+//
+//	@return SubscriptionDefinitionsResponse
+func (a *DefinitionAPIService) GetCommunicationPreferencesV3DefinitionsExecute(r ApiGetCommunicationPreferencesV3DefinitionsRequest) (*SubscriptionDefinitionsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -55,7 +56,7 @@ func (a *DefinitionApiService) GetPageExecute(r ApiGetPageRequest) (*Subscriptio
 		localVarReturnValue *SubscriptionDefinitionsResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionApiService.GetPage")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionAPIService.GetCommunicationPreferencesV3Definitions")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the BlogPostLanguageCloneRequestVNext type satisfies the MappedNullable interface at compile time
@@ -19,11 +21,13 @@ var _ MappedNullable = &BlogPostLanguageCloneRequestVNext{}
 
 // BlogPostLanguageCloneRequestVNext Request body object for creating new blog post language variant.
 type BlogPostLanguageCloneRequestVNext struct {
-	// ID of blog post to clone.
-	Id string `json:"id"`
 	// Target language of new variant.
 	Language *string `json:"language,omitempty"`
+	// ID of blog post to clone.
+	Id string `json:"id"`
 }
+
+type _BlogPostLanguageCloneRequestVNext BlogPostLanguageCloneRequestVNext
 
 // NewBlogPostLanguageCloneRequestVNext instantiates a new BlogPostLanguageCloneRequestVNext object
 // This constructor will assign default values to properties that have it defined,
@@ -41,30 +45,6 @@ func NewBlogPostLanguageCloneRequestVNext(id string) *BlogPostLanguageCloneReque
 func NewBlogPostLanguageCloneRequestVNextWithDefaults() *BlogPostLanguageCloneRequestVNext {
 	this := BlogPostLanguageCloneRequestVNext{}
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *BlogPostLanguageCloneRequestVNext) GetId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *BlogPostLanguageCloneRequestVNext) GetIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *BlogPostLanguageCloneRequestVNext) SetId(v string) {
-	o.Id = v
 }
 
 // GetLanguage returns the Language field value if set, zero value otherwise.
@@ -99,6 +79,30 @@ func (o *BlogPostLanguageCloneRequestVNext) SetLanguage(v string) {
 	o.Language = &v
 }
 
+// GetId returns the Id field value
+func (o *BlogPostLanguageCloneRequestVNext) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *BlogPostLanguageCloneRequestVNext) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *BlogPostLanguageCloneRequestVNext) SetId(v string) {
+	o.Id = v
+}
+
 func (o BlogPostLanguageCloneRequestVNext) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -109,11 +113,48 @@ func (o BlogPostLanguageCloneRequestVNext) MarshalJSON() ([]byte, error) {
 
 func (o BlogPostLanguageCloneRequestVNext) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
 	if !IsNil(o.Language) {
 		toSerialize["language"] = o.Language
 	}
+	toSerialize["id"] = o.Id
 	return toSerialize, nil
+}
+
+func (o *BlogPostLanguageCloneRequestVNext) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBlogPostLanguageCloneRequestVNext := _BlogPostLanguageCloneRequestVNext{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBlogPostLanguageCloneRequestVNext)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BlogPostLanguageCloneRequestVNext(varBlogPostLanguageCloneRequestVNext)
+
+	return err
 }
 
 type NullableBlogPostLanguageCloneRequestVNext struct {

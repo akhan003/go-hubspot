@@ -5,117 +5,31 @@ info:
     \ are used to create CMS content."
   title: CMS Source Code
   version: v3
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    cms: FREE
+  x-hubspot-documentation-banner: NONE
+  x-hubspot-api-use-case: Retrieve a drafted website page template to view its contents
+    before publishing.
+  x-hubspot-related-documentation:
+  - name: Source Code Overview
+    url: https://developers.hubspot.com/docs/api/cms/source-code
+  x-hubspot-introduction: "Use the source code API to interact with files stored in\
+    \ the developer file system. These files are surfaced in the design manager, and\
+    \ include template, module, CSS, JavaScript, and other CMS asset files."
 servers:
-- url: https://api.hubapi.com/
+- url: https://api.hubapi.com
 tags:
-- description: Endpoints which interact with actual file contents.
-  name: Content
-- description: Endpoints which interact with the object metadata for files.
-  name: Metadata
-- description: Endpoints used to validate developer asset files.
-  name: Validation
-- name: Source_Code_Extract
+- name: Content
+- name: Metadata
+- name: Validation
 - name: Extract
+- name: Source_Code_Extract
 paths:
-  /cms/v3/source-code/extract/async:
-    post:
-      operationId: ExtractAsync
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/FileExtractRequest'
-        required: true
-      responses:
-        "202":
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/TaskLocator'
-          description: accepted
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - private_apps_legacy:
-        - content
-      - oauth2_legacy:
-        - content
-      tags:
-      - Source_Code_Extract
-  /cms/v3/source-code/extract/async/tasks/{taskId}/status:
-    get:
-      operationId: ExtractGetAsyncStatus
-      parameters:
-      - explode: false
-        in: path
-        name: taskId
-        required: true
-        schema:
-          format: int32
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ActionResponse'
-          description: successful operation
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - private_apps_legacy:
-        - content
-      - oauth2_legacy:
-        - content
-      tags:
-      - Source_Code_Extract
-  /cms/v3/source-code/extract/{path}:
-    post:
-      deprecated: true
-      description: Extracts a zip file in the file system. The zip file will be extracted
-        in-place and not be deleted automatically.
-      operationId: ExtractByPath
-      parameters:
-      - description: The file system location of the zip file.
-        explode: false
-        in: path
-        name: path
-        required: true
-        schema:
-          pattern: .+
-          type: string
-        style: simple
-      responses:
-        "204":
-          content: {}
-          description: No content
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - private_apps_legacy:
-        - content
-      - oauth2_legacy:
-        - content
-      summary: Extracts a zip file
-      tags:
-      - Extract
   /cms/v3/source-code/{environment}/content/{path}:
     delete:
       description: Deletes the file at the specified path in the specified environment.
-      operationId: ContentArchive
+      operationId: "delete-/cms/v3/source-code/{environment}/content/{path}"
       parameters:
       - description: The environment of the file ("draft" or "published").
         explode: false
@@ -157,7 +71,7 @@ paths:
     get:
       description: Downloads the byte contents of the file at the specified path in
         the specified environment.
-      operationId: ContentGet
+      operationId: "get-/cms/v3/source-code/{environment}/content/{path}"
       parameters:
       - description: The environment of the file ("draft" or "published").
         explode: false
@@ -198,7 +112,7 @@ paths:
       description: Creates a file at the specified path in the specified environment.
         Accepts multipart/form-data content type. Throws an error if a file already
         exists at the specified path.
-      operationId: ContentCreate
+      operationId: "post-/cms/v3/source-code/{environment}/content/{path}"
       parameters:
       - description: The environment of the file ("draft" or "published").
         explode: false
@@ -221,7 +135,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ContentReplace_request'
+              $ref: '#/components/schemas/put__cms_v3_source_code__environment__content__path__request'
       responses:
         "200":
           content:
@@ -256,7 +170,7 @@ paths:
     put:
       description: Upserts a file at the specified path in the specified environment.
         Accepts multipart/form-data content type.
-      operationId: ContentReplace
+      operationId: "put-/cms/v3/source-code/{environment}/content/{path}"
       parameters:
       - description: The environment of the file ("draft" or "published").
         explode: false
@@ -279,7 +193,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ContentReplace_request'
+              $ref: '#/components/schemas/put__cms_v3_source_code__environment__content__path__request'
       responses:
         "200":
           content:
@@ -315,7 +229,7 @@ paths:
     get:
       description: Gets the metadata object for the file at the specified path in
         the specified environment.
-      operationId: MetadataGet
+      operationId: "get-/cms/v3/source-code/{environment}/metadata/{path}"
       parameters:
       - description: The environment of the file ("draft" or "published").
         explode: false
@@ -334,6 +248,13 @@ paths:
           pattern: .+
           type: string
         style: simple
+      - explode: true
+        in: query
+        name: properties
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -369,7 +290,7 @@ paths:
     post:
       description: Validates the file contents passed to the endpoint given a specified
         path and environment. Accepts multipart/form-data content type.
-      operationId: Validate
+      operationId: "post-/cms/v3/source-code/{environment}/validate/{path}"
       parameters:
       - description: The file system location of the file.
         explode: false
@@ -384,7 +305,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Validate_request'
+              $ref: '#/components/schemas/post__cms_v3_source_code__environment__validate__path__request'
       responses:
         default:
           content:
@@ -402,6 +323,102 @@ paths:
       - Validation
       x-hubspot-rate-limit-exemptions:
       - ten-secondly
+  /cms/v3/source-code/extract/{path}:
+    post:
+      deprecated: true
+      description: Extracts a zip file in the file system. The zip file will be extracted
+        in-place and not be deleted automatically.
+      operationId: "post-/cms/v3/source-code/extract/{path}"
+      parameters:
+      - description: The file system location of the zip file.
+        explode: false
+        in: path
+        name: path
+        required: true
+        schema:
+          pattern: .+
+          type: string
+        style: simple
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - private_apps_legacy:
+        - content
+      - oauth2_legacy:
+        - content
+      summary: Extracts a zip file
+      tags:
+      - Extract
+  /cms/v3/source-code/extract/async:
+    post:
+      operationId: post-/cms/v3/source-code/extract/async
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileExtractRequest'
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskLocator'
+          description: accepted
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - private_apps_legacy:
+        - content
+      - oauth2_legacy:
+        - content
+      tags:
+      - Source_Code_Extract
+  /cms/v3/source-code/extract/async/tasks/{taskId}/status:
+    get:
+      operationId: "get-/cms/v3/source-code/extract/async/tasks/{taskId}/status"
+      parameters:
+      - explode: false
+        in: path
+        name: taskId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+          description: successful operation
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - private_apps_legacy:
+        - content
+      - oauth2_legacy:
+        - content
+      tags:
+      - Source_Code_Extract
 components:
   responses:
     Error:
@@ -413,19 +430,15 @@ components:
   schemas:
     ErrorDetail:
       properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          type: string
-        in:
-          description: The name of the field or parameter in which the error was found.
+        subCategory:
+          description: A specific category that contains more specific detail about
+            the error
           type: string
         code:
           description: The status code associated with the error detail
           type: string
-        subCategory:
-          description: A specific category that contains more specific detail about
-            the error
+        in:
+          description: The name of the field or parameter in which the error was found.
           type: string
         context:
           additionalProperties:
@@ -438,8 +451,62 @@ components:
             - scope1
             - scope2
           type: object
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          type: string
       required:
       - message
+      type: object
+    AssetFileMetadata:
+      description: The object metadata of a file.
+      example:
+        createdAt: 0
+        archivedAt: 6
+        folder: true
+        children:
+        - children
+        - children
+        name: name
+        id: id
+        hash: hash
+        updatedAt: 1
+      properties:
+        createdAt:
+          description: Timestamp of when the object was first created.
+          format: int32
+          type: integer
+        archivedAt:
+          description: Timestamp of when the object was archived (deleted).
+          format: int64
+          type: integer
+        folder:
+          description: Determines whether or not this path points to a folder.
+          type: boolean
+        children:
+          description: "If the object is a folder, contains the filenames of the files\
+            \ within the folder."
+          items:
+            type: string
+          type: array
+        name:
+          description: The name of the file.
+          type: string
+        id:
+          description: The path of the file in the CMS Developer File System.
+          type: string
+        hash:
+          type: string
+        updatedAt:
+          description: Timestamp of when the object was last updated.
+          format: int32
+          type: integer
+      required:
+      - createdAt
+      - folder
+      - id
+      - name
+      - updatedAt
       type: object
     FileExtractRequest:
       example:
@@ -450,53 +517,6 @@ components:
       required:
       - path
       type: object
-    AssetFileMetadata:
-      description: The object metadata of a file.
-      example:
-        createdAt: 6
-        archivedAt: 1
-        folder: true
-        children:
-        - children
-        - children
-        name: name
-        id: id
-        updatedAt: 0
-      properties:
-        id:
-          description: The path of the file in the CMS Developer File System.
-          type: string
-        name:
-          description: The name of the file.
-          type: string
-        folder:
-          description: Determines whether or not this path points to a folder.
-          type: boolean
-        children:
-          description: "If the object is a folder, contains the filenames of the files\
-            \ within the folder."
-          items:
-            type: string
-          type: array
-        updatedAt:
-          description: Timestamp of when the object was last updated.
-          format: int32
-          type: integer
-        createdAt:
-          description: Timestamp of when the object was first created.
-          format: int32
-          type: integer
-        archivedAt:
-          description: Timestamp of when the object was archived (deleted).
-          format: int64
-          type: integer
-      required:
-      - createdAt
-      - folder
-      - id
-      - name
-      - updatedAt
-      type: object
     Error:
       example:
         message: Invalid input (details will vary based on the error)
@@ -505,29 +525,10 @@ components:
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
       properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          example: An error occurred
-          type: string
-        correlationId:
-          description: A unique identifier for the request. Include this value with
-            any error reports or support tickets
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-          format: uuid
-          type: string
-        category:
-          description: The error category
-          type: string
         subCategory:
           description: A specific category that contains more specific detail about
             the error
           type: string
-        errors:
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type: array
         context:
           additionalProperties:
             items:
@@ -535,18 +536,40 @@ components:
             type: array
           description: Context about the error condition
           example:
-            invalidPropertyName:
-            - propertyValue
             missingScopes:
             - scope1
             - scope2
+            invalidPropertyName:
+            - propertyValue
           type: object
+        correlationId:
+          description: A unique identifier for the request. Include this value with
+            any error reports or support tickets
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+          format: uuid
+          type: string
         links:
           additionalProperties:
             type: string
           description: A map of link names to associated URIs containing documentation
             about the error or recommended remediation steps
+          example:
+            knowledge-base: https://www.hubspot.com/products/service/knowledge-base
           type: object
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          example: Invalid input (details will vary based on the error)
+          type: string
+        category:
+          description: The error category
+          example: VALIDATION_ERROR
+          type: string
+        errors:
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type: array
       required:
       - category
       - correlationId
@@ -561,12 +584,8 @@ components:
           key: links
         status: PENDING
       properties:
-        status:
-          enum:
-          - PENDING
-          - PROCESSING
-          - CANCELED
-          - COMPLETE
+        completedAt:
+          format: date-time
           type: string
         requestedAt:
           format: date-time
@@ -574,13 +593,17 @@ components:
         startedAt:
           format: date-time
           type: string
-        completedAt:
-          format: date-time
-          type: string
         links:
           additionalProperties:
             type: string
           type: object
+        status:
+          enum:
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
+          type: string
       required:
       - completedAt
       - startedAt
@@ -592,27 +615,29 @@ components:
           key: links
         id: id
       properties:
-        id:
-          type: string
         links:
           additionalProperties:
             type: string
           type: object
+        id:
+          type: string
       required:
       - id
       type: object
-    ContentReplace_request:
+    put__cms_v3_source_code__environment__content__path__request:
       properties:
         file:
           description: The file to upload.
           format: binary
           type: string
-    Validate_request:
+      type: object
+    post__cms_v3_source_code__environment__validate__path__request:
       properties:
         file:
           description: The file to validate.
           format: binary
           type: string
+      type: object
   securitySchemes:
     oauth2_legacy:
       flows:
@@ -629,5 +654,9 @@ components:
 x-hubspot-available-client-libraries:
 - PHP
 - Node
-- Python
 - Ruby
+- Python
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  cms: FREE
+x-hubspot-documentation-banner: NONE

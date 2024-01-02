@@ -19,37 +19,37 @@ import (
 	"strings"
 )
 
-// CoreApiService CoreApi service
-type CoreApiService service
+// CoreAPIService CoreAPI service
+type CoreAPIService service
 
-type ApiArchiveRequest struct {
+type ApiDeleteCrmV3SchemasObjectTypeRequest struct {
 	ctx        context.Context
-	ApiService *CoreApiService
+	ApiService *CoreAPIService
 	objectType string
 	archived   *bool
 }
 
 // Whether to return only results that have been archived.
-func (r ApiArchiveRequest) Archived(archived bool) ApiArchiveRequest {
+func (r ApiDeleteCrmV3SchemasObjectTypeRequest) Archived(archived bool) ApiDeleteCrmV3SchemasObjectTypeRequest {
 	r.archived = &archived
 	return r
 }
 
-func (r ApiArchiveRequest) Execute() (*http.Response, error) {
-	return r.ApiService.ArchiveExecute(r)
+func (r ApiDeleteCrmV3SchemasObjectTypeRequest) Execute() (*http.Response, error) {
+	return r.ApiService.DeleteCrmV3SchemasObjectTypeExecute(r)
 }
 
 /*
-Archive Delete a schema
+DeleteCrmV3SchemasObjectType Delete a schema
 
 Deletes a schema. Any existing records of this schema must be deleted **first**. Otherwise this call will fail.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType Fully qualified name or object type ID of your schema.
- @return ApiArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType Fully qualified name or object type ID of your schema.
+	@return ApiDeleteCrmV3SchemasObjectTypeRequest
 */
-func (a *CoreApiService) Archive(ctx context.Context, objectType string) ApiArchiveRequest {
-	return ApiArchiveRequest{
+func (a *CoreAPIService) DeleteCrmV3SchemasObjectType(ctx context.Context, objectType string) ApiDeleteCrmV3SchemasObjectTypeRequest {
+	return ApiDeleteCrmV3SchemasObjectTypeRequest{
 		ApiService: a,
 		ctx:        ctx,
 		objectType: objectType,
@@ -57,14 +57,14 @@ func (a *CoreApiService) Archive(ctx context.Context, objectType string) ApiArch
 }
 
 // Execute executes the request
-func (a *CoreApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, error) {
+func (a *CoreAPIService) DeleteCrmV3SchemasObjectTypeExecute(r ApiDeleteCrmV3SchemasObjectTypeRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.Archive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.DeleteCrmV3SchemasObjectType")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -78,6 +78,9 @@ func (a *CoreApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, er
 
 	if r.archived != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -146,29 +149,29 @@ func (a *CoreApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, er
 	return localVarHTTPResponse, nil
 }
 
-type ApiArchiveAssociationRequest struct {
+type ApiDeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifierRequest struct {
 	ctx                   context.Context
-	ApiService            *CoreApiService
+	ApiService            *CoreAPIService
 	objectType            string
 	associationIdentifier string
 }
 
-func (r ApiArchiveAssociationRequest) Execute() (*http.Response, error) {
-	return r.ApiService.ArchiveAssociationExecute(r)
+func (r ApiDeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifierRequest) Execute() (*http.Response, error) {
+	return r.ApiService.DeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifierExecute(r)
 }
 
 /*
-ArchiveAssociation Remove an association
+DeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifier Remove an association
 
 Removes an existing association from a schema.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType Fully qualified name or object type ID of your schema.
- @param associationIdentifier Unique ID of the association to remove.
- @return ApiArchiveAssociationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType Fully qualified name or object type ID of your schema.
+	@param associationIdentifier Unique ID of the association to remove.
+	@return ApiDeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifierRequest
 */
-func (a *CoreApiService) ArchiveAssociation(ctx context.Context, objectType string, associationIdentifier string) ApiArchiveAssociationRequest {
-	return ApiArchiveAssociationRequest{
+func (a *CoreAPIService) DeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifier(ctx context.Context, objectType string, associationIdentifier string) ApiDeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifierRequest {
+	return ApiDeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifierRequest{
 		ApiService:            a,
 		ctx:                   ctx,
 		objectType:            objectType,
@@ -177,14 +180,14 @@ func (a *CoreApiService) ArchiveAssociation(ctx context.Context, objectType stri
 }
 
 // Execute executes the request
-func (a *CoreApiService) ArchiveAssociationExecute(r ApiArchiveAssociationRequest) (*http.Response, error) {
+func (a *CoreAPIService) DeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifierExecute(r ApiDeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifierRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.ArchiveAssociation")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.DeleteCrmV3SchemasObjectTypeAssociationsAssociationIdentifier")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -264,40 +267,440 @@ func (a *CoreApiService) ArchiveAssociationExecute(r ApiArchiveAssociationReques
 	return localVarHTTPResponse, nil
 }
 
-type ApiCreateRequest struct {
-	ctx             context.Context
-	ApiService      *CoreApiService
-	objectSchemaEgg *ObjectSchemaEgg
+type ApiGetCrmV3SchemasRequest struct {
+	ctx        context.Context
+	ApiService *CoreAPIService
+	archived   *bool
 }
 
-// Object schema definition, including properties and associations.
-func (r ApiCreateRequest) ObjectSchemaEgg(objectSchemaEgg ObjectSchemaEgg) ApiCreateRequest {
-	r.objectSchemaEgg = &objectSchemaEgg
+// Whether to return only results that have been archived.
+func (r ApiGetCrmV3SchemasRequest) Archived(archived bool) ApiGetCrmV3SchemasRequest {
+	r.archived = &archived
 	return r
 }
 
-func (r ApiCreateRequest) Execute() (*ObjectSchema, *http.Response, error) {
-	return r.ApiService.CreateExecute(r)
+func (r ApiGetCrmV3SchemasRequest) Execute() (*CollectionResponseObjectSchemaNoPaging, *http.Response, error) {
+	return r.ApiService.GetCrmV3SchemasExecute(r)
 }
 
 /*
-Create Create a new schema
+GetCrmV3Schemas Get all schemas
 
-Define a new object schema, along with custom properties and associations. The entire object schema, including its object type ID, properties, and associations will be returned in the response.
+Returns all object schemas that have been defined for your account.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCrmV3SchemasRequest
 */
-func (a *CoreApiService) Create(ctx context.Context) ApiCreateRequest {
-	return ApiCreateRequest{
+func (a *CoreAPIService) GetCrmV3Schemas(ctx context.Context) ApiGetCrmV3SchemasRequest {
+	return ApiGetCrmV3SchemasRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return ObjectSchema
-func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*ObjectSchema, *http.Response, error) {
+//
+//	@return CollectionResponseObjectSchemaNoPaging
+func (a *CoreAPIService) GetCrmV3SchemasExecute(r ApiGetCrmV3SchemasRequest) (*CollectionResponseObjectSchemaNoPaging, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CollectionResponseObjectSchemaNoPaging
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.GetCrmV3Schemas")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/crm/v3/schemas"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.archived != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetCrmV3SchemasObjectTypeRequest struct {
+	ctx        context.Context
+	ApiService *CoreAPIService
+	objectType string
+}
+
+func (r ApiGetCrmV3SchemasObjectTypeRequest) Execute() (*ObjectSchema, *http.Response, error) {
+	return r.ApiService.GetCrmV3SchemasObjectTypeExecute(r)
+}
+
+/*
+GetCrmV3SchemasObjectType Get an existing schema
+
+Returns an existing object schema.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType Fully qualified name or object type ID of your schema.
+	@return ApiGetCrmV3SchemasObjectTypeRequest
+*/
+func (a *CoreAPIService) GetCrmV3SchemasObjectType(ctx context.Context, objectType string) ApiGetCrmV3SchemasObjectTypeRequest {
+	return ApiGetCrmV3SchemasObjectTypeRequest{
+		ApiService: a,
+		ctx:        ctx,
+		objectType: objectType,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ObjectSchema
+func (a *CoreAPIService) GetCrmV3SchemasObjectTypeExecute(r ApiGetCrmV3SchemasObjectTypeRequest) (*ObjectSchema, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ObjectSchema
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.GetCrmV3SchemasObjectType")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/crm/v3/schemas/{objectType}"
+	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterValueToString(r.objectType, "objectType")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPatchCrmV3SchemasObjectTypeRequest struct {
+	ctx                       context.Context
+	ApiService                *CoreAPIService
+	objectType                string
+	objectTypeDefinitionPatch *ObjectTypeDefinitionPatch
+}
+
+// Attributes to update in your schema.
+func (r ApiPatchCrmV3SchemasObjectTypeRequest) ObjectTypeDefinitionPatch(objectTypeDefinitionPatch ObjectTypeDefinitionPatch) ApiPatchCrmV3SchemasObjectTypeRequest {
+	r.objectTypeDefinitionPatch = &objectTypeDefinitionPatch
+	return r
+}
+
+func (r ApiPatchCrmV3SchemasObjectTypeRequest) Execute() (*ObjectTypeDefinition, *http.Response, error) {
+	return r.ApiService.PatchCrmV3SchemasObjectTypeExecute(r)
+}
+
+/*
+PatchCrmV3SchemasObjectType Update a schema
+
+Update the details for an existing object schema.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType Fully qualified name or object type ID of your schema.
+	@return ApiPatchCrmV3SchemasObjectTypeRequest
+*/
+func (a *CoreAPIService) PatchCrmV3SchemasObjectType(ctx context.Context, objectType string) ApiPatchCrmV3SchemasObjectTypeRequest {
+	return ApiPatchCrmV3SchemasObjectTypeRequest{
+		ApiService: a,
+		ctx:        ctx,
+		objectType: objectType,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ObjectTypeDefinition
+func (a *CoreAPIService) PatchCrmV3SchemasObjectTypeExecute(r ApiPatchCrmV3SchemasObjectTypeRequest) (*ObjectTypeDefinition, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPatch
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ObjectTypeDefinition
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.PatchCrmV3SchemasObjectType")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/crm/v3/schemas/{objectType}"
+	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterValueToString(r.objectType, "objectType")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.objectTypeDefinitionPatch == nil {
+		return localVarReturnValue, nil, reportError("objectTypeDefinitionPatch is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.objectTypeDefinitionPatch
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPostCrmV3SchemasRequest struct {
+	ctx             context.Context
+	ApiService      *CoreAPIService
+	objectSchemaEgg *ObjectSchemaEgg
+}
+
+// Object schema definition, including properties and associations.
+func (r ApiPostCrmV3SchemasRequest) ObjectSchemaEgg(objectSchemaEgg ObjectSchemaEgg) ApiPostCrmV3SchemasRequest {
+	r.objectSchemaEgg = &objectSchemaEgg
+	return r
+}
+
+func (r ApiPostCrmV3SchemasRequest) Execute() (*ObjectSchema, *http.Response, error) {
+	return r.ApiService.PostCrmV3SchemasExecute(r)
+}
+
+/*
+PostCrmV3Schemas Create a new schema
+
+Define a new object schema, along with custom properties and associations. The entire object schema, including its object type ID, properties, and associations will be returned in the response.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCrmV3SchemasRequest
+*/
+func (a *CoreAPIService) PostCrmV3Schemas(ctx context.Context) ApiPostCrmV3SchemasRequest {
+	return ApiPostCrmV3SchemasRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ObjectSchema
+func (a *CoreAPIService) PostCrmV3SchemasExecute(r ApiPostCrmV3SchemasRequest) (*ObjectSchema, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -305,7 +708,7 @@ func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*ObjectSchema, *http
 		localVarReturnValue *ObjectSchema
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.Create")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.PostCrmV3Schemas")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -397,34 +800,34 @@ func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*ObjectSchema, *http
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiCreateAssociationRequest struct {
+type ApiPostCrmV3SchemasObjectTypeAssociationsRequest struct {
 	ctx                      context.Context
-	ApiService               *CoreApiService
+	ApiService               *CoreAPIService
 	objectType               string
 	associationDefinitionEgg *AssociationDefinitionEgg
 }
 
 // Attributes that define the association.
-func (r ApiCreateAssociationRequest) AssociationDefinitionEgg(associationDefinitionEgg AssociationDefinitionEgg) ApiCreateAssociationRequest {
+func (r ApiPostCrmV3SchemasObjectTypeAssociationsRequest) AssociationDefinitionEgg(associationDefinitionEgg AssociationDefinitionEgg) ApiPostCrmV3SchemasObjectTypeAssociationsRequest {
 	r.associationDefinitionEgg = &associationDefinitionEgg
 	return r
 }
 
-func (r ApiCreateAssociationRequest) Execute() (*AssociationDefinition, *http.Response, error) {
-	return r.ApiService.CreateAssociationExecute(r)
+func (r ApiPostCrmV3SchemasObjectTypeAssociationsRequest) Execute() (*AssociationDefinition, *http.Response, error) {
+	return r.ApiService.PostCrmV3SchemasObjectTypeAssociationsExecute(r)
 }
 
 /*
-CreateAssociation Create an association
+PostCrmV3SchemasObjectTypeAssociations Create an association
 
 Defines a new association between the primary schema's object type and other object types.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType Fully qualified name or object type ID of your schema.
- @return ApiCreateAssociationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType Fully qualified name or object type ID of your schema.
+	@return ApiPostCrmV3SchemasObjectTypeAssociationsRequest
 */
-func (a *CoreApiService) CreateAssociation(ctx context.Context, objectType string) ApiCreateAssociationRequest {
-	return ApiCreateAssociationRequest{
+func (a *CoreAPIService) PostCrmV3SchemasObjectTypeAssociations(ctx context.Context, objectType string) ApiPostCrmV3SchemasObjectTypeAssociationsRequest {
+	return ApiPostCrmV3SchemasObjectTypeAssociationsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		objectType: objectType,
@@ -432,8 +835,9 @@ func (a *CoreApiService) CreateAssociation(ctx context.Context, objectType strin
 }
 
 // Execute executes the request
-//  @return AssociationDefinition
-func (a *CoreApiService) CreateAssociationExecute(r ApiCreateAssociationRequest) (*AssociationDefinition, *http.Response, error) {
+//
+//	@return AssociationDefinition
+func (a *CoreAPIService) PostCrmV3SchemasObjectTypeAssociationsExecute(r ApiPostCrmV3SchemasObjectTypeAssociationsRequest) (*AssociationDefinition, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -441,7 +845,7 @@ func (a *CoreApiService) CreateAssociationExecute(r ApiCreateAssociationRequest)
 		localVarReturnValue *AssociationDefinition
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.CreateAssociation")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.PostCrmV3SchemasObjectTypeAssociations")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -475,399 +879,6 @@ func (a *CoreApiService) CreateAssociationExecute(r ApiCreateAssociationRequest)
 	}
 	// body params
 	localVarPostBody = r.associationDefinitionEgg
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetAllRequest struct {
-	ctx        context.Context
-	ApiService *CoreApiService
-	archived   *bool
-}
-
-// Whether to return only results that have been archived.
-func (r ApiGetAllRequest) Archived(archived bool) ApiGetAllRequest {
-	r.archived = &archived
-	return r
-}
-
-func (r ApiGetAllRequest) Execute() (*CollectionResponseObjectSchemaNoPaging, *http.Response, error) {
-	return r.ApiService.GetAllExecute(r)
-}
-
-/*
-GetAll Get all schemas
-
-Returns all object schemas that have been defined for your account.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetAllRequest
-*/
-func (a *CoreApiService) GetAll(ctx context.Context) ApiGetAllRequest {
-	return ApiGetAllRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//  @return CollectionResponseObjectSchemaNoPaging
-func (a *CoreApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponseObjectSchemaNoPaging, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *CollectionResponseObjectSchemaNoPaging
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.GetAll")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/crm/v3/schemas"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.archived != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetByIDRequest struct {
-	ctx        context.Context
-	ApiService *CoreApiService
-	objectType string
-}
-
-func (r ApiGetByIDRequest) Execute() (*ObjectSchema, *http.Response, error) {
-	return r.ApiService.GetByIDExecute(r)
-}
-
-/*
-GetByID Get an existing schema
-
-Returns an existing object schema.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType Fully qualified name or object type ID of your schema.
- @return ApiGetByIDRequest
-*/
-func (a *CoreApiService) GetByID(ctx context.Context, objectType string) ApiGetByIDRequest {
-	return ApiGetByIDRequest{
-		ApiService: a,
-		ctx:        ctx,
-		objectType: objectType,
-	}
-}
-
-// Execute executes the request
-//  @return ObjectSchema
-func (a *CoreApiService) GetByIDExecute(r ApiGetByIDRequest) (*ObjectSchema, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ObjectSchema
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.GetByID")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/crm/v3/schemas/{objectType}"
-	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterValueToString(r.objectType, "objectType")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiUpdateRequest struct {
-	ctx                       context.Context
-	ApiService                *CoreApiService
-	objectType                string
-	objectTypeDefinitionPatch *ObjectTypeDefinitionPatch
-}
-
-// Attributes to update in your schema.
-func (r ApiUpdateRequest) ObjectTypeDefinitionPatch(objectTypeDefinitionPatch ObjectTypeDefinitionPatch) ApiUpdateRequest {
-	r.objectTypeDefinitionPatch = &objectTypeDefinitionPatch
-	return r
-}
-
-func (r ApiUpdateRequest) Execute() (*ObjectTypeDefinition, *http.Response, error) {
-	return r.ApiService.UpdateExecute(r)
-}
-
-/*
-Update Update a schema
-
-Update the details for an existing object schema.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType Fully qualified name or object type ID of your schema.
- @return ApiUpdateRequest
-*/
-func (a *CoreApiService) Update(ctx context.Context, objectType string) ApiUpdateRequest {
-	return ApiUpdateRequest{
-		ApiService: a,
-		ctx:        ctx,
-		objectType: objectType,
-	}
-}
-
-// Execute executes the request
-//  @return ObjectTypeDefinition
-func (a *CoreApiService) UpdateExecute(r ApiUpdateRequest) (*ObjectTypeDefinition, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPatch
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ObjectTypeDefinition
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.Update")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/crm/v3/schemas/{objectType}"
-	localVarPath = strings.Replace(localVarPath, "{"+"objectType"+"}", url.PathEscape(parameterValueToString(r.objectType, "objectType")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.objectTypeDefinitionPatch == nil {
-		return localVarReturnValue, nil, reportError("objectTypeDefinitionPatch is required and must be specified")
-	}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.objectTypeDefinitionPatch
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

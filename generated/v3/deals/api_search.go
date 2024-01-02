@@ -18,12 +18,12 @@ import (
 	"net/url"
 )
 
-// SearchApiService SearchApi service
-type SearchApiService service
+// SearchAPIService SearchAPI service
+type SearchAPIService service
 
 type ApiSearchRequest struct {
 	ctx                       context.Context
-	ApiService                *SearchApiService
+	ApiService                *SearchAPIService
 	publicObjectSearchRequest *PublicObjectSearchRequest
 }
 
@@ -39,10 +39,10 @@ func (r ApiSearchRequest) Execute() (*CollectionResponseWithTotalSimplePublicObj
 /*
 Search Method for Search
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSearchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSearchRequest
 */
-func (a *SearchApiService) Search(ctx context.Context) ApiSearchRequest {
+func (a *SearchAPIService) Search(ctx context.Context) ApiSearchRequest {
 	return ApiSearchRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -50,8 +50,9 @@ func (a *SearchApiService) Search(ctx context.Context) ApiSearchRequest {
 }
 
 // Execute executes the request
-//  @return CollectionResponseWithTotalSimplePublicObjectForwardPaging
-func (a *SearchApiService) SearchExecute(r ApiSearchRequest) (*CollectionResponseWithTotalSimplePublicObjectForwardPaging, *http.Response, error) {
+//
+//	@return CollectionResponseWithTotalSimplePublicObjectForwardPaging
+func (a *SearchAPIService) SearchExecute(r ApiSearchRequest) (*CollectionResponseWithTotalSimplePublicObjectForwardPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -59,7 +60,7 @@ func (a *SearchApiService) SearchExecute(r ApiSearchRequest) (*CollectionRespons
 		localVarReturnValue *CollectionResponseWithTotalSimplePublicObjectForwardPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchApiService.Search")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchAPIService.Search")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -92,20 +93,6 @@ func (a *SearchApiService) SearchExecute(r ApiSearchRequest) (*CollectionRespons
 	}
 	// body params
 	localVarPostBody = r.publicObjectSearchRequest
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

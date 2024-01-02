@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the Styles type satisfies the MappedNullable interface at compile time
@@ -19,28 +21,30 @@ var _ MappedNullable = &Styles{}
 
 // Styles struct for Styles
 type Styles struct {
-	VerticalAlignment        string          `json:"verticalAlignment"`
 	BackgroundColor          RGBAColor       `json:"backgroundColor"`
-	BackgroundImage          BackgroundImage `json:"backgroundImage"`
-	BackgroundGradient       Gradient        `json:"backgroundGradient"`
-	MaxWidthSectionCentering int32           `json:"maxWidthSectionCentering"`
-	ForceFullWidthSection    bool            `json:"forceFullWidthSection"`
 	FlexboxPositioning       string          `json:"flexboxPositioning"`
+	BackgroundImage          BackgroundImage `json:"backgroundImage"`
+	ForceFullWidthSection    bool            `json:"forceFullWidthSection"`
+	VerticalAlignment        string          `json:"verticalAlignment"`
+	MaxWidthSectionCentering int32           `json:"maxWidthSectionCentering"`
+	BackgroundGradient       Gradient        `json:"backgroundGradient"`
 }
+
+type _Styles Styles
 
 // NewStyles instantiates a new Styles object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStyles(verticalAlignment string, backgroundColor RGBAColor, backgroundImage BackgroundImage, backgroundGradient Gradient, maxWidthSectionCentering int32, forceFullWidthSection bool, flexboxPositioning string) *Styles {
+func NewStyles(backgroundColor RGBAColor, flexboxPositioning string, backgroundImage BackgroundImage, forceFullWidthSection bool, verticalAlignment string, maxWidthSectionCentering int32, backgroundGradient Gradient) *Styles {
 	this := Styles{}
-	this.VerticalAlignment = verticalAlignment
 	this.BackgroundColor = backgroundColor
-	this.BackgroundImage = backgroundImage
-	this.BackgroundGradient = backgroundGradient
-	this.MaxWidthSectionCentering = maxWidthSectionCentering
-	this.ForceFullWidthSection = forceFullWidthSection
 	this.FlexboxPositioning = flexboxPositioning
+	this.BackgroundImage = backgroundImage
+	this.ForceFullWidthSection = forceFullWidthSection
+	this.VerticalAlignment = verticalAlignment
+	this.MaxWidthSectionCentering = maxWidthSectionCentering
+	this.BackgroundGradient = backgroundGradient
 	return &this
 }
 
@@ -50,30 +54,6 @@ func NewStyles(verticalAlignment string, backgroundColor RGBAColor, backgroundIm
 func NewStylesWithDefaults() *Styles {
 	this := Styles{}
 	return &this
-}
-
-// GetVerticalAlignment returns the VerticalAlignment field value
-func (o *Styles) GetVerticalAlignment() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.VerticalAlignment
-}
-
-// GetVerticalAlignmentOk returns a tuple with the VerticalAlignment field value
-// and a boolean to check if the value has been set.
-func (o *Styles) GetVerticalAlignmentOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.VerticalAlignment, true
-}
-
-// SetVerticalAlignment sets field value
-func (o *Styles) SetVerticalAlignment(v string) {
-	o.VerticalAlignment = v
 }
 
 // GetBackgroundColor returns the BackgroundColor field value
@@ -100,6 +80,30 @@ func (o *Styles) SetBackgroundColor(v RGBAColor) {
 	o.BackgroundColor = v
 }
 
+// GetFlexboxPositioning returns the FlexboxPositioning field value
+func (o *Styles) GetFlexboxPositioning() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.FlexboxPositioning
+}
+
+// GetFlexboxPositioningOk returns a tuple with the FlexboxPositioning field value
+// and a boolean to check if the value has been set.
+func (o *Styles) GetFlexboxPositioningOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.FlexboxPositioning, true
+}
+
+// SetFlexboxPositioning sets field value
+func (o *Styles) SetFlexboxPositioning(v string) {
+	o.FlexboxPositioning = v
+}
+
 // GetBackgroundImage returns the BackgroundImage field value
 func (o *Styles) GetBackgroundImage() BackgroundImage {
 	if o == nil {
@@ -122,54 +126,6 @@ func (o *Styles) GetBackgroundImageOk() (*BackgroundImage, bool) {
 // SetBackgroundImage sets field value
 func (o *Styles) SetBackgroundImage(v BackgroundImage) {
 	o.BackgroundImage = v
-}
-
-// GetBackgroundGradient returns the BackgroundGradient field value
-func (o *Styles) GetBackgroundGradient() Gradient {
-	if o == nil {
-		var ret Gradient
-		return ret
-	}
-
-	return o.BackgroundGradient
-}
-
-// GetBackgroundGradientOk returns a tuple with the BackgroundGradient field value
-// and a boolean to check if the value has been set.
-func (o *Styles) GetBackgroundGradientOk() (*Gradient, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.BackgroundGradient, true
-}
-
-// SetBackgroundGradient sets field value
-func (o *Styles) SetBackgroundGradient(v Gradient) {
-	o.BackgroundGradient = v
-}
-
-// GetMaxWidthSectionCentering returns the MaxWidthSectionCentering field value
-func (o *Styles) GetMaxWidthSectionCentering() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.MaxWidthSectionCentering
-}
-
-// GetMaxWidthSectionCenteringOk returns a tuple with the MaxWidthSectionCentering field value
-// and a boolean to check if the value has been set.
-func (o *Styles) GetMaxWidthSectionCenteringOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.MaxWidthSectionCentering, true
-}
-
-// SetMaxWidthSectionCentering sets field value
-func (o *Styles) SetMaxWidthSectionCentering(v int32) {
-	o.MaxWidthSectionCentering = v
 }
 
 // GetForceFullWidthSection returns the ForceFullWidthSection field value
@@ -196,28 +152,76 @@ func (o *Styles) SetForceFullWidthSection(v bool) {
 	o.ForceFullWidthSection = v
 }
 
-// GetFlexboxPositioning returns the FlexboxPositioning field value
-func (o *Styles) GetFlexboxPositioning() string {
+// GetVerticalAlignment returns the VerticalAlignment field value
+func (o *Styles) GetVerticalAlignment() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.FlexboxPositioning
+	return o.VerticalAlignment
 }
 
-// GetFlexboxPositioningOk returns a tuple with the FlexboxPositioning field value
+// GetVerticalAlignmentOk returns a tuple with the VerticalAlignment field value
 // and a boolean to check if the value has been set.
-func (o *Styles) GetFlexboxPositioningOk() (*string, bool) {
+func (o *Styles) GetVerticalAlignmentOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.FlexboxPositioning, true
+	return &o.VerticalAlignment, true
 }
 
-// SetFlexboxPositioning sets field value
-func (o *Styles) SetFlexboxPositioning(v string) {
-	o.FlexboxPositioning = v
+// SetVerticalAlignment sets field value
+func (o *Styles) SetVerticalAlignment(v string) {
+	o.VerticalAlignment = v
+}
+
+// GetMaxWidthSectionCentering returns the MaxWidthSectionCentering field value
+func (o *Styles) GetMaxWidthSectionCentering() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.MaxWidthSectionCentering
+}
+
+// GetMaxWidthSectionCenteringOk returns a tuple with the MaxWidthSectionCentering field value
+// and a boolean to check if the value has been set.
+func (o *Styles) GetMaxWidthSectionCenteringOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.MaxWidthSectionCentering, true
+}
+
+// SetMaxWidthSectionCentering sets field value
+func (o *Styles) SetMaxWidthSectionCentering(v int32) {
+	o.MaxWidthSectionCentering = v
+}
+
+// GetBackgroundGradient returns the BackgroundGradient field value
+func (o *Styles) GetBackgroundGradient() Gradient {
+	if o == nil {
+		var ret Gradient
+		return ret
+	}
+
+	return o.BackgroundGradient
+}
+
+// GetBackgroundGradientOk returns a tuple with the BackgroundGradient field value
+// and a boolean to check if the value has been set.
+func (o *Styles) GetBackgroundGradientOk() (*Gradient, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.BackgroundGradient, true
+}
+
+// SetBackgroundGradient sets field value
+func (o *Styles) SetBackgroundGradient(v Gradient) {
+	o.BackgroundGradient = v
 }
 
 func (o Styles) MarshalJSON() ([]byte, error) {
@@ -230,14 +234,57 @@ func (o Styles) MarshalJSON() ([]byte, error) {
 
 func (o Styles) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["verticalAlignment"] = o.VerticalAlignment
 	toSerialize["backgroundColor"] = o.BackgroundColor
-	toSerialize["backgroundImage"] = o.BackgroundImage
-	toSerialize["backgroundGradient"] = o.BackgroundGradient
-	toSerialize["maxWidthSectionCentering"] = o.MaxWidthSectionCentering
-	toSerialize["forceFullWidthSection"] = o.ForceFullWidthSection
 	toSerialize["flexboxPositioning"] = o.FlexboxPositioning
+	toSerialize["backgroundImage"] = o.BackgroundImage
+	toSerialize["forceFullWidthSection"] = o.ForceFullWidthSection
+	toSerialize["verticalAlignment"] = o.VerticalAlignment
+	toSerialize["maxWidthSectionCentering"] = o.MaxWidthSectionCentering
+	toSerialize["backgroundGradient"] = o.BackgroundGradient
 	return toSerialize, nil
+}
+
+func (o *Styles) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"backgroundColor",
+		"flexboxPositioning",
+		"backgroundImage",
+		"forceFullWidthSection",
+		"verticalAlignment",
+		"maxWidthSectionCentering",
+		"backgroundGradient",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varStyles := _Styles{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varStyles)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Styles(varStyles)
+
+	return err
 }
 
 type NullableStyles struct {

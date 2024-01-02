@@ -1,31 +1,61 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "CRM Pipelines",
+    "title" : "Pipelines",
     "description" : "Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. Pipelines support `deals` and `tickets` object types.\n\n## Pipeline ID validation\n\nWhen calling endpoints that take pipelineId as a parameter, that ID must correspond to an existing, un-archived pipeline. Otherwise the request will fail with a `404 Not Found` response.",
-    "version" : "v3"
+    "version" : "v3",
+    "x-hubspot-product-tier-requirements" : {
+      "marketing" : "FREE",
+      "sales" : "FREE",
+      "service" : "FREE",
+      "cms" : "STARTER"
+    },
+    "x-hubspot-documentation-banner" : "NONE",
+    "x-hubspot-api-use-case" : "To streamline customer support processes, use this API to retrieve your existing ticket pipelines and add new stages based on your business needs. Support reps can then assign tickets to those pipeline stages to track progress on customer issues.",
+    "x-hubspot-related-documentation" : [ {
+      "name" : "Pipelines Overview",
+      "url" : "https://developers.hubspot.com/docs/api/crm/pipelines"
+    } ],
+    "x-hubspot-introduction" : "Use the pipelines API to create and manage deal and ticket pipelines. Pipelines enable you to track the status or progress of deals and tickets, such as closing deals and opening support tickets."
   },
   "servers" : [ {
-    "url" : "https://api.hubapi.com/"
+    "url" : "https://api.hubapi.com"
   } ],
   "tags" : [ {
-    "name" : "Pipeline Stages"
+    "name" : "Pipeline Stage Audits",
+    "description" : "",
+    "x-hubspot-tag-name-english-source" : "Pipeline Stage Audits"
   }, {
-    "name" : "Pipelines"
+    "name" : "Pipelines",
+    "description" : "",
+    "x-hubspot-tag-name-english-source" : "Pipelines"
   }, {
-    "name" : "Pipeline Audits"
+    "name" : "Pipeline Audits",
+    "description" : "",
+    "x-hubspot-tag-name-english-source" : "Pipeline Audits"
   }, {
-    "name" : "Pipeline Stage Audits"
+    "name" : "Pipeline Stages",
+    "description" : "",
+    "x-hubspot-tag-name-english-source" : "Pipeline Stages"
   } ],
   "paths" : {
-    "/crm/v3/pipelines/{objectType}" : {
+    "/crm/v3/pipelines/{objectType}/{pipelineId}/stages/{stageId}/audit" : {
       "get" : {
-        "tags" : [ "Pipelines" ],
-        "summary" : "Retrieve all pipelines",
-        "description" : "Return all pipelines for the object type specified by `{objectType}`.",
-        "operationId" : "GetAll",
+        "tags" : [ "Pipeline Stage Audits" ],
+        "summary" : "Return an audit of all changes to the pipeline stage",
+        "description" : "Return a reverse chronological list of all mutations that have occurred on the pipeline stage identified by `{stageId}`.",
+        "operationId" : "StagesGetAudit",
         "parameters" : [ {
           "name" : "objectType",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "stageId",
           "in" : "path",
           "required" : true,
           "style" : "simple",
@@ -40,7 +70,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/CollectionResponsePipelineNoPaging"
+                  "$ref" : "#/components/schemas/CollectionResponsePublicAuditInfoNoPaging"
                 }
               }
             }
@@ -119,72 +149,6 @@
           "private_apps" : [ "crm.schemas.line_items.read" ]
         }, {
           "oauth2" : [ "crm.schemas.line_items.read" ]
-        } ]
-      },
-      "post" : {
-        "tags" : [ "Pipelines" ],
-        "summary" : "Create a pipeline",
-        "description" : "Create a new pipeline with the provided property values. The entire pipeline object, including its unique ID, will be returned in the response.",
-        "operationId" : "Create",
-        "parameters" : [ {
-          "name" : "objectType",
-          "in" : "path",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/PipelineInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "description" : "successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Pipeline"
-                }
-              }
-            }
-          },
-          "default" : {
-            "$ref" : "#/components/responses/Error"
-          }
-        },
-        "security" : [ {
-          "oauth2_legacy" : [ "tickets" ]
-        }, {
-          "oauth2" : [ "crm.schemas.deals.write" ]
-        }, {
-          "private_apps_legacy" : [ "e-commerce" ]
-        }, {
-          "oauth2" : [ "crm.schemas.contacts.write" ]
-        }, {
-          "oauth2" : [ "crm.schemas.companies.write" ]
-        }, {
-          "private_apps_legacy" : [ "contacts" ]
-        }, {
-          "private_apps" : [ "crm.schemas.contacts.write" ]
-        }, {
-          "private_apps" : [ "crm.schemas.companies.write" ]
-        }, {
-          "oauth2_legacy" : [ "e-commerce" ]
-        }, {
-          "private_apps_legacy" : [ "tickets" ]
-        }, {
-          "private_apps_legacy" : [ "crm.schemas.custom.write" ]
-        }, {
-          "private_apps" : [ "crm.schemas.deals.write" ]
         } ]
       }
     },
@@ -333,6 +297,16 @@
             "type" : "boolean",
             "default" : false
           }
+        }, {
+          "name" : "validateDealStageUsagesBeforeDelete",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false
+          }
         } ],
         "requestBody" : {
           "content" : {
@@ -418,6 +392,16 @@
             "type" : "boolean",
             "default" : false
           }
+        }, {
+          "name" : "validateDealStageUsagesBeforeDelete",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false
+          }
         } ],
         "responses" : {
           "204" : {
@@ -479,6 +463,16 @@
           }
         }, {
           "name" : "validateReferencesBeforeDelete",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false
+          }
+        }, {
+          "name" : "validateDealStageUsagesBeforeDelete",
           "in" : "query",
           "required" : false,
           "style" : "form",
@@ -806,6 +800,176 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PipelineStage"
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Error"
+          }
+        },
+        "security" : [ {
+          "oauth2_legacy" : [ "tickets" ]
+        }, {
+          "oauth2" : [ "crm.schemas.deals.write" ]
+        }, {
+          "private_apps_legacy" : [ "e-commerce" ]
+        }, {
+          "oauth2" : [ "crm.schemas.contacts.write" ]
+        }, {
+          "oauth2" : [ "crm.schemas.companies.write" ]
+        }, {
+          "private_apps_legacy" : [ "contacts" ]
+        }, {
+          "private_apps" : [ "crm.schemas.contacts.write" ]
+        }, {
+          "private_apps" : [ "crm.schemas.companies.write" ]
+        }, {
+          "oauth2_legacy" : [ "e-commerce" ]
+        }, {
+          "private_apps_legacy" : [ "tickets" ]
+        }, {
+          "private_apps_legacy" : [ "crm.schemas.custom.write" ]
+        }, {
+          "private_apps" : [ "crm.schemas.deals.write" ]
+        } ]
+      }
+    },
+    "/crm/v3/pipelines/{objectType}" : {
+      "get" : {
+        "tags" : [ "Pipelines" ],
+        "summary" : "Retrieve all pipelines",
+        "description" : "Return all pipelines for the object type specified by `{objectType}`.",
+        "operationId" : "GetAll",
+        "parameters" : [ {
+          "name" : "objectType",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CollectionResponsePipelineNoPaging"
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Error"
+          }
+        },
+        "security" : [ {
+          "oauth2_legacy" : [ "media_bridge.read" ]
+        }, {
+          "oauth2" : [ "crm.objects.contacts.read" ]
+        }, {
+          "private_apps" : [ "crm.objects.deals.read" ]
+        }, {
+          "private_apps_legacy" : [ "timeline" ]
+        }, {
+          "oauth2" : [ "crm.objects.deals.read" ]
+        }, {
+          "private_apps_legacy" : [ "contacts" ]
+        }, {
+          "private_apps" : [ "crm.objects.contacts.read" ]
+        }, {
+          "oauth2_legacy" : [ "crm.schemas.custom.read" ]
+        }, {
+          "private_apps" : [ "crm.objects.companies.read" ]
+        }, {
+          "private_apps" : [ "crm.objects.deals.write" ]
+        }, {
+          "oauth2" : [ "crm.schemas.quotes.read" ]
+        }, {
+          "private_apps" : [ "crm.schemas.quotes.read" ]
+        }, {
+          "oauth2" : [ "crm.objects.deals.write" ]
+        }, {
+          "oauth2" : [ "crm.objects.companies.read" ]
+        }, {
+          "private_apps_legacy" : [ "crm.schemas.custom.read" ]
+        }, {
+          "private_apps_legacy" : [ "crm.objects.goals.read" ]
+        }, {
+          "private_apps" : [ "crm.schemas.deals.read" ]
+        }, {
+          "oauth2" : [ "crm.schemas.deals.read" ]
+        }, {
+          "oauth2_legacy" : [ "timeline" ]
+        }, {
+          "private_apps_legacy" : [ "media_bridge.read" ]
+        }, {
+          "private_apps" : [ "crm.objects.companies.write" ]
+        }, {
+          "oauth2" : [ "crm.objects.companies.write" ]
+        }, {
+          "oauth2" : [ "crm.schemas.contacts.read" ]
+        }, {
+          "private_apps" : [ "crm.schemas.contacts.read" ]
+        }, {
+          "oauth2_legacy" : [ "tickets" ]
+        }, {
+          "private_apps_legacy" : [ "e-commerce" ]
+        }, {
+          "oauth2" : [ "crm.objects.contacts.write" ]
+        }, {
+          "private_apps" : [ "crm.objects.contacts.write" ]
+        }, {
+          "private_apps" : [ "crm.schemas.companies.read" ]
+        }, {
+          "oauth2" : [ "crm.schemas.companies.read" ]
+        }, {
+          "oauth2_legacy" : [ "e-commerce" ]
+        }, {
+          "private_apps_legacy" : [ "tickets" ]
+        }, {
+          "oauth2_legacy" : [ "crm.objects.goals.read" ]
+        }, {
+          "private_apps" : [ "crm.schemas.line_items.read" ]
+        }, {
+          "oauth2" : [ "crm.schemas.line_items.read" ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Pipelines" ],
+        "summary" : "Create a pipeline",
+        "description" : "Create a new pipeline with the provided property values. The entire pipeline object, including its unique ID, will be returned in the response.",
+        "operationId" : "Create",
+        "parameters" : [ {
+          "name" : "objectType",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PipelineInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Pipeline"
                 }
               }
             }
@@ -1198,119 +1362,6 @@
           "private_apps" : [ "crm.schemas.deals.write" ]
         } ]
       }
-    },
-    "/crm/v3/pipelines/{objectType}/{pipelineId}/stages/{stageId}/audit" : {
-      "get" : {
-        "tags" : [ "Pipeline Stage Audits" ],
-        "summary" : "Return an audit of all changes to the pipeline stage",
-        "description" : "Return a reverse chronological list of all mutations that have occurred on the pipeline stage identified by `{stageId}`.",
-        "operationId" : "StagesGetAudit",
-        "parameters" : [ {
-          "name" : "objectType",
-          "in" : "path",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "stageId",
-          "in" : "path",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CollectionResponsePublicAuditInfoNoPaging"
-                }
-              }
-            }
-          },
-          "default" : {
-            "$ref" : "#/components/responses/Error"
-          }
-        },
-        "security" : [ {
-          "oauth2_legacy" : [ "media_bridge.read" ]
-        }, {
-          "oauth2" : [ "crm.objects.contacts.read" ]
-        }, {
-          "private_apps" : [ "crm.objects.deals.read" ]
-        }, {
-          "private_apps_legacy" : [ "timeline" ]
-        }, {
-          "oauth2" : [ "crm.objects.deals.read" ]
-        }, {
-          "private_apps_legacy" : [ "contacts" ]
-        }, {
-          "private_apps" : [ "crm.objects.contacts.read" ]
-        }, {
-          "oauth2_legacy" : [ "crm.schemas.custom.read" ]
-        }, {
-          "private_apps" : [ "crm.objects.companies.read" ]
-        }, {
-          "private_apps" : [ "crm.objects.deals.write" ]
-        }, {
-          "oauth2" : [ "crm.schemas.quotes.read" ]
-        }, {
-          "private_apps" : [ "crm.schemas.quotes.read" ]
-        }, {
-          "oauth2" : [ "crm.objects.deals.write" ]
-        }, {
-          "oauth2" : [ "crm.objects.companies.read" ]
-        }, {
-          "private_apps_legacy" : [ "crm.schemas.custom.read" ]
-        }, {
-          "private_apps_legacy" : [ "crm.objects.goals.read" ]
-        }, {
-          "private_apps" : [ "crm.schemas.deals.read" ]
-        }, {
-          "oauth2" : [ "crm.schemas.deals.read" ]
-        }, {
-          "oauth2_legacy" : [ "timeline" ]
-        }, {
-          "private_apps_legacy" : [ "media_bridge.read" ]
-        }, {
-          "private_apps" : [ "crm.objects.companies.write" ]
-        }, {
-          "oauth2" : [ "crm.objects.companies.write" ]
-        }, {
-          "oauth2" : [ "crm.schemas.contacts.read" ]
-        }, {
-          "private_apps" : [ "crm.schemas.contacts.read" ]
-        }, {
-          "oauth2_legacy" : [ "tickets" ]
-        }, {
-          "private_apps_legacy" : [ "e-commerce" ]
-        }, {
-          "oauth2" : [ "crm.objects.contacts.write" ]
-        }, {
-          "private_apps" : [ "crm.objects.contacts.write" ]
-        }, {
-          "private_apps" : [ "crm.schemas.companies.read" ]
-        }, {
-          "oauth2" : [ "crm.schemas.companies.read" ]
-        }, {
-          "oauth2_legacy" : [ "e-commerce" ]
-        }, {
-          "private_apps_legacy" : [ "tickets" ]
-        }, {
-          "oauth2_legacy" : [ "crm.objects.goals.read" ]
-        }, {
-          "private_apps" : [ "crm.schemas.line_items.read" ]
-        }, {
-          "oauth2" : [ "crm.schemas.line_items.read" ]
-        } ]
-      }
     }
   },
   "components" : {
@@ -1319,25 +1370,30 @@
         "required" : [ "metadata" ],
         "type" : "object",
         "properties" : {
-          "label" : {
-            "type" : "string",
-            "description" : "A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline."
-          },
           "archived" : {
             "type" : "boolean",
             "description" : "Whether the pipeline is archived."
-          },
-          "displayOrder" : {
-            "type" : "integer",
-            "description" : "The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.",
-            "format" : "int32"
           },
           "metadata" : {
             "type" : "object",
             "additionalProperties" : {
               "type" : "string"
             },
-            "description" : "A JSON object containing properties that are not present on all object pipelines.\n\nFor `deals` pipelines, the `probability` field is required (`{ \"probability\": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.\n\nFor `tickets` pipelines, the `ticketState` field is optional (`{ \"ticketState\": \"OPEN\" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`."
+            "description" : "A JSON object containing properties that are not present on all object pipelines.\n\nFor `deals` pipelines, the `probability` field is required (`{ \"probability\": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.\n\nFor `tickets` pipelines, the `ticketState` field is optional (`{ \"ticketState\": \"OPEN\" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`.",
+            "example" : {
+              "ticketState" : "CLOSED"
+            }
+          },
+          "displayOrder" : {
+            "type" : "integer",
+            "description" : "The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.",
+            "format" : "int32",
+            "example" : 1
+          },
+          "label" : {
+            "type" : "string",
+            "description" : "A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline.",
+            "example" : "Done"
           }
         },
         "description" : "An input used to update some properties on a pipeline definition.",
@@ -1352,18 +1408,20 @@
       "PipelinePatchInput" : {
         "type" : "object",
         "properties" : {
-          "label" : {
-            "type" : "string",
-            "description" : "A unique label used to organize pipelines in HubSpot's UI"
+          "archived" : {
+            "type" : "boolean",
+            "description" : "Whether the pipeline is archived. This property should only be provided when restoring an archived pipeline. If it's provided in any other call, the request will fail and a `400 Bad Request` will be returned."
           },
           "displayOrder" : {
             "type" : "integer",
             "description" : "The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.",
-            "format" : "int32"
+            "format" : "int32",
+            "example" : 0
           },
-          "archived" : {
-            "type" : "boolean",
-            "description" : "Whether the pipeline is archived. This property should only be provided when restoring an archived pipeline. If it's provided in any other call, the request will fail and a `400 Bad Request` will be returned."
+          "label" : {
+            "type" : "string",
+            "description" : "A unique label used to organize pipelines in HubSpot's UI",
+            "example" : "My updated pipeline"
           }
         },
         "description" : "An input used to update some properties on a pipeline definition.",
@@ -1376,44 +1434,57 @@
         "required" : [ "archived", "createdAt", "displayOrder", "id", "label", "metadata", "updatedAt" ],
         "type" : "object",
         "properties" : {
-          "label" : {
-            "type" : "string",
-            "description" : "A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline."
-          },
-          "displayOrder" : {
-            "type" : "integer",
-            "description" : "The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.",
-            "format" : "int32"
-          },
-          "metadata" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string"
-            },
-            "description" : "A JSON object containing properties that are not present on all object pipelines.\n\nFor `deals` pipelines, the `probability` field is required (`{ \"probability\": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.\n\nFor `tickets` pipelines, the `ticketState` field is optional (`{ \"ticketState\": \"OPEN\" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`."
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "A unique identifier generated by HubSpot that can be used to retrieve and update the pipeline stage."
-          },
           "createdAt" : {
             "type" : "string",
             "description" : "The date the pipeline stage was created. The stages on default pipelines will have createdAt = 0.",
-            "format" : "date-time"
+            "format" : "date-time",
+            "example" : "2019-10-30T03:30:17.883+00:00"
           },
           "archivedAt" : {
             "type" : "string",
             "description" : "The date the pipeline was archived. `archivedAt` will only be present if the pipeline is archived.",
             "format" : "date-time"
           },
+          "archived" : {
+            "type" : "boolean",
+            "description" : "Whether the pipeline is archived.",
+            "example" : false
+          },
+          "metadata" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "description" : "A JSON object containing properties that are not present on all object pipelines.\n\nFor `deals` pipelines, the `probability` field is required (`{ \"probability\": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.\n\nFor `tickets` pipelines, the `ticketState` field is optional (`{ \"ticketState\": \"OPEN\" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`.",
+            "example" : {
+              "ticketState" : "OPEN"
+            }
+          },
+          "displayOrder" : {
+            "type" : "integer",
+            "description" : "The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "writePermissions" : {
+            "type" : "string",
+            "enum" : [ "CRM_PERMISSIONS_ENFORCEMENT", "READ_ONLY", "INTERNAL_ONLY" ]
+          },
+          "label" : {
+            "type" : "string",
+            "description" : "A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline.",
+            "example" : "In Progress"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "A unique identifier generated by HubSpot that can be used to retrieve and update the pipeline stage.",
+            "example" : "1234912"
+          },
           "updatedAt" : {
             "type" : "string",
             "description" : "The date the pipeline stage was last updated.",
-            "format" : "date-time"
-          },
-          "archived" : {
-            "type" : "boolean",
-            "description" : "Whether the pipeline is archived."
+            "format" : "date-time",
+            "example" : "2019-12-07T16:50:06.678+00:00"
           }
         },
         "description" : "A pipeline stage definition.",
@@ -1445,21 +1516,7 @@
         "required" : [ "action", "identifier", "portalId" ],
         "type" : "object",
         "properties" : {
-          "portalId" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
           "identifier" : {
-            "type" : "string"
-          },
-          "action" : {
-            "type" : "string"
-          },
-          "timestamp" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "message" : {
             "type" : "string"
           },
           "rawObject" : {
@@ -1469,6 +1526,20 @@
           "fromUserId" : {
             "type" : "integer",
             "format" : "int32"
+          },
+          "portalId" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "action" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },
@@ -1476,31 +1547,9 @@
         "required" : [ "category", "correlationId", "message" ],
         "type" : "object",
         "properties" : {
-          "message" : {
-            "type" : "string",
-            "description" : "A human readable message describing the error along with remediation steps where appropriate",
-            "example" : "An error occurred"
-          },
-          "correlationId" : {
-            "type" : "string",
-            "description" : "A unique identifier for the request. Include this value with any error reports or support tickets",
-            "format" : "uuid",
-            "example" : "aeb5f871-7f07-4993-9211-075dc63e7cbf"
-          },
-          "category" : {
-            "type" : "string",
-            "description" : "The error category"
-          },
           "subCategory" : {
             "type" : "string",
             "description" : "A specific category that contains more specific detail about the error"
-          },
-          "errors" : {
-            "type" : "array",
-            "description" : "further information about the error",
-            "items" : {
-              "$ref" : "#/components/schemas/ErrorDetail"
-            }
           },
           "context" : {
             "type" : "object",
@@ -1512,16 +1561,42 @@
             },
             "description" : "Context about the error condition",
             "example" : {
-              "invalidPropertyName" : [ "propertyValue" ],
-              "missingScopes" : [ "scope1", "scope2" ]
+              "missingScopes" : [ "scope1", "scope2" ],
+              "invalidPropertyName" : [ "propertyValue" ]
             }
+          },
+          "correlationId" : {
+            "type" : "string",
+            "description" : "A unique identifier for the request. Include this value with any error reports or support tickets",
+            "format" : "uuid",
+            "example" : "aeb5f871-7f07-4993-9211-075dc63e7cbf"
           },
           "links" : {
             "type" : "object",
             "additionalProperties" : {
               "type" : "string"
             },
-            "description" : "A map of link names to associated URIs containing documentation about the error or recommended remediation steps"
+            "description" : "A map of link names to associated URIs containing documentation about the error or recommended remediation steps",
+            "example" : {
+              "knowledge-base" : "https://www.hubspot.com/products/service/knowledge-base"
+            }
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "A human readable message describing the error along with remediation steps where appropriate",
+            "example" : "Invalid input (details will vary based on the error)"
+          },
+          "category" : {
+            "type" : "string",
+            "description" : "The error category",
+            "example" : "VALIDATION_ERROR"
+          },
+          "errors" : {
+            "type" : "array",
+            "description" : "further information about the error",
+            "items" : {
+              "$ref" : "#/components/schemas/ErrorDetail"
+            }
           }
         },
         "example" : {
@@ -1549,44 +1624,71 @@
         "required" : [ "archived", "createdAt", "displayOrder", "id", "label", "stages", "updatedAt" ],
         "type" : "object",
         "properties" : {
-          "label" : {
-            "type" : "string",
-            "description" : "A unique label used to organize pipelines in HubSpot's UI"
-          },
-          "displayOrder" : {
-            "type" : "integer",
-            "description" : "The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.",
-            "format" : "int32"
-          },
-          "id" : {
-            "type" : "string",
-            "description" : "A unique identifier generated by HubSpot that can be used to retrieve and update the pipeline."
-          },
-          "stages" : {
-            "type" : "array",
-            "description" : "The stages associated with the pipeline. They can be retrieved and updated via the pipeline stages endpoints.",
-            "items" : {
-              "$ref" : "#/components/schemas/PipelineStage"
-            }
-          },
           "createdAt" : {
             "type" : "string",
             "description" : "The date the pipeline was created. The default pipelines will have createdAt = 0.",
-            "format" : "date-time"
+            "format" : "date-time",
+            "example" : "2019-10-30T03:30:17.883+00:00"
           },
           "archivedAt" : {
             "type" : "string",
             "description" : "The date the pipeline was archived. `archivedAt` will only be present if the pipeline is archived.",
             "format" : "date-time"
           },
+          "archived" : {
+            "type" : "boolean",
+            "description" : "Whether the pipeline is archived.",
+            "example" : false
+          },
+          "displayOrder" : {
+            "type" : "integer",
+            "description" : "The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "stages" : {
+            "type" : "array",
+            "description" : "The stages associated with the pipeline. They can be retrieved and updated via the pipeline stages endpoints.",
+            "example" : [ {
+              "id" : "1234912",
+              "label" : "In Progress",
+              "archived" : false,
+              "metadata" : {
+                "ticketState" : "OPEN"
+              },
+              "createdAt" : "2019-10-30T03:30:17.883Z",
+              "updatedAt" : "2019-12-07T16:50:06.678Z",
+              "displayOrder" : 0
+            }, {
+              "id" : "1234914",
+              "label" : "Done",
+              "archived" : false,
+              "metadata" : {
+                "ticketState" : "CLOSED"
+              },
+              "createdAt" : "2019-10-30T03:30:17.883Z",
+              "updatedAt" : "2019-12-07T16:50:06.678Z",
+              "displayOrder" : 0
+            } ],
+            "items" : {
+              "$ref" : "#/components/schemas/PipelineStage"
+            }
+          },
+          "label" : {
+            "type" : "string",
+            "description" : "A unique label used to organize pipelines in HubSpot's UI",
+            "example" : "My ticket pipeline"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "A unique identifier generated by HubSpot that can be used to retrieve and update the pipeline.",
+            "example" : "812723471"
+          },
           "updatedAt" : {
             "type" : "string",
             "description" : "The date the pipeline was last updated.",
-            "format" : "date-time"
-          },
-          "archived" : {
-            "type" : "boolean",
-            "description" : "Whether the pipeline is archived."
+            "format" : "date-time",
+            "example" : "2019-12-07T16:50:06.678+00:00"
           }
         },
         "description" : "A pipeline definition.",
@@ -1624,21 +1726,17 @@
         "required" : [ "message" ],
         "type" : "object",
         "properties" : {
-          "message" : {
+          "subCategory" : {
             "type" : "string",
-            "description" : "A human readable message describing the error along with remediation steps where appropriate"
-          },
-          "in" : {
-            "type" : "string",
-            "description" : "The name of the field or parameter in which the error was found."
+            "description" : "A specific category that contains more specific detail about the error"
           },
           "code" : {
             "type" : "string",
             "description" : "The status code associated with the error detail"
           },
-          "subCategory" : {
+          "in" : {
             "type" : "string",
-            "description" : "A specific category that contains more specific detail about the error"
+            "description" : "The name of the field or parameter in which the error was found."
           },
           "context" : {
             "type" : "object",
@@ -1652,6 +1750,10 @@
             "example" : {
               "missingScopes" : [ "scope1", "scope2" ]
             }
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "A human readable message describing the error along with remediation steps where appropriate"
           }
         }
       },
@@ -1659,21 +1761,26 @@
         "required" : [ "displayOrder", "label", "metadata" ],
         "type" : "object",
         "properties" : {
-          "label" : {
-            "type" : "string",
-            "description" : "A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline."
-          },
-          "displayOrder" : {
-            "type" : "integer",
-            "description" : "The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.",
-            "format" : "int32"
-          },
           "metadata" : {
             "type" : "object",
             "additionalProperties" : {
               "type" : "string"
             },
-            "description" : "A JSON object containing properties that are not present on all object pipelines.\n\nFor `deals` pipelines, the `probability` field is required (`{ \"probability\": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.\n\nFor `tickets` pipelines, the `ticketState` field is optional (`{ \"ticketState\": \"OPEN\" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`."
+            "description" : "A JSON object containing properties that are not present on all object pipelines.\n\nFor `deals` pipelines, the `probability` field is required (`{ \"probability\": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.\n\nFor `tickets` pipelines, the `ticketState` field is optional (`{ \"ticketState\": \"OPEN\" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`.",
+            "example" : {
+              "ticketState" : "CLOSED"
+            }
+          },
+          "displayOrder" : {
+            "type" : "integer",
+            "description" : "The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.",
+            "format" : "int32",
+            "example" : 1
+          },
+          "label" : {
+            "type" : "string",
+            "description" : "A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline.",
+            "example" : "Done"
           }
         },
         "description" : "An input used to create or replace a pipeline stage's definition.",
@@ -1689,21 +1796,36 @@
         "required" : [ "displayOrder", "label", "stages" ],
         "type" : "object",
         "properties" : {
-          "label" : {
-            "type" : "string",
-            "description" : "A unique label used to organize pipelines in HubSpot's UI"
-          },
           "displayOrder" : {
             "type" : "integer",
             "description" : "The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.",
-            "format" : "int32"
+            "format" : "int32",
+            "example" : 0
           },
           "stages" : {
             "type" : "array",
             "description" : "Pipeline stage inputs used to create the new or replacement pipeline.",
+            "example" : [ {
+              "label" : "In Progress",
+              "metadata" : {
+                "ticketState" : "OPEN"
+              },
+              "displayOrder" : 0
+            }, {
+              "label" : "Done",
+              "metadata" : {
+                "ticketState" : "CLOSED"
+              },
+              "displayOrder" : 1
+            } ],
             "items" : {
               "$ref" : "#/components/schemas/PipelineStageInput"
             }
+          },
+          "label" : {
+            "type" : "string",
+            "description" : "A unique label used to organize pipelines in HubSpot's UI",
+            "example" : "My replaced pipeline"
           }
         },
         "description" : "An input used to create or replace a pipeline's definition.",
@@ -1758,12 +1880,12 @@
             "authorizationUrl" : "https://app.hubspot.com/oauth/authorize",
             "tokenUrl" : "https://api.hubapi.com/oauth/v1/token",
             "scopes" : {
+              "crm.schemas.custom.read" : "View custom object definitions",
               "tickets" : "Read and write tickets",
               "crm.objects.goals.read" : "Read goals",
               "media_bridge.read" : "Read media and media events",
               "e-commerce" : "e-commerce",
-              "timeline" : "Create timeline events",
-              "crm.schemas.custom.read" : "View custom object definitions"
+              "timeline" : "Create timeline events"
             }
           }
         }
@@ -1775,6 +1897,7 @@
             "authorizationUrl" : "https://app.hubspot.com/oauth/authorize",
             "tokenUrl" : "https://api.hubapi.com/oauth/v1/token",
             "scopes" : {
+              "crm.objects.deals.read" : " ",
               "crm.schemas.line_items.read" : "Line Items schemas",
               "crm.objects.deals.write" : " ",
               "crm.schemas.deals.read" : " ",
@@ -1785,7 +1908,6 @@
               "crm.objects.companies.write" : " ",
               "crm.objects.companies.read" : " ",
               "crm.schemas.companies.read" : " ",
-              "crm.objects.deals.read" : " ",
               "crm.schemas.companies.write" : " ",
               "crm.schemas.deals.write" : " ",
               "crm.schemas.contacts.write" : " "
@@ -1805,5 +1927,12 @@
       }
     }
   },
-  "x-hubspot-available-client-libraries" : [ "PHP", "Node", "Python", "Ruby" ]
+  "x-hubspot-available-client-libraries" : [ "PHP", "Node", "Ruby", "Python" ],
+  "x-hubspot-product-tier-requirements" : {
+    "marketing" : "FREE",
+    "sales" : "FREE",
+    "service" : "FREE",
+    "cms" : "STARTER"
+  },
+  "x-hubspot-documentation-banner" : "NONE"
 }

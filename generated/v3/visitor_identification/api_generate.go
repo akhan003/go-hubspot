@@ -1,5 +1,5 @@
 /*
-Visitor Identification
+Conversations Visitor Identification
 
 The Visitor Identification API allows you to pass identification information to the HubSpot chat widget for otherwise unknown visitors that were verified by your own authentication system.
 
@@ -18,42 +18,43 @@ import (
 	"net/url"
 )
 
-// GenerateApiService GenerateApi service
-type GenerateApiService service
+// GenerateAPIService GenerateAPI service
+type GenerateAPIService service
 
-type ApiGenerateTokenRequest struct {
+type ApiPostConversationsV3VisitorIdentificationTokensCreateRequest struct {
 	ctx                                  context.Context
-	ApiService                           *GenerateApiService
+	ApiService                           *GenerateAPIService
 	identificationTokenGenerationRequest *IdentificationTokenGenerationRequest
 }
 
-func (r ApiGenerateTokenRequest) IdentificationTokenGenerationRequest(identificationTokenGenerationRequest IdentificationTokenGenerationRequest) ApiGenerateTokenRequest {
+func (r ApiPostConversationsV3VisitorIdentificationTokensCreateRequest) IdentificationTokenGenerationRequest(identificationTokenGenerationRequest IdentificationTokenGenerationRequest) ApiPostConversationsV3VisitorIdentificationTokensCreateRequest {
 	r.identificationTokenGenerationRequest = &identificationTokenGenerationRequest
 	return r
 }
 
-func (r ApiGenerateTokenRequest) Execute() (*IdentificationTokenResponse, *http.Response, error) {
-	return r.ApiService.GenerateTokenExecute(r)
+func (r ApiPostConversationsV3VisitorIdentificationTokensCreateRequest) Execute() (*IdentificationTokenResponse, *http.Response, error) {
+	return r.ApiService.PostConversationsV3VisitorIdentificationTokensCreateExecute(r)
 }
 
 /*
-GenerateToken Generate a token
+PostConversationsV3VisitorIdentificationTokensCreate Generate a token
 
 Generates a new visitor identification token. This token will be unique every time this endpoint is called, even if called with the same email address. This token is temporary and will expire after 12 hours
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGenerateTokenRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostConversationsV3VisitorIdentificationTokensCreateRequest
 */
-func (a *GenerateApiService) GenerateToken(ctx context.Context) ApiGenerateTokenRequest {
-	return ApiGenerateTokenRequest{
+func (a *GenerateAPIService) PostConversationsV3VisitorIdentificationTokensCreate(ctx context.Context) ApiPostConversationsV3VisitorIdentificationTokensCreateRequest {
+	return ApiPostConversationsV3VisitorIdentificationTokensCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return IdentificationTokenResponse
-func (a *GenerateApiService) GenerateTokenExecute(r ApiGenerateTokenRequest) (*IdentificationTokenResponse, *http.Response, error) {
+//
+//	@return IdentificationTokenResponse
+func (a *GenerateAPIService) PostConversationsV3VisitorIdentificationTokensCreateExecute(r ApiPostConversationsV3VisitorIdentificationTokensCreateRequest) (*IdentificationTokenResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -61,7 +62,7 @@ func (a *GenerateApiService) GenerateTokenExecute(r ApiGenerateTokenRequest) (*I
 		localVarReturnValue *IdentificationTokenResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GenerateApiService.GenerateToken")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GenerateAPIService.PostConversationsV3VisitorIdentificationTokensCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

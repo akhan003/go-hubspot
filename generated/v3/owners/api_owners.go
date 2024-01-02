@@ -1,5 +1,5 @@
 /*
-CRM Owners
+Crm Owners
 
 HubSpot uses **owners** to assign CRM objects to specific people in your organization. The endpoints described here are used to get a list of the owners that are available for an account. To assign an owner to an object, set the hubspot_owner_id property using the appropriate CRM object update or create a request.  If teams are available for your HubSpot tier, these endpoints will also indicate which team(s) an owner can access, as well as which team is the owner's primary team.
 
@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// OwnersApiService OwnersApi service
-type OwnersApiService service
+// OwnersAPIService OwnersAPI service
+type OwnersAPIService service
 
 type ApiGetByIDRequest struct {
 	ctx        context.Context
-	ApiService *OwnersApiService
+	ApiService *OwnersAPIService
 	ownerId    int32
 	idProperty *string
 	archived   *bool
@@ -48,11 +48,11 @@ func (r ApiGetByIDRequest) Execute() (*PublicOwner, *http.Response, error) {
 /*
 GetByID Read an owner by given `id` or `userId`
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param ownerId
- @return ApiGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param ownerId
+	@return ApiGetByIDRequest
 */
-func (a *OwnersApiService) GetByID(ctx context.Context, ownerId int32) ApiGetByIDRequest {
+func (a *OwnersAPIService) GetByID(ctx context.Context, ownerId int32) ApiGetByIDRequest {
 	return ApiGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -61,8 +61,9 @@ func (a *OwnersApiService) GetByID(ctx context.Context, ownerId int32) ApiGetByI
 }
 
 // Execute executes the request
-//  @return PublicOwner
-func (a *OwnersApiService) GetByIDExecute(r ApiGetByIDRequest) (*PublicOwner, *http.Response, error) {
+//
+//	@return PublicOwner
+func (a *OwnersAPIService) GetByIDExecute(r ApiGetByIDRequest) (*PublicOwner, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -70,7 +71,7 @@ func (a *OwnersApiService) GetByIDExecute(r ApiGetByIDRequest) (*PublicOwner, *h
 		localVarReturnValue *PublicOwner
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnersApiService.GetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnersAPIService.GetByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -84,9 +85,15 @@ func (a *OwnersApiService) GetByIDExecute(r ApiGetByIDRequest) (*PublicOwner, *h
 
 	if r.idProperty != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "idProperty", r.idProperty, "")
+	} else {
+		var defaultValue string = "id"
+		r.idProperty = &defaultValue
 	}
 	if r.archived != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -180,7 +187,7 @@ func (a *OwnersApiService) GetByIDExecute(r ApiGetByIDRequest) (*PublicOwner, *h
 
 type ApiGetPageRequest struct {
 	ctx        context.Context
-	ApiService *OwnersApiService
+	ApiService *OwnersAPIService
 	email      *string
 	after      *string
 	limit      *int32
@@ -218,10 +225,10 @@ func (r ApiGetPageRequest) Execute() (*CollectionResponsePublicOwnerForwardPagin
 /*
 GetPage Get a page of owners
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetPageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetPageRequest
 */
-func (a *OwnersApiService) GetPage(ctx context.Context) ApiGetPageRequest {
+func (a *OwnersAPIService) GetPage(ctx context.Context) ApiGetPageRequest {
 	return ApiGetPageRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -229,8 +236,9 @@ func (a *OwnersApiService) GetPage(ctx context.Context) ApiGetPageRequest {
 }
 
 // Execute executes the request
-//  @return CollectionResponsePublicOwnerForwardPaging
-func (a *OwnersApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionResponsePublicOwnerForwardPaging, *http.Response, error) {
+//
+//	@return CollectionResponsePublicOwnerForwardPaging
+func (a *OwnersAPIService) GetPageExecute(r ApiGetPageRequest) (*CollectionResponsePublicOwnerForwardPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -238,7 +246,7 @@ func (a *OwnersApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespo
 		localVarReturnValue *CollectionResponsePublicOwnerForwardPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnersApiService.GetPage")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnersAPIService.GetPage")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -257,9 +265,15 @@ func (a *OwnersApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespo
 	}
 	if r.limit != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	} else {
+		var defaultValue int32 = 100
+		r.limit = &defaultValue
 	}
 	if r.archived != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

@@ -1,5 +1,5 @@
 /*
-Subscriptions
+Communication Preferences Subscriptions
 
 Subscriptions allow contacts to control what forms of communications they receive. Contacts can decide whether they want to receive communication pertaining to a specific topic, brand, or an entire HubSpot account.
 
@@ -11,7 +11,9 @@ API version: v3
 package communications_status
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PublicSubscriptionStatus type satisfies the MappedNullable interface at compile time
@@ -19,35 +21,37 @@ var _ MappedNullable = &PublicSubscriptionStatus{}
 
 // PublicSubscriptionStatus The status of a subscription for a contact.
 type PublicSubscriptionStatus struct {
-	// The ID for the subscription.
-	Id string `json:"id"`
+	// The ID of the brand that the subscription is associated with, if there is one.
+	BrandId *int64 `json:"brandId,omitempty"`
 	// The name of the subscription.
 	Name string `json:"name"`
 	// A description of the subscription.
 	Description string `json:"description"`
+	// The legal reason for the current status of the subscription.
+	LegalBasis *string `json:"legalBasis,omitempty"`
+	// The name of the preferences group that the subscription is associated with.
+	PreferenceGroupName *string `json:"preferenceGroupName,omitempty"`
+	// The ID for the subscription.
+	Id string `json:"id"`
+	// A more detailed explanation to go with the legal basis.
+	LegalBasisExplanation *string `json:"legalBasisExplanation,omitempty"`
 	// Whether the contact is subscribed.
 	Status string `json:"status"`
 	// Where the status is determined from e.g. PORTAL_WIDE_STATUS if the contact opted out from the portal.
 	SourceOfStatus string `json:"sourceOfStatus"`
-	// The ID of the brand that the subscription is associated with, if there is one.
-	BrandId *int64 `json:"brandId,omitempty"`
-	// The name of the preferences group that the subscription is associated with.
-	PreferenceGroupName *string `json:"preferenceGroupName,omitempty"`
-	// The legal reason for the current status of the subscription.
-	LegalBasis *string `json:"legalBasis,omitempty"`
-	// A more detailed explanation to go with the legal basis.
-	LegalBasisExplanation *string `json:"legalBasisExplanation,omitempty"`
 }
+
+type _PublicSubscriptionStatus PublicSubscriptionStatus
 
 // NewPublicSubscriptionStatus instantiates a new PublicSubscriptionStatus object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPublicSubscriptionStatus(id string, name string, description string, status string, sourceOfStatus string) *PublicSubscriptionStatus {
+func NewPublicSubscriptionStatus(name string, description string, id string, status string, sourceOfStatus string) *PublicSubscriptionStatus {
 	this := PublicSubscriptionStatus{}
-	this.Id = id
 	this.Name = name
 	this.Description = description
+	this.Id = id
 	this.Status = status
 	this.SourceOfStatus = sourceOfStatus
 	return &this
@@ -61,28 +65,36 @@ func NewPublicSubscriptionStatusWithDefaults() *PublicSubscriptionStatus {
 	return &this
 }
 
-// GetId returns the Id field value
-func (o *PublicSubscriptionStatus) GetId() string {
-	if o == nil {
-		var ret string
+// GetBrandId returns the BrandId field value if set, zero value otherwise.
+func (o *PublicSubscriptionStatus) GetBrandId() int64 {
+	if o == nil || IsNil(o.BrandId) {
+		var ret int64
 		return ret
 	}
-
-	return o.Id
+	return *o.BrandId
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetBrandIdOk returns a tuple with the BrandId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PublicSubscriptionStatus) GetIdOk() (*string, bool) {
-	if o == nil {
+func (o *PublicSubscriptionStatus) GetBrandIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.BrandId) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.BrandId, true
 }
 
-// SetId sets field value
-func (o *PublicSubscriptionStatus) SetId(v string) {
-	o.Id = v
+// HasBrandId returns a boolean if a field has been set.
+func (o *PublicSubscriptionStatus) HasBrandId() bool {
+	if o != nil && !IsNil(o.BrandId) {
+		return true
+	}
+
+	return false
+}
+
+// SetBrandId gets a reference to the given int64 and assigns it to the BrandId field.
+func (o *PublicSubscriptionStatus) SetBrandId(v int64) {
+	o.BrandId = &v
 }
 
 // GetName returns the Name field value
@@ -133,6 +145,126 @@ func (o *PublicSubscriptionStatus) SetDescription(v string) {
 	o.Description = v
 }
 
+// GetLegalBasis returns the LegalBasis field value if set, zero value otherwise.
+func (o *PublicSubscriptionStatus) GetLegalBasis() string {
+	if o == nil || IsNil(o.LegalBasis) {
+		var ret string
+		return ret
+	}
+	return *o.LegalBasis
+}
+
+// GetLegalBasisOk returns a tuple with the LegalBasis field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PublicSubscriptionStatus) GetLegalBasisOk() (*string, bool) {
+	if o == nil || IsNil(o.LegalBasis) {
+		return nil, false
+	}
+	return o.LegalBasis, true
+}
+
+// HasLegalBasis returns a boolean if a field has been set.
+func (o *PublicSubscriptionStatus) HasLegalBasis() bool {
+	if o != nil && !IsNil(o.LegalBasis) {
+		return true
+	}
+
+	return false
+}
+
+// SetLegalBasis gets a reference to the given string and assigns it to the LegalBasis field.
+func (o *PublicSubscriptionStatus) SetLegalBasis(v string) {
+	o.LegalBasis = &v
+}
+
+// GetPreferenceGroupName returns the PreferenceGroupName field value if set, zero value otherwise.
+func (o *PublicSubscriptionStatus) GetPreferenceGroupName() string {
+	if o == nil || IsNil(o.PreferenceGroupName) {
+		var ret string
+		return ret
+	}
+	return *o.PreferenceGroupName
+}
+
+// GetPreferenceGroupNameOk returns a tuple with the PreferenceGroupName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PublicSubscriptionStatus) GetPreferenceGroupNameOk() (*string, bool) {
+	if o == nil || IsNil(o.PreferenceGroupName) {
+		return nil, false
+	}
+	return o.PreferenceGroupName, true
+}
+
+// HasPreferenceGroupName returns a boolean if a field has been set.
+func (o *PublicSubscriptionStatus) HasPreferenceGroupName() bool {
+	if o != nil && !IsNil(o.PreferenceGroupName) {
+		return true
+	}
+
+	return false
+}
+
+// SetPreferenceGroupName gets a reference to the given string and assigns it to the PreferenceGroupName field.
+func (o *PublicSubscriptionStatus) SetPreferenceGroupName(v string) {
+	o.PreferenceGroupName = &v
+}
+
+// GetId returns the Id field value
+func (o *PublicSubscriptionStatus) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *PublicSubscriptionStatus) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *PublicSubscriptionStatus) SetId(v string) {
+	o.Id = v
+}
+
+// GetLegalBasisExplanation returns the LegalBasisExplanation field value if set, zero value otherwise.
+func (o *PublicSubscriptionStatus) GetLegalBasisExplanation() string {
+	if o == nil || IsNil(o.LegalBasisExplanation) {
+		var ret string
+		return ret
+	}
+	return *o.LegalBasisExplanation
+}
+
+// GetLegalBasisExplanationOk returns a tuple with the LegalBasisExplanation field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PublicSubscriptionStatus) GetLegalBasisExplanationOk() (*string, bool) {
+	if o == nil || IsNil(o.LegalBasisExplanation) {
+		return nil, false
+	}
+	return o.LegalBasisExplanation, true
+}
+
+// HasLegalBasisExplanation returns a boolean if a field has been set.
+func (o *PublicSubscriptionStatus) HasLegalBasisExplanation() bool {
+	if o != nil && !IsNil(o.LegalBasisExplanation) {
+		return true
+	}
+
+	return false
+}
+
+// SetLegalBasisExplanation gets a reference to the given string and assigns it to the LegalBasisExplanation field.
+func (o *PublicSubscriptionStatus) SetLegalBasisExplanation(v string) {
+	o.LegalBasisExplanation = &v
+}
+
 // GetStatus returns the Status field value
 func (o *PublicSubscriptionStatus) GetStatus() string {
 	if o == nil {
@@ -181,134 +313,6 @@ func (o *PublicSubscriptionStatus) SetSourceOfStatus(v string) {
 	o.SourceOfStatus = v
 }
 
-// GetBrandId returns the BrandId field value if set, zero value otherwise.
-func (o *PublicSubscriptionStatus) GetBrandId() int64 {
-	if o == nil || IsNil(o.BrandId) {
-		var ret int64
-		return ret
-	}
-	return *o.BrandId
-}
-
-// GetBrandIdOk returns a tuple with the BrandId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PublicSubscriptionStatus) GetBrandIdOk() (*int64, bool) {
-	if o == nil || IsNil(o.BrandId) {
-		return nil, false
-	}
-	return o.BrandId, true
-}
-
-// HasBrandId returns a boolean if a field has been set.
-func (o *PublicSubscriptionStatus) HasBrandId() bool {
-	if o != nil && !IsNil(o.BrandId) {
-		return true
-	}
-
-	return false
-}
-
-// SetBrandId gets a reference to the given int64 and assigns it to the BrandId field.
-func (o *PublicSubscriptionStatus) SetBrandId(v int64) {
-	o.BrandId = &v
-}
-
-// GetPreferenceGroupName returns the PreferenceGroupName field value if set, zero value otherwise.
-func (o *PublicSubscriptionStatus) GetPreferenceGroupName() string {
-	if o == nil || IsNil(o.PreferenceGroupName) {
-		var ret string
-		return ret
-	}
-	return *o.PreferenceGroupName
-}
-
-// GetPreferenceGroupNameOk returns a tuple with the PreferenceGroupName field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PublicSubscriptionStatus) GetPreferenceGroupNameOk() (*string, bool) {
-	if o == nil || IsNil(o.PreferenceGroupName) {
-		return nil, false
-	}
-	return o.PreferenceGroupName, true
-}
-
-// HasPreferenceGroupName returns a boolean if a field has been set.
-func (o *PublicSubscriptionStatus) HasPreferenceGroupName() bool {
-	if o != nil && !IsNil(o.PreferenceGroupName) {
-		return true
-	}
-
-	return false
-}
-
-// SetPreferenceGroupName gets a reference to the given string and assigns it to the PreferenceGroupName field.
-func (o *PublicSubscriptionStatus) SetPreferenceGroupName(v string) {
-	o.PreferenceGroupName = &v
-}
-
-// GetLegalBasis returns the LegalBasis field value if set, zero value otherwise.
-func (o *PublicSubscriptionStatus) GetLegalBasis() string {
-	if o == nil || IsNil(o.LegalBasis) {
-		var ret string
-		return ret
-	}
-	return *o.LegalBasis
-}
-
-// GetLegalBasisOk returns a tuple with the LegalBasis field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PublicSubscriptionStatus) GetLegalBasisOk() (*string, bool) {
-	if o == nil || IsNil(o.LegalBasis) {
-		return nil, false
-	}
-	return o.LegalBasis, true
-}
-
-// HasLegalBasis returns a boolean if a field has been set.
-func (o *PublicSubscriptionStatus) HasLegalBasis() bool {
-	if o != nil && !IsNil(o.LegalBasis) {
-		return true
-	}
-
-	return false
-}
-
-// SetLegalBasis gets a reference to the given string and assigns it to the LegalBasis field.
-func (o *PublicSubscriptionStatus) SetLegalBasis(v string) {
-	o.LegalBasis = &v
-}
-
-// GetLegalBasisExplanation returns the LegalBasisExplanation field value if set, zero value otherwise.
-func (o *PublicSubscriptionStatus) GetLegalBasisExplanation() string {
-	if o == nil || IsNil(o.LegalBasisExplanation) {
-		var ret string
-		return ret
-	}
-	return *o.LegalBasisExplanation
-}
-
-// GetLegalBasisExplanationOk returns a tuple with the LegalBasisExplanation field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PublicSubscriptionStatus) GetLegalBasisExplanationOk() (*string, bool) {
-	if o == nil || IsNil(o.LegalBasisExplanation) {
-		return nil, false
-	}
-	return o.LegalBasisExplanation, true
-}
-
-// HasLegalBasisExplanation returns a boolean if a field has been set.
-func (o *PublicSubscriptionStatus) HasLegalBasisExplanation() bool {
-	if o != nil && !IsNil(o.LegalBasisExplanation) {
-		return true
-	}
-
-	return false
-}
-
-// SetLegalBasisExplanation gets a reference to the given string and assigns it to the LegalBasisExplanation field.
-func (o *PublicSubscriptionStatus) SetLegalBasisExplanation(v string) {
-	o.LegalBasisExplanation = &v
-}
-
 func (o PublicSubscriptionStatus) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -319,24 +323,65 @@ func (o PublicSubscriptionStatus) MarshalJSON() ([]byte, error) {
 
 func (o PublicSubscriptionStatus) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
-	toSerialize["name"] = o.Name
-	toSerialize["description"] = o.Description
-	toSerialize["status"] = o.Status
-	toSerialize["sourceOfStatus"] = o.SourceOfStatus
 	if !IsNil(o.BrandId) {
 		toSerialize["brandId"] = o.BrandId
+	}
+	toSerialize["name"] = o.Name
+	toSerialize["description"] = o.Description
+	if !IsNil(o.LegalBasis) {
+		toSerialize["legalBasis"] = o.LegalBasis
 	}
 	if !IsNil(o.PreferenceGroupName) {
 		toSerialize["preferenceGroupName"] = o.PreferenceGroupName
 	}
-	if !IsNil(o.LegalBasis) {
-		toSerialize["legalBasis"] = o.LegalBasis
-	}
+	toSerialize["id"] = o.Id
 	if !IsNil(o.LegalBasisExplanation) {
 		toSerialize["legalBasisExplanation"] = o.LegalBasisExplanation
 	}
+	toSerialize["status"] = o.Status
+	toSerialize["sourceOfStatus"] = o.SourceOfStatus
 	return toSerialize, nil
+}
+
+func (o *PublicSubscriptionStatus) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"description",
+		"id",
+		"status",
+		"sourceOfStatus",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPublicSubscriptionStatus := _PublicSubscriptionStatus{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPublicSubscriptionStatus)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicSubscriptionStatus(varPublicSubscriptionStatus)
+
+	return err
 }
 
 type NullablePublicSubscriptionStatus struct {

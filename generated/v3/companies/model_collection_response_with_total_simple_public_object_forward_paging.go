@@ -11,7 +11,9 @@ API version: v3
 package companies
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponseWithTotalSimplePublicObjectForwardPaging type satisfies the MappedNullable interface at compile time
@@ -20,9 +22,11 @@ var _ MappedNullable = &CollectionResponseWithTotalSimplePublicObjectForwardPagi
 // CollectionResponseWithTotalSimplePublicObjectForwardPaging struct for CollectionResponseWithTotalSimplePublicObjectForwardPaging
 type CollectionResponseWithTotalSimplePublicObjectForwardPaging struct {
 	Total   int32                `json:"total"`
-	Results []SimplePublicObject `json:"results"`
 	Paging  *ForwardPaging       `json:"paging,omitempty"`
+	Results []SimplePublicObject `json:"results"`
 }
+
+type _CollectionResponseWithTotalSimplePublicObjectForwardPaging CollectionResponseWithTotalSimplePublicObjectForwardPaging
 
 // NewCollectionResponseWithTotalSimplePublicObjectForwardPaging instantiates a new CollectionResponseWithTotalSimplePublicObjectForwardPaging object
 // This constructor will assign default values to properties that have it defined,
@@ -67,30 +71,6 @@ func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) SetTotal(v 
 	o.Total = v
 }
 
-// GetResults returns the Results field value
-func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) GetResults() []SimplePublicObject {
-	if o == nil {
-		var ret []SimplePublicObject
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) GetResultsOk() ([]SimplePublicObject, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) SetResults(v []SimplePublicObject) {
-	o.Results = v
-}
-
 // GetPaging returns the Paging field value if set, zero value otherwise.
 func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) GetPaging() ForwardPaging {
 	if o == nil || IsNil(o.Paging) {
@@ -123,6 +103,30 @@ func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) SetPaging(v
 	o.Paging = &v
 }
 
+// GetResults returns the Results field value
+func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) GetResults() []SimplePublicObject {
+	if o == nil {
+		var ret []SimplePublicObject
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) GetResultsOk() ([]SimplePublicObject, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) SetResults(v []SimplePublicObject) {
+	o.Results = v
+}
+
 func (o CollectionResponseWithTotalSimplePublicObjectForwardPaging) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -134,11 +138,49 @@ func (o CollectionResponseWithTotalSimplePublicObjectForwardPaging) MarshalJSON(
 func (o CollectionResponseWithTotalSimplePublicObjectForwardPaging) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["total"] = o.Total
-	toSerialize["results"] = o.Results
 	if !IsNil(o.Paging) {
 		toSerialize["paging"] = o.Paging
 	}
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponseWithTotalSimplePublicObjectForwardPaging) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"total",
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponseWithTotalSimplePublicObjectForwardPaging := _CollectionResponseWithTotalSimplePublicObjectForwardPaging{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponseWithTotalSimplePublicObjectForwardPaging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponseWithTotalSimplePublicObjectForwardPaging(varCollectionResponseWithTotalSimplePublicObjectForwardPaging)
+
+	return err
 }
 
 type NullableCollectionResponseWithTotalSimplePublicObjectForwardPaging struct {

@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+CMS Authors
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package authors
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the StandardError type satisfies the MappedNullable interface at compile time
@@ -19,36 +21,38 @@ var _ MappedNullable = &StandardError{}
 
 // StandardError Model definition for a standard error.
 type StandardError struct {
-	// Error status.
-	Status string `json:"status"`
-	// Error ID.
-	Id *string `json:"id,omitempty"`
-	// Model definition for an error category.
-	Category map[string]interface{} `json:"category"`
 	// Error subcategory.
 	SubCategory map[string]interface{} `json:"subCategory,omitempty"`
-	// Error message.
-	Message string `json:"message"`
-	// List of error details.
-	Errors []ErrorDetail `json:"errors"`
 	// Error context.
 	Context map[string][]string `json:"context"`
 	// Error links.
 	Links map[string]string `json:"links"`
+	// Error ID.
+	Id *string `json:"id,omitempty"`
+	// Error category.
+	Category string `json:"category"`
+	// Error message.
+	Message string `json:"message"`
+	// List of error details.
+	Errors []ErrorDetail `json:"errors"`
+	// Error status.
+	Status string `json:"status"`
 }
+
+type _StandardError StandardError
 
 // NewStandardError instantiates a new StandardError object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStandardError(status string, category map[string]interface{}, message string, errors []ErrorDetail, context map[string][]string, links map[string]string) *StandardError {
+func NewStandardError(context map[string][]string, links map[string]string, category string, message string, errors []ErrorDetail, status string) *StandardError {
 	this := StandardError{}
-	this.Status = status
+	this.Context = context
+	this.Links = links
 	this.Category = category
 	this.Message = message
 	this.Errors = errors
-	this.Context = context
-	this.Links = links
+	this.Status = status
 	return &this
 }
 
@@ -58,86 +62,6 @@ func NewStandardError(status string, category map[string]interface{}, message st
 func NewStandardErrorWithDefaults() *StandardError {
 	this := StandardError{}
 	return &this
-}
-
-// GetStatus returns the Status field value
-func (o *StandardError) GetStatus() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Status
-}
-
-// GetStatusOk returns a tuple with the Status field value
-// and a boolean to check if the value has been set.
-func (o *StandardError) GetStatusOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Status, true
-}
-
-// SetStatus sets field value
-func (o *StandardError) SetStatus(v string) {
-	o.Status = v
-}
-
-// GetId returns the Id field value if set, zero value otherwise.
-func (o *StandardError) GetId() string {
-	if o == nil || IsNil(o.Id) {
-		var ret string
-		return ret
-	}
-	return *o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *StandardError) GetIdOk() (*string, bool) {
-	if o == nil || IsNil(o.Id) {
-		return nil, false
-	}
-	return o.Id, true
-}
-
-// HasId returns a boolean if a field has been set.
-func (o *StandardError) HasId() bool {
-	if o != nil && !IsNil(o.Id) {
-		return true
-	}
-
-	return false
-}
-
-// SetId gets a reference to the given string and assigns it to the Id field.
-func (o *StandardError) SetId(v string) {
-	o.Id = &v
-}
-
-// GetCategory returns the Category field value
-func (o *StandardError) GetCategory() map[string]interface{} {
-	if o == nil {
-		var ret map[string]interface{}
-		return ret
-	}
-
-	return o.Category
-}
-
-// GetCategoryOk returns a tuple with the Category field value
-// and a boolean to check if the value has been set.
-func (o *StandardError) GetCategoryOk() (map[string]interface{}, bool) {
-	if o == nil {
-		return map[string]interface{}{}, false
-	}
-	return o.Category, true
-}
-
-// SetCategory sets field value
-func (o *StandardError) SetCategory(v map[string]interface{}) {
-	o.Category = v
 }
 
 // GetSubCategory returns the SubCategory field value if set, zero value otherwise.
@@ -170,54 +94,6 @@ func (o *StandardError) HasSubCategory() bool {
 // SetSubCategory gets a reference to the given map[string]interface{} and assigns it to the SubCategory field.
 func (o *StandardError) SetSubCategory(v map[string]interface{}) {
 	o.SubCategory = v
-}
-
-// GetMessage returns the Message field value
-func (o *StandardError) GetMessage() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Message
-}
-
-// GetMessageOk returns a tuple with the Message field value
-// and a boolean to check if the value has been set.
-func (o *StandardError) GetMessageOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Message, true
-}
-
-// SetMessage sets field value
-func (o *StandardError) SetMessage(v string) {
-	o.Message = v
-}
-
-// GetErrors returns the Errors field value
-func (o *StandardError) GetErrors() []ErrorDetail {
-	if o == nil {
-		var ret []ErrorDetail
-		return ret
-	}
-
-	return o.Errors
-}
-
-// GetErrorsOk returns a tuple with the Errors field value
-// and a boolean to check if the value has been set.
-func (o *StandardError) GetErrorsOk() ([]ErrorDetail, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Errors, true
-}
-
-// SetErrors sets field value
-func (o *StandardError) SetErrors(v []ErrorDetail) {
-	o.Errors = v
 }
 
 // GetContext returns the Context field value
@@ -268,6 +144,134 @@ func (o *StandardError) SetLinks(v map[string]string) {
 	o.Links = v
 }
 
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *StandardError) GetId() string {
+	if o == nil || IsNil(o.Id) {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StandardError) GetIdOk() (*string, bool) {
+	if o == nil || IsNil(o.Id) {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *StandardError) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *StandardError) SetId(v string) {
+	o.Id = &v
+}
+
+// GetCategory returns the Category field value
+func (o *StandardError) GetCategory() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Category
+}
+
+// GetCategoryOk returns a tuple with the Category field value
+// and a boolean to check if the value has been set.
+func (o *StandardError) GetCategoryOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Category, true
+}
+
+// SetCategory sets field value
+func (o *StandardError) SetCategory(v string) {
+	o.Category = v
+}
+
+// GetMessage returns the Message field value
+func (o *StandardError) GetMessage() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Message
+}
+
+// GetMessageOk returns a tuple with the Message field value
+// and a boolean to check if the value has been set.
+func (o *StandardError) GetMessageOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Message, true
+}
+
+// SetMessage sets field value
+func (o *StandardError) SetMessage(v string) {
+	o.Message = v
+}
+
+// GetErrors returns the Errors field value
+func (o *StandardError) GetErrors() []ErrorDetail {
+	if o == nil {
+		var ret []ErrorDetail
+		return ret
+	}
+
+	return o.Errors
+}
+
+// GetErrorsOk returns a tuple with the Errors field value
+// and a boolean to check if the value has been set.
+func (o *StandardError) GetErrorsOk() ([]ErrorDetail, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Errors, true
+}
+
+// SetErrors sets field value
+func (o *StandardError) SetErrors(v []ErrorDetail) {
+	o.Errors = v
+}
+
+// GetStatus returns the Status field value
+func (o *StandardError) GetStatus() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value
+// and a boolean to check if the value has been set.
+func (o *StandardError) GetStatusOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Status, true
+}
+
+// SetStatus sets field value
+func (o *StandardError) SetStatus(v string) {
+	o.Status = v
+}
+
 func (o StandardError) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -278,19 +282,61 @@ func (o StandardError) MarshalJSON() ([]byte, error) {
 
 func (o StandardError) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["status"] = o.Status
+	if !IsNil(o.SubCategory) {
+		toSerialize["subCategory"] = o.SubCategory
+	}
+	toSerialize["context"] = o.Context
+	toSerialize["links"] = o.Links
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
 	toSerialize["category"] = o.Category
-	if !IsNil(o.SubCategory) {
-		toSerialize["subCategory"] = o.SubCategory
-	}
 	toSerialize["message"] = o.Message
 	toSerialize["errors"] = o.Errors
-	toSerialize["context"] = o.Context
-	toSerialize["links"] = o.Links
+	toSerialize["status"] = o.Status
 	return toSerialize, nil
+}
+
+func (o *StandardError) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"context",
+		"links",
+		"category",
+		"message",
+		"errors",
+		"status",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varStandardError := _StandardError{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varStandardError)
+
+	if err != nil {
+		return err
+	}
+
+	*o = StandardError(varStandardError)
+
+	return err
 }
 
 type NullableStandardError struct {

@@ -11,7 +11,9 @@ API version: v3
 package tickets
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponseAssociatedId type satisfies the MappedNullable interface at compile time
@@ -19,9 +21,11 @@ var _ MappedNullable = &CollectionResponseAssociatedId{}
 
 // CollectionResponseAssociatedId struct for CollectionResponseAssociatedId
 type CollectionResponseAssociatedId struct {
-	Results []AssociatedId `json:"results"`
 	Paging  *Paging        `json:"paging,omitempty"`
+	Results []AssociatedId `json:"results"`
 }
+
+type _CollectionResponseAssociatedId CollectionResponseAssociatedId
 
 // NewCollectionResponseAssociatedId instantiates a new CollectionResponseAssociatedId object
 // This constructor will assign default values to properties that have it defined,
@@ -39,30 +43,6 @@ func NewCollectionResponseAssociatedId(results []AssociatedId) *CollectionRespon
 func NewCollectionResponseAssociatedIdWithDefaults() *CollectionResponseAssociatedId {
 	this := CollectionResponseAssociatedId{}
 	return &this
-}
-
-// GetResults returns the Results field value
-func (o *CollectionResponseAssociatedId) GetResults() []AssociatedId {
-	if o == nil {
-		var ret []AssociatedId
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *CollectionResponseAssociatedId) GetResultsOk() ([]AssociatedId, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *CollectionResponseAssociatedId) SetResults(v []AssociatedId) {
-	o.Results = v
 }
 
 // GetPaging returns the Paging field value if set, zero value otherwise.
@@ -97,6 +77,30 @@ func (o *CollectionResponseAssociatedId) SetPaging(v Paging) {
 	o.Paging = &v
 }
 
+// GetResults returns the Results field value
+func (o *CollectionResponseAssociatedId) GetResults() []AssociatedId {
+	if o == nil {
+		var ret []AssociatedId
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *CollectionResponseAssociatedId) GetResultsOk() ([]AssociatedId, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *CollectionResponseAssociatedId) SetResults(v []AssociatedId) {
+	o.Results = v
+}
+
 func (o CollectionResponseAssociatedId) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,11 +111,48 @@ func (o CollectionResponseAssociatedId) MarshalJSON() ([]byte, error) {
 
 func (o CollectionResponseAssociatedId) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["results"] = o.Results
 	if !IsNil(o.Paging) {
 		toSerialize["paging"] = o.Paging
 	}
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponseAssociatedId) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponseAssociatedId := _CollectionResponseAssociatedId{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponseAssociatedId)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponseAssociatedId(varCollectionResponseAssociatedId)
+
+	return err
 }
 
 type NullableCollectionResponseAssociatedId struct {

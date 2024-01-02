@@ -1,5 +1,5 @@
 /*
-CMS Audit Logs
+Cms Content Audit
 
 Use this endpoint to query audit logs of CMS changes that occurred on your HubSpot account.
 
@@ -11,7 +11,9 @@ API version: v3
 package audit_logs
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponsePublicAuditLog type satisfies the MappedNullable interface at compile time
@@ -19,9 +21,12 @@ var _ MappedNullable = &CollectionResponsePublicAuditLog{}
 
 // CollectionResponsePublicAuditLog The collection of audit logs.
 type CollectionResponsePublicAuditLog struct {
+	Paging *Paging `json:"paging,omitempty"`
+	//
 	Results []PublicAuditLog `json:"results"`
-	Paging  *Paging          `json:"paging,omitempty"`
 }
+
+type _CollectionResponsePublicAuditLog CollectionResponsePublicAuditLog
 
 // NewCollectionResponsePublicAuditLog instantiates a new CollectionResponsePublicAuditLog object
 // This constructor will assign default values to properties that have it defined,
@@ -39,30 +44,6 @@ func NewCollectionResponsePublicAuditLog(results []PublicAuditLog) *CollectionRe
 func NewCollectionResponsePublicAuditLogWithDefaults() *CollectionResponsePublicAuditLog {
 	this := CollectionResponsePublicAuditLog{}
 	return &this
-}
-
-// GetResults returns the Results field value
-func (o *CollectionResponsePublicAuditLog) GetResults() []PublicAuditLog {
-	if o == nil {
-		var ret []PublicAuditLog
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *CollectionResponsePublicAuditLog) GetResultsOk() ([]PublicAuditLog, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *CollectionResponsePublicAuditLog) SetResults(v []PublicAuditLog) {
-	o.Results = v
 }
 
 // GetPaging returns the Paging field value if set, zero value otherwise.
@@ -97,6 +78,30 @@ func (o *CollectionResponsePublicAuditLog) SetPaging(v Paging) {
 	o.Paging = &v
 }
 
+// GetResults returns the Results field value
+func (o *CollectionResponsePublicAuditLog) GetResults() []PublicAuditLog {
+	if o == nil {
+		var ret []PublicAuditLog
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *CollectionResponsePublicAuditLog) GetResultsOk() ([]PublicAuditLog, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *CollectionResponsePublicAuditLog) SetResults(v []PublicAuditLog) {
+	o.Results = v
+}
+
 func (o CollectionResponsePublicAuditLog) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,11 +112,48 @@ func (o CollectionResponsePublicAuditLog) MarshalJSON() ([]byte, error) {
 
 func (o CollectionResponsePublicAuditLog) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["results"] = o.Results
 	if !IsNil(o.Paging) {
 		toSerialize["paging"] = o.Paging
 	}
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponsePublicAuditLog) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponsePublicAuditLog := _CollectionResponsePublicAuditLog{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponsePublicAuditLog)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponsePublicAuditLog(varCollectionResponsePublicAuditLog)
+
+	return err
 }
 
 type NullableCollectionResponsePublicAuditLog struct {

@@ -1,5 +1,5 @@
 /*
-Marketing Events Extension
+Marketing Marketing Events
 
 These APIs allow you to interact with HubSpot's Marketing Events Extension. It allows you to: * Create, Read or update Marketing Event information in HubSpot * Specify whether a HubSpot contact has registered, attended or cancelled a registration to a Marketing Event. * Specify a URL that can be called to get the details of a Marketing Event.
 
@@ -11,7 +11,9 @@ API version: v3
 package marketing_events_beta
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SubscriberVidResponse type satisfies the MappedNullable interface at compile time
@@ -21,6 +23,8 @@ var _ MappedNullable = &SubscriberVidResponse{}
 type SubscriberVidResponse struct {
 	Vid int32 `json:"vid"`
 }
+
+type _SubscriberVidResponse SubscriberVidResponse
 
 // NewSubscriberVidResponse instantiates a new SubscriberVidResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -76,6 +80,43 @@ func (o SubscriberVidResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["vid"] = o.Vid
 	return toSerialize, nil
+}
+
+func (o *SubscriberVidResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"vid",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSubscriberVidResponse := _SubscriberVidResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSubscriberVidResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SubscriberVidResponse(varSubscriberVidResponse)
+
+	return err
 }
 
 type NullableSubscriberVidResponse struct {

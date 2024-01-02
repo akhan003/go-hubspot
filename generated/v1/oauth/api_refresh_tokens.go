@@ -17,12 +17,12 @@ import (
 	"strings"
 )
 
-// RefreshTokensApiService RefreshTokensApi service
-type RefreshTokensApiService service
+// RefreshTokensAPIService RefreshTokensAPI service
+type RefreshTokensAPIService service
 
 type ApiDeleteOauthV1RefreshTokensTokenArchiveRequest struct {
 	ctx        context.Context
-	ApiService *RefreshTokensApiService
+	ApiService *RefreshTokensAPIService
 	token      string
 }
 
@@ -33,11 +33,11 @@ func (r ApiDeleteOauthV1RefreshTokensTokenArchiveRequest) Execute() (*http.Respo
 /*
 DeleteOauthV1RefreshTokensTokenArchive Method for DeleteOauthV1RefreshTokensTokenArchive
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param token
- @return ApiDeleteOauthV1RefreshTokensTokenArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param token
+	@return ApiDeleteOauthV1RefreshTokensTokenArchiveRequest
 */
-func (a *RefreshTokensApiService) DeleteOauthV1RefreshTokensTokenArchive(ctx context.Context, token string) ApiDeleteOauthV1RefreshTokensTokenArchiveRequest {
+func (a *RefreshTokensAPIService) DeleteOauthV1RefreshTokensTokenArchive(ctx context.Context, token string) ApiDeleteOauthV1RefreshTokensTokenArchiveRequest {
 	return ApiDeleteOauthV1RefreshTokensTokenArchiveRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -46,14 +46,14 @@ func (a *RefreshTokensApiService) DeleteOauthV1RefreshTokensTokenArchive(ctx con
 }
 
 // Execute executes the request
-func (a *RefreshTokensApiService) DeleteOauthV1RefreshTokensTokenArchiveExecute(r ApiDeleteOauthV1RefreshTokensTokenArchiveRequest) (*http.Response, error) {
+func (a *RefreshTokensAPIService) DeleteOauthV1RefreshTokensTokenArchiveExecute(r ApiDeleteOauthV1RefreshTokensTokenArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RefreshTokensApiService.DeleteOauthV1RefreshTokensTokenArchive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RefreshTokensAPIService.DeleteOauthV1RefreshTokensTokenArchive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -120,7 +120,7 @@ func (a *RefreshTokensApiService) DeleteOauthV1RefreshTokensTokenArchiveExecute(
 
 type ApiGetOauthV1RefreshTokensTokenGetRequest struct {
 	ctx        context.Context
-	ApiService *RefreshTokensApiService
+	ApiService *RefreshTokensAPIService
 	token      string
 }
 
@@ -131,11 +131,11 @@ func (r ApiGetOauthV1RefreshTokensTokenGetRequest) Execute() (*RefreshTokenInfoR
 /*
 GetOauthV1RefreshTokensTokenGet Method for GetOauthV1RefreshTokensTokenGet
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param token
- @return ApiGetOauthV1RefreshTokensTokenGetRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param token
+	@return ApiGetOauthV1RefreshTokensTokenGetRequest
 */
-func (a *RefreshTokensApiService) GetOauthV1RefreshTokensTokenGet(ctx context.Context, token string) ApiGetOauthV1RefreshTokensTokenGetRequest {
+func (a *RefreshTokensAPIService) GetOauthV1RefreshTokensTokenGet(ctx context.Context, token string) ApiGetOauthV1RefreshTokensTokenGetRequest {
 	return ApiGetOauthV1RefreshTokensTokenGetRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -144,8 +144,9 @@ func (a *RefreshTokensApiService) GetOauthV1RefreshTokensTokenGet(ctx context.Co
 }
 
 // Execute executes the request
-//  @return RefreshTokenInfoResponse
-func (a *RefreshTokensApiService) GetOauthV1RefreshTokensTokenGetExecute(r ApiGetOauthV1RefreshTokensTokenGetRequest) (*RefreshTokenInfoResponse, *http.Response, error) {
+//
+//	@return RefreshTokenInfoResponse
+func (a *RefreshTokensAPIService) GetOauthV1RefreshTokensTokenGetExecute(r ApiGetOauthV1RefreshTokensTokenGetRequest) (*RefreshTokenInfoResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -153,7 +154,7 @@ func (a *RefreshTokensApiService) GetOauthV1RefreshTokensTokenGetExecute(r ApiGe
 		localVarReturnValue *RefreshTokenInfoResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RefreshTokensApiService.GetOauthV1RefreshTokensTokenGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RefreshTokensAPIService.GetOauthV1RefreshTokensTokenGet")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

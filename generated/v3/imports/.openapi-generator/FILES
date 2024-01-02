@@ -9,18 +9,19 @@ configuration.go
 docs/ActionResponse.md
 docs/CollectionResponsePublicImportErrorForwardPaging.md
 docs/CollectionResponsePublicImportResponse.md
-docs/CoreApi.md
+docs/CoreAPI.md
 docs/Error.md
 docs/ErrorDetail.md
 docs/ForwardPaging.md
 docs/ImportRowCore.md
+docs/ImportTemplate.md
 docs/NextPage.md
 docs/Paging.md
 docs/PreviousPage.md
 docs/PublicImportError.md
 docs/PublicImportMetadata.md
 docs/PublicImportResponse.md
-docs/PublicImportsApi.md
+docs/PublicImportsAPI.md
 docs/PublicObjectListRecord.md
 git_push.sh
 go.mod
@@ -32,6 +33,7 @@ model_error.go
 model_error_detail.go
 model_forward_paging.go
 model_import_row_core.go
+model_import_template.go
 model_next_page.go
 model_paging.go
 model_previous_page.go
@@ -40,6 +42,4 @@ model_public_import_metadata.go
 model_public_import_response.go
 model_public_object_list_record.go
 response.go
-test/api_core_test.go
-test/api_public_imports_test.go
 utils.go

@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// SyncApiService SyncApi service
-type SyncApiService service
+// SyncAPIService SyncAPI service
+type SyncAPIService service
 
 type ApiSyncCreateContactRequest struct {
 	ctx                 context.Context
-	ApiService          *SyncApiService
+	ApiService          *SyncAPIService
 	appId               int32
 	syncContactsRequest *SyncContactsRequest
 }
@@ -43,11 +43,11 @@ SyncCreateContact Import contacts
 
 Imports contacts' properties from an external accounting system to HubSpot. Import details, including property mappings, must be configured previously in HubSpot infrastructure.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
- @return ApiSyncCreateContactRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
+	@return ApiSyncCreateContactRequest
 */
-func (a *SyncApiService) SyncCreateContact(ctx context.Context, appId int32) ApiSyncCreateContactRequest {
+func (a *SyncAPIService) SyncCreateContact(ctx context.Context, appId int32) ApiSyncCreateContactRequest {
 	return ApiSyncCreateContactRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -56,8 +56,9 @@ func (a *SyncApiService) SyncCreateContact(ctx context.Context, appId int32) Api
 }
 
 // Execute executes the request
-//  @return ActionResponse
-func (a *SyncApiService) SyncCreateContactExecute(r ApiSyncCreateContactRequest) (*ActionResponse, *http.Response, error) {
+//
+//	@return ActionResponse
+func (a *SyncAPIService) SyncCreateContactExecute(r ApiSyncCreateContactRequest) (*ActionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -65,7 +66,7 @@ func (a *SyncApiService) SyncCreateContactExecute(r ApiSyncCreateContactRequest)
 		localVarReturnValue *ActionResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SyncApiService.SyncCreateContact")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SyncAPIService.SyncCreateContact")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -160,7 +161,7 @@ func (a *SyncApiService) SyncCreateContactExecute(r ApiSyncCreateContactRequest)
 
 type ApiSyncCreateProductRequest struct {
 	ctx                 context.Context
-	ApiService          *SyncApiService
+	ApiService          *SyncAPIService
 	appId               int32
 	syncProductsRequest *SyncProductsRequest
 }
@@ -179,11 +180,11 @@ SyncCreateProduct Import products
 
 Imports products' properties from an external accounting system to HubSpot. Import details, including property mappings, must be configured previously in HubSpot infrastructure.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
- @return ApiSyncCreateProductRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
+	@return ApiSyncCreateProductRequest
 */
-func (a *SyncApiService) SyncCreateProduct(ctx context.Context, appId int32) ApiSyncCreateProductRequest {
+func (a *SyncAPIService) SyncCreateProduct(ctx context.Context, appId int32) ApiSyncCreateProductRequest {
 	return ApiSyncCreateProductRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -192,8 +193,9 @@ func (a *SyncApiService) SyncCreateProduct(ctx context.Context, appId int32) Api
 }
 
 // Execute executes the request
-//  @return ActionResponse
-func (a *SyncApiService) SyncCreateProductExecute(r ApiSyncCreateProductRequest) (*ActionResponse, *http.Response, error) {
+//
+//	@return ActionResponse
+func (a *SyncAPIService) SyncCreateProductExecute(r ApiSyncCreateProductRequest) (*ActionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -201,7 +203,7 @@ func (a *SyncApiService) SyncCreateProductExecute(r ApiSyncCreateProductRequest)
 		localVarReturnValue *ActionResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SyncApiService.SyncCreateProduct")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SyncAPIService.SyncCreateProduct")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

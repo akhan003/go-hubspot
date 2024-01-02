@@ -39,11 +39,11 @@ RevisionsGetByID Get a revision for a custom action
 
 Returns the given version of a custom workflow action.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action.
- @param revisionId The version of the custom workflow action.
- @param appId
- @return ApiRevisionsGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action.
+	@param revisionId The version of the custom workflow action.
+	@param appId
+	@return ApiRevisionsGetByIDRequest
 */
 func (a *RevisionsApiService) RevisionsGetByID(ctx context.Context, definitionId string, revisionId string, appId int32) ApiRevisionsGetByIDRequest {
 	return ApiRevisionsGetByIDRequest{
@@ -56,7 +56,8 @@ func (a *RevisionsApiService) RevisionsGetByID(ctx context.Context, definitionId
 }
 
 // Execute executes the request
-//  @return ActionRevision
+//
+//	@return ActionRevision
 func (a *RevisionsApiService) RevisionsGetByIDExecute(r ApiRevisionsGetByIDRequest) (*ActionRevision, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
@@ -185,10 +186,10 @@ RevisionsGetPage Get all revisions for a custom action
 
 Returns a list of revisions for a custom workflow action.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action
- @param appId
- @return ApiRevisionsGetPageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action
+	@param appId
+	@return ApiRevisionsGetPageRequest
 */
 func (a *RevisionsApiService) RevisionsGetPage(ctx context.Context, definitionId string, appId int32) ApiRevisionsGetPageRequest {
 	return ApiRevisionsGetPageRequest{
@@ -200,7 +201,8 @@ func (a *RevisionsApiService) RevisionsGetPage(ctx context.Context, definitionId
 }
 
 // Execute executes the request
-//  @return CollectionResponseActionRevisionForwardPaging
+//
+//	@return CollectionResponseActionRevisionForwardPaging
 func (a *RevisionsApiService) RevisionsGetPageExecute(r ApiRevisionsGetPageRequest) (*CollectionResponseActionRevisionForwardPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet

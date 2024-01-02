@@ -8,10 +8,11 @@ configuration.go
 docs/CollectionResponseExternalUnifiedEvent.md
 docs/Error.md
 docs/ErrorDetail.md
-docs/EventsApi.md
+docs/EventsAPI.md
 docs/ExternalUnifiedEvent.md
 docs/NextPage.md
 docs/Paging.md
+docs/PreviousPage.md
 git_push.sh
 go.mod
 go.sum
@@ -21,6 +22,6 @@ model_error_detail.go
 model_external_unified_event.go
 model_next_page.go
 model_paging.go
+model_previous_page.go
 response.go
-test/api_events_test.go
 utils.go

@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// InvoiceApiService InvoiceApi service
-type InvoiceApiService service
+// InvoiceAPIService InvoiceAPI service
+type InvoiceAPIService service
 
 type ApiInvoiceCreatePaymentRequest struct {
 	ctx                         context.Context
-	ApiService                  *InvoiceApiService
+	ApiService                  *InvoiceAPIService
 	invoiceId                   string
 	invoiceCreatePaymentRequest *InvoiceCreatePaymentRequest
 	accountId                   *string
@@ -51,11 +51,11 @@ InvoiceCreatePayment Records an invoice payment
 
 Records an payment against an invoice.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param invoiceId The ID of the invoice. This is the invoice ID from the external accounting system.
- @return ApiInvoiceCreatePaymentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param invoiceId The ID of the invoice. This is the invoice ID from the external accounting system.
+	@return ApiInvoiceCreatePaymentRequest
 */
-func (a *InvoiceApiService) InvoiceCreatePayment(ctx context.Context, invoiceId string) ApiInvoiceCreatePaymentRequest {
+func (a *InvoiceAPIService) InvoiceCreatePayment(ctx context.Context, invoiceId string) ApiInvoiceCreatePaymentRequest {
 	return ApiInvoiceCreatePaymentRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -64,8 +64,9 @@ func (a *InvoiceApiService) InvoiceCreatePayment(ctx context.Context, invoiceId 
 }
 
 // Execute executes the request
-//  @return InvoiceUpdateResponse
-func (a *InvoiceApiService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymentRequest) (*InvoiceUpdateResponse, *http.Response, error) {
+//
+//	@return InvoiceUpdateResponse
+func (a *InvoiceAPIService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymentRequest) (*InvoiceUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -73,7 +74,7 @@ func (a *InvoiceApiService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymen
 		localVarReturnValue *InvoiceUpdateResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InvoiceApiService.InvoiceCreatePayment")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InvoiceAPIService.InvoiceCreatePayment")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -171,7 +172,7 @@ func (a *InvoiceApiService) InvoiceCreatePaymentExecute(r ApiInvoiceCreatePaymen
 
 type ApiInvoiceGetByIDRequest struct {
 	ctx        context.Context
-	ApiService *InvoiceApiService
+	ApiService *InvoiceAPIService
 	invoiceId  string
 	accountId  *string
 }
@@ -191,11 +192,11 @@ InvoiceGetByID Get invoice data
 
 Returns invoice data for an Accounting account from the specified ID
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param invoiceId The ID of the invoice. This is the invoice ID from the external accounting system.
- @return ApiInvoiceGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param invoiceId The ID of the invoice. This is the invoice ID from the external accounting system.
+	@return ApiInvoiceGetByIDRequest
 */
-func (a *InvoiceApiService) InvoiceGetByID(ctx context.Context, invoiceId string) ApiInvoiceGetByIDRequest {
+func (a *InvoiceAPIService) InvoiceGetByID(ctx context.Context, invoiceId string) ApiInvoiceGetByIDRequest {
 	return ApiInvoiceGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -204,8 +205,9 @@ func (a *InvoiceApiService) InvoiceGetByID(ctx context.Context, invoiceId string
 }
 
 // Execute executes the request
-//  @return InvoiceReadResponse
-func (a *InvoiceApiService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*InvoiceReadResponse, *http.Response, error) {
+//
+//	@return InvoiceReadResponse
+func (a *InvoiceAPIService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*InvoiceReadResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -213,7 +215,7 @@ func (a *InvoiceApiService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*
 		localVarReturnValue *InvoiceReadResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InvoiceApiService.InvoiceGetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InvoiceAPIService.InvoiceGetByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -307,7 +309,7 @@ func (a *InvoiceApiService) InvoiceGetByIDExecute(r ApiInvoiceGetByIDRequest) (*
 
 type ApiInvoiceUpdateRequest struct {
 	ctx                  context.Context
-	ApiService           *InvoiceApiService
+	ApiService           *InvoiceAPIService
 	invoiceId            string
 	accountId            *string
 	invoiceUpdateRequest *InvoiceUpdateRequest
@@ -334,11 +336,11 @@ InvoiceUpdate Update an invoice
 
 Updates an Invoice by the given ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param invoiceId The ID of the invoice. This is the invoice ID from the external accounting system.
- @return ApiInvoiceUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param invoiceId The ID of the invoice. This is the invoice ID from the external accounting system.
+	@return ApiInvoiceUpdateRequest
 */
-func (a *InvoiceApiService) InvoiceUpdate(ctx context.Context, invoiceId string) ApiInvoiceUpdateRequest {
+func (a *InvoiceAPIService) InvoiceUpdate(ctx context.Context, invoiceId string) ApiInvoiceUpdateRequest {
 	return ApiInvoiceUpdateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -347,8 +349,9 @@ func (a *InvoiceApiService) InvoiceUpdate(ctx context.Context, invoiceId string)
 }
 
 // Execute executes the request
-//  @return InvoiceUpdateResponse
-func (a *InvoiceApiService) InvoiceUpdateExecute(r ApiInvoiceUpdateRequest) (*InvoiceUpdateResponse, *http.Response, error) {
+//
+//	@return InvoiceUpdateResponse
+func (a *InvoiceAPIService) InvoiceUpdateExecute(r ApiInvoiceUpdateRequest) (*InvoiceUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -356,7 +359,7 @@ func (a *InvoiceApiService) InvoiceUpdateExecute(r ApiInvoiceUpdateRequest) (*In
 		localVarReturnValue *InvoiceUpdateResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InvoiceApiService.InvoiceUpdate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InvoiceAPIService.InvoiceUpdate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

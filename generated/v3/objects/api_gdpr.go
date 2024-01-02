@@ -1,5 +1,5 @@
 /*
-CRM Objects
+Objects
 
 CRM objects such as companies, contacts, deals, line items, products, tickets, and quotes are standard objects in HubSpot’s CRM. These core building blocks support custom properties, store critical information, and play a central role in the HubSpot application.  ## Supported Object Types  This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).  |Object Type |Properties returned by default | |--|--| | `companies` | `name`, `domain` | | `contacts` | `firstname`, `lastname`, `email` | | `deals` | `dealname`, `amount`, `closedate`, `pipeline`, `dealstage` | | `products` | `name`, `description`, `price` | | `tickets` | `content`, `hs_pipeline`, `hs_pipeline_stage`, `hs_ticket_category`, `hs_ticket_priority`, `subject` |  Find a list of all properties for an object type using the [CRM Object Properties](https://developers.hubspot.com/docs/methods/crm-properties/get-properties) API. e.g. `GET https://api.hubapi.com/properties/v2/companies/properties`. Change the properties returned in the response using the `properties` array in the request body.
 
@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// GDPRApiService GDPRApi service
-type GDPRApiService service
+// GDPRAPIService GDPRAPI service
+type GDPRAPIService service
 
 type ApiDeleteRequest struct {
 	ctx                   context.Context
-	ApiService            *GDPRApiService
+	ApiService            *GDPRAPIService
 	objectType            string
 	publicGdprDeleteInput *PublicGdprDeleteInput
 }
@@ -43,11 +43,11 @@ Delete GDPR DELETE
 
 Permanently delete a contact and all associated content to follow GDPR. Use optional property 'idProperty' set to 'email' to identify contact by email address. If email address is not found, the email address will be added to a blocklist and prevent it from being used in the future.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @return ApiDeleteRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@return ApiDeleteRequest
 */
-func (a *GDPRApiService) Delete(ctx context.Context, objectType string) ApiDeleteRequest {
+func (a *GDPRAPIService) Delete(ctx context.Context, objectType string) ApiDeleteRequest {
 	return ApiDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -56,14 +56,14 @@ func (a *GDPRApiService) Delete(ctx context.Context, objectType string) ApiDelet
 }
 
 // Execute executes the request
-func (a *GDPRApiService) DeleteExecute(r ApiDeleteRequest) (*http.Response, error) {
+func (a *GDPRAPIService) DeleteExecute(r ApiDeleteRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GDPRApiService.Delete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GDPRAPIService.Delete")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

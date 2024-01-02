@@ -29,11 +29,11 @@ docs/HubDbTableV3Request.md
 docs/ImportResult.md
 docs/NextPage.md
 docs/Option.md
-docs/RowsApi.md
-docs/RowsBatchApi.md
+docs/RowsAPI.md
+docs/RowsBatchAPI.md
 docs/SimpleUser.md
 docs/StandardError.md
-docs/TablesApi.md
+docs/TablesAPI.md
 git_push.sh
 go.mod
 go.sum
@@ -62,7 +62,4 @@ model_option.go
 model_simple_user.go
 model_standard_error.go
 response.go
-test/api_rows_batch_test.go
-test/api_rows_test.go
-test/api_tables_test.go
 utils.go

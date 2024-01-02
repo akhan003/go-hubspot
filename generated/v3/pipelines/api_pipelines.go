@@ -1,5 +1,5 @@
 /*
-CRM Pipelines
+Pipelines
 
 Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. Pipelines support `deals` and `tickets` object types.  ## Pipeline ID validation  When calling endpoints that take pipelineId as a parameter, that ID must correspond to an existing, un-archived pipeline. Otherwise the request will fail with a `404 Not Found` response.
 
@@ -19,19 +19,25 @@ import (
 	"strings"
 )
 
-// PipelinesApiService PipelinesApi service
-type PipelinesApiService service
+// PipelinesAPIService PipelinesAPI service
+type PipelinesAPIService service
 
 type ApiArchiveRequest struct {
-	ctx                            context.Context
-	ApiService                     *PipelinesApiService
-	objectType                     string
-	pipelineId                     string
-	validateReferencesBeforeDelete *bool
+	ctx                                 context.Context
+	ApiService                          *PipelinesAPIService
+	objectType                          string
+	pipelineId                          string
+	validateReferencesBeforeDelete      *bool
+	validateDealStageUsagesBeforeDelete *bool
 }
 
 func (r ApiArchiveRequest) ValidateReferencesBeforeDelete(validateReferencesBeforeDelete bool) ApiArchiveRequest {
 	r.validateReferencesBeforeDelete = &validateReferencesBeforeDelete
+	return r
+}
+
+func (r ApiArchiveRequest) ValidateDealStageUsagesBeforeDelete(validateDealStageUsagesBeforeDelete bool) ApiArchiveRequest {
+	r.validateDealStageUsagesBeforeDelete = &validateDealStageUsagesBeforeDelete
 	return r
 }
 
@@ -44,12 +50,12 @@ Archive Delete a pipeline
 
 Delete the pipeline identified by `{pipelineId}`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @return ApiArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@return ApiArchiveRequest
 */
-func (a *PipelinesApiService) Archive(ctx context.Context, objectType string, pipelineId string) ApiArchiveRequest {
+func (a *PipelinesAPIService) Archive(ctx context.Context, objectType string, pipelineId string) ApiArchiveRequest {
 	return ApiArchiveRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -59,14 +65,14 @@ func (a *PipelinesApiService) Archive(ctx context.Context, objectType string, pi
 }
 
 // Execute executes the request
-func (a *PipelinesApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, error) {
+func (a *PipelinesAPIService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesApiService.Archive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesAPIService.Archive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -81,6 +87,15 @@ func (a *PipelinesApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Respons
 
 	if r.validateReferencesBeforeDelete != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "validateReferencesBeforeDelete", r.validateReferencesBeforeDelete, "")
+	} else {
+		var defaultValue bool = false
+		r.validateReferencesBeforeDelete = &defaultValue
+	}
+	if r.validateDealStageUsagesBeforeDelete != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "validateDealStageUsagesBeforeDelete", r.validateDealStageUsagesBeforeDelete, "")
+	} else {
+		var defaultValue bool = false
+		r.validateDealStageUsagesBeforeDelete = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -165,7 +180,7 @@ func (a *PipelinesApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Respons
 
 type ApiCreateRequest struct {
 	ctx           context.Context
-	ApiService    *PipelinesApiService
+	ApiService    *PipelinesAPIService
 	objectType    string
 	pipelineInput *PipelineInput
 }
@@ -184,11 +199,11 @@ Create Create a pipeline
 
 Create a new pipeline with the provided property values. The entire pipeline object, including its unique ID, will be returned in the response.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @return ApiCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@return ApiCreateRequest
 */
-func (a *PipelinesApiService) Create(ctx context.Context, objectType string) ApiCreateRequest {
+func (a *PipelinesAPIService) Create(ctx context.Context, objectType string) ApiCreateRequest {
 	return ApiCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -197,8 +212,9 @@ func (a *PipelinesApiService) Create(ctx context.Context, objectType string) Api
 }
 
 // Execute executes the request
-//  @return Pipeline
-func (a *PipelinesApiService) CreateExecute(r ApiCreateRequest) (*Pipeline, *http.Response, error) {
+//
+//	@return Pipeline
+func (a *PipelinesAPIService) CreateExecute(r ApiCreateRequest) (*Pipeline, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -206,7 +222,7 @@ func (a *PipelinesApiService) CreateExecute(r ApiCreateRequest) (*Pipeline, *htt
 		localVarReturnValue *Pipeline
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesApiService.Create")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesAPIService.Create")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -315,7 +331,7 @@ func (a *PipelinesApiService) CreateExecute(r ApiCreateRequest) (*Pipeline, *htt
 
 type ApiGetAllRequest struct {
 	ctx        context.Context
-	ApiService *PipelinesApiService
+	ApiService *PipelinesAPIService
 	objectType string
 }
 
@@ -328,11 +344,11 @@ GetAll Retrieve all pipelines
 
 Return all pipelines for the object type specified by `{objectType}`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @return ApiGetAllRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@return ApiGetAllRequest
 */
-func (a *PipelinesApiService) GetAll(ctx context.Context, objectType string) ApiGetAllRequest {
+func (a *PipelinesAPIService) GetAll(ctx context.Context, objectType string) ApiGetAllRequest {
 	return ApiGetAllRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -341,8 +357,9 @@ func (a *PipelinesApiService) GetAll(ctx context.Context, objectType string) Api
 }
 
 // Execute executes the request
-//  @return CollectionResponsePipelineNoPaging
-func (a *PipelinesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponsePipelineNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponsePipelineNoPaging
+func (a *PipelinesAPIService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponsePipelineNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -350,7 +367,7 @@ func (a *PipelinesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResp
 		localVarReturnValue *CollectionResponsePipelineNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesApiService.GetAll")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesAPIService.GetAll")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -454,7 +471,7 @@ func (a *PipelinesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResp
 
 type ApiGetByIDRequest struct {
 	ctx        context.Context
-	ApiService *PipelinesApiService
+	ApiService *PipelinesAPIService
 	objectType string
 	pipelineId string
 }
@@ -468,12 +485,12 @@ GetByID Return a pipeline by ID
 
 Return a single pipeline object identified by its unique `{pipelineId}`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @return ApiGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@return ApiGetByIDRequest
 */
-func (a *PipelinesApiService) GetByID(ctx context.Context, objectType string, pipelineId string) ApiGetByIDRequest {
+func (a *PipelinesAPIService) GetByID(ctx context.Context, objectType string, pipelineId string) ApiGetByIDRequest {
 	return ApiGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -483,8 +500,9 @@ func (a *PipelinesApiService) GetByID(ctx context.Context, objectType string, pi
 }
 
 // Execute executes the request
-//  @return Pipeline
-func (a *PipelinesApiService) GetByIDExecute(r ApiGetByIDRequest) (*Pipeline, *http.Response, error) {
+//
+//	@return Pipeline
+func (a *PipelinesAPIService) GetByIDExecute(r ApiGetByIDRequest) (*Pipeline, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -492,7 +510,7 @@ func (a *PipelinesApiService) GetByIDExecute(r ApiGetByIDRequest) (*Pipeline, *h
 		localVarReturnValue *Pipeline
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesApiService.GetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesAPIService.GetByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -596,12 +614,13 @@ func (a *PipelinesApiService) GetByIDExecute(r ApiGetByIDRequest) (*Pipeline, *h
 }
 
 type ApiReplaceRequest struct {
-	ctx                            context.Context
-	ApiService                     *PipelinesApiService
-	objectType                     string
-	pipelineId                     string
-	pipelineInput                  *PipelineInput
-	validateReferencesBeforeDelete *bool
+	ctx                                 context.Context
+	ApiService                          *PipelinesAPIService
+	objectType                          string
+	pipelineId                          string
+	pipelineInput                       *PipelineInput
+	validateReferencesBeforeDelete      *bool
+	validateDealStageUsagesBeforeDelete *bool
 }
 
 func (r ApiReplaceRequest) PipelineInput(pipelineInput PipelineInput) ApiReplaceRequest {
@@ -614,6 +633,11 @@ func (r ApiReplaceRequest) ValidateReferencesBeforeDelete(validateReferencesBefo
 	return r
 }
 
+func (r ApiReplaceRequest) ValidateDealStageUsagesBeforeDelete(validateDealStageUsagesBeforeDelete bool) ApiReplaceRequest {
+	r.validateDealStageUsagesBeforeDelete = &validateDealStageUsagesBeforeDelete
+	return r
+}
+
 func (r ApiReplaceRequest) Execute() (*Pipeline, *http.Response, error) {
 	return r.ApiService.ReplaceExecute(r)
 }
@@ -623,12 +647,12 @@ Replace Replace a pipeline
 
 Replace all the properties of an existing pipeline with the values provided. This will overwrite any existing pipeline stages. The updated pipeline will be returned in the response.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @return ApiReplaceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@return ApiReplaceRequest
 */
-func (a *PipelinesApiService) Replace(ctx context.Context, objectType string, pipelineId string) ApiReplaceRequest {
+func (a *PipelinesAPIService) Replace(ctx context.Context, objectType string, pipelineId string) ApiReplaceRequest {
 	return ApiReplaceRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -638,8 +662,9 @@ func (a *PipelinesApiService) Replace(ctx context.Context, objectType string, pi
 }
 
 // Execute executes the request
-//  @return Pipeline
-func (a *PipelinesApiService) ReplaceExecute(r ApiReplaceRequest) (*Pipeline, *http.Response, error) {
+//
+//	@return Pipeline
+func (a *PipelinesAPIService) ReplaceExecute(r ApiReplaceRequest) (*Pipeline, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -647,7 +672,7 @@ func (a *PipelinesApiService) ReplaceExecute(r ApiReplaceRequest) (*Pipeline, *h
 		localVarReturnValue *Pipeline
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesApiService.Replace")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesAPIService.Replace")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -665,6 +690,15 @@ func (a *PipelinesApiService) ReplaceExecute(r ApiReplaceRequest) (*Pipeline, *h
 
 	if r.validateReferencesBeforeDelete != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "validateReferencesBeforeDelete", r.validateReferencesBeforeDelete, "")
+	} else {
+		var defaultValue bool = false
+		r.validateReferencesBeforeDelete = &defaultValue
+	}
+	if r.validateDealStageUsagesBeforeDelete != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "validateDealStageUsagesBeforeDelete", r.validateDealStageUsagesBeforeDelete, "")
+	} else {
+		var defaultValue bool = false
+		r.validateDealStageUsagesBeforeDelete = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -759,12 +793,13 @@ func (a *PipelinesApiService) ReplaceExecute(r ApiReplaceRequest) (*Pipeline, *h
 }
 
 type ApiUpdateRequest struct {
-	ctx                            context.Context
-	ApiService                     *PipelinesApiService
-	objectType                     string
-	pipelineId                     string
-	pipelinePatchInput             *PipelinePatchInput
-	validateReferencesBeforeDelete *bool
+	ctx                                 context.Context
+	ApiService                          *PipelinesAPIService
+	objectType                          string
+	pipelineId                          string
+	pipelinePatchInput                  *PipelinePatchInput
+	validateReferencesBeforeDelete      *bool
+	validateDealStageUsagesBeforeDelete *bool
 }
 
 func (r ApiUpdateRequest) PipelinePatchInput(pipelinePatchInput PipelinePatchInput) ApiUpdateRequest {
@@ -777,6 +812,11 @@ func (r ApiUpdateRequest) ValidateReferencesBeforeDelete(validateReferencesBefor
 	return r
 }
 
+func (r ApiUpdateRequest) ValidateDealStageUsagesBeforeDelete(validateDealStageUsagesBeforeDelete bool) ApiUpdateRequest {
+	r.validateDealStageUsagesBeforeDelete = &validateDealStageUsagesBeforeDelete
+	return r
+}
+
 func (r ApiUpdateRequest) Execute() (*Pipeline, *http.Response, error) {
 	return r.ApiService.UpdateExecute(r)
 }
@@ -786,12 +826,12 @@ Update Update a pipeline
 
 Perform a partial update of the pipeline identified by `{pipelineId}`. The updated pipeline will be returned in the response.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @return ApiUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@return ApiUpdateRequest
 */
-func (a *PipelinesApiService) Update(ctx context.Context, objectType string, pipelineId string) ApiUpdateRequest {
+func (a *PipelinesAPIService) Update(ctx context.Context, objectType string, pipelineId string) ApiUpdateRequest {
 	return ApiUpdateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -801,8 +841,9 @@ func (a *PipelinesApiService) Update(ctx context.Context, objectType string, pip
 }
 
 // Execute executes the request
-//  @return Pipeline
-func (a *PipelinesApiService) UpdateExecute(r ApiUpdateRequest) (*Pipeline, *http.Response, error) {
+//
+//	@return Pipeline
+func (a *PipelinesAPIService) UpdateExecute(r ApiUpdateRequest) (*Pipeline, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -810,7 +851,7 @@ func (a *PipelinesApiService) UpdateExecute(r ApiUpdateRequest) (*Pipeline, *htt
 		localVarReturnValue *Pipeline
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesApiService.Update")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelinesAPIService.Update")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -828,6 +869,15 @@ func (a *PipelinesApiService) UpdateExecute(r ApiUpdateRequest) (*Pipeline, *htt
 
 	if r.validateReferencesBeforeDelete != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "validateReferencesBeforeDelete", r.validateReferencesBeforeDelete, "")
+	} else {
+		var defaultValue bool = false
+		r.validateReferencesBeforeDelete = &defaultValue
+	}
+	if r.validateDealStageUsagesBeforeDelete != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "validateDealStageUsagesBeforeDelete", r.validateDealStageUsagesBeforeDelete, "")
+	} else {
+		var defaultValue bool = false
+		r.validateDealStageUsagesBeforeDelete = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}

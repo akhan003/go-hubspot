@@ -11,7 +11,9 @@ API version: v3
 package accounting
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -26,6 +28,8 @@ type ActionResponse struct {
 	CompletedAt time.Time          `json:"completedAt"`
 	Links       *map[string]string `json:"links,omitempty"`
 }
+
+type _ActionResponse ActionResponse
 
 // NewActionResponse instantiates a new ActionResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -203,6 +207,45 @@ func (o ActionResponse) ToMap() (map[string]interface{}, error) {
 		toSerialize["links"] = o.Links
 	}
 	return toSerialize, nil
+}
+
+func (o *ActionResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"status",
+		"startedAt",
+		"completedAt",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varActionResponse := _ActionResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varActionResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ActionResponse(varActionResponse)
+
+	return err
 }
 
 type NullableActionResponse struct {

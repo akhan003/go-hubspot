@@ -1,5 +1,5 @@
 /*
-Timeline events
+CRM Timeline
 
 This feature allows an app to create and configure custom events that can show up in the timelines of certain CRM objects like contacts, companies, tickets, or deals. You'll find multiple use cases for this API in the sections below.
 
@@ -11,7 +11,9 @@ API version: v3
 package timeline
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -20,26 +22,28 @@ var _ MappedNullable = &BatchResponseTimelineEventResponseWithErrors{}
 
 // BatchResponseTimelineEventResponseWithErrors struct for BatchResponseTimelineEventResponseWithErrors
 type BatchResponseTimelineEventResponseWithErrors struct {
-	Status      string                  `json:"status"`
-	Results     []TimelineEventResponse `json:"results"`
+	CompletedAt time.Time               `json:"completedAt"`
 	NumErrors   *int32                  `json:"numErrors,omitempty"`
-	Errors      []StandardError         `json:"errors,omitempty"`
 	RequestedAt *time.Time              `json:"requestedAt,omitempty"`
 	StartedAt   time.Time               `json:"startedAt"`
-	CompletedAt time.Time               `json:"completedAt"`
 	Links       *map[string]string      `json:"links,omitempty"`
+	Results     []TimelineEventResponse `json:"results"`
+	Errors      []StandardError         `json:"errors,omitempty"`
+	Status      string                  `json:"status"`
 }
+
+type _BatchResponseTimelineEventResponseWithErrors BatchResponseTimelineEventResponseWithErrors
 
 // NewBatchResponseTimelineEventResponseWithErrors instantiates a new BatchResponseTimelineEventResponseWithErrors object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBatchResponseTimelineEventResponseWithErrors(status string, results []TimelineEventResponse, startedAt time.Time, completedAt time.Time) *BatchResponseTimelineEventResponseWithErrors {
+func NewBatchResponseTimelineEventResponseWithErrors(completedAt time.Time, startedAt time.Time, results []TimelineEventResponse, status string) *BatchResponseTimelineEventResponseWithErrors {
 	this := BatchResponseTimelineEventResponseWithErrors{}
-	this.Status = status
-	this.Results = results
-	this.StartedAt = startedAt
 	this.CompletedAt = completedAt
+	this.StartedAt = startedAt
+	this.Results = results
+	this.Status = status
 	return &this
 }
 
@@ -51,52 +55,28 @@ func NewBatchResponseTimelineEventResponseWithErrorsWithDefaults() *BatchRespons
 	return &this
 }
 
-// GetStatus returns the Status field value
-func (o *BatchResponseTimelineEventResponseWithErrors) GetStatus() string {
+// GetCompletedAt returns the CompletedAt field value
+func (o *BatchResponseTimelineEventResponseWithErrors) GetCompletedAt() time.Time {
 	if o == nil {
-		var ret string
+		var ret time.Time
 		return ret
 	}
 
-	return o.Status
+	return o.CompletedAt
 }
 
-// GetStatusOk returns a tuple with the Status field value
+// GetCompletedAtOk returns a tuple with the CompletedAt field value
 // and a boolean to check if the value has been set.
-func (o *BatchResponseTimelineEventResponseWithErrors) GetStatusOk() (*string, bool) {
+func (o *BatchResponseTimelineEventResponseWithErrors) GetCompletedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Status, true
+	return &o.CompletedAt, true
 }
 
-// SetStatus sets field value
-func (o *BatchResponseTimelineEventResponseWithErrors) SetStatus(v string) {
-	o.Status = v
-}
-
-// GetResults returns the Results field value
-func (o *BatchResponseTimelineEventResponseWithErrors) GetResults() []TimelineEventResponse {
-	if o == nil {
-		var ret []TimelineEventResponse
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponseTimelineEventResponseWithErrors) GetResultsOk() ([]TimelineEventResponse, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *BatchResponseTimelineEventResponseWithErrors) SetResults(v []TimelineEventResponse) {
-	o.Results = v
+// SetCompletedAt sets field value
+func (o *BatchResponseTimelineEventResponseWithErrors) SetCompletedAt(v time.Time) {
+	o.CompletedAt = v
 }
 
 // GetNumErrors returns the NumErrors field value if set, zero value otherwise.
@@ -129,38 +109,6 @@ func (o *BatchResponseTimelineEventResponseWithErrors) HasNumErrors() bool {
 // SetNumErrors gets a reference to the given int32 and assigns it to the NumErrors field.
 func (o *BatchResponseTimelineEventResponseWithErrors) SetNumErrors(v int32) {
 	o.NumErrors = &v
-}
-
-// GetErrors returns the Errors field value if set, zero value otherwise.
-func (o *BatchResponseTimelineEventResponseWithErrors) GetErrors() []StandardError {
-	if o == nil || IsNil(o.Errors) {
-		var ret []StandardError
-		return ret
-	}
-	return o.Errors
-}
-
-// GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *BatchResponseTimelineEventResponseWithErrors) GetErrorsOk() ([]StandardError, bool) {
-	if o == nil || IsNil(o.Errors) {
-		return nil, false
-	}
-	return o.Errors, true
-}
-
-// HasErrors returns a boolean if a field has been set.
-func (o *BatchResponseTimelineEventResponseWithErrors) HasErrors() bool {
-	if o != nil && !IsNil(o.Errors) {
-		return true
-	}
-
-	return false
-}
-
-// SetErrors gets a reference to the given []StandardError and assigns it to the Errors field.
-func (o *BatchResponseTimelineEventResponseWithErrors) SetErrors(v []StandardError) {
-	o.Errors = v
 }
 
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
@@ -219,30 +167,6 @@ func (o *BatchResponseTimelineEventResponseWithErrors) SetStartedAt(v time.Time)
 	o.StartedAt = v
 }
 
-// GetCompletedAt returns the CompletedAt field value
-func (o *BatchResponseTimelineEventResponseWithErrors) GetCompletedAt() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.CompletedAt
-}
-
-// GetCompletedAtOk returns a tuple with the CompletedAt field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponseTimelineEventResponseWithErrors) GetCompletedAtOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.CompletedAt, true
-}
-
-// SetCompletedAt sets field value
-func (o *BatchResponseTimelineEventResponseWithErrors) SetCompletedAt(v time.Time) {
-	o.CompletedAt = v
-}
-
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *BatchResponseTimelineEventResponseWithErrors) GetLinks() map[string]string {
 	if o == nil || IsNil(o.Links) {
@@ -275,6 +199,86 @@ func (o *BatchResponseTimelineEventResponseWithErrors) SetLinks(v map[string]str
 	o.Links = &v
 }
 
+// GetResults returns the Results field value
+func (o *BatchResponseTimelineEventResponseWithErrors) GetResults() []TimelineEventResponse {
+	if o == nil {
+		var ret []TimelineEventResponse
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponseTimelineEventResponseWithErrors) GetResultsOk() ([]TimelineEventResponse, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *BatchResponseTimelineEventResponseWithErrors) SetResults(v []TimelineEventResponse) {
+	o.Results = v
+}
+
+// GetErrors returns the Errors field value if set, zero value otherwise.
+func (o *BatchResponseTimelineEventResponseWithErrors) GetErrors() []StandardError {
+	if o == nil || IsNil(o.Errors) {
+		var ret []StandardError
+		return ret
+	}
+	return o.Errors
+}
+
+// GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BatchResponseTimelineEventResponseWithErrors) GetErrorsOk() ([]StandardError, bool) {
+	if o == nil || IsNil(o.Errors) {
+		return nil, false
+	}
+	return o.Errors, true
+}
+
+// HasErrors returns a boolean if a field has been set.
+func (o *BatchResponseTimelineEventResponseWithErrors) HasErrors() bool {
+	if o != nil && !IsNil(o.Errors) {
+		return true
+	}
+
+	return false
+}
+
+// SetErrors gets a reference to the given []StandardError and assigns it to the Errors field.
+func (o *BatchResponseTimelineEventResponseWithErrors) SetErrors(v []StandardError) {
+	o.Errors = v
+}
+
+// GetStatus returns the Status field value
+func (o *BatchResponseTimelineEventResponseWithErrors) GetStatus() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponseTimelineEventResponseWithErrors) GetStatusOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Status, true
+}
+
+// SetStatus sets field value
+func (o *BatchResponseTimelineEventResponseWithErrors) SetStatus(v string) {
+	o.Status = v
+}
+
 func (o BatchResponseTimelineEventResponseWithErrors) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -285,23 +289,63 @@ func (o BatchResponseTimelineEventResponseWithErrors) MarshalJSON() ([]byte, err
 
 func (o BatchResponseTimelineEventResponseWithErrors) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["status"] = o.Status
-	toSerialize["results"] = o.Results
+	toSerialize["completedAt"] = o.CompletedAt
 	if !IsNil(o.NumErrors) {
 		toSerialize["numErrors"] = o.NumErrors
-	}
-	if !IsNil(o.Errors) {
-		toSerialize["errors"] = o.Errors
 	}
 	if !IsNil(o.RequestedAt) {
 		toSerialize["requestedAt"] = o.RequestedAt
 	}
 	toSerialize["startedAt"] = o.StartedAt
-	toSerialize["completedAt"] = o.CompletedAt
 	if !IsNil(o.Links) {
 		toSerialize["links"] = o.Links
 	}
+	toSerialize["results"] = o.Results
+	if !IsNil(o.Errors) {
+		toSerialize["errors"] = o.Errors
+	}
+	toSerialize["status"] = o.Status
 	return toSerialize, nil
+}
+
+func (o *BatchResponseTimelineEventResponseWithErrors) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"completedAt",
+		"startedAt",
+		"results",
+		"status",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchResponseTimelineEventResponseWithErrors := _BatchResponseTimelineEventResponseWithErrors{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchResponseTimelineEventResponseWithErrors)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchResponseTimelineEventResponseWithErrors(varBatchResponseTimelineEventResponseWithErrors)
+
+	return err
 }
 
 type NullableBatchResponseTimelineEventResponseWithErrors struct {

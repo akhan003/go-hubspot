@@ -40,12 +40,12 @@ FunctionsArchive Delete a custom action function
 
 Delete a function for a custom workflow action. This will remove the function itself as well as removing the association between the function and the custom action. This can't be undone.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action
- @param functionType The type of function. This determines when the function will be called.
- @param functionId The ID qualifier for the function. This is used to specify which input field a function is associated with for `PRE_FETCH_OPTIONS` and `POST_FETCH_OPTIONS` function types.
- @param appId
- @return ApiFunctionsArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action
+	@param functionType The type of function. This determines when the function will be called.
+	@param functionId The ID qualifier for the function. This is used to specify which input field a function is associated with for `PRE_FETCH_OPTIONS` and `POST_FETCH_OPTIONS` function types.
+	@param appId
+	@return ApiFunctionsArchiveRequest
 */
 func (a *FunctionsApiService) FunctionsArchive(ctx context.Context, definitionId string, functionType string, functionId string, appId int32) ApiFunctionsArchiveRequest {
 	return ApiFunctionsArchiveRequest{
@@ -165,11 +165,11 @@ FunctionsArchiveByType Delete a custom action function
 
 Delete a function for a custom workflow action. This will remove the function itself as well as removing the association between the function and the custom action. This can't be undone.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action.
- @param functionType The type of function. This determines when the function will be called.
- @param appId
- @return ApiFunctionsArchiveByTypeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action.
+	@param functionType The type of function. This determines when the function will be called.
+	@param appId
+	@return ApiFunctionsArchiveByTypeRequest
 */
 func (a *FunctionsApiService) FunctionsArchiveByType(ctx context.Context, definitionId string, functionType string, appId int32) ApiFunctionsArchiveByTypeRequest {
 	return ApiFunctionsArchiveByTypeRequest{
@@ -295,12 +295,12 @@ FunctionsCreateOrReplace Create or replace a custom action function
 
 Creates or replaces a function for a custom workflow action.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action.
- @param functionType The type of function. This determines when the function will be called.
- @param functionId The ID qualifier for the function. This is used to specify which input field a function is associated with for `PRE_FETCH_OPTIONS` and `POST_FETCH_OPTIONS` function types.
- @param appId
- @return ApiFunctionsCreateOrReplaceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action.
+	@param functionType The type of function. This determines when the function will be called.
+	@param functionId The ID qualifier for the function. This is used to specify which input field a function is associated with for `PRE_FETCH_OPTIONS` and `POST_FETCH_OPTIONS` function types.
+	@param appId
+	@return ApiFunctionsCreateOrReplaceRequest
 */
 func (a *FunctionsApiService) FunctionsCreateOrReplace(ctx context.Context, definitionId string, functionType string, functionId string, appId int32) ApiFunctionsCreateOrReplaceRequest {
 	return ApiFunctionsCreateOrReplaceRequest{
@@ -314,7 +314,8 @@ func (a *FunctionsApiService) FunctionsCreateOrReplace(ctx context.Context, defi
 }
 
 // Execute executes the request
-//  @return ActionFunctionIdentifier
+//
+//	@return ActionFunctionIdentifier
 func (a *FunctionsApiService) FunctionsCreateOrReplaceExecute(r ApiFunctionsCreateOrReplaceRequest) (*ActionFunctionIdentifier, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
@@ -443,11 +444,11 @@ FunctionsCreateOrReplaceByType Create or replace a custom action function
 
 Creates or replaces a function for a custom workflow action.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action.
- @param functionType The type of function. This determines when the function will be called.
- @param appId
- @return ApiFunctionsCreateOrReplaceByTypeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action.
+	@param functionType The type of function. This determines when the function will be called.
+	@param appId
+	@return ApiFunctionsCreateOrReplaceByTypeRequest
 */
 func (a *FunctionsApiService) FunctionsCreateOrReplaceByType(ctx context.Context, definitionId string, functionType string, appId int32) ApiFunctionsCreateOrReplaceByTypeRequest {
 	return ApiFunctionsCreateOrReplaceByTypeRequest{
@@ -460,7 +461,8 @@ func (a *FunctionsApiService) FunctionsCreateOrReplaceByType(ctx context.Context
 }
 
 // Execute executes the request
-//  @return ActionFunctionIdentifier
+//
+//	@return ActionFunctionIdentifier
 func (a *FunctionsApiService) FunctionsCreateOrReplaceByTypeExecute(r ApiFunctionsCreateOrReplaceByTypeRequest) (*ActionFunctionIdentifier, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
@@ -582,12 +584,12 @@ FunctionsGetByID Get a custom action function
 
 Returns the given function for a custom workflow action.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action.
- @param functionType The type of function. This determines when the function will be called.
- @param functionId The ID qualifier for the function. This is used to specify which input field a function is associated with for `PRE_FETCH_OPTIONS` and `POST_FETCH_OPTIONS` function types.
- @param appId
- @return ApiFunctionsGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action.
+	@param functionType The type of function. This determines when the function will be called.
+	@param functionId The ID qualifier for the function. This is used to specify which input field a function is associated with for `PRE_FETCH_OPTIONS` and `POST_FETCH_OPTIONS` function types.
+	@param appId
+	@return ApiFunctionsGetByIDRequest
 */
 func (a *FunctionsApiService) FunctionsGetByID(ctx context.Context, definitionId string, functionType string, functionId string, appId int32) ApiFunctionsGetByIDRequest {
 	return ApiFunctionsGetByIDRequest{
@@ -601,7 +603,8 @@ func (a *FunctionsApiService) FunctionsGetByID(ctx context.Context, definitionId
 }
 
 // Execute executes the request
-//  @return ActionFunction
+//
+//	@return ActionFunction
 func (a *FunctionsApiService) FunctionsGetByIDExecute(r ApiFunctionsGetByIDRequest) (*ActionFunction, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
@@ -718,11 +721,11 @@ FunctionsGetByType Get a custom action function
 
 Returns the given function for a custom workflow action.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action.
- @param functionType The type of function. This determines when the function will be called.
- @param appId
- @return ApiFunctionsGetByTypeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action.
+	@param functionType The type of function. This determines when the function will be called.
+	@param appId
+	@return ApiFunctionsGetByTypeRequest
 */
 func (a *FunctionsApiService) FunctionsGetByType(ctx context.Context, definitionId string, functionType string, appId int32) ApiFunctionsGetByTypeRequest {
 	return ApiFunctionsGetByTypeRequest{
@@ -735,7 +738,8 @@ func (a *FunctionsApiService) FunctionsGetByType(ctx context.Context, definition
 }
 
 // Execute executes the request
-//  @return ActionFunction
+//
+//	@return ActionFunction
 func (a *FunctionsApiService) FunctionsGetByTypeExecute(r ApiFunctionsGetByTypeRequest) (*ActionFunction, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
@@ -850,10 +854,10 @@ FunctionsGetPage Get all custom action functions
 
 Returns a list of all functions that are associated with the given custom workflow action.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param definitionId The ID of the custom workflow action.
- @param appId
- @return ApiFunctionsGetPageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param definitionId The ID of the custom workflow action.
+	@param appId
+	@return ApiFunctionsGetPageRequest
 */
 func (a *FunctionsApiService) FunctionsGetPage(ctx context.Context, definitionId string, appId int32) ApiFunctionsGetPageRequest {
 	return ApiFunctionsGetPageRequest{
@@ -865,7 +869,8 @@ func (a *FunctionsApiService) FunctionsGetPage(ctx context.Context, definitionId
 }
 
 // Execute executes the request
-//  @return CollectionResponseActionFunctionIdentifierNoPaging
+//
+//	@return CollectionResponseActionFunctionIdentifierNoPaging
 func (a *FunctionsApiService) FunctionsGetPageExecute(r ApiFunctionsGetPageRequest) (*CollectionResponseActionFunctionIdentifierNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet

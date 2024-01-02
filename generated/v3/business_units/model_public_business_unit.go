@@ -1,5 +1,5 @@
 /*
-Business Unit
+Business Units Business Units
 
 Retrieve Business Unit information.
 
@@ -11,7 +11,9 @@ API version: v3
 package business_units
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PublicBusinessUnit type satisfies the MappedNullable interface at compile time
@@ -19,21 +21,23 @@ var _ MappedNullable = &PublicBusinessUnit{}
 
 // PublicBusinessUnit A Business Unit
 type PublicBusinessUnit struct {
+	LogoMetadata *PublicBusinessUnitLogoMetadata `json:"logoMetadata,omitempty"`
+	// The Business Unit's name
+	Name string `json:"name"`
 	// The Business Unit's unique ID
 	Id string `json:"id"`
-	// The Business Unit's name
-	Name         string                          `json:"name"`
-	LogoMetadata *PublicBusinessUnitLogoMetadata `json:"logoMetadata,omitempty"`
 }
+
+type _PublicBusinessUnit PublicBusinessUnit
 
 // NewPublicBusinessUnit instantiates a new PublicBusinessUnit object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPublicBusinessUnit(id string, name string) *PublicBusinessUnit {
+func NewPublicBusinessUnit(name string, id string) *PublicBusinessUnit {
 	this := PublicBusinessUnit{}
-	this.Id = id
 	this.Name = name
+	this.Id = id
 	return &this
 }
 
@@ -43,54 +47,6 @@ func NewPublicBusinessUnit(id string, name string) *PublicBusinessUnit {
 func NewPublicBusinessUnitWithDefaults() *PublicBusinessUnit {
 	this := PublicBusinessUnit{}
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *PublicBusinessUnit) GetId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *PublicBusinessUnit) GetIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *PublicBusinessUnit) SetId(v string) {
-	o.Id = v
-}
-
-// GetName returns the Name field value
-func (o *PublicBusinessUnit) GetName() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value
-// and a boolean to check if the value has been set.
-func (o *PublicBusinessUnit) GetNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Name, true
-}
-
-// SetName sets field value
-func (o *PublicBusinessUnit) SetName(v string) {
-	o.Name = v
 }
 
 // GetLogoMetadata returns the LogoMetadata field value if set, zero value otherwise.
@@ -125,6 +81,54 @@ func (o *PublicBusinessUnit) SetLogoMetadata(v PublicBusinessUnitLogoMetadata) {
 	o.LogoMetadata = &v
 }
 
+// GetName returns the Name field value
+func (o *PublicBusinessUnit) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *PublicBusinessUnit) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *PublicBusinessUnit) SetName(v string) {
+	o.Name = v
+}
+
+// GetId returns the Id field value
+func (o *PublicBusinessUnit) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *PublicBusinessUnit) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *PublicBusinessUnit) SetId(v string) {
+	o.Id = v
+}
+
 func (o PublicBusinessUnit) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -135,12 +139,50 @@ func (o PublicBusinessUnit) MarshalJSON() ([]byte, error) {
 
 func (o PublicBusinessUnit) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
-	toSerialize["name"] = o.Name
 	if !IsNil(o.LogoMetadata) {
 		toSerialize["logoMetadata"] = o.LogoMetadata
 	}
+	toSerialize["name"] = o.Name
+	toSerialize["id"] = o.Id
 	return toSerialize, nil
+}
+
+func (o *PublicBusinessUnit) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPublicBusinessUnit := _PublicBusinessUnit{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPublicBusinessUnit)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicBusinessUnit(varPublicBusinessUnit)
+
+	return err
 }
 
 type NullablePublicBusinessUnit struct {

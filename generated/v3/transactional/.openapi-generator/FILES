@@ -15,8 +15,8 @@ docs/ForwardPaging.md
 docs/NextPage.md
 docs/PublicSingleSendEmail.md
 docs/PublicSingleSendRequestEgg.md
-docs/PublicSmtpTokensApi.md
-docs/SingleSendApi.md
+docs/PublicSmtpTokensAPI.md
+docs/SingleSendAPI.md
 docs/SmtpApiTokenRequestEgg.md
 docs/SmtpApiTokenView.md
 git_push.sh
@@ -34,6 +34,4 @@ model_public_single_send_request_egg.go
 model_smtp_api_token_request_egg.go
 model_smtp_api_token_view.go
 response.go
-test/api_public_smtp_tokens_test.go
-test/api_single_send_test.go
 utils.go

@@ -1,5 +1,5 @@
 /*
-HubDB endpoints
+Hubdb
 
 HubDB is a relational data store that presents data as rows, columns, and cells in a table, much like a spreadsheet. HubDB tables can be added or modified [in the HubSpot CMS](https://knowledge.hubspot.com/cos-general/how-to-edit-hubdb-tables), but you can also use the API endpoints documented here. For more information on HubDB tables and using their data on a HubSpot site, see the [CMS developers site](https://designers.hubspot.com/docs/tools/hubdb). You can also see the [documentation for dynamic pages](https://designers.hubspot.com/docs/tutorials/how-to-build-dynamic-pages-with-hubdb) for more details about the `useForPages` field.  HubDB tables support `draft` and `published` versions. This allows you to update data in the table, either for testing or to allow for a manual approval process, without affecting any live pages using the existing data. Draft data can be reviewed, and published by a user working in HubSpot or published via the API. Draft data can also be discarded, allowing users to go back to the published version of the data without disrupting it. If a table is set to be `allowed for public access`, you can access the published version of the table and rows without any authentication by specifying the portal id via the query parameter `portalId`.
 
@@ -11,7 +11,9 @@ API version: v3
 package hubdb
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the Column type satisfies the MappedNullable interface at compile time
@@ -19,43 +21,45 @@ var _ MappedNullable = &Column{}
 
 // Column struct for Column
 type Column struct {
-	// Name of the column
-	Name string `json:"name"`
+	// Foreign table id referenced
+	ForeignTableId *int64  `json:"foreignTableId,omitempty"`
+	Description    *string `json:"description,omitempty"`
 	// Label of the column
 	Label string `json:"label"`
-	// Column Id
-	Id      *string `json:"id,omitempty"`
-	Deleted *bool   `json:"deleted,omitempty"`
+	// Type of the column
+	Type string `json:"type"`
+	// Number of options available
+	OptionCount *int32 `json:"optionCount,omitempty"`
+	// Foreign Ids
+	ForeignIds []ForeignId `json:"foreignIds,omitempty"`
+	Deleted    *bool       `json:"deleted,omitempty"`
+	// Name of the column
+	Name string `json:"name"`
 	// Options to choose for select and multi-select columns
 	Options []Option `json:"options,omitempty"`
 	// Column width for HubDB UI
 	Width *int32 `json:"width,omitempty"`
-	// Foreign table id referenced
-	ForeignTableId *int64 `json:"foreignTableId,omitempty"`
-	// Foreign Column id
-	ForeignColumnId *int32  `json:"foreignColumnId,omitempty"`
-	Description     *string `json:"description,omitempty"`
-	// Foreign Ids
-	ForeignIds []ForeignId `json:"foreignIds,omitempty"`
-	// Type of the column
-	Type string `json:"type"`
-	// Foreign ids by name
-	ForeignIdsByName *map[string]ForeignId `json:"foreignIdsByName,omitempty"`
+	// Column Id
+	Id *string `json:"id,omitempty"`
 	// Foreign ids
 	ForeignIdsById *map[string]ForeignId `json:"foreignIdsById,omitempty"`
-	// Number of options available
-	OptionCount *int32 `json:"optionCount,omitempty"`
+	// Foreign Column id
+	ForeignColumnId *int32 `json:"foreignColumnId,omitempty"`
+	// Foreign ids by name
+	ForeignIdsByName *map[string]ForeignId `json:"foreignIdsByName,omitempty"`
 }
+
+type _Column Column
 
 // NewColumn instantiates a new Column object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewColumn(name string, label string, type_ string) *Column {
+func NewColumn(label string, type_ string, name string) *Column {
 	this := Column{}
-	this.Name = name
 	this.Label = label
 	this.Type = type_
+	this.Name = name
 	return &this
 }
 
@@ -67,28 +71,68 @@ func NewColumnWithDefaults() *Column {
 	return &this
 }
 
-// GetName returns the Name field value
-func (o *Column) GetName() string {
-	if o == nil {
+// GetForeignTableId returns the ForeignTableId field value if set, zero value otherwise.
+func (o *Column) GetForeignTableId() int64 {
+	if o == nil || IsNil(o.ForeignTableId) {
+		var ret int64
+		return ret
+	}
+	return *o.ForeignTableId
+}
+
+// GetForeignTableIdOk returns a tuple with the ForeignTableId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Column) GetForeignTableIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.ForeignTableId) {
+		return nil, false
+	}
+	return o.ForeignTableId, true
+}
+
+// HasForeignTableId returns a boolean if a field has been set.
+func (o *Column) HasForeignTableId() bool {
+	if o != nil && !IsNil(o.ForeignTableId) {
+		return true
+	}
+
+	return false
+}
+
+// SetForeignTableId gets a reference to the given int64 and assigns it to the ForeignTableId field.
+func (o *Column) SetForeignTableId(v int64) {
+	o.ForeignTableId = &v
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *Column) GetDescription() string {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
-
-	return o.Name
+	return *o.Description
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Column) GetNameOk() (*string, bool) {
-	if o == nil {
+func (o *Column) GetDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Description, true
 }
 
-// SetName sets field value
-func (o *Column) SetName(v string) {
-	o.Name = v
+// HasDescription returns a boolean if a field has been set.
+func (o *Column) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *Column) SetDescription(v string) {
+	o.Description = &v
 }
 
 // GetLabel returns the Label field value
@@ -115,36 +159,92 @@ func (o *Column) SetLabel(v string) {
 	o.Label = v
 }
 
-// GetId returns the Id field value if set, zero value otherwise.
-func (o *Column) GetId() string {
-	if o == nil || IsNil(o.Id) {
+// GetType returns the Type field value
+func (o *Column) GetType() string {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Id
+
+	return o.Type
 }
 
-// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
-func (o *Column) GetIdOk() (*string, bool) {
-	if o == nil || IsNil(o.Id) {
+func (o *Column) GetTypeOk() (*string, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Id, true
+	return &o.Type, true
 }
 
-// HasId returns a boolean if a field has been set.
-func (o *Column) HasId() bool {
-	if o != nil && !IsNil(o.Id) {
+// SetType sets field value
+func (o *Column) SetType(v string) {
+	o.Type = v
+}
+
+// GetOptionCount returns the OptionCount field value if set, zero value otherwise.
+func (o *Column) GetOptionCount() int32 {
+	if o == nil || IsNil(o.OptionCount) {
+		var ret int32
+		return ret
+	}
+	return *o.OptionCount
+}
+
+// GetOptionCountOk returns a tuple with the OptionCount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Column) GetOptionCountOk() (*int32, bool) {
+	if o == nil || IsNil(o.OptionCount) {
+		return nil, false
+	}
+	return o.OptionCount, true
+}
+
+// HasOptionCount returns a boolean if a field has been set.
+func (o *Column) HasOptionCount() bool {
+	if o != nil && !IsNil(o.OptionCount) {
 		return true
 	}
 
 	return false
 }
 
-// SetId gets a reference to the given string and assigns it to the Id field.
-func (o *Column) SetId(v string) {
-	o.Id = &v
+// SetOptionCount gets a reference to the given int32 and assigns it to the OptionCount field.
+func (o *Column) SetOptionCount(v int32) {
+	o.OptionCount = &v
+}
+
+// GetForeignIds returns the ForeignIds field value if set, zero value otherwise.
+func (o *Column) GetForeignIds() []ForeignId {
+	if o == nil || IsNil(o.ForeignIds) {
+		var ret []ForeignId
+		return ret
+	}
+	return o.ForeignIds
+}
+
+// GetForeignIdsOk returns a tuple with the ForeignIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Column) GetForeignIdsOk() ([]ForeignId, bool) {
+	if o == nil || IsNil(o.ForeignIds) {
+		return nil, false
+	}
+	return o.ForeignIds, true
+}
+
+// HasForeignIds returns a boolean if a field has been set.
+func (o *Column) HasForeignIds() bool {
+	if o != nil && !IsNil(o.ForeignIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetForeignIds gets a reference to the given []ForeignId and assigns it to the ForeignIds field.
+func (o *Column) SetForeignIds(v []ForeignId) {
+	o.ForeignIds = v
 }
 
 // GetDeleted returns the Deleted field value if set, zero value otherwise.
@@ -177,6 +277,30 @@ func (o *Column) HasDeleted() bool {
 // SetDeleted gets a reference to the given bool and assigns it to the Deleted field.
 func (o *Column) SetDeleted(v bool) {
 	o.Deleted = &v
+}
+
+// GetName returns the Name field value
+func (o *Column) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *Column) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *Column) SetName(v string) {
+	o.Name = v
 }
 
 // GetOptions returns the Options field value if set, zero value otherwise.
@@ -243,188 +367,36 @@ func (o *Column) SetWidth(v int32) {
 	o.Width = &v
 }
 
-// GetForeignTableId returns the ForeignTableId field value if set, zero value otherwise.
-func (o *Column) GetForeignTableId() int64 {
-	if o == nil || IsNil(o.ForeignTableId) {
-		var ret int64
-		return ret
-	}
-	return *o.ForeignTableId
-}
-
-// GetForeignTableIdOk returns a tuple with the ForeignTableId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Column) GetForeignTableIdOk() (*int64, bool) {
-	if o == nil || IsNil(o.ForeignTableId) {
-		return nil, false
-	}
-	return o.ForeignTableId, true
-}
-
-// HasForeignTableId returns a boolean if a field has been set.
-func (o *Column) HasForeignTableId() bool {
-	if o != nil && !IsNil(o.ForeignTableId) {
-		return true
-	}
-
-	return false
-}
-
-// SetForeignTableId gets a reference to the given int64 and assigns it to the ForeignTableId field.
-func (o *Column) SetForeignTableId(v int64) {
-	o.ForeignTableId = &v
-}
-
-// GetForeignColumnId returns the ForeignColumnId field value if set, zero value otherwise.
-func (o *Column) GetForeignColumnId() int32 {
-	if o == nil || IsNil(o.ForeignColumnId) {
-		var ret int32
-		return ret
-	}
-	return *o.ForeignColumnId
-}
-
-// GetForeignColumnIdOk returns a tuple with the ForeignColumnId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Column) GetForeignColumnIdOk() (*int32, bool) {
-	if o == nil || IsNil(o.ForeignColumnId) {
-		return nil, false
-	}
-	return o.ForeignColumnId, true
-}
-
-// HasForeignColumnId returns a boolean if a field has been set.
-func (o *Column) HasForeignColumnId() bool {
-	if o != nil && !IsNil(o.ForeignColumnId) {
-		return true
-	}
-
-	return false
-}
-
-// SetForeignColumnId gets a reference to the given int32 and assigns it to the ForeignColumnId field.
-func (o *Column) SetForeignColumnId(v int32) {
-	o.ForeignColumnId = &v
-}
-
-// GetDescription returns the Description field value if set, zero value otherwise.
-func (o *Column) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *Column) GetId() string {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-	return *o.Description
+	return *o.Id
 }
 
-// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Column) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
+func (o *Column) GetIdOk() (*string, bool) {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return o.Description, true
+	return o.Id, true
 }
 
-// HasDescription returns a boolean if a field has been set.
-func (o *Column) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
+// HasId returns a boolean if a field has been set.
+func (o *Column) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
 		return true
 	}
 
 	return false
 }
 
-// SetDescription gets a reference to the given string and assigns it to the Description field.
-func (o *Column) SetDescription(v string) {
-	o.Description = &v
-}
-
-// GetForeignIds returns the ForeignIds field value if set, zero value otherwise.
-func (o *Column) GetForeignIds() []ForeignId {
-	if o == nil || IsNil(o.ForeignIds) {
-		var ret []ForeignId
-		return ret
-	}
-	return o.ForeignIds
-}
-
-// GetForeignIdsOk returns a tuple with the ForeignIds field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Column) GetForeignIdsOk() ([]ForeignId, bool) {
-	if o == nil || IsNil(o.ForeignIds) {
-		return nil, false
-	}
-	return o.ForeignIds, true
-}
-
-// HasForeignIds returns a boolean if a field has been set.
-func (o *Column) HasForeignIds() bool {
-	if o != nil && !IsNil(o.ForeignIds) {
-		return true
-	}
-
-	return false
-}
-
-// SetForeignIds gets a reference to the given []ForeignId and assigns it to the ForeignIds field.
-func (o *Column) SetForeignIds(v []ForeignId) {
-	o.ForeignIds = v
-}
-
-// GetType returns the Type field value
-func (o *Column) GetType() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Type
-}
-
-// GetTypeOk returns a tuple with the Type field value
-// and a boolean to check if the value has been set.
-func (o *Column) GetTypeOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Type, true
-}
-
-// SetType sets field value
-func (o *Column) SetType(v string) {
-	o.Type = v
-}
-
-// GetForeignIdsByName returns the ForeignIdsByName field value if set, zero value otherwise.
-func (o *Column) GetForeignIdsByName() map[string]ForeignId {
-	if o == nil || IsNil(o.ForeignIdsByName) {
-		var ret map[string]ForeignId
-		return ret
-	}
-	return *o.ForeignIdsByName
-}
-
-// GetForeignIdsByNameOk returns a tuple with the ForeignIdsByName field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Column) GetForeignIdsByNameOk() (*map[string]ForeignId, bool) {
-	if o == nil || IsNil(o.ForeignIdsByName) {
-		return nil, false
-	}
-	return o.ForeignIdsByName, true
-}
-
-// HasForeignIdsByName returns a boolean if a field has been set.
-func (o *Column) HasForeignIdsByName() bool {
-	if o != nil && !IsNil(o.ForeignIdsByName) {
-		return true
-	}
-
-	return false
-}
-
-// SetForeignIdsByName gets a reference to the given map[string]ForeignId and assigns it to the ForeignIdsByName field.
-func (o *Column) SetForeignIdsByName(v map[string]ForeignId) {
-	o.ForeignIdsByName = &v
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *Column) SetId(v string) {
+	o.Id = &v
 }
 
 // GetForeignIdsById returns the ForeignIdsById field value if set, zero value otherwise.
@@ -459,36 +431,68 @@ func (o *Column) SetForeignIdsById(v map[string]ForeignId) {
 	o.ForeignIdsById = &v
 }
 
-// GetOptionCount returns the OptionCount field value if set, zero value otherwise.
-func (o *Column) GetOptionCount() int32 {
-	if o == nil || IsNil(o.OptionCount) {
+// GetForeignColumnId returns the ForeignColumnId field value if set, zero value otherwise.
+func (o *Column) GetForeignColumnId() int32 {
+	if o == nil || IsNil(o.ForeignColumnId) {
 		var ret int32
 		return ret
 	}
-	return *o.OptionCount
+	return *o.ForeignColumnId
 }
 
-// GetOptionCountOk returns a tuple with the OptionCount field value if set, nil otherwise
+// GetForeignColumnIdOk returns a tuple with the ForeignColumnId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Column) GetOptionCountOk() (*int32, bool) {
-	if o == nil || IsNil(o.OptionCount) {
+func (o *Column) GetForeignColumnIdOk() (*int32, bool) {
+	if o == nil || IsNil(o.ForeignColumnId) {
 		return nil, false
 	}
-	return o.OptionCount, true
+	return o.ForeignColumnId, true
 }
 
-// HasOptionCount returns a boolean if a field has been set.
-func (o *Column) HasOptionCount() bool {
-	if o != nil && !IsNil(o.OptionCount) {
+// HasForeignColumnId returns a boolean if a field has been set.
+func (o *Column) HasForeignColumnId() bool {
+	if o != nil && !IsNil(o.ForeignColumnId) {
 		return true
 	}
 
 	return false
 }
 
-// SetOptionCount gets a reference to the given int32 and assigns it to the OptionCount field.
-func (o *Column) SetOptionCount(v int32) {
-	o.OptionCount = &v
+// SetForeignColumnId gets a reference to the given int32 and assigns it to the ForeignColumnId field.
+func (o *Column) SetForeignColumnId(v int32) {
+	o.ForeignColumnId = &v
+}
+
+// GetForeignIdsByName returns the ForeignIdsByName field value if set, zero value otherwise.
+func (o *Column) GetForeignIdsByName() map[string]ForeignId {
+	if o == nil || IsNil(o.ForeignIdsByName) {
+		var ret map[string]ForeignId
+		return ret
+	}
+	return *o.ForeignIdsByName
+}
+
+// GetForeignIdsByNameOk returns a tuple with the ForeignIdsByName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Column) GetForeignIdsByNameOk() (*map[string]ForeignId, bool) {
+	if o == nil || IsNil(o.ForeignIdsByName) {
+		return nil, false
+	}
+	return o.ForeignIdsByName, true
+}
+
+// HasForeignIdsByName returns a boolean if a field has been set.
+func (o *Column) HasForeignIdsByName() bool {
+	if o != nil && !IsNil(o.ForeignIdsByName) {
+		return true
+	}
+
+	return false
+}
+
+// SetForeignIdsByName gets a reference to the given map[string]ForeignId and assigns it to the ForeignIdsByName field.
+func (o *Column) SetForeignIdsByName(v map[string]ForeignId) {
+	o.ForeignIdsByName = &v
 }
 
 func (o Column) MarshalJSON() ([]byte, error) {
@@ -501,43 +505,82 @@ func (o Column) MarshalJSON() ([]byte, error) {
 
 func (o Column) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["name"] = o.Name
+	if !IsNil(o.ForeignTableId) {
+		toSerialize["foreignTableId"] = o.ForeignTableId
+	}
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
 	toSerialize["label"] = o.Label
-	if !IsNil(o.Id) {
-		toSerialize["id"] = o.Id
+	toSerialize["type"] = o.Type
+	if !IsNil(o.OptionCount) {
+		toSerialize["optionCount"] = o.OptionCount
+	}
+	if !IsNil(o.ForeignIds) {
+		toSerialize["foreignIds"] = o.ForeignIds
 	}
 	if !IsNil(o.Deleted) {
 		toSerialize["deleted"] = o.Deleted
 	}
+	toSerialize["name"] = o.Name
 	if !IsNil(o.Options) {
 		toSerialize["options"] = o.Options
 	}
 	if !IsNil(o.Width) {
 		toSerialize["width"] = o.Width
 	}
-	if !IsNil(o.ForeignTableId) {
-		toSerialize["foreignTableId"] = o.ForeignTableId
-	}
-	if !IsNil(o.ForeignColumnId) {
-		toSerialize["foreignColumnId"] = o.ForeignColumnId
-	}
-	if !IsNil(o.Description) {
-		toSerialize["description"] = o.Description
-	}
-	if !IsNil(o.ForeignIds) {
-		toSerialize["foreignIds"] = o.ForeignIds
-	}
-	toSerialize["type"] = o.Type
-	if !IsNil(o.ForeignIdsByName) {
-		toSerialize["foreignIdsByName"] = o.ForeignIdsByName
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
 	}
 	if !IsNil(o.ForeignIdsById) {
 		toSerialize["foreignIdsById"] = o.ForeignIdsById
 	}
-	if !IsNil(o.OptionCount) {
-		toSerialize["optionCount"] = o.OptionCount
+	if !IsNil(o.ForeignColumnId) {
+		toSerialize["foreignColumnId"] = o.ForeignColumnId
+	}
+	if !IsNil(o.ForeignIdsByName) {
+		toSerialize["foreignIdsByName"] = o.ForeignIdsByName
 	}
 	return toSerialize, nil
+}
+
+func (o *Column) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"label",
+		"type",
+		"name",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varColumn := _Column{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varColumn)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Column(varColumn)
+
+	return err
 }
 
 type NullableColumn struct {

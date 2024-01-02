@@ -1,5 +1,5 @@
 /*
-Timeline events
+CRM Timeline
 
 This feature allows an app to create and configure custom events that can show up in the timelines of certain CRM objects like contacts, companies, tickets, or deals. You'll find multiple use cases for this API in the sections below.
 
@@ -11,7 +11,9 @@ API version: v3
 package timeline
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the TimelineEventTemplateUpdateRequest type satisfies the MappedNullable interface at compile time
@@ -19,17 +21,19 @@ var _ MappedNullable = &TimelineEventTemplateUpdateRequest{}
 
 // TimelineEventTemplateUpdateRequest State of the template definition being updated.
 type TimelineEventTemplateUpdateRequest struct {
-	// The template name.
-	Name string `json:"name"`
-	// This uses Markdown syntax with Handlebars and event-specific data to render HTML on a timeline as a header.
-	HeaderTemplate *string `json:"headerTemplate,omitempty"`
 	// This uses Markdown syntax with Handlebars and event-specific data to render HTML on a timeline when you expand the details.
 	DetailTemplate *string `json:"detailTemplate,omitempty"`
+	// The template name.
+	Name string `json:"name"`
 	// A collection of tokens that can be used as custom properties on the event and to create fully fledged CRM objects.
 	Tokens []TimelineEventTemplateToken `json:"tokens"`
 	// The template ID.
 	Id string `json:"id"`
+	// This uses Markdown syntax with Handlebars and event-specific data to render HTML on a timeline as a header.
+	HeaderTemplate *string `json:"headerTemplate,omitempty"`
 }
+
+type _TimelineEventTemplateUpdateRequest TimelineEventTemplateUpdateRequest
 
 // NewTimelineEventTemplateUpdateRequest instantiates a new TimelineEventTemplateUpdateRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -49,62 +53,6 @@ func NewTimelineEventTemplateUpdateRequest(name string, tokens []TimelineEventTe
 func NewTimelineEventTemplateUpdateRequestWithDefaults() *TimelineEventTemplateUpdateRequest {
 	this := TimelineEventTemplateUpdateRequest{}
 	return &this
-}
-
-// GetName returns the Name field value
-func (o *TimelineEventTemplateUpdateRequest) GetName() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value
-// and a boolean to check if the value has been set.
-func (o *TimelineEventTemplateUpdateRequest) GetNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Name, true
-}
-
-// SetName sets field value
-func (o *TimelineEventTemplateUpdateRequest) SetName(v string) {
-	o.Name = v
-}
-
-// GetHeaderTemplate returns the HeaderTemplate field value if set, zero value otherwise.
-func (o *TimelineEventTemplateUpdateRequest) GetHeaderTemplate() string {
-	if o == nil || IsNil(o.HeaderTemplate) {
-		var ret string
-		return ret
-	}
-	return *o.HeaderTemplate
-}
-
-// GetHeaderTemplateOk returns a tuple with the HeaderTemplate field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *TimelineEventTemplateUpdateRequest) GetHeaderTemplateOk() (*string, bool) {
-	if o == nil || IsNil(o.HeaderTemplate) {
-		return nil, false
-	}
-	return o.HeaderTemplate, true
-}
-
-// HasHeaderTemplate returns a boolean if a field has been set.
-func (o *TimelineEventTemplateUpdateRequest) HasHeaderTemplate() bool {
-	if o != nil && !IsNil(o.HeaderTemplate) {
-		return true
-	}
-
-	return false
-}
-
-// SetHeaderTemplate gets a reference to the given string and assigns it to the HeaderTemplate field.
-func (o *TimelineEventTemplateUpdateRequest) SetHeaderTemplate(v string) {
-	o.HeaderTemplate = &v
 }
 
 // GetDetailTemplate returns the DetailTemplate field value if set, zero value otherwise.
@@ -137,6 +85,30 @@ func (o *TimelineEventTemplateUpdateRequest) HasDetailTemplate() bool {
 // SetDetailTemplate gets a reference to the given string and assigns it to the DetailTemplate field.
 func (o *TimelineEventTemplateUpdateRequest) SetDetailTemplate(v string) {
 	o.DetailTemplate = &v
+}
+
+// GetName returns the Name field value
+func (o *TimelineEventTemplateUpdateRequest) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *TimelineEventTemplateUpdateRequest) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *TimelineEventTemplateUpdateRequest) SetName(v string) {
+	o.Name = v
 }
 
 // GetTokens returns the Tokens field value
@@ -187,6 +159,38 @@ func (o *TimelineEventTemplateUpdateRequest) SetId(v string) {
 	o.Id = v
 }
 
+// GetHeaderTemplate returns the HeaderTemplate field value if set, zero value otherwise.
+func (o *TimelineEventTemplateUpdateRequest) GetHeaderTemplate() string {
+	if o == nil || IsNil(o.HeaderTemplate) {
+		var ret string
+		return ret
+	}
+	return *o.HeaderTemplate
+}
+
+// GetHeaderTemplateOk returns a tuple with the HeaderTemplate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *TimelineEventTemplateUpdateRequest) GetHeaderTemplateOk() (*string, bool) {
+	if o == nil || IsNil(o.HeaderTemplate) {
+		return nil, false
+	}
+	return o.HeaderTemplate, true
+}
+
+// HasHeaderTemplate returns a boolean if a field has been set.
+func (o *TimelineEventTemplateUpdateRequest) HasHeaderTemplate() bool {
+	if o != nil && !IsNil(o.HeaderTemplate) {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaderTemplate gets a reference to the given string and assigns it to the HeaderTemplate field.
+func (o *TimelineEventTemplateUpdateRequest) SetHeaderTemplate(v string) {
+	o.HeaderTemplate = &v
+}
+
 func (o TimelineEventTemplateUpdateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -197,16 +201,55 @@ func (o TimelineEventTemplateUpdateRequest) MarshalJSON() ([]byte, error) {
 
 func (o TimelineEventTemplateUpdateRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["name"] = o.Name
-	if !IsNil(o.HeaderTemplate) {
-		toSerialize["headerTemplate"] = o.HeaderTemplate
-	}
 	if !IsNil(o.DetailTemplate) {
 		toSerialize["detailTemplate"] = o.DetailTemplate
 	}
+	toSerialize["name"] = o.Name
 	toSerialize["tokens"] = o.Tokens
 	toSerialize["id"] = o.Id
+	if !IsNil(o.HeaderTemplate) {
+		toSerialize["headerTemplate"] = o.HeaderTemplate
+	}
 	return toSerialize, nil
+}
+
+func (o *TimelineEventTemplateUpdateRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"tokens",
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTimelineEventTemplateUpdateRequest := _TimelineEventTemplateUpdateRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varTimelineEventTemplateUpdateRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TimelineEventTemplateUpdateRequest(varTimelineEventTemplateUpdateRequest)
+
+	return err
 }
 
 type NullableTimelineEventTemplateUpdateRequest struct {

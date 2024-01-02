@@ -11,7 +11,9 @@ API version: v3
 package crm_extensions
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the DisplayOption type satisfies the MappedNullable interface at compile time
@@ -26,6 +28,8 @@ type DisplayOption struct {
 	// The type of status.
 	Type string `json:"type"`
 }
+
+type _DisplayOption DisplayOption
 
 // NewDisplayOption instantiates a new DisplayOption object
 // This constructor will assign default values to properties that have it defined,
@@ -133,6 +137,45 @@ func (o DisplayOption) ToMap() (map[string]interface{}, error) {
 	toSerialize["label"] = o.Label
 	toSerialize["type"] = o.Type
 	return toSerialize, nil
+}
+
+func (o *DisplayOption) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"label",
+		"type",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varDisplayOption := _DisplayOption{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varDisplayOption)
+
+	if err != nil {
+		return err
+	}
+
+	*o = DisplayOption(varDisplayOption)
+
+	return err
 }
 
 type NullableDisplayOption struct {

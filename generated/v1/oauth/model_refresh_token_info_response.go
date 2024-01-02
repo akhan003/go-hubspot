@@ -9,7 +9,9 @@ API version: v1
 package oauth
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the RefreshTokenInfoResponse type satisfies the MappedNullable interface at compile time
@@ -26,6 +28,8 @@ type RefreshTokenInfoResponse struct {
 	UserId    int32    `json:"user_id"`
 	TokenType string   `json:"token_type"`
 }
+
+type _RefreshTokenInfoResponse RefreshTokenInfoResponse
 
 // NewRefreshTokenInfoResponse instantiates a new RefreshTokenInfoResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -281,6 +285,48 @@ func (o RefreshTokenInfoResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["user_id"] = o.UserId
 	toSerialize["token_type"] = o.TokenType
 	return toSerialize, nil
+}
+
+func (o *RefreshTokenInfoResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"token",
+		"scopes",
+		"hub_id",
+		"client_id",
+		"user_id",
+		"token_type",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varRefreshTokenInfoResponse := _RefreshTokenInfoResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varRefreshTokenInfoResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RefreshTokenInfoResponse(varRefreshTokenInfoResponse)
+
+	return err
 }
 
 type NullableRefreshTokenInfoResponse struct {

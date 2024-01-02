@@ -19,32 +19,38 @@ import (
 	"strings"
 )
 
-// MetadataApiService MetadataApi service
-type MetadataApiService service
+// MetadataAPIService MetadataAPI service
+type MetadataAPIService service
 
-type ApiMetadataGetRequest struct {
+type ApiGetCmsV3SourceCodeEnvironmentMetadataPathRequest struct {
 	ctx         context.Context
-	ApiService  *MetadataApiService
+	ApiService  *MetadataAPIService
 	environment string
 	path        string
+	properties  *string
 }
 
-func (r ApiMetadataGetRequest) Execute() (*AssetFileMetadata, *http.Response, error) {
-	return r.ApiService.MetadataGetExecute(r)
+func (r ApiGetCmsV3SourceCodeEnvironmentMetadataPathRequest) Properties(properties string) ApiGetCmsV3SourceCodeEnvironmentMetadataPathRequest {
+	r.properties = &properties
+	return r
+}
+
+func (r ApiGetCmsV3SourceCodeEnvironmentMetadataPathRequest) Execute() (*AssetFileMetadata, *http.Response, error) {
+	return r.ApiService.GetCmsV3SourceCodeEnvironmentMetadataPathExecute(r)
 }
 
 /*
-MetadataGet Get the metadata for a file
+GetCmsV3SourceCodeEnvironmentMetadataPath Get the metadata for a file
 
 Gets the metadata object for the file at the specified path in the specified environment.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param environment The environment of the file (\"draft\" or \"published\").
- @param path The file system location of the file.
- @return ApiMetadataGetRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param environment The environment of the file (\"draft\" or \"published\").
+	@param path The file system location of the file.
+	@return ApiGetCmsV3SourceCodeEnvironmentMetadataPathRequest
 */
-func (a *MetadataApiService) MetadataGet(ctx context.Context, environment string, path string) ApiMetadataGetRequest {
-	return ApiMetadataGetRequest{
+func (a *MetadataAPIService) GetCmsV3SourceCodeEnvironmentMetadataPath(ctx context.Context, environment string, path string) ApiGetCmsV3SourceCodeEnvironmentMetadataPathRequest {
+	return ApiGetCmsV3SourceCodeEnvironmentMetadataPathRequest{
 		ApiService:  a,
 		ctx:         ctx,
 		environment: environment,
@@ -53,8 +59,9 @@ func (a *MetadataApiService) MetadataGet(ctx context.Context, environment string
 }
 
 // Execute executes the request
-//  @return AssetFileMetadata
-func (a *MetadataApiService) MetadataGetExecute(r ApiMetadataGetRequest) (*AssetFileMetadata, *http.Response, error) {
+//
+//	@return AssetFileMetadata
+func (a *MetadataAPIService) GetCmsV3SourceCodeEnvironmentMetadataPathExecute(r ApiGetCmsV3SourceCodeEnvironmentMetadataPathRequest) (*AssetFileMetadata, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -62,7 +69,7 @@ func (a *MetadataApiService) MetadataGetExecute(r ApiMetadataGetRequest) (*Asset
 		localVarReturnValue *AssetFileMetadata
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetadataApiService.MetadataGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetadataAPIService.GetCmsV3SourceCodeEnvironmentMetadataPath")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -75,6 +82,9 @@ func (a *MetadataApiService) MetadataGetExecute(r ApiMetadataGetRequest) (*Asset
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.properties != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "properties", r.properties, "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

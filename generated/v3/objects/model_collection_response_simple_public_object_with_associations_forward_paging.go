@@ -1,5 +1,5 @@
 /*
-CRM Objects
+Objects
 
 CRM objects such as companies, contacts, deals, line items, products, tickets, and quotes are standard objects in HubSpot’s CRM. These core building blocks support custom properties, store critical information, and play a central role in the HubSpot application.  ## Supported Object Types  This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).  |Object Type |Properties returned by default | |--|--| | `companies` | `name`, `domain` | | `contacts` | `firstname`, `lastname`, `email` | | `deals` | `dealname`, `amount`, `closedate`, `pipeline`, `dealstage` | | `products` | `name`, `description`, `price` | | `tickets` | `content`, `hs_pipeline`, `hs_pipeline_stage`, `hs_ticket_category`, `hs_ticket_priority`, `subject` |  Find a list of all properties for an object type using the [CRM Object Properties](https://developers.hubspot.com/docs/methods/crm-properties/get-properties) API. e.g. `GET https://api.hubapi.com/properties/v2/companies/properties`. Change the properties returned in the response using the `properties` array in the request body.
 
@@ -11,7 +11,9 @@ API version: v3
 package objects
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponseSimplePublicObjectWithAssociationsForwardPaging type satisfies the MappedNullable interface at compile time
@@ -19,9 +21,11 @@ var _ MappedNullable = &CollectionResponseSimplePublicObjectWithAssociationsForw
 
 // CollectionResponseSimplePublicObjectWithAssociationsForwardPaging struct for CollectionResponseSimplePublicObjectWithAssociationsForwardPaging
 type CollectionResponseSimplePublicObjectWithAssociationsForwardPaging struct {
-	Results []SimplePublicObjectWithAssociations `json:"results"`
 	Paging  *ForwardPaging                       `json:"paging,omitempty"`
+	Results []SimplePublicObjectWithAssociations `json:"results"`
 }
+
+type _CollectionResponseSimplePublicObjectWithAssociationsForwardPaging CollectionResponseSimplePublicObjectWithAssociationsForwardPaging
 
 // NewCollectionResponseSimplePublicObjectWithAssociationsForwardPaging instantiates a new CollectionResponseSimplePublicObjectWithAssociationsForwardPaging object
 // This constructor will assign default values to properties that have it defined,
@@ -39,30 +43,6 @@ func NewCollectionResponseSimplePublicObjectWithAssociationsForwardPaging(result
 func NewCollectionResponseSimplePublicObjectWithAssociationsForwardPagingWithDefaults() *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging {
 	this := CollectionResponseSimplePublicObjectWithAssociationsForwardPaging{}
 	return &this
-}
-
-// GetResults returns the Results field value
-func (o *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) GetResults() []SimplePublicObjectWithAssociations {
-	if o == nil {
-		var ret []SimplePublicObjectWithAssociations
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) GetResultsOk() ([]SimplePublicObjectWithAssociations, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) SetResults(v []SimplePublicObjectWithAssociations) {
-	o.Results = v
 }
 
 // GetPaging returns the Paging field value if set, zero value otherwise.
@@ -97,6 +77,30 @@ func (o *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) SetP
 	o.Paging = &v
 }
 
+// GetResults returns the Results field value
+func (o *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) GetResults() []SimplePublicObjectWithAssociations {
+	if o == nil {
+		var ret []SimplePublicObjectWithAssociations
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) GetResultsOk() ([]SimplePublicObjectWithAssociations, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) SetResults(v []SimplePublicObjectWithAssociations) {
+	o.Results = v
+}
+
 func (o CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,11 +111,48 @@ func (o CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) Marsh
 
 func (o CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["results"] = o.Results
 	if !IsNil(o.Paging) {
 		toSerialize["paging"] = o.Paging
 	}
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponseSimplePublicObjectWithAssociationsForwardPaging := _CollectionResponseSimplePublicObjectWithAssociationsForwardPaging{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponseSimplePublicObjectWithAssociationsForwardPaging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponseSimplePublicObjectWithAssociationsForwardPaging(varCollectionResponseSimplePublicObjectWithAssociationsForwardPaging)
+
+	return err
 }
 
 type NullableCollectionResponseSimplePublicObjectWithAssociationsForwardPaging struct {

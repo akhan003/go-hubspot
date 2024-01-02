@@ -1,5 +1,5 @@
 /*
-Marketing Events Extension
+Marketing Marketing Events
 
 These APIs allow you to interact with HubSpot's Marketing Events Extension. It allows you to: * Create, Read or update Marketing Event information in HubSpot * Specify whether a HubSpot contact has registered, attended or cancelled a registration to a Marketing Event. * Specify a URL that can be called to get the details of a Marketing Event.
 
@@ -18,43 +18,44 @@ import (
 	"net/url"
 )
 
-// SearchApiService SearchApi service
-type SearchApiService service
+// SearchAPIService SearchAPI service
+type SearchAPIService service
 
-type ApiSearchRequest struct {
+type ApiGetMarketingV3MarketingEventsEventsSearchRequest struct {
 	ctx        context.Context
-	ApiService *SearchApiService
+	ApiService *SearchAPIService
 	q          *string
 }
 
 // The id of the marketing event in the external event application
-func (r ApiSearchRequest) Q(q string) ApiSearchRequest {
+func (r ApiGetMarketingV3MarketingEventsEventsSearchRequest) Q(q string) ApiGetMarketingV3MarketingEventsEventsSearchRequest {
 	r.q = &q
 	return r
 }
 
-func (r ApiSearchRequest) Execute() (*CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging, *http.Response, error) {
-	return r.ApiService.SearchExecute(r)
+func (r ApiGetMarketingV3MarketingEventsEventsSearchRequest) Execute() (*CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging, *http.Response, error) {
+	return r.ApiService.GetMarketingV3MarketingEventsEventsSearchExecute(r)
 }
 
 /*
-Search Search for marketing events
+GetMarketingV3MarketingEventsEventsSearch Search for marketing events
 
 Search for marketing events that have an event id that starts with the query string
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSearchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetMarketingV3MarketingEventsEventsSearchRequest
 */
-func (a *SearchApiService) Search(ctx context.Context) ApiSearchRequest {
-	return ApiSearchRequest{
+func (a *SearchAPIService) GetMarketingV3MarketingEventsEventsSearch(ctx context.Context) ApiGetMarketingV3MarketingEventsEventsSearchRequest {
+	return ApiGetMarketingV3MarketingEventsEventsSearchRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging
-func (a *SearchApiService) SearchExecute(r ApiSearchRequest) (*CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging
+func (a *SearchAPIService) GetMarketingV3MarketingEventsEventsSearchExecute(r ApiGetMarketingV3MarketingEventsEventsSearchRequest) (*CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -62,7 +63,7 @@ func (a *SearchApiService) SearchExecute(r ApiSearchRequest) (*CollectionRespons
 		localVarReturnValue *CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchApiService.Search")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchAPIService.GetMarketingV3MarketingEventsEventsSearch")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

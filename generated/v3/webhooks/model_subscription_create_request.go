@@ -1,5 +1,5 @@
 /*
-Webhooks API
+Webhooks
 
 Provides a way for apps to subscribe to certain change events in HubSpot. Once configured, apps will receive event payloads containing details about the changes at a specified target URL. There can only be one target URL for receiving event notifications per app.
 
@@ -11,7 +11,9 @@ API version: v3
 package webhooks
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SubscriptionCreateRequest type satisfies the MappedNullable interface at compile time
@@ -19,13 +21,15 @@ var _ MappedNullable = &SubscriptionCreateRequest{}
 
 // SubscriptionCreateRequest New webhook settings for an app.
 type SubscriptionCreateRequest struct {
-	// Type of event to listen for. Can be one of `create`, `delete`, `deletedForPrivacy`, or `propertyChange`.
-	EventType string `json:"eventType"`
 	// The internal name of the property to monitor for changes. Only applies when `eventType` is `propertyChange`.
 	PropertyName *string `json:"propertyName,omitempty"`
 	// Determines if the subscription is active or paused. Defaults to false.
 	Active *bool `json:"active,omitempty"`
+	// Type of event to listen for. Can be one of `create`, `delete`, `deletedForPrivacy`, or `propertyChange`.
+	EventType string `json:"eventType"`
 }
+
+type _SubscriptionCreateRequest SubscriptionCreateRequest
 
 // NewSubscriptionCreateRequest instantiates a new SubscriptionCreateRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -43,30 +47,6 @@ func NewSubscriptionCreateRequest(eventType string) *SubscriptionCreateRequest {
 func NewSubscriptionCreateRequestWithDefaults() *SubscriptionCreateRequest {
 	this := SubscriptionCreateRequest{}
 	return &this
-}
-
-// GetEventType returns the EventType field value
-func (o *SubscriptionCreateRequest) GetEventType() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.EventType
-}
-
-// GetEventTypeOk returns a tuple with the EventType field value
-// and a boolean to check if the value has been set.
-func (o *SubscriptionCreateRequest) GetEventTypeOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.EventType, true
-}
-
-// SetEventType sets field value
-func (o *SubscriptionCreateRequest) SetEventType(v string) {
-	o.EventType = v
 }
 
 // GetPropertyName returns the PropertyName field value if set, zero value otherwise.
@@ -133,6 +113,30 @@ func (o *SubscriptionCreateRequest) SetActive(v bool) {
 	o.Active = &v
 }
 
+// GetEventType returns the EventType field value
+func (o *SubscriptionCreateRequest) GetEventType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.EventType
+}
+
+// GetEventTypeOk returns a tuple with the EventType field value
+// and a boolean to check if the value has been set.
+func (o *SubscriptionCreateRequest) GetEventTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.EventType, true
+}
+
+// SetEventType sets field value
+func (o *SubscriptionCreateRequest) SetEventType(v string) {
+	o.EventType = v
+}
+
 func (o SubscriptionCreateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -143,14 +147,51 @@ func (o SubscriptionCreateRequest) MarshalJSON() ([]byte, error) {
 
 func (o SubscriptionCreateRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["eventType"] = o.EventType
 	if !IsNil(o.PropertyName) {
 		toSerialize["propertyName"] = o.PropertyName
 	}
 	if !IsNil(o.Active) {
 		toSerialize["active"] = o.Active
 	}
+	toSerialize["eventType"] = o.EventType
 	return toSerialize, nil
+}
+
+func (o *SubscriptionCreateRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"eventType",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSubscriptionCreateRequest := _SubscriptionCreateRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSubscriptionCreateRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SubscriptionCreateRequest(varSubscriptionCreateRequest)
+
+	return err
 }
 
 type NullableSubscriptionCreateRequest struct {

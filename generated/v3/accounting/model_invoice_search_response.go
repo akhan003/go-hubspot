@@ -11,7 +11,9 @@ API version: v3
 package accounting
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the InvoiceSearchResponse type satisfies the MappedNullable interface at compile time
@@ -24,6 +26,8 @@ type InvoiceSearchResponse struct {
 	// The list of invoices that matched the search criteria.
 	Invoices []AccountingExtensionInvoice `json:"invoices"`
 }
+
+type _InvoiceSearchResponse InvoiceSearchResponse
 
 // NewInvoiceSearchResponse instantiates a new InvoiceSearchResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -114,6 +118,43 @@ func (o InvoiceSearchResponse) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["invoices"] = o.Invoices
 	return toSerialize, nil
+}
+
+func (o *InvoiceSearchResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"invoices",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varInvoiceSearchResponse := _InvoiceSearchResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varInvoiceSearchResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = InvoiceSearchResponse(varInvoiceSearchResponse)
+
+	return err
 }
 
 type NullableInvoiceSearchResponse struct {

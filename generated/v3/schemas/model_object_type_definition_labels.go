@@ -19,10 +19,10 @@ var _ MappedNullable = &ObjectTypeDefinitionLabels{}
 
 // ObjectTypeDefinitionLabels Singular and plural labels for the object. Used in CRM display.
 type ObjectTypeDefinitionLabels struct {
-	// The word for one object. (There’s no way to change this later.)
-	Singular *string `json:"singular,omitempty"`
 	// The word for multiple objects. (There’s no way to change this later.)
 	Plural *string `json:"plural,omitempty"`
+	// The word for one object. (There’s no way to change this later.)
+	Singular *string `json:"singular,omitempty"`
 }
 
 // NewObjectTypeDefinitionLabels instantiates a new ObjectTypeDefinitionLabels object
@@ -40,38 +40,6 @@ func NewObjectTypeDefinitionLabels() *ObjectTypeDefinitionLabels {
 func NewObjectTypeDefinitionLabelsWithDefaults() *ObjectTypeDefinitionLabels {
 	this := ObjectTypeDefinitionLabels{}
 	return &this
-}
-
-// GetSingular returns the Singular field value if set, zero value otherwise.
-func (o *ObjectTypeDefinitionLabels) GetSingular() string {
-	if o == nil || IsNil(o.Singular) {
-		var ret string
-		return ret
-	}
-	return *o.Singular
-}
-
-// GetSingularOk returns a tuple with the Singular field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *ObjectTypeDefinitionLabels) GetSingularOk() (*string, bool) {
-	if o == nil || IsNil(o.Singular) {
-		return nil, false
-	}
-	return o.Singular, true
-}
-
-// HasSingular returns a boolean if a field has been set.
-func (o *ObjectTypeDefinitionLabels) HasSingular() bool {
-	if o != nil && !IsNil(o.Singular) {
-		return true
-	}
-
-	return false
-}
-
-// SetSingular gets a reference to the given string and assigns it to the Singular field.
-func (o *ObjectTypeDefinitionLabels) SetSingular(v string) {
-	o.Singular = &v
 }
 
 // GetPlural returns the Plural field value if set, zero value otherwise.
@@ -106,6 +74,38 @@ func (o *ObjectTypeDefinitionLabels) SetPlural(v string) {
 	o.Plural = &v
 }
 
+// GetSingular returns the Singular field value if set, zero value otherwise.
+func (o *ObjectTypeDefinitionLabels) GetSingular() string {
+	if o == nil || IsNil(o.Singular) {
+		var ret string
+		return ret
+	}
+	return *o.Singular
+}
+
+// GetSingularOk returns a tuple with the Singular field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ObjectTypeDefinitionLabels) GetSingularOk() (*string, bool) {
+	if o == nil || IsNil(o.Singular) {
+		return nil, false
+	}
+	return o.Singular, true
+}
+
+// HasSingular returns a boolean if a field has been set.
+func (o *ObjectTypeDefinitionLabels) HasSingular() bool {
+	if o != nil && !IsNil(o.Singular) {
+		return true
+	}
+
+	return false
+}
+
+// SetSingular gets a reference to the given string and assigns it to the Singular field.
+func (o *ObjectTypeDefinitionLabels) SetSingular(v string) {
+	o.Singular = &v
+}
+
 func (o ObjectTypeDefinitionLabels) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -116,11 +116,11 @@ func (o ObjectTypeDefinitionLabels) MarshalJSON() ([]byte, error) {
 
 func (o ObjectTypeDefinitionLabels) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Singular) {
-		toSerialize["singular"] = o.Singular
-	}
 	if !IsNil(o.Plural) {
 		toSerialize["plural"] = o.Plural
+	}
+	if !IsNil(o.Singular) {
+		toSerialize["singular"] = o.Singular
 	}
 	return toSerialize, nil
 }

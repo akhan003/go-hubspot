@@ -1,5 +1,5 @@
 /*
-CMS Audit Logs
+Cms Content Audit
 
 Use this endpoint to query audit logs of CMS changes that occurred on your HubSpot account.
 
@@ -11,7 +11,9 @@ API version: v3
 package audit_logs
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -20,35 +22,38 @@ var _ MappedNullable = &PublicAuditLog{}
 
 // PublicAuditLog struct for PublicAuditLog
 type PublicAuditLog struct {
-	// The ID of the object.
-	ObjectId string `json:"objectId"`
-	// The ID of the user who caused the event.
-	UserId string `json:"userId"`
-	// The timestamp at which the event occurred.
-	Timestamp time.Time `json:"timestamp"`
+	Meta map[string]interface{} `json:"meta,omitempty"`
 	// The internal name of the object in HubSpot.
 	ObjectName string `json:"objectName"`
 	// The name of the user who caused the event.
 	FullName string `json:"fullName"`
 	// The type of event that took place (CREATED, UPDATED, PUBLISHED, DELETED, UNPUBLISHED).
 	Event string `json:"event"`
+	// The ID of the user who caused the event.
+	UserId string `json:"userId"`
+	// The ID of the object.
+	ObjectId string `json:"objectId"`
 	// The type of the object (BLOG, LANDING_PAGE, DOMAIN, HUBDB_TABLE etc.)
 	ObjectType string `json:"objectType"`
+	// The timestamp at which the event occurred.
+	Timestamp time.Time `json:"timestamp"`
 }
+
+type _PublicAuditLog PublicAuditLog
 
 // NewPublicAuditLog instantiates a new PublicAuditLog object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPublicAuditLog(objectId string, userId string, timestamp time.Time, objectName string, fullName string, event string, objectType string) *PublicAuditLog {
+func NewPublicAuditLog(objectName string, fullName string, event string, userId string, objectId string, objectType string, timestamp time.Time) *PublicAuditLog {
 	this := PublicAuditLog{}
-	this.ObjectId = objectId
-	this.UserId = userId
-	this.Timestamp = timestamp
 	this.ObjectName = objectName
 	this.FullName = fullName
 	this.Event = event
+	this.UserId = userId
+	this.ObjectId = objectId
 	this.ObjectType = objectType
+	this.Timestamp = timestamp
 	return &this
 }
 
@@ -60,76 +65,36 @@ func NewPublicAuditLogWithDefaults() *PublicAuditLog {
 	return &this
 }
 
-// GetObjectId returns the ObjectId field value
-func (o *PublicAuditLog) GetObjectId() string {
-	if o == nil {
-		var ret string
+// GetMeta returns the Meta field value if set, zero value otherwise.
+func (o *PublicAuditLog) GetMeta() map[string]interface{} {
+	if o == nil || IsNil(o.Meta) {
+		var ret map[string]interface{}
 		return ret
 	}
-
-	return o.ObjectId
+	return o.Meta
 }
 
-// GetObjectIdOk returns a tuple with the ObjectId field value
+// GetMetaOk returns a tuple with the Meta field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PublicAuditLog) GetObjectIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
+func (o *PublicAuditLog) GetMetaOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Meta) {
+		return map[string]interface{}{}, false
 	}
-	return &o.ObjectId, true
+	return o.Meta, true
 }
 
-// SetObjectId sets field value
-func (o *PublicAuditLog) SetObjectId(v string) {
-	o.ObjectId = v
-}
-
-// GetUserId returns the UserId field value
-func (o *PublicAuditLog) GetUserId() string {
-	if o == nil {
-		var ret string
-		return ret
+// HasMeta returns a boolean if a field has been set.
+func (o *PublicAuditLog) HasMeta() bool {
+	if o != nil && !IsNil(o.Meta) {
+		return true
 	}
 
-	return o.UserId
+	return false
 }
 
-// GetUserIdOk returns a tuple with the UserId field value
-// and a boolean to check if the value has been set.
-func (o *PublicAuditLog) GetUserIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.UserId, true
-}
-
-// SetUserId sets field value
-func (o *PublicAuditLog) SetUserId(v string) {
-	o.UserId = v
-}
-
-// GetTimestamp returns the Timestamp field value
-func (o *PublicAuditLog) GetTimestamp() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.Timestamp
-}
-
-// GetTimestampOk returns a tuple with the Timestamp field value
-// and a boolean to check if the value has been set.
-func (o *PublicAuditLog) GetTimestampOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Timestamp, true
-}
-
-// SetTimestamp sets field value
-func (o *PublicAuditLog) SetTimestamp(v time.Time) {
-	o.Timestamp = v
+// SetMeta gets a reference to the given map[string]interface{} and assigns it to the Meta field.
+func (o *PublicAuditLog) SetMeta(v map[string]interface{}) {
+	o.Meta = v
 }
 
 // GetObjectName returns the ObjectName field value
@@ -204,6 +169,54 @@ func (o *PublicAuditLog) SetEvent(v string) {
 	o.Event = v
 }
 
+// GetUserId returns the UserId field value
+func (o *PublicAuditLog) GetUserId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.UserId
+}
+
+// GetUserIdOk returns a tuple with the UserId field value
+// and a boolean to check if the value has been set.
+func (o *PublicAuditLog) GetUserIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.UserId, true
+}
+
+// SetUserId sets field value
+func (o *PublicAuditLog) SetUserId(v string) {
+	o.UserId = v
+}
+
+// GetObjectId returns the ObjectId field value
+func (o *PublicAuditLog) GetObjectId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.ObjectId
+}
+
+// GetObjectIdOk returns a tuple with the ObjectId field value
+// and a boolean to check if the value has been set.
+func (o *PublicAuditLog) GetObjectIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ObjectId, true
+}
+
+// SetObjectId sets field value
+func (o *PublicAuditLog) SetObjectId(v string) {
+	o.ObjectId = v
+}
+
 // GetObjectType returns the ObjectType field value
 func (o *PublicAuditLog) GetObjectType() string {
 	if o == nil {
@@ -228,6 +241,30 @@ func (o *PublicAuditLog) SetObjectType(v string) {
 	o.ObjectType = v
 }
 
+// GetTimestamp returns the Timestamp field value
+func (o *PublicAuditLog) GetTimestamp() time.Time {
+	if o == nil {
+		var ret time.Time
+		return ret
+	}
+
+	return o.Timestamp
+}
+
+// GetTimestampOk returns a tuple with the Timestamp field value
+// and a boolean to check if the value has been set.
+func (o *PublicAuditLog) GetTimestampOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Timestamp, true
+}
+
+// SetTimestamp sets field value
+func (o *PublicAuditLog) SetTimestamp(v time.Time) {
+	o.Timestamp = v
+}
+
 func (o PublicAuditLog) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -238,14 +275,60 @@ func (o PublicAuditLog) MarshalJSON() ([]byte, error) {
 
 func (o PublicAuditLog) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["objectId"] = o.ObjectId
-	toSerialize["userId"] = o.UserId
-	toSerialize["timestamp"] = o.Timestamp
+	if !IsNil(o.Meta) {
+		toSerialize["meta"] = o.Meta
+	}
 	toSerialize["objectName"] = o.ObjectName
 	toSerialize["fullName"] = o.FullName
 	toSerialize["event"] = o.Event
+	toSerialize["userId"] = o.UserId
+	toSerialize["objectId"] = o.ObjectId
 	toSerialize["objectType"] = o.ObjectType
+	toSerialize["timestamp"] = o.Timestamp
 	return toSerialize, nil
+}
+
+func (o *PublicAuditLog) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"objectName",
+		"fullName",
+		"event",
+		"userId",
+		"objectId",
+		"objectType",
+		"timestamp",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPublicAuditLog := _PublicAuditLog{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPublicAuditLog)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicAuditLog(varPublicAuditLog)
+
+	return err
 }
 
 type NullablePublicAuditLog struct {

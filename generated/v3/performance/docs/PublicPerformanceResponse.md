@@ -4,19 +4,19 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Path** | Pointer to **string** |  | [optional] 
+**Period** | Pointer to **string** |  | [optional] 
+**StartInterval** | **int64** |  | 
 **Data** | [**[]PerformanceView**](PerformanceView.md) |  | 
 **Domain** | Pointer to **string** |  | [optional] 
-**Path** | Pointer to **string** |  | [optional] 
-**StartInterval** | **int64** |  | 
-**EndInterval** | **int64** |  | 
 **Interval** | **string** |  | 
-**Period** | Pointer to **string** |  | [optional] 
+**EndInterval** | **int64** |  | 
 
 ## Methods
 
 ### NewPublicPerformanceResponse
 
-`func NewPublicPerformanceResponse(data []PerformanceView, startInterval int64, endInterval int64, interval string, ) *PublicPerformanceResponse`
+`func NewPublicPerformanceResponse(startInterval int64, data []PerformanceView, interval string, endInterval int64, ) *PublicPerformanceResponse`
 
 NewPublicPerformanceResponse instantiates a new PublicPerformanceResponse object
 This constructor will assign default values to properties that have it defined,
@@ -30,6 +30,76 @@ will change when the set of required properties is changed
 NewPublicPerformanceResponseWithDefaults instantiates a new PublicPerformanceResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetPath
+
+`func (o *PublicPerformanceResponse) GetPath() string`
+
+GetPath returns the Path field if non-nil, zero value otherwise.
+
+### GetPathOk
+
+`func (o *PublicPerformanceResponse) GetPathOk() (*string, bool)`
+
+GetPathOk returns a tuple with the Path field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPath
+
+`func (o *PublicPerformanceResponse) SetPath(v string)`
+
+SetPath sets Path field to given value.
+
+### HasPath
+
+`func (o *PublicPerformanceResponse) HasPath() bool`
+
+HasPath returns a boolean if a field has been set.
+
+### GetPeriod
+
+`func (o *PublicPerformanceResponse) GetPeriod() string`
+
+GetPeriod returns the Period field if non-nil, zero value otherwise.
+
+### GetPeriodOk
+
+`func (o *PublicPerformanceResponse) GetPeriodOk() (*string, bool)`
+
+GetPeriodOk returns a tuple with the Period field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPeriod
+
+`func (o *PublicPerformanceResponse) SetPeriod(v string)`
+
+SetPeriod sets Period field to given value.
+
+### HasPeriod
+
+`func (o *PublicPerformanceResponse) HasPeriod() bool`
+
+HasPeriod returns a boolean if a field has been set.
+
+### GetStartInterval
+
+`func (o *PublicPerformanceResponse) GetStartInterval() int64`
+
+GetStartInterval returns the StartInterval field if non-nil, zero value otherwise.
+
+### GetStartIntervalOk
+
+`func (o *PublicPerformanceResponse) GetStartIntervalOk() (*int64, bool)`
+
+GetStartIntervalOk returns a tuple with the StartInterval field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStartInterval
+
+`func (o *PublicPerformanceResponse) SetStartInterval(v int64)`
+
+SetStartInterval sets StartInterval field to given value.
+
 
 ### GetData
 
@@ -76,49 +146,24 @@ SetDomain sets Domain field to given value.
 
 HasDomain returns a boolean if a field has been set.
 
-### GetPath
+### GetInterval
 
-`func (o *PublicPerformanceResponse) GetPath() string`
+`func (o *PublicPerformanceResponse) GetInterval() string`
 
-GetPath returns the Path field if non-nil, zero value otherwise.
+GetInterval returns the Interval field if non-nil, zero value otherwise.
 
-### GetPathOk
+### GetIntervalOk
 
-`func (o *PublicPerformanceResponse) GetPathOk() (*string, bool)`
+`func (o *PublicPerformanceResponse) GetIntervalOk() (*string, bool)`
 
-GetPathOk returns a tuple with the Path field if it's non-nil, zero value otherwise
+GetIntervalOk returns a tuple with the Interval field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetPath
+### SetInterval
 
-`func (o *PublicPerformanceResponse) SetPath(v string)`
+`func (o *PublicPerformanceResponse) SetInterval(v string)`
 
-SetPath sets Path field to given value.
-
-### HasPath
-
-`func (o *PublicPerformanceResponse) HasPath() bool`
-
-HasPath returns a boolean if a field has been set.
-
-### GetStartInterval
-
-`func (o *PublicPerformanceResponse) GetStartInterval() int64`
-
-GetStartInterval returns the StartInterval field if non-nil, zero value otherwise.
-
-### GetStartIntervalOk
-
-`func (o *PublicPerformanceResponse) GetStartIntervalOk() (*int64, bool)`
-
-GetStartIntervalOk returns a tuple with the StartInterval field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetStartInterval
-
-`func (o *PublicPerformanceResponse) SetStartInterval(v int64)`
-
-SetStartInterval sets StartInterval field to given value.
+SetInterval sets Interval field to given value.
 
 
 ### GetEndInterval
@@ -140,51 +185,6 @@ and a boolean to check if the value has been set.
 
 SetEndInterval sets EndInterval field to given value.
 
-
-### GetInterval
-
-`func (o *PublicPerformanceResponse) GetInterval() string`
-
-GetInterval returns the Interval field if non-nil, zero value otherwise.
-
-### GetIntervalOk
-
-`func (o *PublicPerformanceResponse) GetIntervalOk() (*string, bool)`
-
-GetIntervalOk returns a tuple with the Interval field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetInterval
-
-`func (o *PublicPerformanceResponse) SetInterval(v string)`
-
-SetInterval sets Interval field to given value.
-
-
-### GetPeriod
-
-`func (o *PublicPerformanceResponse) GetPeriod() string`
-
-GetPeriod returns the Period field if non-nil, zero value otherwise.
-
-### GetPeriodOk
-
-`func (o *PublicPerformanceResponse) GetPeriodOk() (*string, bool)`
-
-GetPeriodOk returns a tuple with the Period field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetPeriod
-
-`func (o *PublicPerformanceResponse) SetPeriod(v string)`
-
-SetPeriod sets Period field to given value.
-
-### HasPeriod
-
-`func (o *PublicPerformanceResponse) HasPeriod() bool`
-
-HasPeriod returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

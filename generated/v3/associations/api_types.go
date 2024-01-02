@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// TypesApiService TypesApi service
-type TypesApiService service
+// TypesAPIService TypesAPI service
+type TypesAPIService service
 
 type ApiGetAllRequest struct {
 	ctx            context.Context
-	ApiService     *TypesApiService
+	ApiService     *TypesAPIService
 	fromObjectType string
 	toObjectType   string
 }
@@ -38,12 +38,12 @@ GetAll List association types
 
 List all the valid association types available between two object types
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param fromObjectType
- @param toObjectType
- @return ApiGetAllRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param fromObjectType
+	@param toObjectType
+	@return ApiGetAllRequest
 */
-func (a *TypesApiService) GetAll(ctx context.Context, fromObjectType string, toObjectType string) ApiGetAllRequest {
+func (a *TypesAPIService) GetAll(ctx context.Context, fromObjectType string, toObjectType string) ApiGetAllRequest {
 	return ApiGetAllRequest{
 		ApiService:     a,
 		ctx:            ctx,
@@ -53,8 +53,9 @@ func (a *TypesApiService) GetAll(ctx context.Context, fromObjectType string, toO
 }
 
 // Execute executes the request
-//  @return CollectionResponsePublicAssociationDefinitionNoPaging
-func (a *TypesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponsePublicAssociationDefinitionNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponsePublicAssociationDefinitionNoPaging
+func (a *TypesAPIService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponsePublicAssociationDefinitionNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -62,7 +63,7 @@ func (a *TypesApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponse
 		localVarReturnValue *CollectionResponsePublicAssociationDefinitionNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TypesApiService.GetAll")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TypesAPIService.GetAll")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

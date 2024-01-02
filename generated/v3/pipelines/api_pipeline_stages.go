@@ -1,5 +1,5 @@
 /*
-CRM Pipelines
+Pipelines
 
 Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. Pipelines support `deals` and `tickets` object types.  ## Pipeline ID validation  When calling endpoints that take pipelineId as a parameter, that ID must correspond to an existing, un-archived pipeline. Otherwise the request will fail with a `404 Not Found` response.
 
@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// PipelineStagesApiService PipelineStagesApi service
-type PipelineStagesApiService service
+// PipelineStagesAPIService PipelineStagesAPI service
+type PipelineStagesAPIService service
 
 type ApiStagesArchiveRequest struct {
 	ctx        context.Context
-	ApiService *PipelineStagesApiService
+	ApiService *PipelineStagesAPIService
 	objectType string
 	pipelineId string
 	stageId    string
@@ -39,13 +39,13 @@ StagesArchive Delete a pipeline stage
 
 Delete the pipeline stage identified by `{stageId}` associated with the pipeline identified by `{pipelineId}`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @param stageId
- @return ApiStagesArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@param stageId
+	@return ApiStagesArchiveRequest
 */
-func (a *PipelineStagesApiService) StagesArchive(ctx context.Context, objectType string, pipelineId string, stageId string) ApiStagesArchiveRequest {
+func (a *PipelineStagesAPIService) StagesArchive(ctx context.Context, objectType string, pipelineId string, stageId string) ApiStagesArchiveRequest {
 	return ApiStagesArchiveRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -56,14 +56,14 @@ func (a *PipelineStagesApiService) StagesArchive(ctx context.Context, objectType
 }
 
 // Execute executes the request
-func (a *PipelineStagesApiService) StagesArchiveExecute(r ApiStagesArchiveRequest) (*http.Response, error) {
+func (a *PipelineStagesAPIService) StagesArchiveExecute(r ApiStagesArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesApiService.StagesArchive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesAPIService.StagesArchive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -160,7 +160,7 @@ func (a *PipelineStagesApiService) StagesArchiveExecute(r ApiStagesArchiveReques
 
 type ApiStagesCreateRequest struct {
 	ctx                context.Context
-	ApiService         *PipelineStagesApiService
+	ApiService         *PipelineStagesAPIService
 	objectType         string
 	pipelineId         string
 	pipelineStageInput *PipelineStageInput
@@ -180,12 +180,12 @@ StagesCreate Create a pipeline stage
 
 Create a new stage associated with the pipeline identified by `{pipelineId}`. The entire stage object, including its unique ID, will be returned in the response.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @return ApiStagesCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@return ApiStagesCreateRequest
 */
-func (a *PipelineStagesApiService) StagesCreate(ctx context.Context, objectType string, pipelineId string) ApiStagesCreateRequest {
+func (a *PipelineStagesAPIService) StagesCreate(ctx context.Context, objectType string, pipelineId string) ApiStagesCreateRequest {
 	return ApiStagesCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -195,8 +195,9 @@ func (a *PipelineStagesApiService) StagesCreate(ctx context.Context, objectType 
 }
 
 // Execute executes the request
-//  @return PipelineStage
-func (a *PipelineStagesApiService) StagesCreateExecute(r ApiStagesCreateRequest) (*PipelineStage, *http.Response, error) {
+//
+//	@return PipelineStage
+func (a *PipelineStagesAPIService) StagesCreateExecute(r ApiStagesCreateRequest) (*PipelineStage, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -204,7 +205,7 @@ func (a *PipelineStagesApiService) StagesCreateExecute(r ApiStagesCreateRequest)
 		localVarReturnValue *PipelineStage
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesApiService.StagesCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesAPIService.StagesCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -314,7 +315,7 @@ func (a *PipelineStagesApiService) StagesCreateExecute(r ApiStagesCreateRequest)
 
 type ApiStagesGetAllRequest struct {
 	ctx        context.Context
-	ApiService *PipelineStagesApiService
+	ApiService *PipelineStagesAPIService
 	objectType string
 	pipelineId string
 }
@@ -328,12 +329,12 @@ StagesGetAll Return all stages of a pipeline
 
 Return all the stages associated with the pipeline identified by `{pipelineId}`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @return ApiStagesGetAllRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@return ApiStagesGetAllRequest
 */
-func (a *PipelineStagesApiService) StagesGetAll(ctx context.Context, objectType string, pipelineId string) ApiStagesGetAllRequest {
+func (a *PipelineStagesAPIService) StagesGetAll(ctx context.Context, objectType string, pipelineId string) ApiStagesGetAllRequest {
 	return ApiStagesGetAllRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -343,8 +344,9 @@ func (a *PipelineStagesApiService) StagesGetAll(ctx context.Context, objectType 
 }
 
 // Execute executes the request
-//  @return CollectionResponsePipelineStageNoPaging
-func (a *PipelineStagesApiService) StagesGetAllExecute(r ApiStagesGetAllRequest) (*CollectionResponsePipelineStageNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponsePipelineStageNoPaging
+func (a *PipelineStagesAPIService) StagesGetAllExecute(r ApiStagesGetAllRequest) (*CollectionResponsePipelineStageNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -352,7 +354,7 @@ func (a *PipelineStagesApiService) StagesGetAllExecute(r ApiStagesGetAllRequest)
 		localVarReturnValue *CollectionResponsePipelineStageNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesApiService.StagesGetAll")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesAPIService.StagesGetAll")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -457,7 +459,7 @@ func (a *PipelineStagesApiService) StagesGetAllExecute(r ApiStagesGetAllRequest)
 
 type ApiStagesGetByIDRequest struct {
 	ctx        context.Context
-	ApiService *PipelineStagesApiService
+	ApiService *PipelineStagesAPIService
 	objectType string
 	pipelineId string
 	stageId    string
@@ -472,13 +474,13 @@ StagesGetByID Return a pipeline stage by ID
 
 Return the stage identified by `{stageId}` associated with the pipeline identified by `{pipelineId}`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @param stageId
- @return ApiStagesGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@param stageId
+	@return ApiStagesGetByIDRequest
 */
-func (a *PipelineStagesApiService) StagesGetByID(ctx context.Context, objectType string, pipelineId string, stageId string) ApiStagesGetByIDRequest {
+func (a *PipelineStagesAPIService) StagesGetByID(ctx context.Context, objectType string, pipelineId string, stageId string) ApiStagesGetByIDRequest {
 	return ApiStagesGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -489,8 +491,9 @@ func (a *PipelineStagesApiService) StagesGetByID(ctx context.Context, objectType
 }
 
 // Execute executes the request
-//  @return PipelineStage
-func (a *PipelineStagesApiService) StagesGetByIDExecute(r ApiStagesGetByIDRequest) (*PipelineStage, *http.Response, error) {
+//
+//	@return PipelineStage
+func (a *PipelineStagesAPIService) StagesGetByIDExecute(r ApiStagesGetByIDRequest) (*PipelineStage, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -498,7 +501,7 @@ func (a *PipelineStagesApiService) StagesGetByIDExecute(r ApiStagesGetByIDReques
 		localVarReturnValue *PipelineStage
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesApiService.StagesGetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesAPIService.StagesGetByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -604,7 +607,7 @@ func (a *PipelineStagesApiService) StagesGetByIDExecute(r ApiStagesGetByIDReques
 
 type ApiStagesReplaceRequest struct {
 	ctx                context.Context
-	ApiService         *PipelineStagesApiService
+	ApiService         *PipelineStagesAPIService
 	objectType         string
 	pipelineId         string
 	stageId            string
@@ -625,13 +628,13 @@ StagesReplace Replace a pipeline stage
 
 Replace all the properties of an existing pipeline stage with the values provided. The updated stage will be returned in the response.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @param stageId
- @return ApiStagesReplaceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@param stageId
+	@return ApiStagesReplaceRequest
 */
-func (a *PipelineStagesApiService) StagesReplace(ctx context.Context, objectType string, pipelineId string, stageId string) ApiStagesReplaceRequest {
+func (a *PipelineStagesAPIService) StagesReplace(ctx context.Context, objectType string, pipelineId string, stageId string) ApiStagesReplaceRequest {
 	return ApiStagesReplaceRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -642,8 +645,9 @@ func (a *PipelineStagesApiService) StagesReplace(ctx context.Context, objectType
 }
 
 // Execute executes the request
-//  @return PipelineStage
-func (a *PipelineStagesApiService) StagesReplaceExecute(r ApiStagesReplaceRequest) (*PipelineStage, *http.Response, error) {
+//
+//	@return PipelineStage
+func (a *PipelineStagesAPIService) StagesReplaceExecute(r ApiStagesReplaceRequest) (*PipelineStage, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -651,7 +655,7 @@ func (a *PipelineStagesApiService) StagesReplaceExecute(r ApiStagesReplaceReques
 		localVarReturnValue *PipelineStage
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesApiService.StagesReplace")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesAPIService.StagesReplace")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -762,7 +766,7 @@ func (a *PipelineStagesApiService) StagesReplaceExecute(r ApiStagesReplaceReques
 
 type ApiStagesUpdateRequest struct {
 	ctx                     context.Context
-	ApiService              *PipelineStagesApiService
+	ApiService              *PipelineStagesAPIService
 	objectType              string
 	pipelineId              string
 	stageId                 string
@@ -783,13 +787,13 @@ StagesUpdate Update a pipeline stage
 
 Perform a partial update of the pipeline stage identified by `{stageId}` associated with the pipeline identified by `{pipelineId}`. Any properties not included in this update will keep their existing values. The updated stage will be returned in the response.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param pipelineId
- @param stageId
- @return ApiStagesUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param pipelineId
+	@param stageId
+	@return ApiStagesUpdateRequest
 */
-func (a *PipelineStagesApiService) StagesUpdate(ctx context.Context, objectType string, pipelineId string, stageId string) ApiStagesUpdateRequest {
+func (a *PipelineStagesAPIService) StagesUpdate(ctx context.Context, objectType string, pipelineId string, stageId string) ApiStagesUpdateRequest {
 	return ApiStagesUpdateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -800,8 +804,9 @@ func (a *PipelineStagesApiService) StagesUpdate(ctx context.Context, objectType 
 }
 
 // Execute executes the request
-//  @return PipelineStage
-func (a *PipelineStagesApiService) StagesUpdateExecute(r ApiStagesUpdateRequest) (*PipelineStage, *http.Response, error) {
+//
+//	@return PipelineStage
+func (a *PipelineStagesAPIService) StagesUpdateExecute(r ApiStagesUpdateRequest) (*PipelineStage, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -809,7 +814,7 @@ func (a *PipelineStagesApiService) StagesUpdateExecute(r ApiStagesUpdateRequest)
 		localVarReturnValue *PipelineStage
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesApiService.StagesUpdate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStagesAPIService.StagesUpdate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

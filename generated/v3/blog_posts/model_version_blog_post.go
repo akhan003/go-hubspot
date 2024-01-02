@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -20,22 +22,24 @@ var _ MappedNullable = &VersionBlogPost{}
 
 // VersionBlogPost Model definition of a version of a blog post.
 type VersionBlogPost struct {
-	Object BlogPost    `json:"object"`
-	User   VersionUser `json:"user"`
 	// The id of the version.
-	Id        string    `json:"id"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	Id        string      `json:"id"`
+	User      VersionUser `json:"user"`
+	Object    BlogPost    `json:"object"`
+	UpdatedAt time.Time   `json:"updatedAt"`
 }
+
+type _VersionBlogPost VersionBlogPost
 
 // NewVersionBlogPost instantiates a new VersionBlogPost object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewVersionBlogPost(object BlogPost, user VersionUser, id string, updatedAt time.Time) *VersionBlogPost {
+func NewVersionBlogPost(id string, user VersionUser, object BlogPost, updatedAt time.Time) *VersionBlogPost {
 	this := VersionBlogPost{}
-	this.Object = object
-	this.User = user
 	this.Id = id
+	this.User = user
+	this.Object = object
 	this.UpdatedAt = updatedAt
 	return &this
 }
@@ -48,28 +52,28 @@ func NewVersionBlogPostWithDefaults() *VersionBlogPost {
 	return &this
 }
 
-// GetObject returns the Object field value
-func (o *VersionBlogPost) GetObject() BlogPost {
+// GetId returns the Id field value
+func (o *VersionBlogPost) GetId() string {
 	if o == nil {
-		var ret BlogPost
+		var ret string
 		return ret
 	}
 
-	return o.Object
+	return o.Id
 }
 
-// GetObjectOk returns a tuple with the Object field value
+// GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *VersionBlogPost) GetObjectOk() (*BlogPost, bool) {
+func (o *VersionBlogPost) GetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Object, true
+	return &o.Id, true
 }
 
-// SetObject sets field value
-func (o *VersionBlogPost) SetObject(v BlogPost) {
-	o.Object = v
+// SetId sets field value
+func (o *VersionBlogPost) SetId(v string) {
+	o.Id = v
 }
 
 // GetUser returns the User field value
@@ -96,28 +100,28 @@ func (o *VersionBlogPost) SetUser(v VersionUser) {
 	o.User = v
 }
 
-// GetId returns the Id field value
-func (o *VersionBlogPost) GetId() string {
+// GetObject returns the Object field value
+func (o *VersionBlogPost) GetObject() BlogPost {
 	if o == nil {
-		var ret string
+		var ret BlogPost
 		return ret
 	}
 
-	return o.Id
+	return o.Object
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetObjectOk returns a tuple with the Object field value
 // and a boolean to check if the value has been set.
-func (o *VersionBlogPost) GetIdOk() (*string, bool) {
+func (o *VersionBlogPost) GetObjectOk() (*BlogPost, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Id, true
+	return &o.Object, true
 }
 
-// SetId sets field value
-func (o *VersionBlogPost) SetId(v string) {
-	o.Id = v
+// SetObject sets field value
+func (o *VersionBlogPost) SetObject(v BlogPost) {
+	o.Object = v
 }
 
 // GetUpdatedAt returns the UpdatedAt field value
@@ -154,11 +158,51 @@ func (o VersionBlogPost) MarshalJSON() ([]byte, error) {
 
 func (o VersionBlogPost) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["object"] = o.Object
-	toSerialize["user"] = o.User
 	toSerialize["id"] = o.Id
+	toSerialize["user"] = o.User
+	toSerialize["object"] = o.Object
 	toSerialize["updatedAt"] = o.UpdatedAt
 	return toSerialize, nil
+}
+
+func (o *VersionBlogPost) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"id",
+		"user",
+		"object",
+		"updatedAt",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varVersionBlogPost := _VersionBlogPost{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varVersionBlogPost)
+
+	if err != nil {
+		return err
+	}
+
+	*o = VersionBlogPost(varVersionBlogPost)
+
+	return err
 }
 
 type NullableVersionBlogPost struct {

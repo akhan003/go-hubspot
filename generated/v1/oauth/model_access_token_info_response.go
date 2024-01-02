@@ -9,7 +9,9 @@ API version: v1
 package oauth
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the AccessTokenInfoResponse type satisfies the MappedNullable interface at compile time
@@ -30,6 +32,8 @@ type AccessTokenInfoResponse struct {
 	UserId                    int32    `json:"user_id"`
 	TokenType                 string   `json:"token_type"`
 }
+
+type _AccessTokenInfoResponse AccessTokenInfoResponse
 
 // NewAccessTokenInfoResponse instantiates a new AccessTokenInfoResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -389,6 +393,52 @@ func (o AccessTokenInfoResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["user_id"] = o.UserId
 	toSerialize["token_type"] = o.TokenType
 	return toSerialize, nil
+}
+
+func (o *AccessTokenInfoResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"token",
+		"scopes",
+		"scope_to_scope_group_pks",
+		"trial_scopes",
+		"trial_scope_to_scope_group_pks",
+		"hub_id",
+		"app_id",
+		"expires_in",
+		"user_id",
+		"token_type",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAccessTokenInfoResponse := _AccessTokenInfoResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAccessTokenInfoResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AccessTokenInfoResponse(varAccessTokenInfoResponse)
+
+	return err
 }
 
 type NullableAccessTokenInfoResponse struct {

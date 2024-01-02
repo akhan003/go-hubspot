@@ -4,18 +4,30 @@ info:
     website(s).
   title: CMS Site Search
   version: v3
+  x-hubspot-product-tier-requirements:
+    marketing: PROFESSIONAL
+    cms: PROFESSIONAL
+  x-hubspot-documentation-banner: NONE
+  x-hubspot-api-use-case: Build a site search bar to enable users to search through
+    your website content.
+  x-hubspot-related-documentation:
+  - name: Site Search Overview
+    url: https://developers.hubspot.com/docs/api/cms/site-search
+  x-hubspot-introduction: "Use the site search API to return HubSpot-hosted content\
+    \ based on search terms. Content can be searched across multiple domains. You\
+    \ can also retrieve all indexed data for a specific website page, blog post, or\
+    \ knowledge base article using its ID."
 servers:
-- url: https://api.hubapi.com/
+- url: https://api.hubapi.com
 tags:
-- description: Public Site Searching across published content.
-  name: Public
+- name: Public
 paths:
   /cms/v3/site-search/indexed-data/{contentId}:
     get:
       description: "For a given account and document ID (page ID, blog post ID, HubDB\
         \ row ID, etc.), return all indexed data for that document. This is useful\
         \ when debugging why a particular document is not returned from a custom search."
-      operationId: GetByID
+      operationId: "get-/cms/v3/site-search/indexed-data/{contentId}"
       parameters:
       - description: ID of the target document when searching for indexed properties.
         explode: false
@@ -471,7 +483,7 @@ paths:
       description: "Returns any website content matching the given search criteria\
         \ for a given HubSpot account. Searches can be filtered by content type, domain,\
         \ or URL path."
-      operationId: Search
+      operationId: get-/cms/v3/site-search/search
       parameters:
       - description: The term to search for.
         explode: true
@@ -661,6 +673,7 @@ paths:
           - en-ch
           - en-ck
           - en-cm
+          - en-cn
           - en-cx
           - en-cy
           - en-de
@@ -704,6 +717,7 @@ paths:
           - en-mt
           - en-mu
           - en-mw
+          - en-mx
           - en-my
           - en-na
           - en-nf
@@ -1476,19 +1490,15 @@ components:
   schemas:
     ErrorDetail:
       properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          type: string
-        in:
-          description: The name of the field or parameter in which the error was found.
+        subCategory:
+          description: A specific category that contains more specific detail about
+            the error
           type: string
         code:
           description: The status code associated with the error detail
           type: string
-        subCategory:
-          description: A specific category that contains more specific detail about
-            the error
+        in:
+          description: The name of the field or parameter in which the error was found.
           type: string
         context:
           additionalProperties:
@@ -1501,6 +1511,10 @@ components:
             - scope1
             - scope2
           type: object
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          type: string
       required:
       - message
       type: object
@@ -1510,7 +1524,7 @@ components:
         searchTerm: searchTerm
         offset: 6
         limit: 1
-        page: 3
+        page: 5
         results:
         - combinedId: combinedId
           description: description
@@ -1521,14 +1535,14 @@ components:
           tags:
           - tags
           - tags
-          rowId: 7
+          rowId: 5
           featuredImageUrl: featuredImageUrl
-          score: 5.637376656633329
+          score: 2.3021358869347655
           authorFullName: authorFullName
           domain: domain
-          tableId: 2
-          id: 5
-          publishedDate: 9
+          tableId: 7
+          id: 9
+          publishedDate: 3
           category: category
           subcategory: subcategory
         - combinedId: combinedId
@@ -1540,35 +1554,35 @@ components:
           tags:
           - tags
           - tags
-          rowId: 7
+          rowId: 5
           featuredImageUrl: featuredImageUrl
-          score: 5.637376656633329
+          score: 2.3021358869347655
           authorFullName: authorFullName
           domain: domain
-          tableId: 2
-          id: 5
-          publishedDate: 9
+          tableId: 7
+          id: 9
+          publishedDate: 3
           category: category
           subcategory: subcategory
       properties:
         total:
           format: int32
           type: integer
+        searchTerm:
+          type: string
         offset:
           format: int32
           type: integer
         limit:
           format: int32
           type: integer
+        page:
+          format: int32
+          type: integer
         results:
           items:
             $ref: '#/components/schemas/ContentSearchResult'
           type: array
-        searchTerm:
-          type: string
-        page:
-          format: int32
-          type: integer
       required:
       - limit
       - offset
@@ -1588,42 +1602,23 @@ components:
         tags:
         - tags
         - tags
-        rowId: 7
+        rowId: 5
         featuredImageUrl: featuredImageUrl
-        score: 5.637376656633329
+        score: 2.3021358869347655
         authorFullName: authorFullName
         domain: domain
-        tableId: 2
-        id: 5
-        publishedDate: 9
+        tableId: 7
+        id: 9
+        publishedDate: 3
         category: category
         subcategory: subcategory
       properties:
-        id:
-          description: The ID of the content.
-          format: int32
-          type: integer
-        score:
-          description: The matching score of the document.
-          type: number
-        type:
-          description: "The type of document. Can be `SITE_PAGE`, `LANDING_PAGE`,\
-            \ `BLOG_POST`, `LISTING_PAGE`, or `KNOWLEDGE_ARTICLE`."
-          enum:
-          - LANDING_PAGE
-          - BLOG_POST
-          - SITE_PAGE
-          - KNOWLEDGE_ARTICLE
-          - LISTING_PAGE
+        combinedId:
+          description: The ID of the document in HubSpot.
           type: string
-        domain:
-          description: The domain the document is hosted on.
-          type: string
-        url:
-          description: The url of the document.
-          type: string
-        featuredImageUrl:
-          description: URL of the featured image.
+        description:
+          description: The result's description. The content will be determined by
+            the value of `length` in the request.
           type: string
         language:
           description: The document's language.
@@ -1778,6 +1773,7 @@ components:
           - en-ch
           - en-ck
           - en-cm
+          - en-cn
           - en-cx
           - en-cy
           - en-de
@@ -1821,6 +1817,7 @@ components:
           - en-mt
           - en-mu
           - en-mw
+          - en-mx
           - en-my
           - en-na
           - en-nf
@@ -2381,41 +2378,60 @@ components:
           - zu
           - zu-za
           type: string
+        type:
+          description: "The type of document. Can be `SITE_PAGE`, `LANDING_PAGE`,\
+            \ `BLOG_POST`, `LISTING_PAGE`, or `KNOWLEDGE_ARTICLE`."
+          enum:
+          - LANDING_PAGE
+          - BLOG_POST
+          - SITE_PAGE
+          - KNOWLEDGE_ARTICLE
+          - LISTING_PAGE
+          type: string
         title:
           description: The title of the returned document.
           type: string
-        description:
-          description: The result's description. The content will be determined by
-            the value of `length` in the request.
-          type: string
-        category:
-          description: "For knowledge articles, the category of the article."
-          type: string
-        subcategory:
-          description: "For knowledge articles, the subcategory of the article."
-          type: string
-        authorFullName:
-          description: Name of the author.
+        url:
+          description: The url of the document.
           type: string
         tags:
           description: "If a blog post, the tags associated with it."
           items:
             type: string
           type: array
+        rowId:
+          description: "If a dynamic page, the row ID in the HubDB table."
+          format: int64
+          type: integer
+        featuredImageUrl:
+          description: URL of the featured image.
+          type: string
+        score:
+          description: The matching score of the document.
+          type: number
+        authorFullName:
+          description: Name of the author.
+          type: string
+        domain:
+          description: The domain the document is hosted on.
+          type: string
         tableId:
           description: "If a dynamic page, the ID of the HubDB table."
           format: int64
           type: integer
-        rowId:
-          description: "If a dynamic page, the row ID in the HubDB table."
-          format: int64
+        id:
+          description: The ID of the content.
+          format: int32
           type: integer
         publishedDate:
           description: The date the content was published.
           format: int64
           type: integer
-        combinedId:
-          description: The ID of the document in HubSpot.
+        category:
+          description: "For knowledge articles, the category of the article."
+          type: string
+        subcategory:
+          description: "For knowledge articles, the subcategory of the article."
           type: string
       required:
       - domain
@@ -2470,16 +2486,16 @@ components:
         value: "{}"
         metadataField: true
       properties:
-        name:
-          type: string
-        value:
-          properties: {}
-          type: object
         values:
           items:
             properties: {}
             type: object
           type: array
+        name:
+          type: string
+        value:
+          properties: {}
+          type: object
         metadataField:
           type: boolean
       required:
@@ -2496,29 +2512,10 @@ components:
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
       properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          example: An error occurred
-          type: string
-        correlationId:
-          description: A unique identifier for the request. Include this value with
-            any error reports or support tickets
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-          format: uuid
-          type: string
-        category:
-          description: The error category
-          type: string
         subCategory:
           description: A specific category that contains more specific detail about
             the error
           type: string
-        errors:
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type: array
         context:
           additionalProperties:
             items:
@@ -2526,18 +2523,40 @@ components:
             type: array
           description: Context about the error condition
           example:
-            invalidPropertyName:
-            - propertyValue
             missingScopes:
             - scope1
             - scope2
+            invalidPropertyName:
+            - propertyValue
           type: object
+        correlationId:
+          description: A unique identifier for the request. Include this value with
+            any error reports or support tickets
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+          format: uuid
+          type: string
         links:
           additionalProperties:
             type: string
           description: A map of link names to associated URIs containing documentation
             about the error or recommended remediation steps
+          example:
+            knowledge-base: https://www.hubspot.com/products/service/knowledge-base
           type: object
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          example: Invalid input (details will vary based on the error)
+          type: string
+        category:
+          description: The error category
+          example: VALIDATION_ERROR
+          type: string
+        errors:
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type: array
       required:
       - category
       - correlationId
@@ -2559,5 +2578,9 @@ components:
 x-hubspot-available-client-libraries:
 - PHP
 - Node
-- Python
 - Ruby
+- Python
+x-hubspot-product-tier-requirements:
+  marketing: PROFESSIONAL
+  cms: PROFESSIONAL
+x-hubspot-documentation-banner: NONE

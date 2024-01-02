@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+CMS Authors
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 

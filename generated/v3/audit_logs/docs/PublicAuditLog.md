@@ -4,19 +4,20 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ObjectId** | **string** | The ID of the object. | 
-**UserId** | **string** | The ID of the user who caused the event. | 
-**Timestamp** | **time.Time** | The timestamp at which the event occurred. | 
+**Meta** | Pointer to **map[string]interface{}** |  | [optional] 
 **ObjectName** | **string** | The internal name of the object in HubSpot. | 
 **FullName** | **string** | The name of the user who caused the event. | 
 **Event** | **string** | The type of event that took place (CREATED, UPDATED, PUBLISHED, DELETED, UNPUBLISHED). | 
+**UserId** | **string** | The ID of the user who caused the event. | 
+**ObjectId** | **string** | The ID of the object. | 
 **ObjectType** | **string** | The type of the object (BLOG, LANDING_PAGE, DOMAIN, HUBDB_TABLE etc.) | 
+**Timestamp** | **time.Time** | The timestamp at which the event occurred. | 
 
 ## Methods
 
 ### NewPublicAuditLog
 
-`func NewPublicAuditLog(objectId string, userId string, timestamp time.Time, objectName string, fullName string, event string, objectType string, ) *PublicAuditLog`
+`func NewPublicAuditLog(objectName string, fullName string, event string, userId string, objectId string, objectType string, timestamp time.Time, ) *PublicAuditLog`
 
 NewPublicAuditLog instantiates a new PublicAuditLog object
 This constructor will assign default values to properties that have it defined,
@@ -31,65 +32,30 @@ NewPublicAuditLogWithDefaults instantiates a new PublicAuditLog object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetObjectId
+### GetMeta
 
-`func (o *PublicAuditLog) GetObjectId() string`
+`func (o *PublicAuditLog) GetMeta() map[string]interface{}`
 
-GetObjectId returns the ObjectId field if non-nil, zero value otherwise.
+GetMeta returns the Meta field if non-nil, zero value otherwise.
 
-### GetObjectIdOk
+### GetMetaOk
 
-`func (o *PublicAuditLog) GetObjectIdOk() (*string, bool)`
+`func (o *PublicAuditLog) GetMetaOk() (*map[string]interface{}, bool)`
 
-GetObjectIdOk returns a tuple with the ObjectId field if it's non-nil, zero value otherwise
+GetMetaOk returns a tuple with the Meta field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetObjectId
+### SetMeta
 
-`func (o *PublicAuditLog) SetObjectId(v string)`
+`func (o *PublicAuditLog) SetMeta(v map[string]interface{})`
 
-SetObjectId sets ObjectId field to given value.
+SetMeta sets Meta field to given value.
 
+### HasMeta
 
-### GetUserId
+`func (o *PublicAuditLog) HasMeta() bool`
 
-`func (o *PublicAuditLog) GetUserId() string`
-
-GetUserId returns the UserId field if non-nil, zero value otherwise.
-
-### GetUserIdOk
-
-`func (o *PublicAuditLog) GetUserIdOk() (*string, bool)`
-
-GetUserIdOk returns a tuple with the UserId field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetUserId
-
-`func (o *PublicAuditLog) SetUserId(v string)`
-
-SetUserId sets UserId field to given value.
-
-
-### GetTimestamp
-
-`func (o *PublicAuditLog) GetTimestamp() time.Time`
-
-GetTimestamp returns the Timestamp field if non-nil, zero value otherwise.
-
-### GetTimestampOk
-
-`func (o *PublicAuditLog) GetTimestampOk() (*time.Time, bool)`
-
-GetTimestampOk returns a tuple with the Timestamp field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTimestamp
-
-`func (o *PublicAuditLog) SetTimestamp(v time.Time)`
-
-SetTimestamp sets Timestamp field to given value.
-
+HasMeta returns a boolean if a field has been set.
 
 ### GetObjectName
 
@@ -151,6 +117,46 @@ and a boolean to check if the value has been set.
 SetEvent sets Event field to given value.
 
 
+### GetUserId
+
+`func (o *PublicAuditLog) GetUserId() string`
+
+GetUserId returns the UserId field if non-nil, zero value otherwise.
+
+### GetUserIdOk
+
+`func (o *PublicAuditLog) GetUserIdOk() (*string, bool)`
+
+GetUserIdOk returns a tuple with the UserId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUserId
+
+`func (o *PublicAuditLog) SetUserId(v string)`
+
+SetUserId sets UserId field to given value.
+
+
+### GetObjectId
+
+`func (o *PublicAuditLog) GetObjectId() string`
+
+GetObjectId returns the ObjectId field if non-nil, zero value otherwise.
+
+### GetObjectIdOk
+
+`func (o *PublicAuditLog) GetObjectIdOk() (*string, bool)`
+
+GetObjectIdOk returns a tuple with the ObjectId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetObjectId
+
+`func (o *PublicAuditLog) SetObjectId(v string)`
+
+SetObjectId sets ObjectId field to given value.
+
+
 ### GetObjectType
 
 `func (o *PublicAuditLog) GetObjectType() string`
@@ -169,6 +175,26 @@ and a boolean to check if the value has been set.
 `func (o *PublicAuditLog) SetObjectType(v string)`
 
 SetObjectType sets ObjectType field to given value.
+
+
+### GetTimestamp
+
+`func (o *PublicAuditLog) GetTimestamp() time.Time`
+
+GetTimestamp returns the Timestamp field if non-nil, zero value otherwise.
+
+### GetTimestampOk
+
+`func (o *PublicAuditLog) GetTimestampOk() (*time.Time, bool)`
+
+GetTimestampOk returns a tuple with the Timestamp field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTimestamp
+
+`func (o *PublicAuditLog) SetTimestamp(v time.Time)`
+
+SetTimestamp sets Timestamp field to given value.
 
 
 

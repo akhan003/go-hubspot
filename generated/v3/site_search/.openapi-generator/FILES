@@ -10,7 +10,7 @@ docs/Error.md
 docs/ErrorDetail.md
 docs/IndexedData.md
 docs/IndexedField.md
-docs/PublicApi.md
+docs/PublicAPI.md
 docs/PublicSearchResults.md
 git_push.sh
 go.mod
@@ -22,5 +22,4 @@ model_indexed_data.go
 model_indexed_field.go
 model_public_search_results.go
 response.go
-test/api_public_test.go
 utils.go

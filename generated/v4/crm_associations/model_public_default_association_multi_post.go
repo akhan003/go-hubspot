@@ -11,7 +11,9 @@ API version: v4
 package crm_associations
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PublicDefaultAssociationMultiPost type satisfies the MappedNullable interface at compile time
@@ -22,6 +24,8 @@ type PublicDefaultAssociationMultiPost struct {
 	From PublicObjectId `json:"from"`
 	To   PublicObjectId `json:"to"`
 }
+
+type _PublicDefaultAssociationMultiPost PublicDefaultAssociationMultiPost
 
 // NewPublicDefaultAssociationMultiPost instantiates a new PublicDefaultAssociationMultiPost object
 // This constructor will assign default values to properties that have it defined,
@@ -103,6 +107,44 @@ func (o PublicDefaultAssociationMultiPost) ToMap() (map[string]interface{}, erro
 	toSerialize["from"] = o.From
 	toSerialize["to"] = o.To
 	return toSerialize, nil
+}
+
+func (o *PublicDefaultAssociationMultiPost) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"from",
+		"to",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPublicDefaultAssociationMultiPost := _PublicDefaultAssociationMultiPost{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPublicDefaultAssociationMultiPost)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicDefaultAssociationMultiPost(varPublicDefaultAssociationMultiPost)
+
+	return err
 }
 
 type NullablePublicDefaultAssociationMultiPost struct {

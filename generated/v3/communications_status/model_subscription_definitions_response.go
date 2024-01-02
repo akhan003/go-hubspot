@@ -1,5 +1,5 @@
 /*
-Subscriptions
+Communication Preferences Subscriptions
 
 Subscriptions allow contacts to control what forms of communications they receive. Contacts can decide whether they want to receive communication pertaining to a specific topic, brand, or an entire HubSpot account.
 
@@ -11,7 +11,9 @@ API version: v3
 package communications_status
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SubscriptionDefinitionsResponse type satisfies the MappedNullable interface at compile time
@@ -22,6 +24,8 @@ type SubscriptionDefinitionsResponse struct {
 	// A list of all subscription definitions.
 	SubscriptionDefinitions []SubscriptionDefinition `json:"subscriptionDefinitions"`
 }
+
+type _SubscriptionDefinitionsResponse SubscriptionDefinitionsResponse
 
 // NewSubscriptionDefinitionsResponse instantiates a new SubscriptionDefinitionsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -77,6 +81,43 @@ func (o SubscriptionDefinitionsResponse) ToMap() (map[string]interface{}, error)
 	toSerialize := map[string]interface{}{}
 	toSerialize["subscriptionDefinitions"] = o.SubscriptionDefinitions
 	return toSerialize, nil
+}
+
+func (o *SubscriptionDefinitionsResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"subscriptionDefinitions",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSubscriptionDefinitionsResponse := _SubscriptionDefinitionsResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSubscriptionDefinitionsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SubscriptionDefinitionsResponse(varSubscriptionDefinitionsResponse)
+
+	return err
 }
 
 type NullableSubscriptionDefinitionsResponse struct {

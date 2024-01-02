@@ -1,5 +1,5 @@
 /*
-HubDB endpoints
+Hubdb
 
 HubDB is a relational data store that presents data as rows, columns, and cells in a table, much like a spreadsheet. HubDB tables can be added or modified [in the HubSpot CMS](https://knowledge.hubspot.com/cos-general/how-to-edit-hubdb-tables), but you can also use the API endpoints documented here. For more information on HubDB tables and using their data on a HubSpot site, see the [CMS developers site](https://designers.hubspot.com/docs/tools/hubdb). You can also see the [documentation for dynamic pages](https://designers.hubspot.com/docs/tutorials/how-to-build-dynamic-pages-with-hubdb) for more details about the `useForPages` field.  HubDB tables support `draft` and `published` versions. This allows you to update data in the table, either for testing or to allow for a manual approval process, without affecting any live pages using the existing data. Draft data can be reviewed, and published by a user working in HubSpot or published via the API. Draft data can also be discarded, allowing users to go back to the published version of the data without disrupting it. If a table is set to be `allowed for public access`, you can access the published version of the table and rows without any authentication by specifying the portal id via the query parameter `portalId`.
 
@@ -11,7 +11,9 @@ API version: v3
 package hubdb
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the HubDbTableRowV3Request type satisfies the MappedNullable interface at compile time
@@ -21,14 +23,16 @@ var _ MappedNullable = &HubDbTableRowV3Request{}
 type HubDbTableRowV3Request struct {
 	// Specifies the value for `hs_path` column, which will be used as slug in the dynamic pages
 	Path *string `json:"path,omitempty"`
-	// Specifies the value for `hs_name` column, which will be used as title in the dynamic pages
-	Name *string `json:"name,omitempty"`
 	// Specifies the value for the column child table id
 	ChildTableId *int32 `json:"childTableId,omitempty"`
 	// List of key value pairs with the column name and column value
-	Values       map[string]map[string]interface{} `json:"values"`
-	DisplayIndex *int32                            `json:"displayIndex,omitempty"`
+	Values map[string]map[string]interface{} `json:"values"`
+	// Specifies the value for `hs_name` column, which will be used as title in the dynamic pages
+	Name         *string `json:"name,omitempty"`
+	DisplayIndex *int32  `json:"displayIndex,omitempty"`
 }
+
+type _HubDbTableRowV3Request HubDbTableRowV3Request
 
 // NewHubDbTableRowV3Request instantiates a new HubDbTableRowV3Request object
 // This constructor will assign default values to properties that have it defined,
@@ -78,38 +82,6 @@ func (o *HubDbTableRowV3Request) HasPath() bool {
 // SetPath gets a reference to the given string and assigns it to the Path field.
 func (o *HubDbTableRowV3Request) SetPath(v string) {
 	o.Path = &v
-}
-
-// GetName returns the Name field value if set, zero value otherwise.
-func (o *HubDbTableRowV3Request) GetName() string {
-	if o == nil || IsNil(o.Name) {
-		var ret string
-		return ret
-	}
-	return *o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *HubDbTableRowV3Request) GetNameOk() (*string, bool) {
-	if o == nil || IsNil(o.Name) {
-		return nil, false
-	}
-	return o.Name, true
-}
-
-// HasName returns a boolean if a field has been set.
-func (o *HubDbTableRowV3Request) HasName() bool {
-	if o != nil && !IsNil(o.Name) {
-		return true
-	}
-
-	return false
-}
-
-// SetName gets a reference to the given string and assigns it to the Name field.
-func (o *HubDbTableRowV3Request) SetName(v string) {
-	o.Name = &v
 }
 
 // GetChildTableId returns the ChildTableId field value if set, zero value otherwise.
@@ -168,6 +140,38 @@ func (o *HubDbTableRowV3Request) SetValues(v map[string]map[string]interface{}) 
 	o.Values = v
 }
 
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *HubDbTableRowV3Request) GetName() string {
+	if o == nil || IsNil(o.Name) {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HubDbTableRowV3Request) GetNameOk() (*string, bool) {
+	if o == nil || IsNil(o.Name) {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *HubDbTableRowV3Request) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *HubDbTableRowV3Request) SetName(v string) {
+	o.Name = &v
+}
+
 // GetDisplayIndex returns the DisplayIndex field value if set, zero value otherwise.
 func (o *HubDbTableRowV3Request) GetDisplayIndex() int32 {
 	if o == nil || IsNil(o.DisplayIndex) {
@@ -213,17 +217,54 @@ func (o HubDbTableRowV3Request) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Path) {
 		toSerialize["path"] = o.Path
 	}
-	if !IsNil(o.Name) {
-		toSerialize["name"] = o.Name
-	}
 	if !IsNil(o.ChildTableId) {
 		toSerialize["childTableId"] = o.ChildTableId
 	}
 	toSerialize["values"] = o.Values
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
 	if !IsNil(o.DisplayIndex) {
 		toSerialize["displayIndex"] = o.DisplayIndex
 	}
 	return toSerialize, nil
+}
+
+func (o *HubDbTableRowV3Request) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"values",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varHubDbTableRowV3Request := _HubDbTableRowV3Request{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varHubDbTableRowV3Request)
+
+	if err != nil {
+		return err
+	}
+
+	*o = HubDbTableRowV3Request(varHubDbTableRowV3Request)
+
+	return err
 }
 
 type NullableHubDbTableRowV3Request struct {

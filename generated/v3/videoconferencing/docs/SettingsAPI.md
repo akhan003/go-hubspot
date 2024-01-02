@@ -1,0 +1,221 @@
+# \SettingsAPI
+
+All URIs are relative to *https://api.hubapi.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**Archive**](SettingsAPI.md#Archive) | **Delete** /crm/v3/extensions/videoconferencing/settings/{appId} | Delete settings
+[**GetByID**](SettingsAPI.md#GetByID) | **Get** /crm/v3/extensions/videoconferencing/settings/{appId} | Get settings
+[**Replace**](SettingsAPI.md#Replace) | **Put** /crm/v3/extensions/videoconferencing/settings/{appId} | Update settings
+
+
+
+## Archive
+
+> Archive(ctx, appId).Execute()
+
+Delete settings
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	appId := int32(56) // int32 | The ID of the video conference application. This is the identifier of the application created in your HubSpot developer portal.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.SettingsAPI.Archive(context.Background(), appId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SettingsAPI.Archive``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**appId** | **int32** | The ID of the video conference application. This is the identifier of the application created in your HubSpot developer portal. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiArchiveRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[developer_hapikey](../README.md#developer_hapikey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetByID
+
+> ExternalSettings GetByID(ctx, appId).Execute()
+
+Get settings
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	appId := int32(56) // int32 | The ID of the video conference application. This is the identifier of the application created in your HubSpot developer portal.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SettingsAPI.GetByID(context.Background(), appId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SettingsAPI.GetByID``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetByID`: ExternalSettings
+	fmt.Fprintf(os.Stdout, "Response from `SettingsAPI.GetByID`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**appId** | **int32** | The ID of the video conference application. This is the identifier of the application created in your HubSpot developer portal. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetByIDRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**ExternalSettings**](ExternalSettings.md)
+
+### Authorization
+
+[developer_hapikey](../README.md#developer_hapikey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## Replace
+
+> ExternalSettings Replace(ctx, appId).ExternalSettings(externalSettings).Execute()
+
+Update settings
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	appId := int32(56) // int32 | The ID of the video conference application. This is the identifier of the application created in your HubSpot developer portal.
+	externalSettings := *openapiclient.NewExternalSettings("https://example.com/create-meeting") // ExternalSettings | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SettingsAPI.Replace(context.Background(), appId).ExternalSettings(externalSettings).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SettingsAPI.Replace``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `Replace`: ExternalSettings
+	fmt.Fprintf(os.Stdout, "Response from `SettingsAPI.Replace`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**appId** | **int32** | The ID of the video conference application. This is the identifier of the application created in your HubSpot developer portal. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiReplaceRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **externalSettings** | [**ExternalSettings**](ExternalSettings.md) |  | 
+
+### Return type
+
+[**ExternalSettings**](ExternalSettings.md)
+
+### Authorization
+
+[developer_hapikey](../README.md#developer_hapikey)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+

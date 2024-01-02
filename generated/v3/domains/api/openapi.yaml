@@ -171,12 +171,16 @@ paths:
         - cms.domains.write
       - oauth2:
         - cms.domains.write
+      - oauth2_legacy:
+        - cms.knowledge_base.settings.read
       - private_apps_legacy:
         - cms.knowledge_base.settings.write
       - oauth2_legacy:
         - cms.knowledge_base.settings.write
       - oauth2_legacy:
         - content
+      - private_apps_legacy:
+        - cms.knowledge_base.settings.read
       summary: Get current domains
       tags:
       - Domains
@@ -238,12 +242,16 @@ paths:
         - cms.domains.write
       - oauth2:
         - cms.domains.write
+      - oauth2_legacy:
+        - cms.knowledge_base.settings.read
       - private_apps_legacy:
         - cms.knowledge_base.settings.write
       - oauth2_legacy:
         - cms.knowledge_base.settings.write
       - oauth2_legacy:
         - content
+      - private_apps_legacy:
+        - cms.knowledge_base.settings.read
       summary: Get a single domain
       tags:
       - Domains
@@ -514,6 +522,7 @@ components:
         authorizationCode:
           authorizationUrl: https://app.hubspot.com/oauth/authorize
           scopes:
+            cms.knowledge_base.settings.read: View knowledge base settings
             cms.knowledge_base.settings.write: Update knowledge base settings
             content: Read from and write to my Content
           tokenUrl: https://api.hubapi.com/oauth/v1/token

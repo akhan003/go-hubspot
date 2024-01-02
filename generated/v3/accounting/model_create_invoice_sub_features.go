@@ -11,7 +11,9 @@ API version: v3
 package accounting
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CreateInvoiceSubFeatures type satisfies the MappedNullable interface at compile time
@@ -32,6 +34,8 @@ type CreateInvoiceSubFeatures struct {
 	// Indicates if invoice-level discounts can be added to invoices.
 	InvoiceDiscounts bool `json:"invoiceDiscounts"`
 }
+
+type _CreateInvoiceSubFeatures CreateInvoiceSubFeatures
 
 // NewCreateInvoiceSubFeatures instantiates a new CreateInvoiceSubFeatures object
 // This constructor will assign default values to properties that have it defined,
@@ -217,6 +221,48 @@ func (o CreateInvoiceSubFeatures) ToMap() (map[string]interface{}, error) {
 	toSerialize["invoiceComments"] = o.InvoiceComments
 	toSerialize["invoiceDiscounts"] = o.InvoiceDiscounts
 	return toSerialize, nil
+}
+
+func (o *CreateInvoiceSubFeatures) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"createCustomer",
+		"taxes",
+		"exchangeRates",
+		"terms",
+		"invoiceComments",
+		"invoiceDiscounts",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCreateInvoiceSubFeatures := _CreateInvoiceSubFeatures{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCreateInvoiceSubFeatures)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateInvoiceSubFeatures(varCreateInvoiceSubFeatures)
+
+	return err
 }
 
 type NullableCreateInvoiceSubFeatures struct {

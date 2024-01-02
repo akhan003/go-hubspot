@@ -1,5 +1,5 @@
 /*
-Webhooks API
+Webhooks
 
 Provides a way for apps to subscribe to certain change events in HubSpot. Once configured, apps will receive event payloads containing details about the changes at a specified target URL. There can only be one target URL for receiving event notifications per app.
 
@@ -11,7 +11,9 @@ API version: v3
 package webhooks
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the BatchInputSubscriptionBatchUpdateRequest type satisfies the MappedNullable interface at compile time
@@ -21,6 +23,8 @@ var _ MappedNullable = &BatchInputSubscriptionBatchUpdateRequest{}
 type BatchInputSubscriptionBatchUpdateRequest struct {
 	Inputs []SubscriptionBatchUpdateRequest `json:"inputs"`
 }
+
+type _BatchInputSubscriptionBatchUpdateRequest BatchInputSubscriptionBatchUpdateRequest
 
 // NewBatchInputSubscriptionBatchUpdateRequest instantiates a new BatchInputSubscriptionBatchUpdateRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -76,6 +80,43 @@ func (o BatchInputSubscriptionBatchUpdateRequest) ToMap() (map[string]interface{
 	toSerialize := map[string]interface{}{}
 	toSerialize["inputs"] = o.Inputs
 	return toSerialize, nil
+}
+
+func (o *BatchInputSubscriptionBatchUpdateRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"inputs",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchInputSubscriptionBatchUpdateRequest := _BatchInputSubscriptionBatchUpdateRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchInputSubscriptionBatchUpdateRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchInputSubscriptionBatchUpdateRequest(varBatchInputSubscriptionBatchUpdateRequest)
+
+	return err
 }
 
 type NullableBatchInputSubscriptionBatchUpdateRequest struct {

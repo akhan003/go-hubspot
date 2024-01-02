@@ -21,12 +21,12 @@ import (
 	"time"
 )
 
-// DomainsApiService DomainsApi service
-type DomainsApiService service
+// DomainsAPIService DomainsAPI service
+type DomainsAPIService service
 
 type ApiGetByIDRequest struct {
 	ctx        context.Context
-	ApiService *DomainsApiService
+	ApiService *DomainsAPIService
 	domainId   string
 }
 
@@ -39,11 +39,11 @@ GetByID Get a single domain
 
 Returns a single domains with the id specified.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param domainId The unique ID of the domain.
- @return ApiGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param domainId The unique ID of the domain.
+	@return ApiGetByIDRequest
 */
-func (a *DomainsApiService) GetByID(ctx context.Context, domainId string) ApiGetByIDRequest {
+func (a *DomainsAPIService) GetByID(ctx context.Context, domainId string) ApiGetByIDRequest {
 	return ApiGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -52,8 +52,9 @@ func (a *DomainsApiService) GetByID(ctx context.Context, domainId string) ApiGet
 }
 
 // Execute executes the request
-//  @return Domain
-func (a *DomainsApiService) GetByIDExecute(r ApiGetByIDRequest) (*Domain, *http.Response, error) {
+//
+//	@return Domain
+func (a *DomainsAPIService) GetByIDExecute(r ApiGetByIDRequest) (*Domain, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -61,7 +62,7 @@ func (a *DomainsApiService) GetByIDExecute(r ApiGetByIDRequest) (*Domain, *http.
 		localVarReturnValue *Domain
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DomainsApiService.GetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DomainsAPIService.GetByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -165,7 +166,7 @@ func (a *DomainsApiService) GetByIDExecute(r ApiGetByIDRequest) (*Domain, *http.
 
 type ApiGetPageRequest struct {
 	ctx           context.Context
-	ApiService    *DomainsApiService
+	ApiService    *DomainsAPIService
 	createdAt     *time.Time
 	createdAfter  *time.Time
 	createdBefore *time.Time
@@ -246,10 +247,10 @@ GetPage Get current domains
 
 Returns all existing domains that have been created. Results can be limited and filtered by creation or updated date.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetPageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetPageRequest
 */
-func (a *DomainsApiService) GetPage(ctx context.Context) ApiGetPageRequest {
+func (a *DomainsAPIService) GetPage(ctx context.Context) ApiGetPageRequest {
 	return ApiGetPageRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -257,8 +258,9 @@ func (a *DomainsApiService) GetPage(ctx context.Context) ApiGetPageRequest {
 }
 
 // Execute executes the request
-//  @return CollectionResponseWithTotalDomainForwardPaging
-func (a *DomainsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionResponseWithTotalDomainForwardPaging, *http.Response, error) {
+//
+//	@return CollectionResponseWithTotalDomainForwardPaging
+func (a *DomainsAPIService) GetPageExecute(r ApiGetPageRequest) (*CollectionResponseWithTotalDomainForwardPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -266,7 +268,7 @@ func (a *DomainsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionResp
 		localVarReturnValue *CollectionResponseWithTotalDomainForwardPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DomainsApiService.GetPage")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DomainsAPIService.GetPage")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -300,7 +302,7 @@ func (a *DomainsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionResp
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "sort", t, "multi")

@@ -1,5 +1,5 @@
 /*
-Timeline events
+CRM Timeline
 
 This feature allows an app to create and configure custom events that can show up in the timelines of certain CRM objects like contacts, companies, tickets, or deals. You'll find multiple use cases for this API in the sections below.
 
@@ -11,7 +11,9 @@ API version: v3
 package timeline
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the EventDetail type satisfies the MappedNullable interface at compile time
@@ -22,6 +24,8 @@ type EventDetail struct {
 	// The details Markdown rendered as HTML.
 	Details string `json:"details"`
 }
+
+type _EventDetail EventDetail
 
 // NewEventDetail instantiates a new EventDetail object
 // This constructor will assign default values to properties that have it defined,
@@ -77,6 +81,43 @@ func (o EventDetail) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["details"] = o.Details
 	return toSerialize, nil
+}
+
+func (o *EventDetail) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"details",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varEventDetail := _EventDetail{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varEventDetail)
+
+	if err != nil {
+		return err
+	}
+
+	*o = EventDetail(varEventDetail)
+
+	return err
 }
 
 type NullableEventDetail struct {

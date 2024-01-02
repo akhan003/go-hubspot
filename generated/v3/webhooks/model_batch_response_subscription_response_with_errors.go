@@ -1,5 +1,5 @@
 /*
-Webhooks API
+Webhooks
 
 Provides a way for apps to subscribe to certain change events in HubSpot. Once configured, apps will receive event payloads containing details about the changes at a specified target URL. There can only be one target URL for receiving event notifications per app.
 
@@ -11,7 +11,9 @@ API version: v3
 package webhooks
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -20,26 +22,28 @@ var _ MappedNullable = &BatchResponseSubscriptionResponseWithErrors{}
 
 // BatchResponseSubscriptionResponseWithErrors struct for BatchResponseSubscriptionResponseWithErrors
 type BatchResponseSubscriptionResponseWithErrors struct {
-	Status      string                 `json:"status"`
-	Results     []SubscriptionResponse `json:"results"`
+	CompletedAt time.Time              `json:"completedAt"`
 	NumErrors   *int32                 `json:"numErrors,omitempty"`
-	Errors      []StandardError        `json:"errors,omitempty"`
 	RequestedAt *time.Time             `json:"requestedAt,omitempty"`
 	StartedAt   time.Time              `json:"startedAt"`
-	CompletedAt time.Time              `json:"completedAt"`
 	Links       *map[string]string     `json:"links,omitempty"`
+	Results     []SubscriptionResponse `json:"results"`
+	Errors      []StandardError        `json:"errors,omitempty"`
+	Status      string                 `json:"status"`
 }
+
+type _BatchResponseSubscriptionResponseWithErrors BatchResponseSubscriptionResponseWithErrors
 
 // NewBatchResponseSubscriptionResponseWithErrors instantiates a new BatchResponseSubscriptionResponseWithErrors object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBatchResponseSubscriptionResponseWithErrors(status string, results []SubscriptionResponse, startedAt time.Time, completedAt time.Time) *BatchResponseSubscriptionResponseWithErrors {
+func NewBatchResponseSubscriptionResponseWithErrors(completedAt time.Time, startedAt time.Time, results []SubscriptionResponse, status string) *BatchResponseSubscriptionResponseWithErrors {
 	this := BatchResponseSubscriptionResponseWithErrors{}
-	this.Status = status
-	this.Results = results
-	this.StartedAt = startedAt
 	this.CompletedAt = completedAt
+	this.StartedAt = startedAt
+	this.Results = results
+	this.Status = status
 	return &this
 }
 
@@ -51,52 +55,28 @@ func NewBatchResponseSubscriptionResponseWithErrorsWithDefaults() *BatchResponse
 	return &this
 }
 
-// GetStatus returns the Status field value
-func (o *BatchResponseSubscriptionResponseWithErrors) GetStatus() string {
+// GetCompletedAt returns the CompletedAt field value
+func (o *BatchResponseSubscriptionResponseWithErrors) GetCompletedAt() time.Time {
 	if o == nil {
-		var ret string
+		var ret time.Time
 		return ret
 	}
 
-	return o.Status
+	return o.CompletedAt
 }
 
-// GetStatusOk returns a tuple with the Status field value
+// GetCompletedAtOk returns a tuple with the CompletedAt field value
 // and a boolean to check if the value has been set.
-func (o *BatchResponseSubscriptionResponseWithErrors) GetStatusOk() (*string, bool) {
+func (o *BatchResponseSubscriptionResponseWithErrors) GetCompletedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Status, true
+	return &o.CompletedAt, true
 }
 
-// SetStatus sets field value
-func (o *BatchResponseSubscriptionResponseWithErrors) SetStatus(v string) {
-	o.Status = v
-}
-
-// GetResults returns the Results field value
-func (o *BatchResponseSubscriptionResponseWithErrors) GetResults() []SubscriptionResponse {
-	if o == nil {
-		var ret []SubscriptionResponse
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponseSubscriptionResponseWithErrors) GetResultsOk() ([]SubscriptionResponse, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *BatchResponseSubscriptionResponseWithErrors) SetResults(v []SubscriptionResponse) {
-	o.Results = v
+// SetCompletedAt sets field value
+func (o *BatchResponseSubscriptionResponseWithErrors) SetCompletedAt(v time.Time) {
+	o.CompletedAt = v
 }
 
 // GetNumErrors returns the NumErrors field value if set, zero value otherwise.
@@ -129,38 +109,6 @@ func (o *BatchResponseSubscriptionResponseWithErrors) HasNumErrors() bool {
 // SetNumErrors gets a reference to the given int32 and assigns it to the NumErrors field.
 func (o *BatchResponseSubscriptionResponseWithErrors) SetNumErrors(v int32) {
 	o.NumErrors = &v
-}
-
-// GetErrors returns the Errors field value if set, zero value otherwise.
-func (o *BatchResponseSubscriptionResponseWithErrors) GetErrors() []StandardError {
-	if o == nil || IsNil(o.Errors) {
-		var ret []StandardError
-		return ret
-	}
-	return o.Errors
-}
-
-// GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *BatchResponseSubscriptionResponseWithErrors) GetErrorsOk() ([]StandardError, bool) {
-	if o == nil || IsNil(o.Errors) {
-		return nil, false
-	}
-	return o.Errors, true
-}
-
-// HasErrors returns a boolean if a field has been set.
-func (o *BatchResponseSubscriptionResponseWithErrors) HasErrors() bool {
-	if o != nil && !IsNil(o.Errors) {
-		return true
-	}
-
-	return false
-}
-
-// SetErrors gets a reference to the given []StandardError and assigns it to the Errors field.
-func (o *BatchResponseSubscriptionResponseWithErrors) SetErrors(v []StandardError) {
-	o.Errors = v
 }
 
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
@@ -219,30 +167,6 @@ func (o *BatchResponseSubscriptionResponseWithErrors) SetStartedAt(v time.Time) 
 	o.StartedAt = v
 }
 
-// GetCompletedAt returns the CompletedAt field value
-func (o *BatchResponseSubscriptionResponseWithErrors) GetCompletedAt() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.CompletedAt
-}
-
-// GetCompletedAtOk returns a tuple with the CompletedAt field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponseSubscriptionResponseWithErrors) GetCompletedAtOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.CompletedAt, true
-}
-
-// SetCompletedAt sets field value
-func (o *BatchResponseSubscriptionResponseWithErrors) SetCompletedAt(v time.Time) {
-	o.CompletedAt = v
-}
-
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *BatchResponseSubscriptionResponseWithErrors) GetLinks() map[string]string {
 	if o == nil || IsNil(o.Links) {
@@ -275,6 +199,86 @@ func (o *BatchResponseSubscriptionResponseWithErrors) SetLinks(v map[string]stri
 	o.Links = &v
 }
 
+// GetResults returns the Results field value
+func (o *BatchResponseSubscriptionResponseWithErrors) GetResults() []SubscriptionResponse {
+	if o == nil {
+		var ret []SubscriptionResponse
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponseSubscriptionResponseWithErrors) GetResultsOk() ([]SubscriptionResponse, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *BatchResponseSubscriptionResponseWithErrors) SetResults(v []SubscriptionResponse) {
+	o.Results = v
+}
+
+// GetErrors returns the Errors field value if set, zero value otherwise.
+func (o *BatchResponseSubscriptionResponseWithErrors) GetErrors() []StandardError {
+	if o == nil || IsNil(o.Errors) {
+		var ret []StandardError
+		return ret
+	}
+	return o.Errors
+}
+
+// GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BatchResponseSubscriptionResponseWithErrors) GetErrorsOk() ([]StandardError, bool) {
+	if o == nil || IsNil(o.Errors) {
+		return nil, false
+	}
+	return o.Errors, true
+}
+
+// HasErrors returns a boolean if a field has been set.
+func (o *BatchResponseSubscriptionResponseWithErrors) HasErrors() bool {
+	if o != nil && !IsNil(o.Errors) {
+		return true
+	}
+
+	return false
+}
+
+// SetErrors gets a reference to the given []StandardError and assigns it to the Errors field.
+func (o *BatchResponseSubscriptionResponseWithErrors) SetErrors(v []StandardError) {
+	o.Errors = v
+}
+
+// GetStatus returns the Status field value
+func (o *BatchResponseSubscriptionResponseWithErrors) GetStatus() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponseSubscriptionResponseWithErrors) GetStatusOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Status, true
+}
+
+// SetStatus sets field value
+func (o *BatchResponseSubscriptionResponseWithErrors) SetStatus(v string) {
+	o.Status = v
+}
+
 func (o BatchResponseSubscriptionResponseWithErrors) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -285,23 +289,63 @@ func (o BatchResponseSubscriptionResponseWithErrors) MarshalJSON() ([]byte, erro
 
 func (o BatchResponseSubscriptionResponseWithErrors) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["status"] = o.Status
-	toSerialize["results"] = o.Results
+	toSerialize["completedAt"] = o.CompletedAt
 	if !IsNil(o.NumErrors) {
 		toSerialize["numErrors"] = o.NumErrors
-	}
-	if !IsNil(o.Errors) {
-		toSerialize["errors"] = o.Errors
 	}
 	if !IsNil(o.RequestedAt) {
 		toSerialize["requestedAt"] = o.RequestedAt
 	}
 	toSerialize["startedAt"] = o.StartedAt
-	toSerialize["completedAt"] = o.CompletedAt
 	if !IsNil(o.Links) {
 		toSerialize["links"] = o.Links
 	}
+	toSerialize["results"] = o.Results
+	if !IsNil(o.Errors) {
+		toSerialize["errors"] = o.Errors
+	}
+	toSerialize["status"] = o.Status
 	return toSerialize, nil
+}
+
+func (o *BatchResponseSubscriptionResponseWithErrors) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"completedAt",
+		"startedAt",
+		"results",
+		"status",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchResponseSubscriptionResponseWithErrors := _BatchResponseSubscriptionResponseWithErrors{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchResponseSubscriptionResponseWithErrors)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchResponseSubscriptionResponseWithErrors(varBatchResponseSubscriptionResponseWithErrors)
+
+	return err
 }
 
 type NullableBatchResponseSubscriptionResponseWithErrors struct {

@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the LayoutSection type satisfies the MappedNullable interface at compile time
@@ -19,31 +21,31 @@ var _ MappedNullable = &LayoutSection{}
 
 // LayoutSection struct for LayoutSection
 type LayoutSection struct {
-	X     int32  `json:"x"`
-	W     int32  `json:"w"`
-	Name  string `json:"name"`
-	Label string `json:"label"`
-	Type  string `json:"type"`
+	CssStyle string `json:"cssStyle"`
+	Label    string `json:"label"`
+	Type     string `json:"type"`
 	// null
 	Params      map[string]map[string]interface{} `json:"params"`
 	Rows        []map[string]LayoutSection        `json:"rows"`
 	RowMetaData []RowMetaData                     `json:"rowMetaData"`
 	Cells       []LayoutSection                   `json:"cells"`
 	CssClass    string                            `json:"cssClass"`
-	CssStyle    string                            `json:"cssStyle"`
+	W           int32                             `json:"w"`
 	CssId       string                            `json:"cssId"`
+	X           int32                             `json:"x"`
+	Name        string                            `json:"name"`
 	Styles      Styles                            `json:"styles"`
 }
+
+type _LayoutSection LayoutSection
 
 // NewLayoutSection instantiates a new LayoutSection object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLayoutSection(x int32, w int32, name string, label string, type_ string, params map[string]map[string]interface{}, rows []map[string]LayoutSection, rowMetaData []RowMetaData, cells []LayoutSection, cssClass string, cssStyle string, cssId string, styles Styles) *LayoutSection {
+func NewLayoutSection(cssStyle string, label string, type_ string, params map[string]map[string]interface{}, rows []map[string]LayoutSection, rowMetaData []RowMetaData, cells []LayoutSection, cssClass string, w int32, cssId string, x int32, name string, styles Styles) *LayoutSection {
 	this := LayoutSection{}
-	this.X = x
-	this.W = w
-	this.Name = name
+	this.CssStyle = cssStyle
 	this.Label = label
 	this.Type = type_
 	this.Params = params
@@ -51,8 +53,10 @@ func NewLayoutSection(x int32, w int32, name string, label string, type_ string,
 	this.RowMetaData = rowMetaData
 	this.Cells = cells
 	this.CssClass = cssClass
-	this.CssStyle = cssStyle
+	this.W = w
 	this.CssId = cssId
+	this.X = x
+	this.Name = name
 	this.Styles = styles
 	return &this
 }
@@ -65,76 +69,28 @@ func NewLayoutSectionWithDefaults() *LayoutSection {
 	return &this
 }
 
-// GetX returns the X field value
-func (o *LayoutSection) GetX() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.X
-}
-
-// GetXOk returns a tuple with the X field value
-// and a boolean to check if the value has been set.
-func (o *LayoutSection) GetXOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.X, true
-}
-
-// SetX sets field value
-func (o *LayoutSection) SetX(v int32) {
-	o.X = v
-}
-
-// GetW returns the W field value
-func (o *LayoutSection) GetW() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.W
-}
-
-// GetWOk returns a tuple with the W field value
-// and a boolean to check if the value has been set.
-func (o *LayoutSection) GetWOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.W, true
-}
-
-// SetW sets field value
-func (o *LayoutSection) SetW(v int32) {
-	o.W = v
-}
-
-// GetName returns the Name field value
-func (o *LayoutSection) GetName() string {
+// GetCssStyle returns the CssStyle field value
+func (o *LayoutSection) GetCssStyle() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Name
+	return o.CssStyle
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetCssStyleOk returns a tuple with the CssStyle field value
 // and a boolean to check if the value has been set.
-func (o *LayoutSection) GetNameOk() (*string, bool) {
+func (o *LayoutSection) GetCssStyleOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Name, true
+	return &o.CssStyle, true
 }
 
-// SetName sets field value
-func (o *LayoutSection) SetName(v string) {
-	o.Name = v
+// SetCssStyle sets field value
+func (o *LayoutSection) SetCssStyle(v string) {
+	o.CssStyle = v
 }
 
 // GetLabel returns the Label field value
@@ -305,28 +261,28 @@ func (o *LayoutSection) SetCssClass(v string) {
 	o.CssClass = v
 }
 
-// GetCssStyle returns the CssStyle field value
-func (o *LayoutSection) GetCssStyle() string {
+// GetW returns the W field value
+func (o *LayoutSection) GetW() int32 {
 	if o == nil {
-		var ret string
+		var ret int32
 		return ret
 	}
 
-	return o.CssStyle
+	return o.W
 }
 
-// GetCssStyleOk returns a tuple with the CssStyle field value
+// GetWOk returns a tuple with the W field value
 // and a boolean to check if the value has been set.
-func (o *LayoutSection) GetCssStyleOk() (*string, bool) {
+func (o *LayoutSection) GetWOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.CssStyle, true
+	return &o.W, true
 }
 
-// SetCssStyle sets field value
-func (o *LayoutSection) SetCssStyle(v string) {
-	o.CssStyle = v
+// SetW sets field value
+func (o *LayoutSection) SetW(v int32) {
+	o.W = v
 }
 
 // GetCssId returns the CssId field value
@@ -351,6 +307,54 @@ func (o *LayoutSection) GetCssIdOk() (*string, bool) {
 // SetCssId sets field value
 func (o *LayoutSection) SetCssId(v string) {
 	o.CssId = v
+}
+
+// GetX returns the X field value
+func (o *LayoutSection) GetX() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.X
+}
+
+// GetXOk returns a tuple with the X field value
+// and a boolean to check if the value has been set.
+func (o *LayoutSection) GetXOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.X, true
+}
+
+// SetX sets field value
+func (o *LayoutSection) SetX(v int32) {
+	o.X = v
+}
+
+// GetName returns the Name field value
+func (o *LayoutSection) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *LayoutSection) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *LayoutSection) SetName(v string) {
+	o.Name = v
 }
 
 // GetStyles returns the Styles field value
@@ -387,9 +391,7 @@ func (o LayoutSection) MarshalJSON() ([]byte, error) {
 
 func (o LayoutSection) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["x"] = o.X
-	toSerialize["w"] = o.W
-	toSerialize["name"] = o.Name
+	toSerialize["cssStyle"] = o.CssStyle
 	toSerialize["label"] = o.Label
 	toSerialize["type"] = o.Type
 	toSerialize["params"] = o.Params
@@ -397,10 +399,61 @@ func (o LayoutSection) ToMap() (map[string]interface{}, error) {
 	toSerialize["rowMetaData"] = o.RowMetaData
 	toSerialize["cells"] = o.Cells
 	toSerialize["cssClass"] = o.CssClass
-	toSerialize["cssStyle"] = o.CssStyle
+	toSerialize["w"] = o.W
 	toSerialize["cssId"] = o.CssId
+	toSerialize["x"] = o.X
+	toSerialize["name"] = o.Name
 	toSerialize["styles"] = o.Styles
 	return toSerialize, nil
+}
+
+func (o *LayoutSection) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"cssStyle",
+		"label",
+		"type",
+		"params",
+		"rows",
+		"rowMetaData",
+		"cells",
+		"cssClass",
+		"w",
+		"cssId",
+		"x",
+		"name",
+		"styles",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varLayoutSection := _LayoutSection{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varLayoutSection)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LayoutSection(varLayoutSection)
+
+	return err
 }
 
 type NullableLayoutSection struct {

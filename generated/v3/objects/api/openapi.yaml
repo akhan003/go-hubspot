@@ -16,486 +16,33 @@ info:
     | `tickets` | `content`, `hs_pipeline`, `hs_pipeline_stage`, `hs_ticket_category`, `hs_ticket_priority`, `subject` |
 
     Find a list of all properties for an object type using the [CRM Object Properties](https://developers.hubspot.com/docs/methods/crm-properties/get-properties) API. e.g. `GET https://api.hubapi.com/properties/v2/companies/properties`. Change the properties returned in the response using the `properties` array in the request body.
-  title: CRM Objects
+  title: Objects
   version: v3
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    sales: FREE
+    service: FREE
+    cms: FREE
+  x-hubspot-documentation-banner: NONE
 servers:
-- url: https://api.hubapi.com/
+- url: https://api.hubapi.com
 tags:
-- name: Associations
-- name: Basic
-- name: Batch
-- name: GDPR
-- name: Search
-- name: Public_Object
+- description: ""
+  name: Batch
+  x-hubspot-tag-name-english-source: Batch
+- description: ""
+  name: Basic
+  x-hubspot-tag-name-english-source: Basic
+- description: ""
+  name: Public_Object
+  x-hubspot-tag-name-english-source: Public_Object
+- description: ""
+  name: GDPR
+  x-hubspot-tag-name-english-source: GDPR
+- description: ""
+  name: Search
+  x-hubspot-tag-name-english-source: Search
 paths:
-  /crm/v3/objects/{objectType}:
-    get:
-      description: Read a page of objects. Control what is returned via the `properties`
-        query param.
-      operationId: GetPage
-      parameters:
-      - explode: false
-        in: path
-        name: objectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      - description: The maximum number of results to display per page.
-        explode: true
-        in: query
-        name: limit
-        required: false
-        schema:
-          default: 10
-          format: int32
-          type: integer
-        style: form
-      - description: The paging cursor token of the last successfully read resource
-          will be returned as the `paging.next.after` JSON property of a paged response
-          containing more results.
-        explode: true
-        in: query
-        name: after
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: "A comma separated list of the properties to be returned in the\
-          \ response. If any of the specified properties are not present on the requested\
-          \ object(s), they will be ignored."
-        explode: true
-        in: query
-        name: properties
-        required: false
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      - description: "A comma separated list of the properties to be returned along\
-          \ with their history of previous values. If any of the specified properties\
-          \ are not present on the requested object(s), they will be ignored. Usage\
-          \ of this parameter will reduce the maximum number of objects that can be\
-          \ read by a single request."
-        explode: true
-        in: query
-        name: propertiesWithHistory
-        required: false
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      - description: "A comma separated list of object types to retrieve associated\
-          \ IDs for. If any of the specified associations do not exist, they will\
-          \ be ignored."
-        explode: true
-        in: query
-        name: associations
-        required: false
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      - description: Whether to return only results that have been archived.
-        explode: true
-        in: query
-        name: archived
-        required: false
-        schema:
-          default: false
-          type: boolean
-        style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CollectionResponseSimplePublicObjectWithAssociationsForwardPaging'
-          description: successful operation
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - media_bridge.read
-      - oauth2:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.deals.read
-      - oauth2:
-        - crm.objects.deals.read
-      - private_apps_legacy:
-        - contacts
-      - private_apps:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.companies.read
-      - private_apps:
-        - crm.objects.deals.write
-      - oauth2:
-        - crm.objects.companies.read
-      - oauth2:
-        - crm.objects.deals.write
-      - private_apps_legacy:
-        - crm.objects.goals.read
-      - private_apps_legacy:
-        - media_bridge.read
-      - private_apps:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.quotes.write
-      - private_apps:
-        - crm.objects.quotes.write
-      - oauth2_legacy:
-        - tickets
-      - private_apps_legacy:
-        - crm.objects.custom.write
-      - private_apps_legacy:
-        - e-commerce
-      - private_apps:
-        - crm.objects.line_items.read
-      - oauth2:
-        - crm.objects.contacts.write
-      - private_apps:
-        - crm.objects.contacts.write
-      - oauth2:
-        - crm.objects.line_items.read
-      - oauth2_legacy:
-        - crm.objects.custom.read
-      - private_apps_legacy:
-        - crm.objects.custom.read
-      - oauth2:
-        - crm.objects.line_items.write
-      - private_apps:
-        - crm.objects.line_items.write
-      - oauth2_legacy:
-        - e-commerce
-      - private_apps_legacy:
-        - tickets
-      - oauth2_legacy:
-        - crm.objects.goals.read
-      - oauth2:
-        - crm.objects.quotes.read
-      - oauth2_legacy:
-        - crm.objects.custom.write
-      - private_apps:
-        - crm.objects.quotes.read
-      summary: List
-      tags:
-      - Basic
-    post:
-      description: "Create a CRM object with the given properties and return a copy\
-        \ of the object, including the ID. Documentation and examples for creating\
-        \ standard objects is provided."
-      operationId: Create
-      parameters:
-      - explode: false
-        in: path
-        name: objectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SimplePublicObjectInputForCreate'
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SimplePublicObject'
-          description: successful operation
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - media_bridge.read
-      - oauth2:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.deals.read
-      - oauth2:
-        - crm.objects.deals.read
-      - private_apps_legacy:
-        - contacts
-      - private_apps:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.companies.read
-      - private_apps:
-        - crm.objects.deals.write
-      - oauth2:
-        - crm.objects.companies.read
-      - oauth2:
-        - crm.objects.deals.write
-      - private_apps_legacy:
-        - crm.objects.goals.read
-      - private_apps_legacy:
-        - media_bridge.read
-      - private_apps:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.quotes.write
-      - private_apps:
-        - crm.objects.quotes.write
-      - oauth2_legacy:
-        - tickets
-      - private_apps_legacy:
-        - crm.objects.custom.write
-      - private_apps_legacy:
-        - e-commerce
-      - private_apps:
-        - crm.objects.line_items.read
-      - oauth2:
-        - crm.objects.contacts.write
-      - private_apps:
-        - crm.objects.contacts.write
-      - oauth2:
-        - crm.objects.line_items.read
-      - oauth2_legacy:
-        - crm.objects.custom.read
-      - private_apps_legacy:
-        - crm.objects.custom.read
-      - oauth2:
-        - crm.objects.line_items.write
-      - private_apps:
-        - crm.objects.line_items.write
-      - oauth2_legacy:
-        - e-commerce
-      - private_apps_legacy:
-        - tickets
-      - oauth2_legacy:
-        - crm.objects.goals.read
-      - oauth2:
-        - crm.objects.quotes.read
-      - oauth2_legacy:
-        - crm.objects.custom.write
-      - private_apps:
-        - crm.objects.quotes.read
-      summary: Create
-      tags:
-      - Basic
-  /crm/v3/objects/{objectType}/batch/archive:
-    post:
-      operationId: BatchArchive
-      parameters:
-      - explode: false
-        in: path
-        name: objectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectId'
-        required: true
-      responses:
-        "204":
-          content: {}
-          description: No content
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - media_bridge.read
-      - oauth2:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.deals.read
-      - oauth2:
-        - crm.objects.deals.read
-      - private_apps_legacy:
-        - contacts
-      - private_apps:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.companies.read
-      - private_apps:
-        - crm.objects.deals.write
-      - oauth2:
-        - crm.objects.companies.read
-      - oauth2:
-        - crm.objects.deals.write
-      - private_apps_legacy:
-        - crm.objects.goals.read
-      - private_apps_legacy:
-        - media_bridge.read
-      - private_apps:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.quotes.write
-      - private_apps:
-        - crm.objects.quotes.write
-      - oauth2_legacy:
-        - tickets
-      - private_apps_legacy:
-        - crm.objects.custom.write
-      - private_apps_legacy:
-        - e-commerce
-      - private_apps:
-        - crm.objects.line_items.read
-      - oauth2:
-        - crm.objects.contacts.write
-      - private_apps:
-        - crm.objects.contacts.write
-      - oauth2:
-        - crm.objects.line_items.read
-      - oauth2_legacy:
-        - crm.objects.custom.read
-      - private_apps_legacy:
-        - crm.objects.custom.read
-      - oauth2:
-        - crm.objects.line_items.write
-      - private_apps:
-        - crm.objects.line_items.write
-      - oauth2_legacy:
-        - e-commerce
-      - private_apps_legacy:
-        - tickets
-      - oauth2_legacy:
-        - crm.objects.goals.read
-      - oauth2:
-        - crm.objects.quotes.read
-      - oauth2_legacy:
-        - crm.objects.custom.write
-      - private_apps:
-        - crm.objects.quotes.read
-      summary: Archive a batch of objects by ID
-      tags:
-      - Batch
-  /crm/v3/objects/{objectType}/batch/create:
-    post:
-      operationId: BatchCreate
-      parameters:
-      - explode: false
-        in: path
-        name: objectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectInputForCreate'
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
-          description: successful operation
-        "207":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
-          description: multiple statuses
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - media_bridge.read
-      - oauth2:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.deals.read
-      - oauth2:
-        - crm.objects.deals.read
-      - private_apps_legacy:
-        - contacts
-      - private_apps:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.companies.read
-      - private_apps:
-        - crm.objects.deals.write
-      - oauth2:
-        - crm.objects.companies.read
-      - oauth2:
-        - crm.objects.deals.write
-      - private_apps_legacy:
-        - crm.objects.goals.read
-      - private_apps_legacy:
-        - media_bridge.read
-      - private_apps:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.quotes.write
-      - private_apps:
-        - crm.objects.quotes.write
-      - oauth2_legacy:
-        - tickets
-      - private_apps_legacy:
-        - crm.objects.custom.write
-      - private_apps_legacy:
-        - e-commerce
-      - private_apps:
-        - crm.objects.line_items.read
-      - oauth2:
-        - crm.objects.contacts.write
-      - private_apps:
-        - crm.objects.contacts.write
-      - oauth2:
-        - crm.objects.line_items.read
-      - oauth2_legacy:
-        - crm.objects.custom.read
-      - private_apps_legacy:
-        - crm.objects.custom.read
-      - oauth2:
-        - crm.objects.line_items.write
-      - private_apps:
-        - crm.objects.line_items.write
-      - oauth2_legacy:
-        - e-commerce
-      - private_apps_legacy:
-        - tickets
-      - oauth2_legacy:
-        - crm.objects.goals.read
-      - oauth2:
-        - crm.objects.quotes.read
-      - oauth2_legacy:
-        - crm.objects.custom.write
-      - private_apps:
-        - crm.objects.quotes.read
-      summary: Create a batch of objects
-      tags:
-      - Batch
   /crm/v3/objects/{objectType}/batch/read:
     post:
       operationId: BatchRead
@@ -611,414 +158,6 @@ paths:
       summary: "Read a batch of objects by internal ID, or unique property values"
       tags:
       - Batch
-  /crm/v3/objects/{objectType}/batch/update:
-    post:
-      operationId: BatchUpdate
-      parameters:
-      - explode: false
-        in: path
-        name: objectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectBatchInput'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
-          description: successful operation
-        "207":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
-          description: multiple statuses
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - media_bridge.read
-      - oauth2:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.deals.read
-      - oauth2:
-        - crm.objects.deals.read
-      - private_apps_legacy:
-        - contacts
-      - private_apps:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.companies.read
-      - private_apps:
-        - crm.objects.deals.write
-      - oauth2:
-        - crm.objects.companies.read
-      - oauth2:
-        - crm.objects.deals.write
-      - private_apps_legacy:
-        - crm.objects.goals.read
-      - private_apps_legacy:
-        - media_bridge.read
-      - private_apps:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.quotes.write
-      - private_apps:
-        - crm.objects.quotes.write
-      - oauth2_legacy:
-        - tickets
-      - private_apps_legacy:
-        - crm.objects.custom.write
-      - private_apps_legacy:
-        - e-commerce
-      - private_apps:
-        - crm.objects.line_items.read
-      - oauth2:
-        - crm.objects.contacts.write
-      - private_apps:
-        - crm.objects.contacts.write
-      - oauth2:
-        - crm.objects.line_items.read
-      - oauth2_legacy:
-        - crm.objects.custom.read
-      - private_apps_legacy:
-        - crm.objects.custom.read
-      - oauth2:
-        - crm.objects.line_items.write
-      - private_apps:
-        - crm.objects.line_items.write
-      - oauth2_legacy:
-        - e-commerce
-      - private_apps_legacy:
-        - tickets
-      - oauth2_legacy:
-        - crm.objects.goals.read
-      - oauth2:
-        - crm.objects.quotes.read
-      - oauth2_legacy:
-        - crm.objects.custom.write
-      - private_apps:
-        - crm.objects.quotes.read
-      summary: Update a batch of objects
-      tags:
-      - Batch
-  /crm/v3/objects/{objectType}/gdpr-delete:
-    post:
-      description: "Permanently delete a contact and all associated content to follow\
-        \ GDPR. Use optional property 'idProperty' set to 'email' to identify contact\
-        \ by email address. If email address is not found, the email address will\
-        \ be added to a blocklist and prevent it from being used in the future."
-      operationId: Delete
-      parameters:
-      - explode: false
-        in: path
-        name: objectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PublicGdprDeleteInput'
-        required: true
-      responses:
-        "204":
-          content: {}
-          description: No content
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - media_bridge.read
-      - oauth2:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.deals.read
-      - oauth2:
-        - crm.objects.deals.read
-      - private_apps_legacy:
-        - contacts
-      - private_apps:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.companies.read
-      - private_apps:
-        - crm.objects.deals.write
-      - oauth2:
-        - crm.objects.companies.read
-      - oauth2:
-        - crm.objects.deals.write
-      - private_apps_legacy:
-        - crm.objects.goals.read
-      - private_apps_legacy:
-        - media_bridge.read
-      - private_apps:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.quotes.write
-      - private_apps:
-        - crm.objects.quotes.write
-      - oauth2_legacy:
-        - tickets
-      - private_apps_legacy:
-        - crm.objects.custom.write
-      - private_apps_legacy:
-        - e-commerce
-      - private_apps:
-        - crm.objects.line_items.read
-      - oauth2:
-        - crm.objects.contacts.write
-      - private_apps:
-        - crm.objects.contacts.write
-      - oauth2:
-        - crm.objects.line_items.read
-      - oauth2_legacy:
-        - crm.objects.custom.read
-      - private_apps_legacy:
-        - crm.objects.custom.read
-      - oauth2:
-        - crm.objects.line_items.write
-      - private_apps:
-        - crm.objects.line_items.write
-      - oauth2_legacy:
-        - e-commerce
-      - private_apps_legacy:
-        - tickets
-      - oauth2_legacy:
-        - crm.objects.goals.read
-      - oauth2:
-        - crm.objects.quotes.read
-      - oauth2_legacy:
-        - crm.objects.custom.write
-      - private_apps:
-        - crm.objects.quotes.read
-      summary: GDPR DELETE
-      tags:
-      - GDPR
-  /crm/v3/objects/{objectType}/merge:
-    post:
-      operationId: Merge
-      parameters:
-      - explode: false
-        in: path
-        name: objectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PublicMergeInput'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SimplePublicObject'
-          description: successful operation
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - media_bridge.read
-      - oauth2:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.deals.read
-      - oauth2:
-        - crm.objects.deals.read
-      - private_apps_legacy:
-        - contacts
-      - private_apps:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.companies.read
-      - private_apps:
-        - crm.objects.deals.write
-      - oauth2:
-        - crm.objects.companies.read
-      - oauth2:
-        - crm.objects.deals.write
-      - private_apps_legacy:
-        - crm.objects.goals.read
-      - private_apps_legacy:
-        - media_bridge.read
-      - private_apps:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.quotes.write
-      - private_apps:
-        - crm.objects.quotes.write
-      - oauth2_legacy:
-        - tickets
-      - private_apps_legacy:
-        - crm.objects.custom.write
-      - private_apps_legacy:
-        - e-commerce
-      - private_apps:
-        - crm.objects.line_items.read
-      - oauth2:
-        - crm.objects.contacts.write
-      - private_apps:
-        - crm.objects.contacts.write
-      - oauth2:
-        - crm.objects.line_items.read
-      - oauth2_legacy:
-        - crm.objects.custom.read
-      - private_apps_legacy:
-        - crm.objects.custom.read
-      - oauth2:
-        - crm.objects.line_items.write
-      - private_apps:
-        - crm.objects.line_items.write
-      - oauth2_legacy:
-        - e-commerce
-      - private_apps_legacy:
-        - tickets
-      - oauth2_legacy:
-        - crm.objects.goals.read
-      - oauth2:
-        - crm.objects.quotes.read
-      - oauth2_legacy:
-        - crm.objects.custom.write
-      - private_apps:
-        - crm.objects.quotes.read
-      summary: Merge two objects with same type
-      tags:
-      - Public_Object
-  /crm/v3/objects/{objectType}/search:
-    post:
-      operationId: Search
-      parameters:
-      - explode: false
-        in: path
-        name: objectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PublicObjectSearchRequest'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CollectionResponseWithTotalSimplePublicObjectForwardPaging'
-          description: successful operation
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - media_bridge.read
-      - oauth2:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.deals.read
-      - oauth2:
-        - crm.objects.deals.read
-      - private_apps_legacy:
-        - contacts
-      - private_apps:
-        - crm.objects.contacts.read
-      - private_apps:
-        - crm.objects.companies.read
-      - private_apps:
-        - crm.objects.deals.write
-      - oauth2:
-        - crm.objects.companies.read
-      - oauth2:
-        - crm.objects.deals.write
-      - private_apps_legacy:
-        - crm.objects.goals.read
-      - private_apps_legacy:
-        - media_bridge.read
-      - private_apps:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.companies.write
-      - oauth2:
-        - crm.objects.quotes.write
-      - private_apps:
-        - crm.objects.quotes.write
-      - oauth2_legacy:
-        - tickets
-      - private_apps_legacy:
-        - crm.objects.custom.write
-      - private_apps_legacy:
-        - e-commerce
-      - private_apps:
-        - crm.objects.line_items.read
-      - oauth2:
-        - crm.objects.contacts.write
-      - private_apps:
-        - crm.objects.contacts.write
-      - oauth2:
-        - crm.objects.line_items.read
-      - oauth2_legacy:
-        - crm.objects.custom.read
-      - private_apps_legacy:
-        - crm.objects.custom.read
-      - oauth2:
-        - crm.objects.line_items.write
-      - private_apps:
-        - crm.objects.line_items.write
-      - oauth2_legacy:
-        - e-commerce
-      - private_apps_legacy:
-        - tickets
-      - oauth2_legacy:
-        - crm.objects.goals.read
-      - oauth2:
-        - crm.objects.quotes.read
-      - oauth2_legacy:
-        - crm.objects.custom.write
-      - private_apps:
-        - crm.objects.quotes.read
-      tags:
-      - Search
-      x-hubspot-rate-limit-exemptions:
-      - ten-secondly
   /crm/v3/objects/{objectType}/{objectId}:
     delete:
       description: "Move an Object identified by `{objectId}` to the recycling bin."
@@ -1397,9 +536,9 @@ paths:
       summary: Update
       tags:
       - Basic
-  /crm/v3/objects/{objectType}/{objectId}/associations/{toObjectType}:
-    get:
-      operationId: AssociationsGetAll
+  /crm/v3/objects/{objectType}/merge:
+    post:
+      operationId: Merge
       parameters:
       - explode: false
         in: path
@@ -1408,46 +547,18 @@ paths:
         schema:
           type: string
         style: simple
-      - explode: false
-        in: path
-        name: objectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicMergeInput'
         required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: toObjectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      - description: The paging cursor token of the last successfully read resource
-          will be returned as the `paging.next.after` JSON property of a paged response
-          containing more results.
-        explode: true
-        in: query
-        name: after
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: The maximum number of results to display per page.
-        explode: true
-        in: query
-        name: limit
-        required: false
-        schema:
-          default: 500
-          format: int32
-          type: integer
-        style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponseAssociatedIdForwardPaging'
+                $ref: '#/components/schemas/SimplePublicObject'
           description: successful operation
         default:
           content:
@@ -1522,12 +633,12 @@ paths:
         - crm.objects.custom.write
       - private_apps:
         - crm.objects.quotes.read
-      summary: List associations of an object by type
+      summary: Merge two objects with same type
       tags:
-      - Associations
-  /crm/v3/objects/{objectType}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}:
-    delete:
-      operationId: AssociationsArchive
+      - Public_Object
+  /crm/v3/objects/{objectType}/batch/archive:
+    post:
+      operationId: BatchArchive
       parameters:
       - explode: false
         in: path
@@ -1536,34 +647,12 @@ paths:
         schema:
           type: string
         style: simple
-      - explode: false
-        in: path
-        name: objectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchInputSimplePublicObjectId'
         required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: toObjectType
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: toObjectId
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: associationType
-        required: true
-        schema:
-          type: string
-        style: simple
       responses:
         "204":
           content: {}
@@ -1641,11 +730,12 @@ paths:
         - crm.objects.custom.write
       - private_apps:
         - crm.objects.quotes.read
-      summary: Remove an association between two objects
+      summary: Archive a batch of objects by ID
       tags:
-      - Associations
-    put:
-      operationId: AssociationsCreate
+      - Batch
+  /crm/v3/objects/{objectType}/batch/create:
+    post:
+      operationId: BatchCreate
       parameters:
       - explode: false
         in: path
@@ -1654,40 +744,394 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchInputSimplePublicObjectInputForCreate'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+          description: successful operation
+        "207":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+          description: multiple statuses
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - oauth2_legacy:
+        - media_bridge.read
+      - oauth2:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.deals.read
+      - oauth2:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.companies.read
+      - private_apps:
+        - crm.objects.deals.write
+      - oauth2:
+        - crm.objects.companies.read
+      - oauth2:
+        - crm.objects.deals.write
+      - private_apps_legacy:
+        - crm.objects.goals.read
+      - private_apps_legacy:
+        - media_bridge.read
+      - private_apps:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.quotes.write
+      - private_apps:
+        - crm.objects.quotes.write
+      - oauth2_legacy:
+        - tickets
+      - private_apps_legacy:
+        - crm.objects.custom.write
+      - private_apps_legacy:
+        - e-commerce
+      - private_apps:
+        - crm.objects.line_items.read
+      - oauth2:
+        - crm.objects.contacts.write
+      - private_apps:
+        - crm.objects.contacts.write
+      - oauth2:
+        - crm.objects.line_items.read
+      - oauth2_legacy:
+        - crm.objects.custom.read
+      - private_apps_legacy:
+        - crm.objects.custom.read
+      - oauth2:
+        - crm.objects.line_items.write
+      - private_apps:
+        - crm.objects.line_items.write
+      - oauth2_legacy:
+        - e-commerce
+      - private_apps_legacy:
+        - tickets
+      - oauth2_legacy:
+        - crm.objects.goals.read
+      - oauth2:
+        - crm.objects.quotes.read
+      - oauth2_legacy:
+        - crm.objects.custom.write
+      - private_apps:
+        - crm.objects.quotes.read
+      summary: Create a batch of objects
+      tags:
+      - Batch
+  /crm/v3/objects/{objectType}/batch/update:
+    post:
+      operationId: BatchUpdate
+      parameters:
       - explode: false
         in: path
-        name: objectId
+        name: objectType
         required: true
         schema:
           type: string
         style: simple
-      - explode: false
-        in: path
-        name: toObjectType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchInputSimplePublicObjectBatchInput'
         required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: toObjectId
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: associationType
-        required: true
-        schema:
-          type: string
-        style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SimplePublicObjectWithAssociations'
+                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+          description: successful operation
+        "207":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+          description: multiple statuses
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - oauth2_legacy:
+        - media_bridge.read
+      - oauth2:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.deals.read
+      - oauth2:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.companies.read
+      - private_apps:
+        - crm.objects.deals.write
+      - oauth2:
+        - crm.objects.companies.read
+      - oauth2:
+        - crm.objects.deals.write
+      - private_apps_legacy:
+        - crm.objects.goals.read
+      - private_apps_legacy:
+        - media_bridge.read
+      - private_apps:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.quotes.write
+      - private_apps:
+        - crm.objects.quotes.write
+      - oauth2_legacy:
+        - tickets
+      - private_apps_legacy:
+        - crm.objects.custom.write
+      - private_apps_legacy:
+        - e-commerce
+      - private_apps:
+        - crm.objects.line_items.read
+      - oauth2:
+        - crm.objects.contacts.write
+      - private_apps:
+        - crm.objects.contacts.write
+      - oauth2:
+        - crm.objects.line_items.read
+      - oauth2_legacy:
+        - crm.objects.custom.read
+      - private_apps_legacy:
+        - crm.objects.custom.read
+      - oauth2:
+        - crm.objects.line_items.write
+      - private_apps:
+        - crm.objects.line_items.write
+      - oauth2_legacy:
+        - e-commerce
+      - private_apps_legacy:
+        - tickets
+      - oauth2_legacy:
+        - crm.objects.goals.read
+      - oauth2:
+        - crm.objects.quotes.read
+      - oauth2_legacy:
+        - crm.objects.custom.write
+      - private_apps:
+        - crm.objects.quotes.read
+      summary: Update a batch of objects
+      tags:
+      - Batch
+  /crm/v3/objects/{objectType}/gdpr-delete:
+    post:
+      description: "Permanently delete a contact and all associated content to follow\
+        \ GDPR. Use optional property 'idProperty' set to 'email' to identify contact\
+        \ by email address. If email address is not found, the email address will\
+        \ be added to a blocklist and prevent it from being used in the future."
+      operationId: Delete
+      parameters:
+      - explode: false
+        in: path
+        name: objectType
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicGdprDeleteInput'
+        required: true
+      responses:
+        "204":
+          content: {}
+          description: No content
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - oauth2_legacy:
+        - media_bridge.read
+      - oauth2:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.deals.read
+      - oauth2:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.companies.read
+      - private_apps:
+        - crm.objects.deals.write
+      - oauth2:
+        - crm.objects.companies.read
+      - oauth2:
+        - crm.objects.deals.write
+      - private_apps_legacy:
+        - crm.objects.goals.read
+      - private_apps_legacy:
+        - media_bridge.read
+      - private_apps:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.quotes.write
+      - private_apps:
+        - crm.objects.quotes.write
+      - oauth2_legacy:
+        - tickets
+      - private_apps_legacy:
+        - crm.objects.custom.write
+      - private_apps_legacy:
+        - e-commerce
+      - private_apps:
+        - crm.objects.line_items.read
+      - oauth2:
+        - crm.objects.contacts.write
+      - private_apps:
+        - crm.objects.contacts.write
+      - oauth2:
+        - crm.objects.line_items.read
+      - oauth2_legacy:
+        - crm.objects.custom.read
+      - private_apps_legacy:
+        - crm.objects.custom.read
+      - oauth2:
+        - crm.objects.line_items.write
+      - private_apps:
+        - crm.objects.line_items.write
+      - oauth2_legacy:
+        - e-commerce
+      - private_apps_legacy:
+        - tickets
+      - oauth2_legacy:
+        - crm.objects.goals.read
+      - oauth2:
+        - crm.objects.quotes.read
+      - oauth2_legacy:
+        - crm.objects.custom.write
+      - private_apps:
+        - crm.objects.quotes.read
+      summary: GDPR DELETE
+      tags:
+      - GDPR
+  /crm/v3/objects/{objectType}:
+    get:
+      description: Read a page of objects. Control what is returned via the `properties`
+        query param.
+      operationId: GetPage
+      parameters:
+      - explode: false
+        in: path
+        name: objectType
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The maximum number of results to display per page.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          format: int32
+          type: integer
+        style: form
+      - description: The paging cursor token of the last successfully read resource
+          will be returned as the `paging.next.after` JSON property of a paged response
+          containing more results.
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "A comma separated list of the properties to be returned in the\
+          \ response. If any of the specified properties are not present on the requested\
+          \ object(s), they will be ignored."
+        explode: true
+        in: query
+        name: properties
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: "A comma separated list of the properties to be returned along\
+          \ with their history of previous values. If any of the specified properties\
+          \ are not present on the requested object(s), they will be ignored. Usage\
+          \ of this parameter will reduce the maximum number of objects that can be\
+          \ read by a single request."
+        explode: true
+        in: query
+        name: propertiesWithHistory
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: "A comma separated list of object types to retrieve associated\
+          \ IDs for. If any of the specified associations do not exist, they will\
+          \ be ignored."
+        explode: true
+        in: query
+        name: associations
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Whether to return only results that have been archived.
+        explode: true
+        in: query
+        name: archived
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseSimplePublicObjectWithAssociationsForwardPaging'
           description: successful operation
         default:
           content:
@@ -1762,9 +1206,212 @@ paths:
         - crm.objects.custom.write
       - private_apps:
         - crm.objects.quotes.read
-      summary: Associate an object with another object
+      summary: List
       tags:
-      - Associations
+      - Basic
+    post:
+      description: "Create a CRM object with the given properties and return a copy\
+        \ of the object, including the ID. Documentation and examples for creating\
+        \ standard objects is provided."
+      operationId: Create
+      parameters:
+      - explode: false
+        in: path
+        name: objectType
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInputForCreate'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimplePublicObject'
+          description: successful operation
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - oauth2_legacy:
+        - media_bridge.read
+      - oauth2:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.deals.read
+      - oauth2:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.companies.read
+      - private_apps:
+        - crm.objects.deals.write
+      - oauth2:
+        - crm.objects.companies.read
+      - oauth2:
+        - crm.objects.deals.write
+      - private_apps_legacy:
+        - crm.objects.goals.read
+      - private_apps_legacy:
+        - media_bridge.read
+      - private_apps:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.quotes.write
+      - private_apps:
+        - crm.objects.quotes.write
+      - oauth2_legacy:
+        - tickets
+      - private_apps_legacy:
+        - crm.objects.custom.write
+      - private_apps_legacy:
+        - e-commerce
+      - private_apps:
+        - crm.objects.line_items.read
+      - oauth2:
+        - crm.objects.contacts.write
+      - private_apps:
+        - crm.objects.contacts.write
+      - oauth2:
+        - crm.objects.line_items.read
+      - oauth2_legacy:
+        - crm.objects.custom.read
+      - private_apps_legacy:
+        - crm.objects.custom.read
+      - oauth2:
+        - crm.objects.line_items.write
+      - private_apps:
+        - crm.objects.line_items.write
+      - oauth2_legacy:
+        - e-commerce
+      - private_apps_legacy:
+        - tickets
+      - oauth2_legacy:
+        - crm.objects.goals.read
+      - oauth2:
+        - crm.objects.quotes.read
+      - oauth2_legacy:
+        - crm.objects.custom.write
+      - private_apps:
+        - crm.objects.quotes.read
+      summary: Create
+      tags:
+      - Basic
+  /crm/v3/objects/{objectType}/search:
+    post:
+      operationId: Search
+      parameters:
+      - explode: false
+        in: path
+        name: objectType
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicObjectSearchRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalSimplePublicObjectForwardPaging'
+          description: successful operation
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - oauth2_legacy:
+        - media_bridge.read
+      - oauth2:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.deals.read
+      - oauth2:
+        - crm.objects.deals.read
+      - private_apps_legacy:
+        - contacts
+      - private_apps:
+        - crm.objects.contacts.read
+      - private_apps:
+        - crm.objects.companies.read
+      - private_apps:
+        - crm.objects.deals.write
+      - oauth2:
+        - crm.objects.companies.read
+      - oauth2:
+        - crm.objects.deals.write
+      - private_apps_legacy:
+        - crm.objects.goals.read
+      - private_apps_legacy:
+        - media_bridge.read
+      - private_apps:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.companies.write
+      - oauth2:
+        - crm.objects.quotes.write
+      - private_apps:
+        - crm.objects.quotes.write
+      - oauth2_legacy:
+        - tickets
+      - private_apps_legacy:
+        - crm.objects.custom.write
+      - private_apps_legacy:
+        - e-commerce
+      - private_apps:
+        - crm.objects.line_items.read
+      - oauth2:
+        - crm.objects.contacts.write
+      - private_apps:
+        - crm.objects.contacts.write
+      - oauth2:
+        - crm.objects.line_items.read
+      - oauth2_legacy:
+        - crm.objects.custom.read
+      - private_apps_legacy:
+        - crm.objects.custom.read
+      - oauth2:
+        - crm.objects.line_items.write
+      - private_apps:
+        - crm.objects.line_items.write
+      - oauth2_legacy:
+        - e-commerce
+      - private_apps_legacy:
+        - tickets
+      - oauth2_legacy:
+        - crm.objects.goals.read
+      - oauth2:
+        - crm.objects.quotes.read
+      - oauth2_legacy:
+        - crm.objects.custom.write
+      - private_apps:
+        - crm.objects.quotes.read
+      tags:
+      - Search
+      x-hubspot-rate-limit-exemptions:
+      - ten-secondly
 components:
   responses:
     Error:
@@ -1776,21 +1423,9 @@ components:
   schemas:
     StandardError:
       properties:
-        status:
-          type: string
-        id:
-          type: string
-        category:
-          $ref: '#/components/schemas/ErrorCategory'
         subCategory:
           properties: {}
           type: object
-        message:
-          type: string
-        errors:
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type: array
         context:
           additionalProperties:
             items:
@@ -1801,6 +1436,18 @@ components:
           additionalProperties:
             type: string
           type: object
+        id:
+          type: string
+        category:
+          type: string
+        message:
+          type: string
+        errors:
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type: array
+        status:
+          type: string
       required:
       - category
       - context
@@ -1824,12 +1471,12 @@ components:
         - id: id
           type: type
       properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
         results:
           items:
             $ref: '#/components/schemas/AssociatedId'
           type: array
-        paging:
-          $ref: '#/components/schemas/Paging'
       required:
       - results
       type: object
@@ -1843,12 +1490,12 @@ components:
         to:
           id: id
       properties:
-        to:
-          $ref: '#/components/schemas/PublicObjectId'
         types:
           items:
             $ref: '#/components/schemas/AssociationSpec'
           type: array
+        to:
+          $ref: '#/components/schemas/PublicObjectId'
       required:
       - to
       - types
@@ -1887,6 +1534,23 @@ components:
           archived: false
         status: PENDING
       properties:
+        completedAt:
+          format: date-time
+          type: string
+        requestedAt:
+          format: date-time
+          type: string
+        startedAt:
+          format: date-time
+          type: string
+        links:
+          additionalProperties:
+            type: string
+          type: object
+        results:
+          items:
+            $ref: '#/components/schemas/SimplePublicObject'
+          type: array
         status:
           enum:
           - PENDING
@@ -1894,23 +1558,6 @@ components:
           - CANCELED
           - COMPLETE
           type: string
-        results:
-          items:
-            $ref: '#/components/schemas/SimplePublicObject'
-          type: array
-        requestedAt:
-          format: date-time
-          type: string
-        startedAt:
-          format: date-time
-          type: string
-        completedAt:
-          format: date-time
-          type: string
-        links:
-          additionalProperties:
-            type: string
-          type: object
       required:
       - completedAt
       - results
@@ -1944,19 +1591,15 @@ components:
       type: object
     ErrorDetail:
       properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          type: string
-        in:
-          description: The name of the field or parameter in which the error was found.
+        subCategory:
+          description: A specific category that contains more specific detail about
+            the error
           type: string
         code:
           description: The status code associated with the error detail
           type: string
-        subCategory:
-          description: A specific category that contains more specific detail about
-            the error
+        in:
+          description: The name of the field or parameter in which the error was found.
           type: string
         context:
           additionalProperties:
@@ -1969,6 +1612,10 @@ components:
             - scope1
             - scope2
           type: object
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          type: string
       required:
       - message
       type: object
@@ -2003,10 +1650,6 @@ components:
         - properties
         - properties
       properties:
-        properties:
-          items:
-            type: string
-          type: array
         propertiesWithHistory:
           items:
             type: string
@@ -2017,38 +1660,14 @@ components:
           items:
             $ref: '#/components/schemas/SimplePublicObjectId'
           type: array
+        properties:
+          items:
+            type: string
+          type: array
       required:
       - inputs
       - properties
       - propertiesWithHistory
-      type: object
-    ValueWithTimestamp:
-      example:
-        sourceId: sourceId
-        sourceType: sourceType
-        sourceLabel: sourceLabel
-        updatedByUserId: 0
-        value: value
-        timestamp: 2000-01-23T04:56:07.000+00:00
-      properties:
-        value:
-          type: string
-        timestamp:
-          format: date-time
-          type: string
-        sourceType:
-          type: string
-        sourceId:
-          type: string
-        sourceLabel:
-          type: string
-        updatedByUserId:
-          format: int32
-          type: integer
-      required:
-      - sourceType
-      - timestamp
-      - value
       type: object
     BatchInputSimplePublicObjectId:
       example:
@@ -2062,6 +1681,34 @@ components:
           type: array
       required:
       - inputs
+      type: object
+    ValueWithTimestamp:
+      example:
+        sourceId: sourceId
+        sourceType: sourceType
+        sourceLabel: sourceLabel
+        updatedByUserId: 0
+        value: value
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        sourceId:
+          type: string
+        sourceType:
+          type: string
+        sourceLabel:
+          type: string
+        updatedByUserId:
+          format: int32
+          type: integer
+        value:
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+      required:
+      - sourceType
+      - timestamp
+      - value
       type: object
     CollectionResponseWithTotalSimplePublicObjectForwardPaging:
       example:
@@ -2099,12 +1746,12 @@ components:
         total:
           format: int32
           type: integer
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
         results:
           items:
             $ref: '#/components/schemas/SimplePublicObject'
           type: array
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
       required:
       - results
       - total
@@ -2124,27 +1771,38 @@ components:
         updatedAt: 2019-12-07T16:50:06.678Z
         archived: false
       properties:
-        id:
+        createdAt:
+          format: date-time
           type: string
-        properties:
-          additionalProperties:
-            type: string
-          type: object
+        archived:
+          example: false
+          type: boolean
+        archivedAt:
+          format: date-time
+          type: string
         propertiesWithHistory:
           additionalProperties:
             items:
               $ref: '#/components/schemas/ValueWithTimestamp'
             type: array
           type: object
-        createdAt:
-          format: date-time
+        id:
+          example: "512"
           type: string
+        properties:
+          additionalProperties:
+            nullable: true
+            type: string
+          example:
+            property_date: "1572480000000"
+            property_radio: option_1
+            property_number: "17"
+            property_string: value
+            property_checkbox: "false"
+            property_dropdown: choice_b
+            property_multiple_checkboxes: chocolate;strawberry
+          type: object
         updatedAt:
-          format: date-time
-          type: string
-        archived:
-          type: boolean
-        archivedAt:
           format: date-time
           type: string
       required:
@@ -2180,7 +1838,7 @@ components:
       example:
         query: query
         limit: 0
-        after: 6
+        after: after
         sorts:
         - sorts
         - sorts
@@ -2219,26 +1877,25 @@ components:
             value: value
             operator: EQ
       properties:
-        filterGroups:
-          items:
-            $ref: '#/components/schemas/FilterGroup'
-          type: array
-        sorts:
-          items:
-            type: string
-          type: array
         query:
           type: string
-        properties:
-          items:
-            type: string
-          type: array
         limit:
           format: int32
           type: integer
         after:
-          format: int32
-          type: integer
+          type: string
+        sorts:
+          items:
+            type: string
+          type: array
+        properties:
+          items:
+            type: string
+          type: array
+        filterGroups:
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+          type: array
       required:
       - after
       - filterGroups
@@ -2254,29 +1911,10 @@ components:
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
       properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          example: An error occurred
-          type: string
-        correlationId:
-          description: A unique identifier for the request. Include this value with
-            any error reports or support tickets
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-          format: uuid
-          type: string
-        category:
-          description: The error category
-          type: string
         subCategory:
           description: A specific category that contains more specific detail about
             the error
           type: string
-        errors:
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type: array
         context:
           additionalProperties:
             items:
@@ -2284,37 +1922,71 @@ components:
             type: array
           description: Context about the error condition
           example:
-            invalidPropertyName:
-            - propertyValue
             missingScopes:
             - scope1
             - scope2
+            invalidPropertyName:
+            - propertyValue
           type: object
+        correlationId:
+          description: A unique identifier for the request. Include this value with
+            any error reports or support tickets
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+          format: uuid
+          type: string
         links:
           additionalProperties:
             type: string
           description: A map of link names to associated URIs containing documentation
             about the error or recommended remediation steps
+          example:
+            knowledge-base: https://www.hubspot.com/products/service/knowledge-base
           type: object
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          example: Invalid input (details will vary based on the error)
+          type: string
+        category:
+          description: The error category
+          example: VALIDATION_ERROR
+          type: string
+        errors:
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type: array
       required:
       - category
       - correlationId
       - message
       type: object
-    PublicGdprDeleteInput:
-      example:
-        idProperty: idProperty
-        objectId: objectId
-      properties:
-        objectId:
-          type: string
-        idProperty:
-          type: string
-      required:
-      - objectId
-      type: object
     BatchResponseSimplePublicObjectWithErrors:
       properties:
+        completedAt:
+          format: date-time
+          type: string
+        numErrors:
+          format: int32
+          type: integer
+        requestedAt:
+          format: date-time
+          type: string
+        startedAt:
+          format: date-time
+          type: string
+        links:
+          additionalProperties:
+            type: string
+          type: object
+        results:
+          items:
+            $ref: '#/components/schemas/SimplePublicObject'
+          type: array
+        errors:
+          items:
+            $ref: '#/components/schemas/StandardError'
+          type: array
         status:
           enum:
           - PENDING
@@ -2322,35 +1994,23 @@ components:
           - CANCELED
           - COMPLETE
           type: string
-        results:
-          items:
-            $ref: '#/components/schemas/SimplePublicObject'
-          type: array
-        numErrors:
-          format: int32
-          type: integer
-        errors:
-          items:
-            $ref: '#/components/schemas/StandardError'
-          type: array
-        requestedAt:
-          format: date-time
-          type: string
-        startedAt:
-          format: date-time
-          type: string
-        completedAt:
-          format: date-time
-          type: string
-        links:
-          additionalProperties:
-            type: string
-          type: object
       required:
       - completedAt
       - results
       - startedAt
       - status
+      type: object
+    PublicGdprDeleteInput:
+      example:
+        idProperty: idProperty
+        objectId: objectId
+      properties:
+        idProperty:
+          type: string
+        objectId:
+          type: string
+      required:
+      - objectId
       type: object
     SimplePublicObjectInput:
       example:
@@ -2366,6 +2026,14 @@ components:
         properties:
           additionalProperties:
             type: string
+          example:
+            property_date: "1572480000000"
+            property_radio: option_1
+            property_number: "17"
+            property_string: value
+            property_checkbox: "false"
+            property_dropdown: choice_b
+            property_multiple_checkboxes: chocolate;strawberry
           type: object
       required:
       - properties
@@ -2448,27 +2116,14 @@ components:
             key: properties
           updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
         results:
           items:
             $ref: '#/components/schemas/SimplePublicObjectWithAssociations'
           type: array
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
       required:
       - results
-      type: object
-    PublicMergeInput:
-      example:
-        objectIdToMerge: objectIdToMerge
-        primaryObjectId: primaryObjectId
-      properties:
-        primaryObjectId:
-          type: string
-        objectIdToMerge:
-          type: string
-      required:
-      - objectIdToMerge
-      - primaryObjectId
       type: object
     AssociationSpec:
       example:
@@ -2487,6 +2142,19 @@ components:
       required:
       - associationCategory
       - associationTypeId
+      type: object
+    PublicMergeInput:
+      example:
+        objectIdToMerge: objectIdToMerge
+        primaryObjectId: primaryObjectId
+      properties:
+        objectIdToMerge:
+          type: string
+        primaryObjectId:
+          type: string
+      required:
+      - objectIdToMerge
+      - primaryObjectId
       type: object
     SimplePublicObjectWithAssociations:
       example:
@@ -2526,22 +2194,11 @@ components:
           key: properties
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
-        id:
-          type: string
-        properties:
+        associations:
           additionalProperties:
-            type: string
-          type: object
-        propertiesWithHistory:
-          additionalProperties:
-            items:
-              $ref: '#/components/schemas/ValueWithTimestamp'
-            type: array
+            $ref: '#/components/schemas/CollectionResponseAssociatedId'
           type: object
         createdAt:
-          format: date-time
-          type: string
-        updatedAt:
           format: date-time
           type: string
         archived:
@@ -2549,88 +2206,27 @@ components:
         archivedAt:
           format: date-time
           type: string
-        associations:
+        propertiesWithHistory:
           additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociatedId'
+            items:
+              $ref: '#/components/schemas/ValueWithTimestamp'
+            type: array
           type: object
+        id:
+          type: string
+        properties:
+          additionalProperties:
+            nullable: true
+            type: string
+          type: object
+        updatedAt:
+          format: date-time
+          type: string
       required:
       - createdAt
       - id
       - properties
       - updatedAt
-      type: object
-    ErrorCategory:
-      properties:
-        name:
-          type: string
-        httpStatus:
-          enum:
-          - CONTINUE
-          - SWITCHING_PROTOCOLS
-          - PROCESSING
-          - OK
-          - CREATED
-          - ACCEPTED
-          - NON_AUTHORITATIVE_INFORMATION
-          - NO_CONTENT
-          - RESET_CONTENT
-          - PARTIAL_CONTENT
-          - MULTI_STATUS
-          - ALREADY_REPORTED
-          - IM_USED
-          - MULTIPLE_CHOICES
-          - MOVED_PERMANENTLY
-          - FOUND
-          - SEE_OTHER
-          - NOT_MODIFIED
-          - USE_PROXY
-          - TEMPORARY_REDIRECT
-          - PERMANENT_REDIRECT
-          - BAD_REQUEST
-          - UNAUTHORIZED
-          - PAYMENT_REQUIRED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - NOT_ACCEPTABLE
-          - PROXY_AUTHENTICATION_REQUIRED
-          - REQUEST_TIMEOUT
-          - CONFLICT
-          - GONE
-          - LENGTH_REQUIRED
-          - PRECONDITION_FAILED
-          - REQUEST_ENTITY_TOO_LARGE
-          - REQUEST_URI_TOO_LONG
-          - UNSUPPORTED_MEDIA_TYPE
-          - REQUESTED_RANGE_NOT_SATISFIABLE
-          - EXPECTATION_FAILED
-          - IM_A_TEAPOT
-          - MISDIRECTED_REQUEST
-          - UNPROCESSABLE_ENTITY
-          - LOCKED
-          - FAILED_DEPENDENCY
-          - UPGRADE_REQUIRED
-          - PRECONDITION_REQUIRED
-          - TOO_MANY_REQUESTS
-          - REQUEST_HEADERS_FIELDS_TOO_LARGE
-          - INTERNAL_STALE_SERVICE_DISCOVERY
-          - UNAVAILABLE_FOR_LEGAL_REASONS
-          - MIGRATION_IN_PROGRESS
-          - INTERNAL_SERVER_ERROR
-          - NOT_IMPLEMENTED
-          - BAD_GATEWAY
-          - SERVICE_UNAVAILABLE
-          - GATEWAY_TIMEOUT
-          - HTTP_VERSION_NOT_SUPPORTED
-          - VARIANT_ALSO_NEGOTIATES
-          - INSUFFICIENT_STORAGE
-          - LOOP_DETECTED
-          - NOT_EXTENDED
-          - NETWORK_AUTHENTICATION_REQUIRED
-          type: string
-      required:
-      - httpStatus
-      - name
       type: object
     Filter:
       example:
@@ -2642,15 +2238,15 @@ components:
         value: value
         operator: EQ
       properties:
-        value:
-          type: string
         highValue:
+          type: string
+        propertyName:
           type: string
         values:
           items:
             type: string
           type: array
-        propertyName:
+        value:
           type: string
         operator:
           description: "null"
@@ -2673,17 +2269,22 @@ components:
       - operator
       - propertyName
       type: object
-    PreviousPage:
+    BatchInputSimplePublicObjectBatchInput:
       example:
-        before: before
-        link: link
+        inputs:
+        - id: id
+          properties:
+            key: properties
+        - id: id
+          properties:
+            key: properties
       properties:
-        before:
-          type: string
-        link:
-          type: string
+        inputs:
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectBatchInput'
+          type: array
       required:
-      - before
+      - inputs
       type: object
     BatchInputSimplePublicObjectInputForCreate:
       example:
@@ -2730,43 +2331,17 @@ components:
       required:
       - inputs
       type: object
-    BatchInputSimplePublicObjectBatchInput:
+    PreviousPage:
       example:
-        inputs:
-        - id: id
-          properties:
-            key: properties
-        - id: id
-          properties:
-            key: properties
+        before: before
+        link: link
       properties:
-        inputs:
-          items:
-            $ref: '#/components/schemas/SimplePublicObjectBatchInput'
-          type: array
+        before:
+          type: string
+        link:
+          type: string
       required:
-      - inputs
-      type: object
-    CollectionResponseAssociatedIdForwardPaging:
-      example:
-        paging:
-          next:
-            after: NTI1Cg%3D%3D
-            link: ?after=NTI1Cg%3D%3D
-        results:
-        - id: id
-          type: type
-        - id: id
-          type: type
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/AssociatedId'
-          type: array
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-      required:
-      - results
+      - before
       type: object
     SimplePublicObjectBatchInput:
       example:
@@ -2774,27 +2349,15 @@ components:
         properties:
           key: properties
       properties:
+        id:
+          type: string
         properties:
           additionalProperties:
             type: string
           type: object
-        id:
-          type: string
       required:
       - id
       - properties
-      type: object
-    NextPage:
-      example:
-        after: NTI1Cg%3D%3D
-        link: ?after=NTI1Cg%3D%3D
-      properties:
-        after:
-          type: string
-        link:
-          type: string
-      required:
-      - after
       type: object
     AssociatedId:
       example:
@@ -2808,6 +2371,20 @@ components:
       required:
       - id
       - type
+      type: object
+    NextPage:
+      example:
+        after: NTI1Cg%3D%3D
+        link: ?after=NTI1Cg%3D%3D
+      properties:
+        link:
+          example: ?after=NTI1Cg%3D%3D
+          type: string
+        after:
+          example: NTI1Cg%3D%3D
+          type: string
+      required:
+      - after
       type: object
     SimplePublicObjectInputForCreate:
       example:
@@ -2829,14 +2406,14 @@ components:
         properties:
           key: properties
       properties:
-        properties:
-          additionalProperties:
-            type: string
-          type: object
         associations:
           items:
             $ref: '#/components/schemas/PublicAssociationsForObject'
           type: array
+        properties:
+          additionalProperties:
+            type: string
+          type: object
       required:
       - associations
       - properties
@@ -2847,12 +2424,12 @@ components:
         authorizationCode:
           authorizationUrl: https://app.hubspot.com/oauth/authorize
           scopes:
-            tickets: Read and write tickets
-            crm.objects.goals.read: Read goals
-            crm.objects.custom.read: View custom object records
-            crm.objects.custom.write: Change custom object records
             e-commerce: e-commerce
+            crm.objects.custom.write: Change custom object records
             media_bridge.read: Read media and media events
+            crm.objects.goals.read: Read goals
+            tickets: Read and write tickets
+            crm.objects.custom.read: View custom object records
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
     oauth2:
@@ -2860,15 +2437,15 @@ components:
         authorizationCode:
           authorizationUrl: https://app.hubspot.com/oauth/authorize
           scopes:
-            crm.objects.line_items.read: Line Items
-            crm.objects.deals.read: ' '
-            crm.objects.quotes.write: Quotes
-            crm.objects.contacts.read: ' '
-            crm.objects.contacts.write: ' '
-            crm.objects.companies.write: ' '
-            crm.objects.companies.read: ' '
-            crm.objects.line_items.write: Line Items
             crm.objects.quotes.read: Quotes
+            crm.objects.line_items.write: Line Items
+            crm.objects.companies.read: ' '
+            crm.objects.companies.write: ' '
+            crm.objects.contacts.write: ' '
+            crm.objects.contacts.read: ' '
+            crm.objects.quotes.write: Quotes
+            crm.objects.deals.read: ' '
+            crm.objects.line_items.read: Line Items
             crm.objects.deals.write: ' '
           tokenUrl: https://api.hubapi.com/oauth/v1/token
       type: oauth2
@@ -2883,5 +2460,11 @@ components:
 x-hubspot-available-client-libraries:
 - PHP
 - Node
-- Python
 - Ruby
+- Python
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+x-hubspot-documentation-banner: NONE

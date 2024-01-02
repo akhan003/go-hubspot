@@ -1,5 +1,5 @@
 /*
-URL redirects
+CMS Url Redirects
 
 URL redirect operations
 
@@ -11,7 +11,9 @@ API version: v3
 package url_redirects
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponseWithTotalUrlMappingForwardPaging type satisfies the MappedNullable interface at compile time
@@ -20,9 +22,11 @@ var _ MappedNullable = &CollectionResponseWithTotalUrlMappingForwardPaging{}
 // CollectionResponseWithTotalUrlMappingForwardPaging struct for CollectionResponseWithTotalUrlMappingForwardPaging
 type CollectionResponseWithTotalUrlMappingForwardPaging struct {
 	Total   int32          `json:"total"`
-	Results []UrlMapping   `json:"results"`
 	Paging  *ForwardPaging `json:"paging,omitempty"`
+	Results []UrlMapping   `json:"results"`
 }
+
+type _CollectionResponseWithTotalUrlMappingForwardPaging CollectionResponseWithTotalUrlMappingForwardPaging
 
 // NewCollectionResponseWithTotalUrlMappingForwardPaging instantiates a new CollectionResponseWithTotalUrlMappingForwardPaging object
 // This constructor will assign default values to properties that have it defined,
@@ -67,30 +71,6 @@ func (o *CollectionResponseWithTotalUrlMappingForwardPaging) SetTotal(v int32) {
 	o.Total = v
 }
 
-// GetResults returns the Results field value
-func (o *CollectionResponseWithTotalUrlMappingForwardPaging) GetResults() []UrlMapping {
-	if o == nil {
-		var ret []UrlMapping
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *CollectionResponseWithTotalUrlMappingForwardPaging) GetResultsOk() ([]UrlMapping, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *CollectionResponseWithTotalUrlMappingForwardPaging) SetResults(v []UrlMapping) {
-	o.Results = v
-}
-
 // GetPaging returns the Paging field value if set, zero value otherwise.
 func (o *CollectionResponseWithTotalUrlMappingForwardPaging) GetPaging() ForwardPaging {
 	if o == nil || IsNil(o.Paging) {
@@ -123,6 +103,30 @@ func (o *CollectionResponseWithTotalUrlMappingForwardPaging) SetPaging(v Forward
 	o.Paging = &v
 }
 
+// GetResults returns the Results field value
+func (o *CollectionResponseWithTotalUrlMappingForwardPaging) GetResults() []UrlMapping {
+	if o == nil {
+		var ret []UrlMapping
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *CollectionResponseWithTotalUrlMappingForwardPaging) GetResultsOk() ([]UrlMapping, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *CollectionResponseWithTotalUrlMappingForwardPaging) SetResults(v []UrlMapping) {
+	o.Results = v
+}
+
 func (o CollectionResponseWithTotalUrlMappingForwardPaging) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -134,11 +138,49 @@ func (o CollectionResponseWithTotalUrlMappingForwardPaging) MarshalJSON() ([]byt
 func (o CollectionResponseWithTotalUrlMappingForwardPaging) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["total"] = o.Total
-	toSerialize["results"] = o.Results
 	if !IsNil(o.Paging) {
 		toSerialize["paging"] = o.Paging
 	}
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponseWithTotalUrlMappingForwardPaging) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"total",
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponseWithTotalUrlMappingForwardPaging := _CollectionResponseWithTotalUrlMappingForwardPaging{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponseWithTotalUrlMappingForwardPaging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponseWithTotalUrlMappingForwardPaging(varCollectionResponseWithTotalUrlMappingForwardPaging)
+
+	return err
 }
 
 type NullableCollectionResponseWithTotalUrlMappingForwardPaging struct {

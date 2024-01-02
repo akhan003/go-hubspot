@@ -1,5 +1,5 @@
 /*
-HubDB endpoints
+Hubdb
 
 HubDB is a relational data store that presents data as rows, columns, and cells in a table, much like a spreadsheet. HubDB tables can be added or modified [in the HubSpot CMS](https://knowledge.hubspot.com/cos-general/how-to-edit-hubdb-tables), but you can also use the API endpoints documented here. For more information on HubDB tables and using their data on a HubSpot site, see the [CMS developers site](https://designers.hubspot.com/docs/tools/hubdb). You can also see the [documentation for dynamic pages](https://designers.hubspot.com/docs/tutorials/how-to-build-dynamic-pages-with-hubdb) for more details about the `useForPages` field.  HubDB tables support `draft` and `published` versions. This allows you to update data in the table, either for testing or to allow for a manual approval process, without affecting any live pages using the existing data. Draft data can be reviewed, and published by a user working in HubSpot or published via the API. Draft data can also be discarded, allowing users to go back to the published version of the data without disrupting it. If a table is set to be `allowed for public access`, you can access the published version of the table and rows without any authentication by specifying the portal id via the query parameter `portalId`.
 
@@ -20,12 +20,12 @@ var _ MappedNullable = &BatchResponseHubDbTableRowV3{}
 
 // BatchResponseHubDbTableRowV3 struct for BatchResponseHubDbTableRowV3
 type BatchResponseHubDbTableRowV3 struct {
-	Status      *string            `json:"status,omitempty"`
-	Results     []HubDbTableRowV3  `json:"results,omitempty"`
+	CompletedAt *time.Time         `json:"completedAt,omitempty"`
 	RequestedAt *time.Time         `json:"requestedAt,omitempty"`
 	StartedAt   *time.Time         `json:"startedAt,omitempty"`
-	CompletedAt *time.Time         `json:"completedAt,omitempty"`
 	Links       *map[string]string `json:"links,omitempty"`
+	Results     []HubDbTableRowV3  `json:"results,omitempty"`
+	Status      *string            `json:"status,omitempty"`
 }
 
 // NewBatchResponseHubDbTableRowV3 instantiates a new BatchResponseHubDbTableRowV3 object
@@ -45,68 +45,36 @@ func NewBatchResponseHubDbTableRowV3WithDefaults() *BatchResponseHubDbTableRowV3
 	return &this
 }
 
-// GetStatus returns the Status field value if set, zero value otherwise.
-func (o *BatchResponseHubDbTableRowV3) GetStatus() string {
-	if o == nil || IsNil(o.Status) {
-		var ret string
+// GetCompletedAt returns the CompletedAt field value if set, zero value otherwise.
+func (o *BatchResponseHubDbTableRowV3) GetCompletedAt() time.Time {
+	if o == nil || IsNil(o.CompletedAt) {
+		var ret time.Time
 		return ret
 	}
-	return *o.Status
+	return *o.CompletedAt
 }
 
-// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// GetCompletedAtOk returns a tuple with the CompletedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *BatchResponseHubDbTableRowV3) GetStatusOk() (*string, bool) {
-	if o == nil || IsNil(o.Status) {
+func (o *BatchResponseHubDbTableRowV3) GetCompletedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.CompletedAt) {
 		return nil, false
 	}
-	return o.Status, true
+	return o.CompletedAt, true
 }
 
-// HasStatus returns a boolean if a field has been set.
-func (o *BatchResponseHubDbTableRowV3) HasStatus() bool {
-	if o != nil && !IsNil(o.Status) {
+// HasCompletedAt returns a boolean if a field has been set.
+func (o *BatchResponseHubDbTableRowV3) HasCompletedAt() bool {
+	if o != nil && !IsNil(o.CompletedAt) {
 		return true
 	}
 
 	return false
 }
 
-// SetStatus gets a reference to the given string and assigns it to the Status field.
-func (o *BatchResponseHubDbTableRowV3) SetStatus(v string) {
-	o.Status = &v
-}
-
-// GetResults returns the Results field value if set, zero value otherwise.
-func (o *BatchResponseHubDbTableRowV3) GetResults() []HubDbTableRowV3 {
-	if o == nil || IsNil(o.Results) {
-		var ret []HubDbTableRowV3
-		return ret
-	}
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *BatchResponseHubDbTableRowV3) GetResultsOk() ([]HubDbTableRowV3, bool) {
-	if o == nil || IsNil(o.Results) {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// HasResults returns a boolean if a field has been set.
-func (o *BatchResponseHubDbTableRowV3) HasResults() bool {
-	if o != nil && !IsNil(o.Results) {
-		return true
-	}
-
-	return false
-}
-
-// SetResults gets a reference to the given []HubDbTableRowV3 and assigns it to the Results field.
-func (o *BatchResponseHubDbTableRowV3) SetResults(v []HubDbTableRowV3) {
-	o.Results = v
+// SetCompletedAt gets a reference to the given time.Time and assigns it to the CompletedAt field.
+func (o *BatchResponseHubDbTableRowV3) SetCompletedAt(v time.Time) {
+	o.CompletedAt = &v
 }
 
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
@@ -173,38 +141,6 @@ func (o *BatchResponseHubDbTableRowV3) SetStartedAt(v time.Time) {
 	o.StartedAt = &v
 }
 
-// GetCompletedAt returns the CompletedAt field value if set, zero value otherwise.
-func (o *BatchResponseHubDbTableRowV3) GetCompletedAt() time.Time {
-	if o == nil || IsNil(o.CompletedAt) {
-		var ret time.Time
-		return ret
-	}
-	return *o.CompletedAt
-}
-
-// GetCompletedAtOk returns a tuple with the CompletedAt field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *BatchResponseHubDbTableRowV3) GetCompletedAtOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.CompletedAt) {
-		return nil, false
-	}
-	return o.CompletedAt, true
-}
-
-// HasCompletedAt returns a boolean if a field has been set.
-func (o *BatchResponseHubDbTableRowV3) HasCompletedAt() bool {
-	if o != nil && !IsNil(o.CompletedAt) {
-		return true
-	}
-
-	return false
-}
-
-// SetCompletedAt gets a reference to the given time.Time and assigns it to the CompletedAt field.
-func (o *BatchResponseHubDbTableRowV3) SetCompletedAt(v time.Time) {
-	o.CompletedAt = &v
-}
-
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *BatchResponseHubDbTableRowV3) GetLinks() map[string]string {
 	if o == nil || IsNil(o.Links) {
@@ -237,6 +173,70 @@ func (o *BatchResponseHubDbTableRowV3) SetLinks(v map[string]string) {
 	o.Links = &v
 }
 
+// GetResults returns the Results field value if set, zero value otherwise.
+func (o *BatchResponseHubDbTableRowV3) GetResults() []HubDbTableRowV3 {
+	if o == nil || IsNil(o.Results) {
+		var ret []HubDbTableRowV3
+		return ret
+	}
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BatchResponseHubDbTableRowV3) GetResultsOk() ([]HubDbTableRowV3, bool) {
+	if o == nil || IsNil(o.Results) {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// HasResults returns a boolean if a field has been set.
+func (o *BatchResponseHubDbTableRowV3) HasResults() bool {
+	if o != nil && !IsNil(o.Results) {
+		return true
+	}
+
+	return false
+}
+
+// SetResults gets a reference to the given []HubDbTableRowV3 and assigns it to the Results field.
+func (o *BatchResponseHubDbTableRowV3) SetResults(v []HubDbTableRowV3) {
+	o.Results = v
+}
+
+// GetStatus returns the Status field value if set, zero value otherwise.
+func (o *BatchResponseHubDbTableRowV3) GetStatus() string {
+	if o == nil || IsNil(o.Status) {
+		var ret string
+		return ret
+	}
+	return *o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BatchResponseHubDbTableRowV3) GetStatusOk() (*string, bool) {
+	if o == nil || IsNil(o.Status) {
+		return nil, false
+	}
+	return o.Status, true
+}
+
+// HasStatus returns a boolean if a field has been set.
+func (o *BatchResponseHubDbTableRowV3) HasStatus() bool {
+	if o != nil && !IsNil(o.Status) {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given string and assigns it to the Status field.
+func (o *BatchResponseHubDbTableRowV3) SetStatus(v string) {
+	o.Status = &v
+}
+
 func (o BatchResponseHubDbTableRowV3) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -247,11 +247,8 @@ func (o BatchResponseHubDbTableRowV3) MarshalJSON() ([]byte, error) {
 
 func (o BatchResponseHubDbTableRowV3) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Status) {
-		toSerialize["status"] = o.Status
-	}
-	if !IsNil(o.Results) {
-		toSerialize["results"] = o.Results
+	if !IsNil(o.CompletedAt) {
+		toSerialize["completedAt"] = o.CompletedAt
 	}
 	if !IsNil(o.RequestedAt) {
 		toSerialize["requestedAt"] = o.RequestedAt
@@ -259,11 +256,14 @@ func (o BatchResponseHubDbTableRowV3) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StartedAt) {
 		toSerialize["startedAt"] = o.StartedAt
 	}
-	if !IsNil(o.CompletedAt) {
-		toSerialize["completedAt"] = o.CompletedAt
-	}
 	if !IsNil(o.Links) {
 		toSerialize["links"] = o.Links
+	}
+	if !IsNil(o.Results) {
+		toSerialize["results"] = o.Results
+	}
+	if !IsNil(o.Status) {
+		toSerialize["status"] = o.Status
 	}
 	return toSerialize, nil
 }

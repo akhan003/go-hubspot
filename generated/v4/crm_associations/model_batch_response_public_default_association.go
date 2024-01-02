@@ -11,7 +11,9 @@ API version: v4
 package crm_associations
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -29,6 +31,8 @@ type BatchResponsePublicDefaultAssociation struct {
 	CompletedAt time.Time                  `json:"completedAt"`
 	Links       *map[string]string         `json:"links,omitempty"`
 }
+
+type _BatchResponsePublicDefaultAssociation BatchResponsePublicDefaultAssociation
 
 // NewBatchResponsePublicDefaultAssociation instantiates a new BatchResponsePublicDefaultAssociation object
 // This constructor will assign default values to properties that have it defined,
@@ -302,6 +306,46 @@ func (o BatchResponsePublicDefaultAssociation) ToMap() (map[string]interface{}, 
 		toSerialize["links"] = o.Links
 	}
 	return toSerialize, nil
+}
+
+func (o *BatchResponsePublicDefaultAssociation) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"status",
+		"results",
+		"startedAt",
+		"completedAt",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchResponsePublicDefaultAssociation := _BatchResponsePublicDefaultAssociation{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchResponsePublicDefaultAssociation)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchResponsePublicDefaultAssociation(varBatchResponsePublicDefaultAssociation)
+
+	return err
 }
 
 type NullableBatchResponsePublicDefaultAssociation struct {

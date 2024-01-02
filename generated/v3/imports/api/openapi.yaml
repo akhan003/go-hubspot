@@ -1,13 +1,149 @@
 openapi: 3.0.1
 info:
-  title: CRM Imports
+  title: Imports
   version: v3
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    sales: FREE
+    service: FREE
+    cms: FREE
+  x-hubspot-documentation-banner: NONE
+  x-hubspot-api-use-case: "After a successful in-person webinar, use this API to import\
+    \ a set of contacts based on who signed up during the event."
+  x-hubspot-related-documentation:
+  - name: Import CRM Overview
+    url: https://developers.hubspot.com/docs/api/crm/imports
+  x-hubspot-introduction: "Use the imports API to import CRM records and activities,\
+    \ such as contacts, companies, and notes, into your HubSpot account."
 servers:
-- url: https://api.hubapi.com/
+- url: https://api.hubapi.com
 tags:
-- name: Core
-- name: Public_Imports
+- description: ""
+  name: Core
+  x-hubspot-tag-name-english-source: Core
+- description: ""
+  name: Public_Imports
+  x-hubspot-tag-name-english-source: Public_Imports
 paths:
+  /crm/v3/imports/{importId}/cancel:
+    post:
+      description: This allows a developer to cancel an active import.
+      operationId: Cancel
+      parameters:
+      - explode: false
+        in: path
+        name: importId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+          description: successful operation
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - oauth2_legacy:
+        - crm.import
+      - private_apps_legacy:
+        - crm.import
+      summary: Cancel an active import
+      tags:
+      - Core
+  /crm/v3/imports/{importId}:
+    get:
+      description: "A complete summary of an import record, including any updates."
+      operationId: GetByID
+      parameters:
+      - explode: false
+        in: path
+        name: importId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicImportResponse'
+          description: successful operation
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - oauth2_legacy:
+        - crm.import
+      - private_apps_legacy:
+        - crm.import
+      summary: Get the information on any import
+      tags:
+      - Core
+  /crm/v3/imports/{importId}/errors:
+    get:
+      operationId: GetErrors
+      parameters:
+      - description: The paging cursor token of the last successfully read resource
+          will be returned as the `paging.next.after` JSON property of a paged response
+          containing more results.
+        explode: true
+        in: query
+        name: after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of results to display per page.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - explode: false
+        in: path
+        name: importId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponsePublicImportErrorForwardPaging'
+          description: successful operation
+        default:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - oauth2_legacy:
+        - crm.import
+      - private_apps_legacy:
+        - crm.import
+      tags:
+      - Public_Imports
   /crm/v3/imports/:
     get:
       description: Returns a paged list of active imports for this account.
@@ -65,6 +201,7 @@ paths:
         the corresponding file and uses the import request object to convert rows
         in the files to objects.
       operationId: Create
+      parameters: []
       requestBody:
         content:
           multipart/form-data:
@@ -91,125 +228,6 @@ paths:
       summary: Start a new import
       tags:
       - Core
-  /crm/v3/imports/{importId}:
-    get:
-      description: "A complete summary of an import record, including any updates."
-      operationId: GetByID
-      parameters:
-      - explode: false
-        in: path
-        name: importId
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublicImportResponse'
-          description: successful operation
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - crm.import
-      - private_apps_legacy:
-        - crm.import
-      summary: Get the information on any import
-      tags:
-      - Core
-  /crm/v3/imports/{importId}/cancel:
-    post:
-      description: This allows a developer to cancel an active import.
-      operationId: Cancel
-      parameters:
-      - explode: false
-        in: path
-        name: importId
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ActionResponse'
-          description: successful operation
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - crm.import
-      - private_apps_legacy:
-        - crm.import
-      summary: Cancel an active import
-      tags:
-      - Core
-  /crm/v3/imports/{importId}/errors:
-    get:
-      operationId: GetErrors
-      parameters:
-      - description: The paging cursor token of the last successfully read resource
-          will be returned as the `paging.next.after` JSON property of a paged response
-          containing more results.
-        explode: true
-        in: query
-        name: after
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: The maximum number of results to display per page.
-        explode: true
-        in: query
-        name: limit
-        required: false
-        schema:
-          format: int32
-          type: integer
-        style: form
-      - explode: false
-        in: path
-        name: importId
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CollectionResponsePublicImportErrorForwardPaging'
-          description: successful operation
-        default:
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: An error occurred.
-      security:
-      - oauth2_legacy:
-        - crm.import
-      - private_apps_legacy:
-        - crm.import
-      tags:
-      - Public_Imports
 components:
   responses:
     Error:
@@ -262,30 +280,14 @@ components:
             fileIds:
             - "32938649"
       properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
         results:
           items:
             $ref: '#/components/schemas/PublicImportResponse'
           type: array
-        paging:
-          $ref: '#/components/schemas/Paging'
       required:
       - results
-      type: object
-    PublicObjectListRecord:
-      description: A summary detailing which list contains the imported objects.
-      example:
-        objectType: contacts
-        listId: "3"
-      properties:
-        listId:
-          description: The ID of the list containing the imported objects.
-          type: string
-        objectType:
-          description: The type of object contained in the list.
-          type: string
-      required:
-      - listId
-      - objectType
       type: object
     Paging:
       example:
@@ -301,6 +303,24 @@ components:
         prev:
           $ref: '#/components/schemas/PreviousPage'
       type: object
+    PublicObjectListRecord:
+      description: A summary detailing which list contains the imported objects.
+      example:
+        objectType: contacts
+        listId: "3"
+      properties:
+        listId:
+          description: The ID of the list containing the imported objects.
+          example: "3"
+          type: string
+        objectType:
+          description: The type of object contained in the list.
+          example: contacts
+          type: string
+      required:
+      - listId
+      - objectType
+      type: object
     Error:
       example:
         message: Invalid input (details will vary based on the error)
@@ -309,29 +329,10 @@ components:
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
       properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          example: An error occurred
-          type: string
-        correlationId:
-          description: A unique identifier for the request. Include this value with
-            any error reports or support tickets
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-          format: uuid
-          type: string
-        category:
-          description: The error category
-          type: string
         subCategory:
           description: A specific category that contains more specific detail about
             the error
           type: string
-        errors:
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type: array
         context:
           additionalProperties:
             items:
@@ -339,18 +340,40 @@ components:
             type: array
           description: Context about the error condition
           example:
-            invalidPropertyName:
-            - propertyValue
             missingScopes:
             - scope1
             - scope2
+            invalidPropertyName:
+            - propertyValue
           type: object
+        correlationId:
+          description: A unique identifier for the request. Include this value with
+            any error reports or support tickets
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+          format: uuid
+          type: string
         links:
           additionalProperties:
             type: string
           description: A map of link names to associated URIs containing documentation
             about the error or recommended remediation steps
+          example:
+            knowledge-base: https://www.hubspot.com/products/service/knowledge-base
           type: object
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          example: Invalid input (details will vary based on the error)
+          type: string
+        category:
+          description: The error category
+          example: VALIDATION_ERROR
+          type: string
+        errors:
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type: array
       required:
       - category
       - correlationId
@@ -361,26 +384,41 @@ components:
         rowData:
         - rowData
         - rowData
-        lineNumber: 0
+        lineNumber: 1
         pageName: pageName
-        fileId: 6
+        fileId: 5
       properties:
-        lineNumber:
-          format: int32
-          type: integer
         rowData:
           items:
             type: string
           type: array
-        fileId:
+        lineNumber:
           format: int32
           type: integer
         pageName:
           type: string
+        fileId:
+          format: int32
+          type: integer
       required:
       - fileId
       - lineNumber
       - rowData
+      type: object
+    ImportTemplate:
+      properties:
+        templateType:
+          enum:
+          - admin_defined
+          - previous_import
+          - user_file
+          type: string
+        templateId:
+          format: int32
+          type: integer
+      required:
+      - templateId
+      - templateType
       type: object
     ActionResponse:
       example:
@@ -391,12 +429,8 @@ components:
           key: links
         status: PENDING
       properties:
-        status:
-          enum:
-          - PENDING
-          - PROCESSING
-          - CANCELED
-          - COMPLETE
+        completedAt:
+          format: date-time
           type: string
         requestedAt:
           format: date-time
@@ -404,13 +438,17 @@ components:
         startedAt:
           format: date-time
           type: string
-        completedAt:
-          format: date-time
-          type: string
         links:
           additionalProperties:
             type: string
           type: object
+        status:
+          enum:
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
+          type: string
       required:
       - completedAt
       - startedAt
@@ -418,19 +456,15 @@ components:
       type: object
     ErrorDetail:
       properties:
-        message:
-          description: A human readable message describing the error along with remediation
-            steps where appropriate
-          type: string
-        in:
-          description: The name of the field or parameter in which the error was found.
+        subCategory:
+          description: A specific category that contains more specific detail about
+            the error
           type: string
         code:
           description: The status code associated with the error detail
           type: string
-        subCategory:
-          description: A specific category that contains more specific detail about
-            the error
+        in:
+          description: The name of the field or parameter in which the error was found.
           type: string
         context:
           additionalProperties:
@@ -443,6 +477,10 @@ components:
             - scope1
             - scope2
           type: object
+        message:
+          description: A human readable message describing the error along with remediation
+            steps where appropriate
+          type: string
       required:
       - message
       type: object
@@ -457,22 +495,29 @@ components:
       type: object
     PublicImportError:
       example:
-        createdAt: 5
+        createdAt: 0
         extraContext: extraContext
         objectTypeId: objectTypeId
         errorType: INCORRECT_NUMBER_OF_COLUMNS
-        knownColumnNumber: 1
+        knownColumnNumber: 6
         id: id
         sourceData:
           rowData:
           - rowData
           - rowData
-          lineNumber: 0
+          lineNumber: 1
           pageName: pageName
-          fileId: 6
+          fileId: 5
         objectType: CONTACT
         invalidValue: invalidValue
       properties:
+        createdAt:
+          format: int32
+          type: integer
+        extraContext:
+          type: string
+        objectTypeId:
+          type: string
         errorType:
           enum:
           - INCORRECT_NUMBER_OF_COLUMNS
@@ -505,6 +550,7 @@ components:
           - GDPR_BLACKLISTED_EMAIL
           - DUPLICATE_ASSOCIATION_ID
           - LIMIT_EXCEEDED
+          - PORTAL_WIDE_CUSTOM_OBJECT_LIMIT_EXCEEDED
           - INVALID_ALTERNATE_ID
           - INVALID_EMAIL
           - INVALID_DOMAIN
@@ -525,6 +571,16 @@ components:
           - CREATE_ONLY_IMPORT
           - UPDATE_ONLY_IMPORT
           - COLUMN_TOO_LARGE
+          - ROW_DATA_TOO_LARGE
+          - INVALID_EVENT_TIMESTAMP
+          - INVALID_EVENT
+          - DUPLICATE_EVENT
+          - MISSING_EVENT_DEFINITION
+          type: string
+        knownColumnNumber:
+          format: int32
+          type: integer
+        id:
           type: string
         sourceData:
           $ref: '#/components/schemas/ImportRowCore'
@@ -652,27 +708,37 @@ components:
           - PARTNER_ACCOUNT
           - CAMPAIGN_TEMPLATE
           - CAMPAIGN_TEMPLATE_STEP
+          - PLAYLIST
+          - CLIP
+          - CAMPAIGN_BUDGET_ITEM
+          - CAMPAIGN_SPEND_ITEM
+          - MIC
+          - CONTENT_AUDIT
+          - CONTENT_AUDIT_PAGE
+          - PLAYLIST_FOLDER
+          - LEAD
+          - ABANDONED_CART
+          - EXTERNAL_WEB_URL
+          - VIEW
+          - VIEW_BLOCK
+          - ROSTER
+          - CART
+          - AUTOMATION_PLATFORM_FLOW_ACTION
+          - SOCIAL_PROFILE
+          - PARTNER_CLIENT
+          - ROSTER_MEMBER
+          - MARKETING_EVENT_ATTENDANCE
+          - ALL_PAGES
+          - AI_FORECAST
+          - CRM_PIPELINES_DUMMY_TYPE
           - UNKNOWN
           type: string
         invalidValue:
-          type: string
-        extraContext:
-          type: string
-        objectTypeId:
-          type: string
-        knownColumnNumber:
-          format: int32
-          type: integer
-        createdAt:
-          format: int32
-          type: integer
-        id:
           type: string
       required:
       - createdAt
       - errorType
       - id
-      - knownColumnNumber
       - sourceData
       type: object
     PreviousPage:
@@ -702,22 +768,33 @@ components:
         fileIds:
         - "3579849"
       properties:
-        objectLists:
-          description: The lists containing the imported objects.
-          items:
-            $ref: '#/components/schemas/PublicObjectListRecord'
-          type: array
         counters:
           additionalProperties:
             format: int32
             type: integer
           description: Summarized outcomes of each row a developer attempted to import
             into HubSpot.
+          example:
+            TOTAL_ROWS: 2
+            CREATED_OBJECTS: 1
+            UPDATED_OBJECTS: 1
+            UNIQUE_OBJECTS_WRITTEN: 2
+            PROPERTY_VALUES_EMITTED: 2
           type: object
         fileIds:
           description: The IDs of files uploaded in the File Manager API.
+          example:
+          - "3579849"
           items:
             type: string
+          type: array
+        objectLists:
+          description: The lists containing the imported objects.
+          example:
+          - listId: "3"
+            objectType: contacts
+          items:
+            $ref: '#/components/schemas/PublicObjectListRecord'
           type: array
       required:
       - counters
@@ -731,43 +808,43 @@ components:
             link: link
             after: after
         results:
-        - createdAt: 5
+        - createdAt: 0
           extraContext: extraContext
           objectTypeId: objectTypeId
           errorType: INCORRECT_NUMBER_OF_COLUMNS
-          knownColumnNumber: 1
+          knownColumnNumber: 6
           id: id
           sourceData:
             rowData:
             - rowData
             - rowData
-            lineNumber: 0
+            lineNumber: 1
             pageName: pageName
-            fileId: 6
+            fileId: 5
           objectType: CONTACT
           invalidValue: invalidValue
-        - createdAt: 5
+        - createdAt: 0
           extraContext: extraContext
           objectTypeId: objectTypeId
           errorType: INCORRECT_NUMBER_OF_COLUMNS
-          knownColumnNumber: 1
+          knownColumnNumber: 6
           id: id
           sourceData:
             rowData:
             - rowData
             - rowData
-            lineNumber: 0
+            lineNumber: 1
             pageName: pageName
-            fileId: 6
+            fileId: 5
           objectType: CONTACT
           invalidValue: invalidValue
       properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
         results:
           items:
             $ref: '#/components/schemas/PublicImportError'
           type: array
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
       required:
       - results
       type: object
@@ -791,6 +868,27 @@ components:
           fileIds:
           - "32938649"
       properties:
+        importTemplate:
+          $ref: '#/components/schemas/ImportTemplate'
+        createdAt:
+          format: date-time
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PublicImportMetadata'
+        importRequestJson:
+          properties: {}
+          type: object
+        importSource:
+          enum:
+          - API
+          - CRM_UI
+          - IMPORT
+          - MOBILE_ANDROID
+          - MOBILE_IOS
+          - SALESFORCE
+          type: string
+        importName:
+          type: string
         state:
           description: The status of the import.
           enum:
@@ -801,25 +899,18 @@ components:
           - CANCELED
           - DEFERRED
           - REVERTED
+          example: DONE
           type: string
-        importRequestJson:
-          properties: {}
-          type: object
-        createdAt:
-          format: date-time
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PublicImportMetadata'
-        importName:
-          type: string
-        updatedAt:
-          format: date-time
+        id:
+          example: "1471"
           type: string
         optOutImport:
           description: Whether or not the import is a list of people disqualified
             from receiving emails.
+          example: false
           type: boolean
-        id:
+        updatedAt:
+          format: date-time
           type: string
       required:
       - createdAt
@@ -834,9 +925,9 @@ components:
         link: link
         after: after
       properties:
-        after:
-          type: string
         link:
+          type: string
+        after:
           type: string
       required:
       - after
@@ -852,6 +943,7 @@ components:
             for the import and the column mappings for each file. See the overview
             tab for more on the required format.
           type: string
+      type: object
   securitySchemes:
     oauth2_legacy:
       flows:
@@ -868,5 +960,11 @@ components:
 x-hubspot-available-client-libraries:
 - PHP
 - Node
-- Python
 - Ruby
+- Python
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+x-hubspot-documentation-banner: NONE

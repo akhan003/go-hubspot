@@ -1,5 +1,5 @@
 /*
-CRM Pipelines
+Pipelines
 
 Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. Pipelines support `deals` and `tickets` object types.  ## Pipeline ID validation  When calling endpoints that take pipelineId as a parameter, that ID must correspond to an existing, un-archived pipeline. Otherwise the request will fail with a `404 Not Found` response.
 
@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// PipelineStageAuditsApiService PipelineStageAuditsApi service
-type PipelineStageAuditsApiService service
+// PipelineStageAuditsAPIService PipelineStageAuditsAPI service
+type PipelineStageAuditsAPIService service
 
 type ApiStagesGetAuditRequest struct {
 	ctx        context.Context
-	ApiService *PipelineStageAuditsApiService
+	ApiService *PipelineStageAuditsAPIService
 	objectType string
 	stageId    string
 }
@@ -38,12 +38,12 @@ StagesGetAudit Return an audit of all changes to the pipeline stage
 
 Return a reverse chronological list of all mutations that have occurred on the pipeline stage identified by `{stageId}`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param stageId
- @return ApiStagesGetAuditRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param stageId
+	@return ApiStagesGetAuditRequest
 */
-func (a *PipelineStageAuditsApiService) StagesGetAudit(ctx context.Context, objectType string, stageId string) ApiStagesGetAuditRequest {
+func (a *PipelineStageAuditsAPIService) StagesGetAudit(ctx context.Context, objectType string, stageId string) ApiStagesGetAuditRequest {
 	return ApiStagesGetAuditRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -53,8 +53,9 @@ func (a *PipelineStageAuditsApiService) StagesGetAudit(ctx context.Context, obje
 }
 
 // Execute executes the request
-//  @return CollectionResponsePublicAuditInfoNoPaging
-func (a *PipelineStageAuditsApiService) StagesGetAuditExecute(r ApiStagesGetAuditRequest) (*CollectionResponsePublicAuditInfoNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponsePublicAuditInfoNoPaging
+func (a *PipelineStageAuditsAPIService) StagesGetAuditExecute(r ApiStagesGetAuditRequest) (*CollectionResponsePublicAuditInfoNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -62,7 +63,7 @@ func (a *PipelineStageAuditsApiService) StagesGetAuditExecute(r ApiStagesGetAudi
 		localVarReturnValue *CollectionResponsePublicAuditInfoNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStageAuditsApiService.StagesGetAudit")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PipelineStageAuditsAPIService.StagesGetAudit")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

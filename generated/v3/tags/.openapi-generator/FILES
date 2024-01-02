@@ -11,7 +11,7 @@ docs/BatchInputString.md
 docs/BatchInputTag.md
 docs/BatchResponseTag.md
 docs/BatchResponseTagWithErrors.md
-docs/BlogTagsApi.md
+docs/BlogTagsAPI.md
 docs/CollectionResponseWithTotalTagForwardPaging.md
 docs/DetachFromLangGroupRequestVNext.md
 docs/Error.md
@@ -44,5 +44,4 @@ model_tag.go
 model_tag_clone_request_v_next.go
 model_update_languages_request_v_next.go
 response.go
-test/api_blog_tags_test.go
 utils.go

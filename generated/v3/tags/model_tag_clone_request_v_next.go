@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Tags
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package tags
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the TagCloneRequestVNext type satisfies the MappedNullable interface at compile time
@@ -19,24 +21,26 @@ var _ MappedNullable = &TagCloneRequestVNext{}
 
 // TagCloneRequestVNext Request body object for cloning blog tags.
 type TagCloneRequestVNext struct {
-	// ID of the object to be cloned.
-	Id string `json:"id"`
-	// Target language of new variant.
-	Language *string `json:"language,omitempty"`
-	// Language of primary blog tag to clone.
-	PrimaryLanguage *string `json:"primaryLanguage,omitempty"`
 	// Name of newly cloned blog tag.
 	Name string `json:"name"`
+	// Target language of new variant.
+	Language *string `json:"language,omitempty"`
+	// ID of the object to be cloned.
+	Id string `json:"id"`
+	// Language of primary blog tag to clone.
+	PrimaryLanguage *string `json:"primaryLanguage,omitempty"`
 }
+
+type _TagCloneRequestVNext TagCloneRequestVNext
 
 // NewTagCloneRequestVNext instantiates a new TagCloneRequestVNext object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTagCloneRequestVNext(id string, name string) *TagCloneRequestVNext {
+func NewTagCloneRequestVNext(name string, id string) *TagCloneRequestVNext {
 	this := TagCloneRequestVNext{}
-	this.Id = id
 	this.Name = name
+	this.Id = id
 	return &this
 }
 
@@ -48,28 +52,28 @@ func NewTagCloneRequestVNextWithDefaults() *TagCloneRequestVNext {
 	return &this
 }
 
-// GetId returns the Id field value
-func (o *TagCloneRequestVNext) GetId() string {
+// GetName returns the Name field value
+func (o *TagCloneRequestVNext) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.Id
+	return o.Name
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *TagCloneRequestVNext) GetIdOk() (*string, bool) {
+func (o *TagCloneRequestVNext) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Id, true
+	return &o.Name, true
 }
 
-// SetId sets field value
-func (o *TagCloneRequestVNext) SetId(v string) {
-	o.Id = v
+// SetName sets field value
+func (o *TagCloneRequestVNext) SetName(v string) {
+	o.Name = v
 }
 
 // GetLanguage returns the Language field value if set, zero value otherwise.
@@ -104,6 +108,30 @@ func (o *TagCloneRequestVNext) SetLanguage(v string) {
 	o.Language = &v
 }
 
+// GetId returns the Id field value
+func (o *TagCloneRequestVNext) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *TagCloneRequestVNext) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *TagCloneRequestVNext) SetId(v string) {
+	o.Id = v
+}
+
 // GetPrimaryLanguage returns the PrimaryLanguage field value if set, zero value otherwise.
 func (o *TagCloneRequestVNext) GetPrimaryLanguage() string {
 	if o == nil || IsNil(o.PrimaryLanguage) {
@@ -136,30 +164,6 @@ func (o *TagCloneRequestVNext) SetPrimaryLanguage(v string) {
 	o.PrimaryLanguage = &v
 }
 
-// GetName returns the Name field value
-func (o *TagCloneRequestVNext) GetName() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value
-// and a boolean to check if the value has been set.
-func (o *TagCloneRequestVNext) GetNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Name, true
-}
-
-// SetName sets field value
-func (o *TagCloneRequestVNext) SetName(v string) {
-	o.Name = v
-}
-
 func (o TagCloneRequestVNext) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -170,15 +174,53 @@ func (o TagCloneRequestVNext) MarshalJSON() ([]byte, error) {
 
 func (o TagCloneRequestVNext) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
 	if !IsNil(o.Language) {
 		toSerialize["language"] = o.Language
 	}
+	toSerialize["id"] = o.Id
 	if !IsNil(o.PrimaryLanguage) {
 		toSerialize["primaryLanguage"] = o.PrimaryLanguage
 	}
-	toSerialize["name"] = o.Name
 	return toSerialize, nil
+}
+
+func (o *TagCloneRequestVNext) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTagCloneRequestVNext := _TagCloneRequestVNext{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varTagCloneRequestVNext)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TagCloneRequestVNext(varTagCloneRequestVNext)
+
+	return err
 }
 
 type NullableTagCloneRequestVNext struct {

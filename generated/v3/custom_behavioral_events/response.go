@@ -1,5 +1,5 @@
 /*
-Custom Behavioral Events API
+Events Send Event Completions
 
 HTTP API for triggering instances of custom behavioral events
 

@@ -11,7 +11,9 @@ API version: v3
 package accounting
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the TaxSearchResponse type satisfies the MappedNullable interface at compile time
@@ -24,6 +26,8 @@ type TaxSearchResponse struct {
 	// The list of taxes that matched the search criteria
 	Taxes []Tax `json:"taxes"`
 }
+
+type _TaxSearchResponse TaxSearchResponse
 
 // NewTaxSearchResponse instantiates a new TaxSearchResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -114,6 +118,43 @@ func (o TaxSearchResponse) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["taxes"] = o.Taxes
 	return toSerialize, nil
+}
+
+func (o *TaxSearchResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"taxes",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTaxSearchResponse := _TaxSearchResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varTaxSearchResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TaxSearchResponse(varTaxSearchResponse)
+
+	return err
 }
 
 type NullableTaxSearchResponse struct {

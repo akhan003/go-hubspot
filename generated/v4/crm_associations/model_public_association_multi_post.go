@@ -11,7 +11,9 @@ API version: v4
 package crm_associations
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PublicAssociationMultiPost type satisfies the MappedNullable interface at compile time
@@ -23,6 +25,8 @@ type PublicAssociationMultiPost struct {
 	To    PublicObjectId    `json:"to"`
 	Types []AssociationSpec `json:"types"`
 }
+
+type _PublicAssociationMultiPost PublicAssociationMultiPost
 
 // NewPublicAssociationMultiPost instantiates a new PublicAssociationMultiPost object
 // This constructor will assign default values to properties that have it defined,
@@ -130,6 +134,45 @@ func (o PublicAssociationMultiPost) ToMap() (map[string]interface{}, error) {
 	toSerialize["to"] = o.To
 	toSerialize["types"] = o.Types
 	return toSerialize, nil
+}
+
+func (o *PublicAssociationMultiPost) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"from",
+		"to",
+		"types",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPublicAssociationMultiPost := _PublicAssociationMultiPost{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPublicAssociationMultiPost)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicAssociationMultiPost(varPublicAssociationMultiPost)
+
+	return err
 }
 
 type NullablePublicAssociationMultiPost struct {

@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the RGBAColor type satisfies the MappedNullable interface at compile time
@@ -19,26 +21,28 @@ var _ MappedNullable = &RGBAColor{}
 
 // RGBAColor A color defined by RGB values.
 type RGBAColor struct {
-	// Red.
-	R int32 `json:"r"`
-	// Green.
-	G int32 `json:"g"`
-	// Blue.
-	B int32 `json:"b"`
 	// Alpha.
 	A float32 `json:"a"`
+	// Red.
+	R int32 `json:"r"`
+	// Blue.
+	B int32 `json:"b"`
+	// Green.
+	G int32 `json:"g"`
 }
+
+type _RGBAColor RGBAColor
 
 // NewRGBAColor instantiates a new RGBAColor object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRGBAColor(r int32, g int32, b int32, a float32) *RGBAColor {
+func NewRGBAColor(a float32, r int32, b int32, g int32) *RGBAColor {
 	this := RGBAColor{}
-	this.R = r
-	this.G = g
-	this.B = b
 	this.A = a
+	this.R = r
+	this.B = b
+	this.G = g
 	return &this
 }
 
@@ -48,78 +52,6 @@ func NewRGBAColor(r int32, g int32, b int32, a float32) *RGBAColor {
 func NewRGBAColorWithDefaults() *RGBAColor {
 	this := RGBAColor{}
 	return &this
-}
-
-// GetR returns the R field value
-func (o *RGBAColor) GetR() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.R
-}
-
-// GetROk returns a tuple with the R field value
-// and a boolean to check if the value has been set.
-func (o *RGBAColor) GetROk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.R, true
-}
-
-// SetR sets field value
-func (o *RGBAColor) SetR(v int32) {
-	o.R = v
-}
-
-// GetG returns the G field value
-func (o *RGBAColor) GetG() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.G
-}
-
-// GetGOk returns a tuple with the G field value
-// and a boolean to check if the value has been set.
-func (o *RGBAColor) GetGOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.G, true
-}
-
-// SetG sets field value
-func (o *RGBAColor) SetG(v int32) {
-	o.G = v
-}
-
-// GetB returns the B field value
-func (o *RGBAColor) GetB() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.B
-}
-
-// GetBOk returns a tuple with the B field value
-// and a boolean to check if the value has been set.
-func (o *RGBAColor) GetBOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.B, true
-}
-
-// SetB sets field value
-func (o *RGBAColor) SetB(v int32) {
-	o.B = v
 }
 
 // GetA returns the A field value
@@ -146,6 +78,78 @@ func (o *RGBAColor) SetA(v float32) {
 	o.A = v
 }
 
+// GetR returns the R field value
+func (o *RGBAColor) GetR() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.R
+}
+
+// GetROk returns a tuple with the R field value
+// and a boolean to check if the value has been set.
+func (o *RGBAColor) GetROk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.R, true
+}
+
+// SetR sets field value
+func (o *RGBAColor) SetR(v int32) {
+	o.R = v
+}
+
+// GetB returns the B field value
+func (o *RGBAColor) GetB() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.B
+}
+
+// GetBOk returns a tuple with the B field value
+// and a boolean to check if the value has been set.
+func (o *RGBAColor) GetBOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.B, true
+}
+
+// SetB sets field value
+func (o *RGBAColor) SetB(v int32) {
+	o.B = v
+}
+
+// GetG returns the G field value
+func (o *RGBAColor) GetG() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.G
+}
+
+// GetGOk returns a tuple with the G field value
+// and a boolean to check if the value has been set.
+func (o *RGBAColor) GetGOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.G, true
+}
+
+// SetG sets field value
+func (o *RGBAColor) SetG(v int32) {
+	o.G = v
+}
+
 func (o RGBAColor) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -156,11 +160,51 @@ func (o RGBAColor) MarshalJSON() ([]byte, error) {
 
 func (o RGBAColor) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["r"] = o.R
-	toSerialize["g"] = o.G
-	toSerialize["b"] = o.B
 	toSerialize["a"] = o.A
+	toSerialize["r"] = o.R
+	toSerialize["b"] = o.B
+	toSerialize["g"] = o.G
 	return toSerialize, nil
+}
+
+func (o *RGBAColor) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"a",
+		"r",
+		"b",
+		"g",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varRGBAColor := _RGBAColor{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varRGBAColor)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RGBAColor(varRGBAColor)
+
+	return err
 }
 
 type NullableRGBAColor struct {

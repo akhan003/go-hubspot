@@ -19,26 +19,26 @@ var _ MappedNullable = &PropertyUpdate{}
 
 // PropertyUpdate struct for PropertyUpdate
 type PropertyUpdate struct {
+	// The name of the property group the property belongs to.
+	GroupName *string `json:"groupName,omitempty"`
+	// If true, the property won't be visible and can't be used in HubSpot.
+	Hidden *bool `json:"hidden,omitempty"`
+	// A list of valid options for the property.
+	Options []OptionInput `json:"options,omitempty"`
+	// Properties are displayed in order starting with the lowest positive integer value. Values of -1 will cause the Property to be displayed after any positive values.
+	DisplayOrder *int32 `json:"displayOrder,omitempty"`
+	// A description of the property that will be shown as help text in HubSpot.
+	Description *string `json:"description,omitempty"`
+	// Represents a formula that is used to compute a calculated property.
+	CalculationFormula *string `json:"calculationFormula,omitempty"`
 	// A human-readable property label that will be shown in HubSpot.
 	Label *string `json:"label,omitempty"`
 	// The data type of the property.
 	Type *string `json:"type,omitempty"`
 	// Controls how the property appears in HubSpot.
 	FieldType *string `json:"fieldType,omitempty"`
-	// The name of the property group the property belongs to.
-	GroupName *string `json:"groupName,omitempty"`
-	// A description of the property that will be shown as help text in HubSpot.
-	Description *string `json:"description,omitempty"`
-	// A list of valid options for the property.
-	Options []OptionInput `json:"options,omitempty"`
-	// Properties are displayed in order starting with the lowest positive integer value. Values of -1 will cause the Property to be displayed after any positive values.
-	DisplayOrder *int32 `json:"displayOrder,omitempty"`
-	// If true, the property won't be visible and can't be used in HubSpot.
-	Hidden *bool `json:"hidden,omitempty"`
 	// Whether or not the property can be used in a HubSpot form.
 	FormField *bool `json:"formField,omitempty"`
-	// Represents a formula that is used to compute a calculated property.
-	CalculationFormula *string `json:"calculationFormula,omitempty"`
 }
 
 // NewPropertyUpdate instantiates a new PropertyUpdate object
@@ -56,6 +56,198 @@ func NewPropertyUpdate() *PropertyUpdate {
 func NewPropertyUpdateWithDefaults() *PropertyUpdate {
 	this := PropertyUpdate{}
 	return &this
+}
+
+// GetGroupName returns the GroupName field value if set, zero value otherwise.
+func (o *PropertyUpdate) GetGroupName() string {
+	if o == nil || IsNil(o.GroupName) {
+		var ret string
+		return ret
+	}
+	return *o.GroupName
+}
+
+// GetGroupNameOk returns a tuple with the GroupName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyUpdate) GetGroupNameOk() (*string, bool) {
+	if o == nil || IsNil(o.GroupName) {
+		return nil, false
+	}
+	return o.GroupName, true
+}
+
+// HasGroupName returns a boolean if a field has been set.
+func (o *PropertyUpdate) HasGroupName() bool {
+	if o != nil && !IsNil(o.GroupName) {
+		return true
+	}
+
+	return false
+}
+
+// SetGroupName gets a reference to the given string and assigns it to the GroupName field.
+func (o *PropertyUpdate) SetGroupName(v string) {
+	o.GroupName = &v
+}
+
+// GetHidden returns the Hidden field value if set, zero value otherwise.
+func (o *PropertyUpdate) GetHidden() bool {
+	if o == nil || IsNil(o.Hidden) {
+		var ret bool
+		return ret
+	}
+	return *o.Hidden
+}
+
+// GetHiddenOk returns a tuple with the Hidden field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyUpdate) GetHiddenOk() (*bool, bool) {
+	if o == nil || IsNil(o.Hidden) {
+		return nil, false
+	}
+	return o.Hidden, true
+}
+
+// HasHidden returns a boolean if a field has been set.
+func (o *PropertyUpdate) HasHidden() bool {
+	if o != nil && !IsNil(o.Hidden) {
+		return true
+	}
+
+	return false
+}
+
+// SetHidden gets a reference to the given bool and assigns it to the Hidden field.
+func (o *PropertyUpdate) SetHidden(v bool) {
+	o.Hidden = &v
+}
+
+// GetOptions returns the Options field value if set, zero value otherwise.
+func (o *PropertyUpdate) GetOptions() []OptionInput {
+	if o == nil || IsNil(o.Options) {
+		var ret []OptionInput
+		return ret
+	}
+	return o.Options
+}
+
+// GetOptionsOk returns a tuple with the Options field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyUpdate) GetOptionsOk() ([]OptionInput, bool) {
+	if o == nil || IsNil(o.Options) {
+		return nil, false
+	}
+	return o.Options, true
+}
+
+// HasOptions returns a boolean if a field has been set.
+func (o *PropertyUpdate) HasOptions() bool {
+	if o != nil && !IsNil(o.Options) {
+		return true
+	}
+
+	return false
+}
+
+// SetOptions gets a reference to the given []OptionInput and assigns it to the Options field.
+func (o *PropertyUpdate) SetOptions(v []OptionInput) {
+	o.Options = v
+}
+
+// GetDisplayOrder returns the DisplayOrder field value if set, zero value otherwise.
+func (o *PropertyUpdate) GetDisplayOrder() int32 {
+	if o == nil || IsNil(o.DisplayOrder) {
+		var ret int32
+		return ret
+	}
+	return *o.DisplayOrder
+}
+
+// GetDisplayOrderOk returns a tuple with the DisplayOrder field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyUpdate) GetDisplayOrderOk() (*int32, bool) {
+	if o == nil || IsNil(o.DisplayOrder) {
+		return nil, false
+	}
+	return o.DisplayOrder, true
+}
+
+// HasDisplayOrder returns a boolean if a field has been set.
+func (o *PropertyUpdate) HasDisplayOrder() bool {
+	if o != nil && !IsNil(o.DisplayOrder) {
+		return true
+	}
+
+	return false
+}
+
+// SetDisplayOrder gets a reference to the given int32 and assigns it to the DisplayOrder field.
+func (o *PropertyUpdate) SetDisplayOrder(v int32) {
+	o.DisplayOrder = &v
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *PropertyUpdate) GetDescription() string {
+	if o == nil || IsNil(o.Description) {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyUpdate) GetDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.Description) {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *PropertyUpdate) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *PropertyUpdate) SetDescription(v string) {
+	o.Description = &v
+}
+
+// GetCalculationFormula returns the CalculationFormula field value if set, zero value otherwise.
+func (o *PropertyUpdate) GetCalculationFormula() string {
+	if o == nil || IsNil(o.CalculationFormula) {
+		var ret string
+		return ret
+	}
+	return *o.CalculationFormula
+}
+
+// GetCalculationFormulaOk returns a tuple with the CalculationFormula field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PropertyUpdate) GetCalculationFormulaOk() (*string, bool) {
+	if o == nil || IsNil(o.CalculationFormula) {
+		return nil, false
+	}
+	return o.CalculationFormula, true
+}
+
+// HasCalculationFormula returns a boolean if a field has been set.
+func (o *PropertyUpdate) HasCalculationFormula() bool {
+	if o != nil && !IsNil(o.CalculationFormula) {
+		return true
+	}
+
+	return false
+}
+
+// SetCalculationFormula gets a reference to the given string and assigns it to the CalculationFormula field.
+func (o *PropertyUpdate) SetCalculationFormula(v string) {
+	o.CalculationFormula = &v
 }
 
 // GetLabel returns the Label field value if set, zero value otherwise.
@@ -154,166 +346,6 @@ func (o *PropertyUpdate) SetFieldType(v string) {
 	o.FieldType = &v
 }
 
-// GetGroupName returns the GroupName field value if set, zero value otherwise.
-func (o *PropertyUpdate) GetGroupName() string {
-	if o == nil || IsNil(o.GroupName) {
-		var ret string
-		return ret
-	}
-	return *o.GroupName
-}
-
-// GetGroupNameOk returns a tuple with the GroupName field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PropertyUpdate) GetGroupNameOk() (*string, bool) {
-	if o == nil || IsNil(o.GroupName) {
-		return nil, false
-	}
-	return o.GroupName, true
-}
-
-// HasGroupName returns a boolean if a field has been set.
-func (o *PropertyUpdate) HasGroupName() bool {
-	if o != nil && !IsNil(o.GroupName) {
-		return true
-	}
-
-	return false
-}
-
-// SetGroupName gets a reference to the given string and assigns it to the GroupName field.
-func (o *PropertyUpdate) SetGroupName(v string) {
-	o.GroupName = &v
-}
-
-// GetDescription returns the Description field value if set, zero value otherwise.
-func (o *PropertyUpdate) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
-		var ret string
-		return ret
-	}
-	return *o.Description
-}
-
-// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PropertyUpdate) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
-		return nil, false
-	}
-	return o.Description, true
-}
-
-// HasDescription returns a boolean if a field has been set.
-func (o *PropertyUpdate) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
-		return true
-	}
-
-	return false
-}
-
-// SetDescription gets a reference to the given string and assigns it to the Description field.
-func (o *PropertyUpdate) SetDescription(v string) {
-	o.Description = &v
-}
-
-// GetOptions returns the Options field value if set, zero value otherwise.
-func (o *PropertyUpdate) GetOptions() []OptionInput {
-	if o == nil || IsNil(o.Options) {
-		var ret []OptionInput
-		return ret
-	}
-	return o.Options
-}
-
-// GetOptionsOk returns a tuple with the Options field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PropertyUpdate) GetOptionsOk() ([]OptionInput, bool) {
-	if o == nil || IsNil(o.Options) {
-		return nil, false
-	}
-	return o.Options, true
-}
-
-// HasOptions returns a boolean if a field has been set.
-func (o *PropertyUpdate) HasOptions() bool {
-	if o != nil && !IsNil(o.Options) {
-		return true
-	}
-
-	return false
-}
-
-// SetOptions gets a reference to the given []OptionInput and assigns it to the Options field.
-func (o *PropertyUpdate) SetOptions(v []OptionInput) {
-	o.Options = v
-}
-
-// GetDisplayOrder returns the DisplayOrder field value if set, zero value otherwise.
-func (o *PropertyUpdate) GetDisplayOrder() int32 {
-	if o == nil || IsNil(o.DisplayOrder) {
-		var ret int32
-		return ret
-	}
-	return *o.DisplayOrder
-}
-
-// GetDisplayOrderOk returns a tuple with the DisplayOrder field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PropertyUpdate) GetDisplayOrderOk() (*int32, bool) {
-	if o == nil || IsNil(o.DisplayOrder) {
-		return nil, false
-	}
-	return o.DisplayOrder, true
-}
-
-// HasDisplayOrder returns a boolean if a field has been set.
-func (o *PropertyUpdate) HasDisplayOrder() bool {
-	if o != nil && !IsNil(o.DisplayOrder) {
-		return true
-	}
-
-	return false
-}
-
-// SetDisplayOrder gets a reference to the given int32 and assigns it to the DisplayOrder field.
-func (o *PropertyUpdate) SetDisplayOrder(v int32) {
-	o.DisplayOrder = &v
-}
-
-// GetHidden returns the Hidden field value if set, zero value otherwise.
-func (o *PropertyUpdate) GetHidden() bool {
-	if o == nil || IsNil(o.Hidden) {
-		var ret bool
-		return ret
-	}
-	return *o.Hidden
-}
-
-// GetHiddenOk returns a tuple with the Hidden field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PropertyUpdate) GetHiddenOk() (*bool, bool) {
-	if o == nil || IsNil(o.Hidden) {
-		return nil, false
-	}
-	return o.Hidden, true
-}
-
-// HasHidden returns a boolean if a field has been set.
-func (o *PropertyUpdate) HasHidden() bool {
-	if o != nil && !IsNil(o.Hidden) {
-		return true
-	}
-
-	return false
-}
-
-// SetHidden gets a reference to the given bool and assigns it to the Hidden field.
-func (o *PropertyUpdate) SetHidden(v bool) {
-	o.Hidden = &v
-}
-
 // GetFormField returns the FormField field value if set, zero value otherwise.
 func (o *PropertyUpdate) GetFormField() bool {
 	if o == nil || IsNil(o.FormField) {
@@ -346,38 +378,6 @@ func (o *PropertyUpdate) SetFormField(v bool) {
 	o.FormField = &v
 }
 
-// GetCalculationFormula returns the CalculationFormula field value if set, zero value otherwise.
-func (o *PropertyUpdate) GetCalculationFormula() string {
-	if o == nil || IsNil(o.CalculationFormula) {
-		var ret string
-		return ret
-	}
-	return *o.CalculationFormula
-}
-
-// GetCalculationFormulaOk returns a tuple with the CalculationFormula field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PropertyUpdate) GetCalculationFormulaOk() (*string, bool) {
-	if o == nil || IsNil(o.CalculationFormula) {
-		return nil, false
-	}
-	return o.CalculationFormula, true
-}
-
-// HasCalculationFormula returns a boolean if a field has been set.
-func (o *PropertyUpdate) HasCalculationFormula() bool {
-	if o != nil && !IsNil(o.CalculationFormula) {
-		return true
-	}
-
-	return false
-}
-
-// SetCalculationFormula gets a reference to the given string and assigns it to the CalculationFormula field.
-func (o *PropertyUpdate) SetCalculationFormula(v string) {
-	o.CalculationFormula = &v
-}
-
 func (o PropertyUpdate) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -388,6 +388,24 @@ func (o PropertyUpdate) MarshalJSON() ([]byte, error) {
 
 func (o PropertyUpdate) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.GroupName) {
+		toSerialize["groupName"] = o.GroupName
+	}
+	if !IsNil(o.Hidden) {
+		toSerialize["hidden"] = o.Hidden
+	}
+	if !IsNil(o.Options) {
+		toSerialize["options"] = o.Options
+	}
+	if !IsNil(o.DisplayOrder) {
+		toSerialize["displayOrder"] = o.DisplayOrder
+	}
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	if !IsNil(o.CalculationFormula) {
+		toSerialize["calculationFormula"] = o.CalculationFormula
+	}
 	if !IsNil(o.Label) {
 		toSerialize["label"] = o.Label
 	}
@@ -397,26 +415,8 @@ func (o PropertyUpdate) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.FieldType) {
 		toSerialize["fieldType"] = o.FieldType
 	}
-	if !IsNil(o.GroupName) {
-		toSerialize["groupName"] = o.GroupName
-	}
-	if !IsNil(o.Description) {
-		toSerialize["description"] = o.Description
-	}
-	if !IsNil(o.Options) {
-		toSerialize["options"] = o.Options
-	}
-	if !IsNil(o.DisplayOrder) {
-		toSerialize["displayOrder"] = o.DisplayOrder
-	}
-	if !IsNil(o.Hidden) {
-		toSerialize["hidden"] = o.Hidden
-	}
 	if !IsNil(o.FormField) {
 		toSerialize["formField"] = o.FormField
-	}
-	if !IsNil(o.CalculationFormula) {
-		toSerialize["calculationFormula"] = o.CalculationFormula
 	}
 	return toSerialize, nil
 }

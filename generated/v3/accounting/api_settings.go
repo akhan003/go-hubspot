@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// SettingsApiService SettingsApi service
-type SettingsApiService service
+// SettingsAPIService SettingsAPI service
+type SettingsAPIService service
 
 type ApiSettingsGetByIDRequest struct {
 	ctx        context.Context
-	ApiService *SettingsApiService
+	ApiService *SettingsAPIService
 	appId      int32
 }
 
@@ -37,11 +37,11 @@ SettingsGetByID Get URL settings
 
 Returns the URL settings for an accounting app with the specified ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
- @return ApiSettingsGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
+	@return ApiSettingsGetByIDRequest
 */
-func (a *SettingsApiService) SettingsGetByID(ctx context.Context, appId int32) ApiSettingsGetByIDRequest {
+func (a *SettingsAPIService) SettingsGetByID(ctx context.Context, appId int32) ApiSettingsGetByIDRequest {
 	return ApiSettingsGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -50,8 +50,9 @@ func (a *SettingsApiService) SettingsGetByID(ctx context.Context, appId int32) A
 }
 
 // Execute executes the request
-//  @return AccountingAppSettings
-func (a *SettingsApiService) SettingsGetByIDExecute(r ApiSettingsGetByIDRequest) (*AccountingAppSettings, *http.Response, error) {
+//
+//	@return AccountingAppSettings
+func (a *SettingsAPIService) SettingsGetByIDExecute(r ApiSettingsGetByIDRequest) (*AccountingAppSettings, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -59,7 +60,7 @@ func (a *SettingsApiService) SettingsGetByIDExecute(r ApiSettingsGetByIDRequest)
 		localVarReturnValue *AccountingAppSettings
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SettingsApiService.SettingsGetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SettingsAPIService.SettingsGetByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -135,7 +136,7 @@ func (a *SettingsApiService) SettingsGetByIDExecute(r ApiSettingsGetByIDRequest)
 
 type ApiSettingsReplaceRequest struct {
 	ctx                   context.Context
-	ApiService            *SettingsApiService
+	ApiService            *SettingsAPIService
 	appId                 int32
 	accountingAppSettings *AccountingAppSettings
 }
@@ -154,11 +155,11 @@ SettingsReplace Add/Update URL Settings
 
 Add/Update the URL settings for an accounting app with the specified ID.  All URLs must use the `https` protocol.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
- @return ApiSettingsReplaceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the accounting app. This is the identifier of the application created in your HubSpot developer portal.
+	@return ApiSettingsReplaceRequest
 */
-func (a *SettingsApiService) SettingsReplace(ctx context.Context, appId int32) ApiSettingsReplaceRequest {
+func (a *SettingsAPIService) SettingsReplace(ctx context.Context, appId int32) ApiSettingsReplaceRequest {
 	return ApiSettingsReplaceRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -167,14 +168,14 @@ func (a *SettingsApiService) SettingsReplace(ctx context.Context, appId int32) A
 }
 
 // Execute executes the request
-func (a *SettingsApiService) SettingsReplaceExecute(r ApiSettingsReplaceRequest) (*http.Response, error) {
+func (a *SettingsAPIService) SettingsReplaceExecute(r ApiSettingsReplaceRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPut
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SettingsApiService.SettingsReplace")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SettingsAPIService.SettingsReplace")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -1,5 +1,5 @@
 /*
-Marketing Events Extension
+Marketing Marketing Events
 
 These APIs allow you to interact with HubSpot's Marketing Events Extension. It allows you to: * Create, Read or update Marketing Event information in HubSpot * Specify whether a HubSpot contact has registered, attended or cancelled a registration to a Marketing Event. * Specify a URL that can be called to get the details of a Marketing Event.
 
@@ -11,7 +11,9 @@ API version: v3
 package marketing_events_beta
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the MarketingEventSubscriber type satisfies the MappedNullable interface at compile time
@@ -19,11 +21,13 @@ var _ MappedNullable = &MarketingEventSubscriber{}
 
 // MarketingEventSubscriber struct for MarketingEventSubscriber
 type MarketingEventSubscriber struct {
+	Vid        *int32             `json:"vid,omitempty"`
+	Properties *map[string]string `json:"properties,omitempty"`
 	// The date and time at which the contact subscribed to the event.
-	InteractionDateTime int64              `json:"interactionDateTime"`
-	Properties          *map[string]string `json:"properties,omitempty"`
-	Vid                 *int32             `json:"vid,omitempty"`
+	InteractionDateTime int64 `json:"interactionDateTime"`
 }
+
+type _MarketingEventSubscriber MarketingEventSubscriber
 
 // NewMarketingEventSubscriber instantiates a new MarketingEventSubscriber object
 // This constructor will assign default values to properties that have it defined,
@@ -41,62 +45,6 @@ func NewMarketingEventSubscriber(interactionDateTime int64) *MarketingEventSubsc
 func NewMarketingEventSubscriberWithDefaults() *MarketingEventSubscriber {
 	this := MarketingEventSubscriber{}
 	return &this
-}
-
-// GetInteractionDateTime returns the InteractionDateTime field value
-func (o *MarketingEventSubscriber) GetInteractionDateTime() int64 {
-	if o == nil {
-		var ret int64
-		return ret
-	}
-
-	return o.InteractionDateTime
-}
-
-// GetInteractionDateTimeOk returns a tuple with the InteractionDateTime field value
-// and a boolean to check if the value has been set.
-func (o *MarketingEventSubscriber) GetInteractionDateTimeOk() (*int64, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.InteractionDateTime, true
-}
-
-// SetInteractionDateTime sets field value
-func (o *MarketingEventSubscriber) SetInteractionDateTime(v int64) {
-	o.InteractionDateTime = v
-}
-
-// GetProperties returns the Properties field value if set, zero value otherwise.
-func (o *MarketingEventSubscriber) GetProperties() map[string]string {
-	if o == nil || IsNil(o.Properties) {
-		var ret map[string]string
-		return ret
-	}
-	return *o.Properties
-}
-
-// GetPropertiesOk returns a tuple with the Properties field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *MarketingEventSubscriber) GetPropertiesOk() (*map[string]string, bool) {
-	if o == nil || IsNil(o.Properties) {
-		return nil, false
-	}
-	return o.Properties, true
-}
-
-// HasProperties returns a boolean if a field has been set.
-func (o *MarketingEventSubscriber) HasProperties() bool {
-	if o != nil && !IsNil(o.Properties) {
-		return true
-	}
-
-	return false
-}
-
-// SetProperties gets a reference to the given map[string]string and assigns it to the Properties field.
-func (o *MarketingEventSubscriber) SetProperties(v map[string]string) {
-	o.Properties = &v
 }
 
 // GetVid returns the Vid field value if set, zero value otherwise.
@@ -131,6 +79,62 @@ func (o *MarketingEventSubscriber) SetVid(v int32) {
 	o.Vid = &v
 }
 
+// GetProperties returns the Properties field value if set, zero value otherwise.
+func (o *MarketingEventSubscriber) GetProperties() map[string]string {
+	if o == nil || IsNil(o.Properties) {
+		var ret map[string]string
+		return ret
+	}
+	return *o.Properties
+}
+
+// GetPropertiesOk returns a tuple with the Properties field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MarketingEventSubscriber) GetPropertiesOk() (*map[string]string, bool) {
+	if o == nil || IsNil(o.Properties) {
+		return nil, false
+	}
+	return o.Properties, true
+}
+
+// HasProperties returns a boolean if a field has been set.
+func (o *MarketingEventSubscriber) HasProperties() bool {
+	if o != nil && !IsNil(o.Properties) {
+		return true
+	}
+
+	return false
+}
+
+// SetProperties gets a reference to the given map[string]string and assigns it to the Properties field.
+func (o *MarketingEventSubscriber) SetProperties(v map[string]string) {
+	o.Properties = &v
+}
+
+// GetInteractionDateTime returns the InteractionDateTime field value
+func (o *MarketingEventSubscriber) GetInteractionDateTime() int64 {
+	if o == nil {
+		var ret int64
+		return ret
+	}
+
+	return o.InteractionDateTime
+}
+
+// GetInteractionDateTimeOk returns a tuple with the InteractionDateTime field value
+// and a boolean to check if the value has been set.
+func (o *MarketingEventSubscriber) GetInteractionDateTimeOk() (*int64, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.InteractionDateTime, true
+}
+
+// SetInteractionDateTime sets field value
+func (o *MarketingEventSubscriber) SetInteractionDateTime(v int64) {
+	o.InteractionDateTime = v
+}
+
 func (o MarketingEventSubscriber) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -141,14 +145,51 @@ func (o MarketingEventSubscriber) MarshalJSON() ([]byte, error) {
 
 func (o MarketingEventSubscriber) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["interactionDateTime"] = o.InteractionDateTime
-	if !IsNil(o.Properties) {
-		toSerialize["properties"] = o.Properties
-	}
 	if !IsNil(o.Vid) {
 		toSerialize["vid"] = o.Vid
 	}
+	if !IsNil(o.Properties) {
+		toSerialize["properties"] = o.Properties
+	}
+	toSerialize["interactionDateTime"] = o.InteractionDateTime
 	return toSerialize, nil
+}
+
+func (o *MarketingEventSubscriber) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"interactionDateTime",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varMarketingEventSubscriber := _MarketingEventSubscriber{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varMarketingEventSubscriber)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MarketingEventSubscriber(varMarketingEventSubscriber)
+
+	return err
 }
 
 type NullableMarketingEventSubscriber struct {

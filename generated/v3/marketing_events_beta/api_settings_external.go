@@ -41,9 +41,9 @@ func (r ApiSettingsCreateRequest) Execute() (*EventDetailSettings, *http.Respons
 /*
 SettingsCreate Method for SettingsCreate
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId
- @return ApiSettingsCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId
+	@return ApiSettingsCreateRequest
 */
 func (a *SettingsExternalApiService) SettingsCreate(ctx context.Context, appId int32) ApiSettingsCreateRequest {
 	return ApiSettingsCreateRequest{
@@ -54,7 +54,8 @@ func (a *SettingsExternalApiService) SettingsCreate(ctx context.Context, appId i
 }
 
 // Execute executes the request
-//  @return EventDetailSettings
+//
+//	@return EventDetailSettings
 func (a *SettingsExternalApiService) SettingsCreateExecute(r ApiSettingsCreateRequest) (*EventDetailSettings, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
@@ -169,9 +170,9 @@ func (r ApiSettingsGetAllRequest) Execute() (*EventDetailSettings, *http.Respons
 /*
 SettingsGetAll Method for SettingsGetAll
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId
- @return ApiSettingsGetAllRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId
+	@return ApiSettingsGetAllRequest
 */
 func (a *SettingsExternalApiService) SettingsGetAll(ctx context.Context, appId int32) ApiSettingsGetAllRequest {
 	return ApiSettingsGetAllRequest{
@@ -182,7 +183,8 @@ func (a *SettingsExternalApiService) SettingsGetAll(ctx context.Context, appId i
 }
 
 // Execute executes the request
-//  @return EventDetailSettings
+//
+//	@return EventDetailSettings
 func (a *SettingsExternalApiService) SettingsGetAllExecute(r ApiSettingsGetAllRequest) (*EventDetailSettings, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet

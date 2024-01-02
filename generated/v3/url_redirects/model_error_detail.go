@@ -1,5 +1,5 @@
 /*
-URL redirects
+CMS Url Redirects
 
 URL redirect operations
 
@@ -11,7 +11,9 @@ API version: v3
 package url_redirects
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the ErrorDetail type satisfies the MappedNullable interface at compile time
@@ -19,17 +21,19 @@ var _ MappedNullable = &ErrorDetail{}
 
 // ErrorDetail struct for ErrorDetail
 type ErrorDetail struct {
-	// A human readable message describing the error along with remediation steps where appropriate
-	Message string `json:"message"`
-	// The name of the field or parameter in which the error was found.
-	In *string `json:"in,omitempty"`
-	// The status code associated with the error detail
-	Code *string `json:"code,omitempty"`
 	// A specific category that contains more specific detail about the error
 	SubCategory *string `json:"subCategory,omitempty"`
+	// The status code associated with the error detail
+	Code *string `json:"code,omitempty"`
+	// The name of the field or parameter in which the error was found.
+	In *string `json:"in,omitempty"`
 	// Context about the error condition
 	Context *map[string][]string `json:"context,omitempty"`
+	// A human readable message describing the error along with remediation steps where appropriate
+	Message string `json:"message"`
 }
+
+type _ErrorDetail ErrorDetail
 
 // NewErrorDetail instantiates a new ErrorDetail object
 // This constructor will assign default values to properties that have it defined,
@@ -47,94 +51,6 @@ func NewErrorDetail(message string) *ErrorDetail {
 func NewErrorDetailWithDefaults() *ErrorDetail {
 	this := ErrorDetail{}
 	return &this
-}
-
-// GetMessage returns the Message field value
-func (o *ErrorDetail) GetMessage() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Message
-}
-
-// GetMessageOk returns a tuple with the Message field value
-// and a boolean to check if the value has been set.
-func (o *ErrorDetail) GetMessageOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Message, true
-}
-
-// SetMessage sets field value
-func (o *ErrorDetail) SetMessage(v string) {
-	o.Message = v
-}
-
-// GetIn returns the In field value if set, zero value otherwise.
-func (o *ErrorDetail) GetIn() string {
-	if o == nil || IsNil(o.In) {
-		var ret string
-		return ret
-	}
-	return *o.In
-}
-
-// GetInOk returns a tuple with the In field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *ErrorDetail) GetInOk() (*string, bool) {
-	if o == nil || IsNil(o.In) {
-		return nil, false
-	}
-	return o.In, true
-}
-
-// HasIn returns a boolean if a field has been set.
-func (o *ErrorDetail) HasIn() bool {
-	if o != nil && !IsNil(o.In) {
-		return true
-	}
-
-	return false
-}
-
-// SetIn gets a reference to the given string and assigns it to the In field.
-func (o *ErrorDetail) SetIn(v string) {
-	o.In = &v
-}
-
-// GetCode returns the Code field value if set, zero value otherwise.
-func (o *ErrorDetail) GetCode() string {
-	if o == nil || IsNil(o.Code) {
-		var ret string
-		return ret
-	}
-	return *o.Code
-}
-
-// GetCodeOk returns a tuple with the Code field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *ErrorDetail) GetCodeOk() (*string, bool) {
-	if o == nil || IsNil(o.Code) {
-		return nil, false
-	}
-	return o.Code, true
-}
-
-// HasCode returns a boolean if a field has been set.
-func (o *ErrorDetail) HasCode() bool {
-	if o != nil && !IsNil(o.Code) {
-		return true
-	}
-
-	return false
-}
-
-// SetCode gets a reference to the given string and assigns it to the Code field.
-func (o *ErrorDetail) SetCode(v string) {
-	o.Code = &v
 }
 
 // GetSubCategory returns the SubCategory field value if set, zero value otherwise.
@@ -169,6 +85,70 @@ func (o *ErrorDetail) SetSubCategory(v string) {
 	o.SubCategory = &v
 }
 
+// GetCode returns the Code field value if set, zero value otherwise.
+func (o *ErrorDetail) GetCode() string {
+	if o == nil || IsNil(o.Code) {
+		var ret string
+		return ret
+	}
+	return *o.Code
+}
+
+// GetCodeOk returns a tuple with the Code field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ErrorDetail) GetCodeOk() (*string, bool) {
+	if o == nil || IsNil(o.Code) {
+		return nil, false
+	}
+	return o.Code, true
+}
+
+// HasCode returns a boolean if a field has been set.
+func (o *ErrorDetail) HasCode() bool {
+	if o != nil && !IsNil(o.Code) {
+		return true
+	}
+
+	return false
+}
+
+// SetCode gets a reference to the given string and assigns it to the Code field.
+func (o *ErrorDetail) SetCode(v string) {
+	o.Code = &v
+}
+
+// GetIn returns the In field value if set, zero value otherwise.
+func (o *ErrorDetail) GetIn() string {
+	if o == nil || IsNil(o.In) {
+		var ret string
+		return ret
+	}
+	return *o.In
+}
+
+// GetInOk returns a tuple with the In field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ErrorDetail) GetInOk() (*string, bool) {
+	if o == nil || IsNil(o.In) {
+		return nil, false
+	}
+	return o.In, true
+}
+
+// HasIn returns a boolean if a field has been set.
+func (o *ErrorDetail) HasIn() bool {
+	if o != nil && !IsNil(o.In) {
+		return true
+	}
+
+	return false
+}
+
+// SetIn gets a reference to the given string and assigns it to the In field.
+func (o *ErrorDetail) SetIn(v string) {
+	o.In = &v
+}
+
 // GetContext returns the Context field value if set, zero value otherwise.
 func (o *ErrorDetail) GetContext() map[string][]string {
 	if o == nil || IsNil(o.Context) {
@@ -201,6 +181,30 @@ func (o *ErrorDetail) SetContext(v map[string][]string) {
 	o.Context = &v
 }
 
+// GetMessage returns the Message field value
+func (o *ErrorDetail) GetMessage() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Message
+}
+
+// GetMessageOk returns a tuple with the Message field value
+// and a boolean to check if the value has been set.
+func (o *ErrorDetail) GetMessageOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Message, true
+}
+
+// SetMessage sets field value
+func (o *ErrorDetail) SetMessage(v string) {
+	o.Message = v
+}
+
 func (o ErrorDetail) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -211,20 +215,57 @@ func (o ErrorDetail) MarshalJSON() ([]byte, error) {
 
 func (o ErrorDetail) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["message"] = o.Message
-	if !IsNil(o.In) {
-		toSerialize["in"] = o.In
+	if !IsNil(o.SubCategory) {
+		toSerialize["subCategory"] = o.SubCategory
 	}
 	if !IsNil(o.Code) {
 		toSerialize["code"] = o.Code
 	}
-	if !IsNil(o.SubCategory) {
-		toSerialize["subCategory"] = o.SubCategory
+	if !IsNil(o.In) {
+		toSerialize["in"] = o.In
 	}
 	if !IsNil(o.Context) {
 		toSerialize["context"] = o.Context
 	}
+	toSerialize["message"] = o.Message
 	return toSerialize, nil
+}
+
+func (o *ErrorDetail) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"message",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varErrorDetail := _ErrorDetail{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varErrorDetail)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ErrorDetail(varErrorDetail)
+
+	return err
 }
 
 type NullableErrorDetail struct {

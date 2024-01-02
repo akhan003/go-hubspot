@@ -18,46 +18,46 @@ import (
 	"net/url"
 )
 
-// BatchApiService BatchApi service
-type BatchApiService service
+// BatchAPIService BatchAPI service
+type BatchAPIService service
 
-type ApiBatchArchiveRequest struct {
+type ApiPostCrmV3ObjectsLineItemsBatchArchiveArchiveRequest struct {
 	ctx                            context.Context
-	ApiService                     *BatchApiService
+	ApiService                     *BatchAPIService
 	batchInputSimplePublicObjectId *BatchInputSimplePublicObjectId
 }
 
-func (r ApiBatchArchiveRequest) BatchInputSimplePublicObjectId(batchInputSimplePublicObjectId BatchInputSimplePublicObjectId) ApiBatchArchiveRequest {
+func (r ApiPostCrmV3ObjectsLineItemsBatchArchiveArchiveRequest) BatchInputSimplePublicObjectId(batchInputSimplePublicObjectId BatchInputSimplePublicObjectId) ApiPostCrmV3ObjectsLineItemsBatchArchiveArchiveRequest {
 	r.batchInputSimplePublicObjectId = &batchInputSimplePublicObjectId
 	return r
 }
 
-func (r ApiBatchArchiveRequest) Execute() (*http.Response, error) {
-	return r.ApiService.BatchArchiveExecute(r)
+func (r ApiPostCrmV3ObjectsLineItemsBatchArchiveArchiveRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostCrmV3ObjectsLineItemsBatchArchiveArchiveExecute(r)
 }
 
 /*
-BatchArchive Archive a batch of line items by ID
+PostCrmV3ObjectsLineItemsBatchArchiveArchive Archive a batch of line items by ID
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCrmV3ObjectsLineItemsBatchArchiveArchiveRequest
 */
-func (a *BatchApiService) BatchArchive(ctx context.Context) ApiBatchArchiveRequest {
-	return ApiBatchArchiveRequest{
+func (a *BatchAPIService) PostCrmV3ObjectsLineItemsBatchArchiveArchive(ctx context.Context) ApiPostCrmV3ObjectsLineItemsBatchArchiveArchiveRequest {
+	return ApiPostCrmV3ObjectsLineItemsBatchArchiveArchiveRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.Response, error) {
+func (a *BatchAPIService) PostCrmV3ObjectsLineItemsBatchArchiveArchiveExecute(r ApiPostCrmV3ObjectsLineItemsBatchArchiveArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchApiService.BatchArchive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.PostCrmV3ObjectsLineItemsBatchArchiveArchive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -90,20 +90,6 @@ func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.R
 	}
 	// body params
 	localVarPostBody = r.batchInputSimplePublicObjectId
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -154,37 +140,38 @@ func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.R
 	return localVarHTTPResponse, nil
 }
 
-type ApiBatchCreateRequest struct {
+type ApiPostCrmV3ObjectsLineItemsBatchCreateCreateRequest struct {
 	ctx                                        context.Context
-	ApiService                                 *BatchApiService
+	ApiService                                 *BatchAPIService
 	batchInputSimplePublicObjectInputForCreate *BatchInputSimplePublicObjectInputForCreate
 }
 
-func (r ApiBatchCreateRequest) BatchInputSimplePublicObjectInputForCreate(batchInputSimplePublicObjectInputForCreate BatchInputSimplePublicObjectInputForCreate) ApiBatchCreateRequest {
+func (r ApiPostCrmV3ObjectsLineItemsBatchCreateCreateRequest) BatchInputSimplePublicObjectInputForCreate(batchInputSimplePublicObjectInputForCreate BatchInputSimplePublicObjectInputForCreate) ApiPostCrmV3ObjectsLineItemsBatchCreateCreateRequest {
 	r.batchInputSimplePublicObjectInputForCreate = &batchInputSimplePublicObjectInputForCreate
 	return r
 }
 
-func (r ApiBatchCreateRequest) Execute() (*BatchResponseSimplePublicObject, *http.Response, error) {
-	return r.ApiService.BatchCreateExecute(r)
+func (r ApiPostCrmV3ObjectsLineItemsBatchCreateCreateRequest) Execute() (*BatchResponseSimplePublicObject, *http.Response, error) {
+	return r.ApiService.PostCrmV3ObjectsLineItemsBatchCreateCreateExecute(r)
 }
 
 /*
-BatchCreate Create a batch of line items
+PostCrmV3ObjectsLineItemsBatchCreateCreate Create a batch of line items
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCrmV3ObjectsLineItemsBatchCreateCreateRequest
 */
-func (a *BatchApiService) BatchCreate(ctx context.Context) ApiBatchCreateRequest {
-	return ApiBatchCreateRequest{
+func (a *BatchAPIService) PostCrmV3ObjectsLineItemsBatchCreateCreate(ctx context.Context) ApiPostCrmV3ObjectsLineItemsBatchCreateCreateRequest {
+	return ApiPostCrmV3ObjectsLineItemsBatchCreateCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchResponseSimplePublicObject
-func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchResponseSimplePublicObject, *http.Response, error) {
+//
+//	@return BatchResponseSimplePublicObject
+func (a *BatchAPIService) PostCrmV3ObjectsLineItemsBatchCreateCreateExecute(r ApiPostCrmV3ObjectsLineItemsBatchCreateCreateRequest) (*BatchResponseSimplePublicObject, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -192,7 +179,7 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 		localVarReturnValue *BatchResponseSimplePublicObject
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchApiService.BatchCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.PostCrmV3ObjectsLineItemsBatchCreateCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -228,20 +215,6 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
 			if apiKey, ok := auth["private_apps"]; ok {
 				var key string
 				if apiKey.Prefix != "" {
@@ -298,44 +271,45 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiBatchReadRequest struct {
+type ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest struct {
 	ctx                                context.Context
-	ApiService                         *BatchApiService
+	ApiService                         *BatchAPIService
 	batchReadInputSimplePublicObjectId *BatchReadInputSimplePublicObjectId
 	archived                           *bool
 }
 
-func (r ApiBatchReadRequest) BatchReadInputSimplePublicObjectId(batchReadInputSimplePublicObjectId BatchReadInputSimplePublicObjectId) ApiBatchReadRequest {
+func (r ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest) BatchReadInputSimplePublicObjectId(batchReadInputSimplePublicObjectId BatchReadInputSimplePublicObjectId) ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest {
 	r.batchReadInputSimplePublicObjectId = &batchReadInputSimplePublicObjectId
 	return r
 }
 
 // Whether to return only results that have been archived.
-func (r ApiBatchReadRequest) Archived(archived bool) ApiBatchReadRequest {
+func (r ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest) Archived(archived bool) ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest {
 	r.archived = &archived
 	return r
 }
 
-func (r ApiBatchReadRequest) Execute() (*BatchResponseSimplePublicObject, *http.Response, error) {
-	return r.ApiService.BatchReadExecute(r)
+func (r ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest) Execute() (*BatchResponseSimplePublicObject, *http.Response, error) {
+	return r.ApiService.PostCrmV3ObjectsLineItemsBatchReadReadExecute(r)
 }
 
 /*
-BatchRead Read a batch of line items by internal ID, or unique property values
+PostCrmV3ObjectsLineItemsBatchReadRead Read a batch of line items by internal ID, or unique property values
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchReadRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest
 */
-func (a *BatchApiService) BatchRead(ctx context.Context) ApiBatchReadRequest {
-	return ApiBatchReadRequest{
+func (a *BatchAPIService) PostCrmV3ObjectsLineItemsBatchReadRead(ctx context.Context) ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest {
+	return ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchResponseSimplePublicObject
-func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchResponseSimplePublicObject, *http.Response, error) {
+//
+//	@return BatchResponseSimplePublicObject
+func (a *BatchAPIService) PostCrmV3ObjectsLineItemsBatchReadReadExecute(r ApiPostCrmV3ObjectsLineItemsBatchReadReadRequest) (*BatchResponseSimplePublicObject, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -343,7 +317,7 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 		localVarReturnValue *BatchResponseSimplePublicObject
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchApiService.BatchRead")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.PostCrmV3ObjectsLineItemsBatchReadRead")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -359,6 +333,9 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 
 	if r.archived != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -382,20 +359,6 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
 			if apiKey, ok := auth["private_apps"]; ok {
 				var key string
 				if apiKey.Prefix != "" {
@@ -452,37 +415,38 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiBatchUpdateRequest struct {
+type ApiPostCrmV3ObjectsLineItemsBatchUpdateUpdateRequest struct {
 	ctx                                    context.Context
-	ApiService                             *BatchApiService
+	ApiService                             *BatchAPIService
 	batchInputSimplePublicObjectBatchInput *BatchInputSimplePublicObjectBatchInput
 }
 
-func (r ApiBatchUpdateRequest) BatchInputSimplePublicObjectBatchInput(batchInputSimplePublicObjectBatchInput BatchInputSimplePublicObjectBatchInput) ApiBatchUpdateRequest {
+func (r ApiPostCrmV3ObjectsLineItemsBatchUpdateUpdateRequest) BatchInputSimplePublicObjectBatchInput(batchInputSimplePublicObjectBatchInput BatchInputSimplePublicObjectBatchInput) ApiPostCrmV3ObjectsLineItemsBatchUpdateUpdateRequest {
 	r.batchInputSimplePublicObjectBatchInput = &batchInputSimplePublicObjectBatchInput
 	return r
 }
 
-func (r ApiBatchUpdateRequest) Execute() (*BatchResponseSimplePublicObject, *http.Response, error) {
-	return r.ApiService.BatchUpdateExecute(r)
+func (r ApiPostCrmV3ObjectsLineItemsBatchUpdateUpdateRequest) Execute() (*BatchResponseSimplePublicObject, *http.Response, error) {
+	return r.ApiService.PostCrmV3ObjectsLineItemsBatchUpdateUpdateExecute(r)
 }
 
 /*
-BatchUpdate Update a batch of line items
+PostCrmV3ObjectsLineItemsBatchUpdateUpdate Update a batch of line items
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCrmV3ObjectsLineItemsBatchUpdateUpdateRequest
 */
-func (a *BatchApiService) BatchUpdate(ctx context.Context) ApiBatchUpdateRequest {
-	return ApiBatchUpdateRequest{
+func (a *BatchAPIService) PostCrmV3ObjectsLineItemsBatchUpdateUpdate(ctx context.Context) ApiPostCrmV3ObjectsLineItemsBatchUpdateUpdateRequest {
+	return ApiPostCrmV3ObjectsLineItemsBatchUpdateUpdateRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchResponseSimplePublicObject
-func (a *BatchApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*BatchResponseSimplePublicObject, *http.Response, error) {
+//
+//	@return BatchResponseSimplePublicObject
+func (a *BatchAPIService) PostCrmV3ObjectsLineItemsBatchUpdateUpdateExecute(r ApiPostCrmV3ObjectsLineItemsBatchUpdateUpdateRequest) (*BatchResponseSimplePublicObject, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -490,7 +454,7 @@ func (a *BatchApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*BatchRes
 		localVarReturnValue *BatchResponseSimplePublicObject
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchApiService.BatchUpdate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.PostCrmV3ObjectsLineItemsBatchUpdateUpdate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -523,20 +487,6 @@ func (a *BatchApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*BatchRes
 	}
 	// body params
 	localVarPostBody = r.batchInputSimplePublicObjectBatchInput
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

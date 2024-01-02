@@ -17,7 +17,7 @@ docs/AccountingExtensionTerm.md
 docs/AccountingFeatures.md
 docs/ActionResponse.md
 docs/Address.md
-docs/CallbacksApi.md
+docs/CallbacksAPI.md
 docs/CreateInvoiceFeature.md
 docs/CreateInvoiceSubFeatures.md
 docs/CreateUserAccountRequestExternal.md
@@ -26,7 +26,7 @@ docs/Error.md
 docs/ErrorDetail.md
 docs/ExchangeRateResponse.md
 docs/ImportInvoiceFeature.md
-docs/InvoiceApi.md
+docs/InvoiceAPI.md
 docs/InvoiceCreatePaymentRequest.md
 docs/InvoicePdfResponse.md
 docs/InvoiceReadResponse.md
@@ -38,8 +38,8 @@ docs/ObjectSyncFeature.md
 docs/Product.md
 docs/ProductSearchResponse.md
 docs/ResultIdAccountingResponse.md
-docs/SettingsApi.md
-docs/SyncApi.md
+docs/SettingsAPI.md
+docs/SyncAPI.md
 docs/SyncContactsRequest.md
 docs/SyncProductsRequest.md
 docs/Tax.md
@@ -49,7 +49,7 @@ docs/TermsResponse.md
 docs/UnitPrice.md
 docs/UpdatedContact.md
 docs/UpdatedProduct.md
-docs/UserAccountsApi.md
+docs/UserAccountsAPI.md
 git_push.sh
 go.mod
 go.sum
@@ -90,9 +90,4 @@ model_unit_price.go
 model_updated_contact.go
 model_updated_product.go
 response.go
-test/api_callbacks_test.go
-test/api_invoice_test.go
-test/api_settings_test.go
-test/api_sync_test.go
-test/api_user_accounts_test.go
 utils.go

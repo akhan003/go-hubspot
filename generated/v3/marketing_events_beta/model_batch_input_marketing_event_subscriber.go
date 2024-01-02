@@ -1,5 +1,5 @@
 /*
-Marketing Events Extension
+Marketing Marketing Events
 
 These APIs allow you to interact with HubSpot's Marketing Events Extension. It allows you to: * Create, Read or update Marketing Event information in HubSpot * Specify whether a HubSpot contact has registered, attended or cancelled a registration to a Marketing Event. * Specify a URL that can be called to get the details of a Marketing Event.
 
@@ -11,7 +11,9 @@ API version: v3
 package marketing_events_beta
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the BatchInputMarketingEventSubscriber type satisfies the MappedNullable interface at compile time
@@ -22,6 +24,8 @@ type BatchInputMarketingEventSubscriber struct {
 	// List of HubSpot contacts to subscribe to the marketing event
 	Inputs []MarketingEventSubscriber `json:"inputs"`
 }
+
+type _BatchInputMarketingEventSubscriber BatchInputMarketingEventSubscriber
 
 // NewBatchInputMarketingEventSubscriber instantiates a new BatchInputMarketingEventSubscriber object
 // This constructor will assign default values to properties that have it defined,
@@ -77,6 +81,43 @@ func (o BatchInputMarketingEventSubscriber) ToMap() (map[string]interface{}, err
 	toSerialize := map[string]interface{}{}
 	toSerialize["inputs"] = o.Inputs
 	return toSerialize, nil
+}
+
+func (o *BatchInputMarketingEventSubscriber) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"inputs",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchInputMarketingEventSubscriber := _BatchInputMarketingEventSubscriber{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchInputMarketingEventSubscriber)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchInputMarketingEventSubscriber(varBatchInputMarketingEventSubscriber)
+
+	return err
 }
 
 type NullableBatchInputMarketingEventSubscriber struct {

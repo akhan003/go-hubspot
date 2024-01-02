@@ -1,5 +1,5 @@
 /*
-HubDB endpoints
+Hubdb
 
 HubDB is a relational data store that presents data as rows, columns, and cells in a table, much like a spreadsheet. HubDB tables can be added or modified [in the HubSpot CMS](https://knowledge.hubspot.com/cos-general/how-to-edit-hubdb-tables), but you can also use the API endpoints documented here. For more information on HubDB tables and using their data on a HubSpot site, see the [CMS developers site](https://designers.hubspot.com/docs/tools/hubdb). You can also see the [documentation for dynamic pages](https://designers.hubspot.com/docs/tutorials/how-to-build-dynamic-pages-with-hubdb) for more details about the `useForPages` field.  HubDB tables support `draft` and `published` versions. This allows you to update data in the table, either for testing or to allow for a manual approval process, without affecting any live pages using the existing data. Draft data can be reviewed, and published by a user working in HubSpot or published via the API. Draft data can also be discarded, allowing users to go back to the published version of the data without disrupting it. If a table is set to be `allowed for public access`, you can access the published version of the table and rows without any authentication by specifying the portal id via the query parameter `portalId`.
 
@@ -11,7 +11,9 @@ API version: v3
 package hubdb
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponseWithTotalHubDbTableRowV3ForwardPaging type satisfies the MappedNullable interface at compile time
@@ -19,10 +21,14 @@ var _ MappedNullable = &CollectionResponseWithTotalHubDbTableRowV3ForwardPaging{
 
 // CollectionResponseWithTotalHubDbTableRowV3ForwardPaging struct for CollectionResponseWithTotalHubDbTableRowV3ForwardPaging
 type CollectionResponseWithTotalHubDbTableRowV3ForwardPaging struct {
-	Total   int32             `json:"total"`
+	//
+	Total  int32          `json:"total"`
+	Paging *ForwardPaging `json:"paging,omitempty"`
+	//
 	Results []HubDbTableRowV3 `json:"results"`
-	Paging  *ForwardPaging    `json:"paging,omitempty"`
 }
+
+type _CollectionResponseWithTotalHubDbTableRowV3ForwardPaging CollectionResponseWithTotalHubDbTableRowV3ForwardPaging
 
 // NewCollectionResponseWithTotalHubDbTableRowV3ForwardPaging instantiates a new CollectionResponseWithTotalHubDbTableRowV3ForwardPaging object
 // This constructor will assign default values to properties that have it defined,
@@ -67,30 +73,6 @@ func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) SetTotal(v int
 	o.Total = v
 }
 
-// GetResults returns the Results field value
-func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) GetResults() []HubDbTableRowV3 {
-	if o == nil {
-		var ret []HubDbTableRowV3
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) GetResultsOk() ([]HubDbTableRowV3, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) SetResults(v []HubDbTableRowV3) {
-	o.Results = v
-}
-
 // GetPaging returns the Paging field value if set, zero value otherwise.
 func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) GetPaging() ForwardPaging {
 	if o == nil || IsNil(o.Paging) {
@@ -123,6 +105,30 @@ func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) SetPaging(v Fo
 	o.Paging = &v
 }
 
+// GetResults returns the Results field value
+func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) GetResults() []HubDbTableRowV3 {
+	if o == nil {
+		var ret []HubDbTableRowV3
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) GetResultsOk() ([]HubDbTableRowV3, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) SetResults(v []HubDbTableRowV3) {
+	o.Results = v
+}
+
 func (o CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -134,11 +140,49 @@ func (o CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) MarshalJSON() (
 func (o CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["total"] = o.Total
-	toSerialize["results"] = o.Results
 	if !IsNil(o.Paging) {
 		toSerialize["paging"] = o.Paging
 	}
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponseWithTotalHubDbTableRowV3ForwardPaging) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"total",
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponseWithTotalHubDbTableRowV3ForwardPaging := _CollectionResponseWithTotalHubDbTableRowV3ForwardPaging{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponseWithTotalHubDbTableRowV3ForwardPaging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponseWithTotalHubDbTableRowV3ForwardPaging(varCollectionResponseWithTotalHubDbTableRowV3ForwardPaging)
+
+	return err
 }
 
 type NullableCollectionResponseWithTotalHubDbTableRowV3ForwardPaging struct {

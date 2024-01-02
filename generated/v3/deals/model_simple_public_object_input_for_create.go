@@ -11,7 +11,9 @@ API version: v3
 package deals
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SimplePublicObjectInputForCreate type satisfies the MappedNullable interface at compile time
@@ -19,18 +21,20 @@ var _ MappedNullable = &SimplePublicObjectInputForCreate{}
 
 // SimplePublicObjectInputForCreate struct for SimplePublicObjectInputForCreate
 type SimplePublicObjectInputForCreate struct {
-	Properties   map[string]string             `json:"properties"`
 	Associations []PublicAssociationsForObject `json:"associations"`
+	Properties   map[string]string             `json:"properties"`
 }
+
+type _SimplePublicObjectInputForCreate SimplePublicObjectInputForCreate
 
 // NewSimplePublicObjectInputForCreate instantiates a new SimplePublicObjectInputForCreate object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSimplePublicObjectInputForCreate(properties map[string]string, associations []PublicAssociationsForObject) *SimplePublicObjectInputForCreate {
+func NewSimplePublicObjectInputForCreate(associations []PublicAssociationsForObject, properties map[string]string) *SimplePublicObjectInputForCreate {
 	this := SimplePublicObjectInputForCreate{}
-	this.Properties = properties
 	this.Associations = associations
+	this.Properties = properties
 	return &this
 }
 
@@ -40,30 +44,6 @@ func NewSimplePublicObjectInputForCreate(properties map[string]string, associati
 func NewSimplePublicObjectInputForCreateWithDefaults() *SimplePublicObjectInputForCreate {
 	this := SimplePublicObjectInputForCreate{}
 	return &this
-}
-
-// GetProperties returns the Properties field value
-func (o *SimplePublicObjectInputForCreate) GetProperties() map[string]string {
-	if o == nil {
-		var ret map[string]string
-		return ret
-	}
-
-	return o.Properties
-}
-
-// GetPropertiesOk returns a tuple with the Properties field value
-// and a boolean to check if the value has been set.
-func (o *SimplePublicObjectInputForCreate) GetPropertiesOk() (*map[string]string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Properties, true
-}
-
-// SetProperties sets field value
-func (o *SimplePublicObjectInputForCreate) SetProperties(v map[string]string) {
-	o.Properties = v
 }
 
 // GetAssociations returns the Associations field value
@@ -90,6 +70,30 @@ func (o *SimplePublicObjectInputForCreate) SetAssociations(v []PublicAssociation
 	o.Associations = v
 }
 
+// GetProperties returns the Properties field value
+func (o *SimplePublicObjectInputForCreate) GetProperties() map[string]string {
+	if o == nil {
+		var ret map[string]string
+		return ret
+	}
+
+	return o.Properties
+}
+
+// GetPropertiesOk returns a tuple with the Properties field value
+// and a boolean to check if the value has been set.
+func (o *SimplePublicObjectInputForCreate) GetPropertiesOk() (*map[string]string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Properties, true
+}
+
+// SetProperties sets field value
+func (o *SimplePublicObjectInputForCreate) SetProperties(v map[string]string) {
+	o.Properties = v
+}
+
 func (o SimplePublicObjectInputForCreate) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -100,9 +104,47 @@ func (o SimplePublicObjectInputForCreate) MarshalJSON() ([]byte, error) {
 
 func (o SimplePublicObjectInputForCreate) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["properties"] = o.Properties
 	toSerialize["associations"] = o.Associations
+	toSerialize["properties"] = o.Properties
 	return toSerialize, nil
+}
+
+func (o *SimplePublicObjectInputForCreate) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"associations",
+		"properties",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSimplePublicObjectInputForCreate := _SimplePublicObjectInputForCreate{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSimplePublicObjectInputForCreate)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SimplePublicObjectInputForCreate(varSimplePublicObjectInputForCreate)
+
+	return err
 }
 
 type NullableSimplePublicObjectInputForCreate struct {

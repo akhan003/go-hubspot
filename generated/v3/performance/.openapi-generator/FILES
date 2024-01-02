@@ -8,7 +8,7 @@ configuration.go
 docs/Error.md
 docs/ErrorDetail.md
 docs/PerformanceView.md
-docs/PublicPerformanceApi.md
+docs/PublicPerformanceAPI.md
 docs/PublicPerformanceResponse.md
 git_push.sh
 go.mod
@@ -18,5 +18,4 @@ model_error_detail.go
 model_performance_view.go
 model_public_performance_response.go
 response.go
-test/api_public_performance_test.go
 utils.go

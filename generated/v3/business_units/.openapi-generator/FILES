@@ -5,7 +5,7 @@ api/openapi.yaml
 api_business_unit.go
 client.go
 configuration.go
-docs/BusinessUnitApi.md
+docs/BusinessUnitAPI.md
 docs/CollectionResponsePublicBusinessUnitNoPaging.md
 docs/Error.md
 docs/ErrorDetail.md
@@ -20,5 +20,4 @@ model_error_detail.go
 model_public_business_unit.go
 model_public_business_unit_logo_metadata.go
 response.go
-test/api_business_unit_test.go
 utils.go

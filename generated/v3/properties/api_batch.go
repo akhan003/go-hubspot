@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// BatchApiService BatchApi service
-type BatchApiService service
+// BatchAPIService BatchAPI service
+type BatchAPIService service
 
 type ApiBatchArchiveRequest struct {
 	ctx                    context.Context
-	ApiService             *BatchApiService
+	ApiService             *BatchAPIService
 	objectType             string
 	batchInputPropertyName *BatchInputPropertyName
 }
@@ -43,11 +43,11 @@ BatchArchive Archive a batch of properties
 
 Archive a provided list of properties. This method will return a 204 No Content response on success regardless of the initial state of the property (e.g. active, already archived, non-existent).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @return ApiBatchArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@return ApiBatchArchiveRequest
 */
-func (a *BatchApiService) BatchArchive(ctx context.Context, objectType string) ApiBatchArchiveRequest {
+func (a *BatchAPIService) BatchArchive(ctx context.Context, objectType string) ApiBatchArchiveRequest {
 	return ApiBatchArchiveRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -56,14 +56,14 @@ func (a *BatchApiService) BatchArchive(ctx context.Context, objectType string) A
 }
 
 // Execute executes the request
-func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.Response, error) {
+func (a *BatchAPIService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchApiService.BatchArchive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.BatchArchive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -163,7 +163,7 @@ func (a *BatchApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.R
 
 type ApiBatchCreateRequest struct {
 	ctx                      context.Context
-	ApiService               *BatchApiService
+	ApiService               *BatchAPIService
 	objectType               string
 	batchInputPropertyCreate *BatchInputPropertyCreate
 }
@@ -182,11 +182,11 @@ BatchCreate Create a batch of properties
 
 Create a batch of properties using the same rules as when creating an individual property.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @return ApiBatchCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@return ApiBatchCreateRequest
 */
-func (a *BatchApiService) BatchCreate(ctx context.Context, objectType string) ApiBatchCreateRequest {
+func (a *BatchAPIService) BatchCreate(ctx context.Context, objectType string) ApiBatchCreateRequest {
 	return ApiBatchCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -195,8 +195,9 @@ func (a *BatchApiService) BatchCreate(ctx context.Context, objectType string) Ap
 }
 
 // Execute executes the request
-//  @return BatchResponseProperty
-func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchResponseProperty, *http.Response, error) {
+//
+//	@return BatchResponseProperty
+func (a *BatchAPIService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchResponseProperty, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -204,7 +205,7 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 		localVarReturnValue *BatchResponseProperty
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchApiService.BatchCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.BatchCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -313,7 +314,7 @@ func (a *BatchApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchRes
 
 type ApiBatchReadRequest struct {
 	ctx                        context.Context
-	ApiService                 *BatchApiService
+	ApiService                 *BatchAPIService
 	objectType                 string
 	batchReadInputPropertyName *BatchReadInputPropertyName
 }
@@ -332,11 +333,11 @@ BatchRead Read a batch of properties
 
 Read a provided list of properties.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @return ApiBatchReadRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@return ApiBatchReadRequest
 */
-func (a *BatchApiService) BatchRead(ctx context.Context, objectType string) ApiBatchReadRequest {
+func (a *BatchAPIService) BatchRead(ctx context.Context, objectType string) ApiBatchReadRequest {
 	return ApiBatchReadRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -345,8 +346,9 @@ func (a *BatchApiService) BatchRead(ctx context.Context, objectType string) ApiB
 }
 
 // Execute executes the request
-//  @return BatchResponseProperty
-func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchResponseProperty, *http.Response, error) {
+//
+//	@return BatchResponseProperty
+func (a *BatchAPIService) BatchReadExecute(r ApiBatchReadRequest) (*BatchResponseProperty, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -354,7 +356,7 @@ func (a *BatchApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchRespons
 		localVarReturnValue *BatchResponseProperty
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchApiService.BatchRead")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.BatchRead")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

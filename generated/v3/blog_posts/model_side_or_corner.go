@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SideOrCorner type satisfies the MappedNullable interface at compile time
@@ -19,18 +21,20 @@ var _ MappedNullable = &SideOrCorner{}
 
 // SideOrCorner struct for SideOrCorner
 type SideOrCorner struct {
-	VerticalSide   string `json:"verticalSide"`
 	HorizontalSide string `json:"horizontalSide"`
+	VerticalSide   string `json:"verticalSide"`
 }
+
+type _SideOrCorner SideOrCorner
 
 // NewSideOrCorner instantiates a new SideOrCorner object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSideOrCorner(verticalSide string, horizontalSide string) *SideOrCorner {
+func NewSideOrCorner(horizontalSide string, verticalSide string) *SideOrCorner {
 	this := SideOrCorner{}
-	this.VerticalSide = verticalSide
 	this.HorizontalSide = horizontalSide
+	this.VerticalSide = verticalSide
 	return &this
 }
 
@@ -40,30 +44,6 @@ func NewSideOrCorner(verticalSide string, horizontalSide string) *SideOrCorner {
 func NewSideOrCornerWithDefaults() *SideOrCorner {
 	this := SideOrCorner{}
 	return &this
-}
-
-// GetVerticalSide returns the VerticalSide field value
-func (o *SideOrCorner) GetVerticalSide() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.VerticalSide
-}
-
-// GetVerticalSideOk returns a tuple with the VerticalSide field value
-// and a boolean to check if the value has been set.
-func (o *SideOrCorner) GetVerticalSideOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.VerticalSide, true
-}
-
-// SetVerticalSide sets field value
-func (o *SideOrCorner) SetVerticalSide(v string) {
-	o.VerticalSide = v
 }
 
 // GetHorizontalSide returns the HorizontalSide field value
@@ -90,6 +70,30 @@ func (o *SideOrCorner) SetHorizontalSide(v string) {
 	o.HorizontalSide = v
 }
 
+// GetVerticalSide returns the VerticalSide field value
+func (o *SideOrCorner) GetVerticalSide() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.VerticalSide
+}
+
+// GetVerticalSideOk returns a tuple with the VerticalSide field value
+// and a boolean to check if the value has been set.
+func (o *SideOrCorner) GetVerticalSideOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.VerticalSide, true
+}
+
+// SetVerticalSide sets field value
+func (o *SideOrCorner) SetVerticalSide(v string) {
+	o.VerticalSide = v
+}
+
 func (o SideOrCorner) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -100,9 +104,47 @@ func (o SideOrCorner) MarshalJSON() ([]byte, error) {
 
 func (o SideOrCorner) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["verticalSide"] = o.VerticalSide
 	toSerialize["horizontalSide"] = o.HorizontalSide
+	toSerialize["verticalSide"] = o.VerticalSide
 	return toSerialize, nil
+}
+
+func (o *SideOrCorner) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"horizontalSide",
+		"verticalSide",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSideOrCorner := _SideOrCorner{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSideOrCorner)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SideOrCorner(varSideOrCorner)
+
+	return err
 }
 
 type NullableSideOrCorner struct {

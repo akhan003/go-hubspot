@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// CoreApiService CoreApi service
-type CoreApiService service
+// CoreAPIService CoreAPI service
+type CoreAPIService service
 
 type ApiArchiveRequest struct {
 	ctx          context.Context
-	ApiService   *CoreApiService
+	ApiService   *CoreAPIService
 	objectType   string
 	propertyName string
 }
@@ -38,12 +38,12 @@ Archive Archive a property
 
 Move a property identified by {propertyName} to the recycling bin.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param propertyName
- @return ApiArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param propertyName
+	@return ApiArchiveRequest
 */
-func (a *CoreApiService) Archive(ctx context.Context, objectType string, propertyName string) ApiArchiveRequest {
+func (a *CoreAPIService) Archive(ctx context.Context, objectType string, propertyName string) ApiArchiveRequest {
 	return ApiArchiveRequest{
 		ApiService:   a,
 		ctx:          ctx,
@@ -53,14 +53,14 @@ func (a *CoreApiService) Archive(ctx context.Context, objectType string, propert
 }
 
 // Execute executes the request
-func (a *CoreApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, error) {
+func (a *CoreAPIService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.Archive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.Archive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -156,7 +156,7 @@ func (a *CoreApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, er
 
 type ApiCreateRequest struct {
 	ctx            context.Context
-	ApiService     *CoreApiService
+	ApiService     *CoreAPIService
 	objectType     string
 	propertyCreate *PropertyCreate
 }
@@ -175,11 +175,11 @@ Create Create a property
 
 Create and return a copy of a new property for the specified object type.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @return ApiCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@return ApiCreateRequest
 */
-func (a *CoreApiService) Create(ctx context.Context, objectType string) ApiCreateRequest {
+func (a *CoreAPIService) Create(ctx context.Context, objectType string) ApiCreateRequest {
 	return ApiCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -188,8 +188,9 @@ func (a *CoreApiService) Create(ctx context.Context, objectType string) ApiCreat
 }
 
 // Execute executes the request
-//  @return Property
-func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*Property, *http.Response, error) {
+//
+//	@return Property
+func (a *CoreAPIService) CreateExecute(r ApiCreateRequest) (*Property, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -197,7 +198,7 @@ func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*Property, *http.Res
 		localVarReturnValue *Property
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.Create")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.Create")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -306,7 +307,7 @@ func (a *CoreApiService) CreateExecute(r ApiCreateRequest) (*Property, *http.Res
 
 type ApiGetAllRequest struct {
 	ctx        context.Context
-	ApiService *CoreApiService
+	ApiService *CoreAPIService
 	objectType string
 	archived   *bool
 	properties *string
@@ -332,11 +333,11 @@ GetAll Read all properties
 
 Read all existing properties for the specified object type and HubSpot account.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @return ApiGetAllRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@return ApiGetAllRequest
 */
-func (a *CoreApiService) GetAll(ctx context.Context, objectType string) ApiGetAllRequest {
+func (a *CoreAPIService) GetAll(ctx context.Context, objectType string) ApiGetAllRequest {
 	return ApiGetAllRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -345,8 +346,9 @@ func (a *CoreApiService) GetAll(ctx context.Context, objectType string) ApiGetAl
 }
 
 // Execute executes the request
-//  @return CollectionResponsePropertyNoPaging
-func (a *CoreApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponsePropertyNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponsePropertyNoPaging
+func (a *CoreAPIService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponsePropertyNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -354,7 +356,7 @@ func (a *CoreApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponseP
 		localVarReturnValue *CollectionResponsePropertyNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.GetAll")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.GetAll")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -368,6 +370,9 @@ func (a *CoreApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponseP
 
 	if r.archived != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
 	}
 	if r.properties != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "properties", r.properties, "")
@@ -464,7 +469,7 @@ func (a *CoreApiService) GetAllExecute(r ApiGetAllRequest) (*CollectionResponseP
 
 type ApiGetByNameRequest struct {
 	ctx          context.Context
-	ApiService   *CoreApiService
+	ApiService   *CoreAPIService
 	objectType   string
 	propertyName string
 	archived     *bool
@@ -491,12 +496,12 @@ GetByName Read a property
 
 Read a property identified by {propertyName}.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param propertyName
- @return ApiGetByNameRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param propertyName
+	@return ApiGetByNameRequest
 */
-func (a *CoreApiService) GetByName(ctx context.Context, objectType string, propertyName string) ApiGetByNameRequest {
+func (a *CoreAPIService) GetByName(ctx context.Context, objectType string, propertyName string) ApiGetByNameRequest {
 	return ApiGetByNameRequest{
 		ApiService:   a,
 		ctx:          ctx,
@@ -506,8 +511,9 @@ func (a *CoreApiService) GetByName(ctx context.Context, objectType string, prope
 }
 
 // Execute executes the request
-//  @return Property
-func (a *CoreApiService) GetByNameExecute(r ApiGetByNameRequest) (*Property, *http.Response, error) {
+//
+//	@return Property
+func (a *CoreAPIService) GetByNameExecute(r ApiGetByNameRequest) (*Property, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -515,7 +521,7 @@ func (a *CoreApiService) GetByNameExecute(r ApiGetByNameRequest) (*Property, *ht
 		localVarReturnValue *Property
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.GetByName")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.GetByName")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -530,6 +536,9 @@ func (a *CoreApiService) GetByNameExecute(r ApiGetByNameRequest) (*Property, *ht
 
 	if r.archived != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
 	}
 	if r.properties != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "properties", r.properties, "")
@@ -626,7 +635,7 @@ func (a *CoreApiService) GetByNameExecute(r ApiGetByNameRequest) (*Property, *ht
 
 type ApiUpdateRequest struct {
 	ctx            context.Context
-	ApiService     *CoreApiService
+	ApiService     *CoreAPIService
 	objectType     string
 	propertyName   string
 	propertyUpdate *PropertyUpdate
@@ -646,12 +655,12 @@ Update Update a property
 
 Perform a partial update of a property identified by {propertyName}. Provided fields will be overwritten.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectType
- @param propertyName
- @return ApiUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectType
+	@param propertyName
+	@return ApiUpdateRequest
 */
-func (a *CoreApiService) Update(ctx context.Context, objectType string, propertyName string) ApiUpdateRequest {
+func (a *CoreAPIService) Update(ctx context.Context, objectType string, propertyName string) ApiUpdateRequest {
 	return ApiUpdateRequest{
 		ApiService:   a,
 		ctx:          ctx,
@@ -661,8 +670,9 @@ func (a *CoreApiService) Update(ctx context.Context, objectType string, property
 }
 
 // Execute executes the request
-//  @return Property
-func (a *CoreApiService) UpdateExecute(r ApiUpdateRequest) (*Property, *http.Response, error) {
+//
+//	@return Property
+func (a *CoreAPIService) UpdateExecute(r ApiUpdateRequest) (*Property, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -670,7 +680,7 @@ func (a *CoreApiService) UpdateExecute(r ApiUpdateRequest) (*Property, *http.Res
 		localVarReturnValue *Property
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreApiService.Update")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CoreAPIService.Update")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

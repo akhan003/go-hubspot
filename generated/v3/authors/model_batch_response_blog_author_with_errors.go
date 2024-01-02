@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+CMS Authors
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package authors
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -20,34 +22,36 @@ var _ MappedNullable = &BatchResponseBlogAuthorWithErrors{}
 
 // BatchResponseBlogAuthorWithErrors Response object for batch operations on blog authors with errors.
 type BatchResponseBlogAuthorWithErrors struct {
-	// Status of batch operation.
-	Status string `json:"status"`
-	// Results of batch operation.
-	Results []BlogAuthor `json:"results"`
+	// Time of batch operation completion.
+	CompletedAt time.Time `json:"completedAt"`
 	// Number of errors.
 	NumErrors *int32 `json:"numErrors,omitempty"`
-	// Errors in batch operation.
-	Errors []StandardError `json:"errors,omitempty"`
 	// Time of batch operation request.
 	RequestedAt *time.Time `json:"requestedAt,omitempty"`
 	// Time of batch operation start.
 	StartedAt time.Time `json:"startedAt"`
-	// Time of batch operation completion.
-	CompletedAt time.Time `json:"completedAt"`
 	// Links associated with batch operation.
 	Links *map[string]string `json:"links,omitempty"`
+	// Results of batch operation.
+	Results []BlogAuthor `json:"results"`
+	// Errors in batch operation.
+	Errors []StandardError `json:"errors,omitempty"`
+	// Status of batch operation.
+	Status string `json:"status"`
 }
+
+type _BatchResponseBlogAuthorWithErrors BatchResponseBlogAuthorWithErrors
 
 // NewBatchResponseBlogAuthorWithErrors instantiates a new BatchResponseBlogAuthorWithErrors object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBatchResponseBlogAuthorWithErrors(status string, results []BlogAuthor, startedAt time.Time, completedAt time.Time) *BatchResponseBlogAuthorWithErrors {
+func NewBatchResponseBlogAuthorWithErrors(completedAt time.Time, startedAt time.Time, results []BlogAuthor, status string) *BatchResponseBlogAuthorWithErrors {
 	this := BatchResponseBlogAuthorWithErrors{}
-	this.Status = status
-	this.Results = results
-	this.StartedAt = startedAt
 	this.CompletedAt = completedAt
+	this.StartedAt = startedAt
+	this.Results = results
+	this.Status = status
 	return &this
 }
 
@@ -59,52 +63,28 @@ func NewBatchResponseBlogAuthorWithErrorsWithDefaults() *BatchResponseBlogAuthor
 	return &this
 }
 
-// GetStatus returns the Status field value
-func (o *BatchResponseBlogAuthorWithErrors) GetStatus() string {
+// GetCompletedAt returns the CompletedAt field value
+func (o *BatchResponseBlogAuthorWithErrors) GetCompletedAt() time.Time {
 	if o == nil {
-		var ret string
+		var ret time.Time
 		return ret
 	}
 
-	return o.Status
+	return o.CompletedAt
 }
 
-// GetStatusOk returns a tuple with the Status field value
+// GetCompletedAtOk returns a tuple with the CompletedAt field value
 // and a boolean to check if the value has been set.
-func (o *BatchResponseBlogAuthorWithErrors) GetStatusOk() (*string, bool) {
+func (o *BatchResponseBlogAuthorWithErrors) GetCompletedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Status, true
+	return &o.CompletedAt, true
 }
 
-// SetStatus sets field value
-func (o *BatchResponseBlogAuthorWithErrors) SetStatus(v string) {
-	o.Status = v
-}
-
-// GetResults returns the Results field value
-func (o *BatchResponseBlogAuthorWithErrors) GetResults() []BlogAuthor {
-	if o == nil {
-		var ret []BlogAuthor
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponseBlogAuthorWithErrors) GetResultsOk() ([]BlogAuthor, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *BatchResponseBlogAuthorWithErrors) SetResults(v []BlogAuthor) {
-	o.Results = v
+// SetCompletedAt sets field value
+func (o *BatchResponseBlogAuthorWithErrors) SetCompletedAt(v time.Time) {
+	o.CompletedAt = v
 }
 
 // GetNumErrors returns the NumErrors field value if set, zero value otherwise.
@@ -137,38 +117,6 @@ func (o *BatchResponseBlogAuthorWithErrors) HasNumErrors() bool {
 // SetNumErrors gets a reference to the given int32 and assigns it to the NumErrors field.
 func (o *BatchResponseBlogAuthorWithErrors) SetNumErrors(v int32) {
 	o.NumErrors = &v
-}
-
-// GetErrors returns the Errors field value if set, zero value otherwise.
-func (o *BatchResponseBlogAuthorWithErrors) GetErrors() []StandardError {
-	if o == nil || IsNil(o.Errors) {
-		var ret []StandardError
-		return ret
-	}
-	return o.Errors
-}
-
-// GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *BatchResponseBlogAuthorWithErrors) GetErrorsOk() ([]StandardError, bool) {
-	if o == nil || IsNil(o.Errors) {
-		return nil, false
-	}
-	return o.Errors, true
-}
-
-// HasErrors returns a boolean if a field has been set.
-func (o *BatchResponseBlogAuthorWithErrors) HasErrors() bool {
-	if o != nil && !IsNil(o.Errors) {
-		return true
-	}
-
-	return false
-}
-
-// SetErrors gets a reference to the given []StandardError and assigns it to the Errors field.
-func (o *BatchResponseBlogAuthorWithErrors) SetErrors(v []StandardError) {
-	o.Errors = v
 }
 
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
@@ -227,30 +175,6 @@ func (o *BatchResponseBlogAuthorWithErrors) SetStartedAt(v time.Time) {
 	o.StartedAt = v
 }
 
-// GetCompletedAt returns the CompletedAt field value
-func (o *BatchResponseBlogAuthorWithErrors) GetCompletedAt() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.CompletedAt
-}
-
-// GetCompletedAtOk returns a tuple with the CompletedAt field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponseBlogAuthorWithErrors) GetCompletedAtOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.CompletedAt, true
-}
-
-// SetCompletedAt sets field value
-func (o *BatchResponseBlogAuthorWithErrors) SetCompletedAt(v time.Time) {
-	o.CompletedAt = v
-}
-
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *BatchResponseBlogAuthorWithErrors) GetLinks() map[string]string {
 	if o == nil || IsNil(o.Links) {
@@ -283,6 +207,86 @@ func (o *BatchResponseBlogAuthorWithErrors) SetLinks(v map[string]string) {
 	o.Links = &v
 }
 
+// GetResults returns the Results field value
+func (o *BatchResponseBlogAuthorWithErrors) GetResults() []BlogAuthor {
+	if o == nil {
+		var ret []BlogAuthor
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponseBlogAuthorWithErrors) GetResultsOk() ([]BlogAuthor, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *BatchResponseBlogAuthorWithErrors) SetResults(v []BlogAuthor) {
+	o.Results = v
+}
+
+// GetErrors returns the Errors field value if set, zero value otherwise.
+func (o *BatchResponseBlogAuthorWithErrors) GetErrors() []StandardError {
+	if o == nil || IsNil(o.Errors) {
+		var ret []StandardError
+		return ret
+	}
+	return o.Errors
+}
+
+// GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BatchResponseBlogAuthorWithErrors) GetErrorsOk() ([]StandardError, bool) {
+	if o == nil || IsNil(o.Errors) {
+		return nil, false
+	}
+	return o.Errors, true
+}
+
+// HasErrors returns a boolean if a field has been set.
+func (o *BatchResponseBlogAuthorWithErrors) HasErrors() bool {
+	if o != nil && !IsNil(o.Errors) {
+		return true
+	}
+
+	return false
+}
+
+// SetErrors gets a reference to the given []StandardError and assigns it to the Errors field.
+func (o *BatchResponseBlogAuthorWithErrors) SetErrors(v []StandardError) {
+	o.Errors = v
+}
+
+// GetStatus returns the Status field value
+func (o *BatchResponseBlogAuthorWithErrors) GetStatus() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponseBlogAuthorWithErrors) GetStatusOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Status, true
+}
+
+// SetStatus sets field value
+func (o *BatchResponseBlogAuthorWithErrors) SetStatus(v string) {
+	o.Status = v
+}
+
 func (o BatchResponseBlogAuthorWithErrors) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -293,23 +297,63 @@ func (o BatchResponseBlogAuthorWithErrors) MarshalJSON() ([]byte, error) {
 
 func (o BatchResponseBlogAuthorWithErrors) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["status"] = o.Status
-	toSerialize["results"] = o.Results
+	toSerialize["completedAt"] = o.CompletedAt
 	if !IsNil(o.NumErrors) {
 		toSerialize["numErrors"] = o.NumErrors
-	}
-	if !IsNil(o.Errors) {
-		toSerialize["errors"] = o.Errors
 	}
 	if !IsNil(o.RequestedAt) {
 		toSerialize["requestedAt"] = o.RequestedAt
 	}
 	toSerialize["startedAt"] = o.StartedAt
-	toSerialize["completedAt"] = o.CompletedAt
 	if !IsNil(o.Links) {
 		toSerialize["links"] = o.Links
 	}
+	toSerialize["results"] = o.Results
+	if !IsNil(o.Errors) {
+		toSerialize["errors"] = o.Errors
+	}
+	toSerialize["status"] = o.Status
 	return toSerialize, nil
+}
+
+func (o *BatchResponseBlogAuthorWithErrors) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"completedAt",
+		"startedAt",
+		"results",
+		"status",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchResponseBlogAuthorWithErrors := _BatchResponseBlogAuthorWithErrors{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchResponseBlogAuthorWithErrors)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchResponseBlogAuthorWithErrors(varBatchResponseBlogAuthorWithErrors)
+
+	return err
 }
 
 type NullableBatchResponseBlogAuthorWithErrors struct {

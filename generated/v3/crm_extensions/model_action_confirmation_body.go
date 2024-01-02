@@ -11,7 +11,9 @@ API version: v3
 package crm_extensions
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the ActionConfirmationBody type satisfies the MappedNullable interface at compile time
@@ -23,6 +25,8 @@ type ActionConfirmationBody struct {
 	ConfirmButtonLabel string `json:"confirmButtonLabel"`
 	CancelButtonLabel  string `json:"cancelButtonLabel"`
 }
+
+type _ActionConfirmationBody ActionConfirmationBody
 
 // NewActionConfirmationBody instantiates a new ActionConfirmationBody object
 // This constructor will assign default values to properties that have it defined,
@@ -130,6 +134,45 @@ func (o ActionConfirmationBody) ToMap() (map[string]interface{}, error) {
 	toSerialize["confirmButtonLabel"] = o.ConfirmButtonLabel
 	toSerialize["cancelButtonLabel"] = o.CancelButtonLabel
 	return toSerialize, nil
+}
+
+func (o *ActionConfirmationBody) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"prompt",
+		"confirmButtonLabel",
+		"cancelButtonLabel",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varActionConfirmationBody := _ActionConfirmationBody{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varActionConfirmationBody)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ActionConfirmationBody(varActionConfirmationBody)
+
+	return err
 }
 
 type NullableActionConfirmationBody struct {

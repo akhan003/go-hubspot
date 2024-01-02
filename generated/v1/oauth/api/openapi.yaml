@@ -359,6 +359,7 @@ components:
           type: string
         refresh_token:
           type: string
+  securitySchemes: {}
 x-hubspot-available-client-libraries:
 - PHP
 - Node

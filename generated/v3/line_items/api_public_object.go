@@ -18,40 +18,41 @@ import (
 	"net/url"
 )
 
-// PublicObjectApiService PublicObjectApi service
-type PublicObjectApiService service
+// PublicObjectAPIService PublicObjectAPI service
+type PublicObjectAPIService service
 
-type ApiMergeRequest struct {
+type ApiPostCrmV3ObjectsLineItemsMergeMergeRequest struct {
 	ctx              context.Context
-	ApiService       *PublicObjectApiService
+	ApiService       *PublicObjectAPIService
 	publicMergeInput *PublicMergeInput
 }
 
-func (r ApiMergeRequest) PublicMergeInput(publicMergeInput PublicMergeInput) ApiMergeRequest {
+func (r ApiPostCrmV3ObjectsLineItemsMergeMergeRequest) PublicMergeInput(publicMergeInput PublicMergeInput) ApiPostCrmV3ObjectsLineItemsMergeMergeRequest {
 	r.publicMergeInput = &publicMergeInput
 	return r
 }
 
-func (r ApiMergeRequest) Execute() (*SimplePublicObject, *http.Response, error) {
-	return r.ApiService.MergeExecute(r)
+func (r ApiPostCrmV3ObjectsLineItemsMergeMergeRequest) Execute() (*SimplePublicObject, *http.Response, error) {
+	return r.ApiService.PostCrmV3ObjectsLineItemsMergeMergeExecute(r)
 }
 
 /*
-Merge Merge two line items with same type
+PostCrmV3ObjectsLineItemsMergeMerge Merge two line items with same type
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiMergeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCrmV3ObjectsLineItemsMergeMergeRequest
 */
-func (a *PublicObjectApiService) Merge(ctx context.Context) ApiMergeRequest {
-	return ApiMergeRequest{
+func (a *PublicObjectAPIService) PostCrmV3ObjectsLineItemsMergeMerge(ctx context.Context) ApiPostCrmV3ObjectsLineItemsMergeMergeRequest {
+	return ApiPostCrmV3ObjectsLineItemsMergeMergeRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return SimplePublicObject
-func (a *PublicObjectApiService) MergeExecute(r ApiMergeRequest) (*SimplePublicObject, *http.Response, error) {
+//
+//	@return SimplePublicObject
+func (a *PublicObjectAPIService) PostCrmV3ObjectsLineItemsMergeMergeExecute(r ApiPostCrmV3ObjectsLineItemsMergeMergeRequest) (*SimplePublicObject, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -59,7 +60,7 @@ func (a *PublicObjectApiService) MergeExecute(r ApiMergeRequest) (*SimplePublicO
 		localVarReturnValue *SimplePublicObject
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicObjectApiService.Merge")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicObjectAPIService.PostCrmV3ObjectsLineItemsMergeMerge")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -92,20 +93,6 @@ func (a *PublicObjectApiService) MergeExecute(r ApiMergeRequest) (*SimplePublicO
 	}
 	// body params
 	localVarPostBody = r.publicMergeInput
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

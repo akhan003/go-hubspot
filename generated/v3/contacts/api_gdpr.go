@@ -18,12 +18,12 @@ import (
 	"net/url"
 )
 
-// GDPRApiService GDPRApi service
-type GDPRApiService service
+// GDPRAPIService GDPRAPI service
+type GDPRAPIService service
 
 type ApiDeleteRequest struct {
 	ctx                   context.Context
-	ApiService            *GDPRApiService
+	ApiService            *GDPRAPIService
 	publicGdprDeleteInput *PublicGdprDeleteInput
 }
 
@@ -41,10 +41,10 @@ Delete GDPR DELETE
 
 Permanently delete a contact and all associated content to follow GDPR. Use optional property 'idProperty' set to 'email' to identify contact by email address. If email address is not found, the email address will be added to a blocklist and prevent it from being used in the future.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiDeleteRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiDeleteRequest
 */
-func (a *GDPRApiService) Delete(ctx context.Context) ApiDeleteRequest {
+func (a *GDPRAPIService) Delete(ctx context.Context) ApiDeleteRequest {
 	return ApiDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -52,14 +52,14 @@ func (a *GDPRApiService) Delete(ctx context.Context) ApiDeleteRequest {
 }
 
 // Execute executes the request
-func (a *GDPRApiService) DeleteExecute(r ApiDeleteRequest) (*http.Response, error) {
+func (a *GDPRAPIService) DeleteExecute(r ApiDeleteRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GDPRApiService.Delete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GDPRAPIService.Delete")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -92,20 +92,6 @@ func (a *GDPRApiService) DeleteExecute(r ApiDeleteRequest) (*http.Response, erro
 	}
 	// body params
 	localVarPostBody = r.publicGdprDeleteInput
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

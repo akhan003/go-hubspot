@@ -1,5 +1,5 @@
 /*
-Custom Behavioral Events API
+Events Send Event Completions
 
 HTTP API for triggering instances of custom behavioral events
 
@@ -18,48 +18,48 @@ import (
 	"net/url"
 )
 
-// BehavioralEventsTrackingApiService BehavioralEventsTrackingApi service
-type BehavioralEventsTrackingApiService service
+// BehavioralEventsTrackingAPIService BehavioralEventsTrackingAPI service
+type BehavioralEventsTrackingAPIService service
 
-type ApiSendRequest struct {
+type ApiSendSendRequest struct {
 	ctx                                  context.Context
-	ApiService                           *BehavioralEventsTrackingApiService
+	ApiService                           *BehavioralEventsTrackingAPIService
 	behavioralEventHttpCompletionRequest *BehavioralEventHttpCompletionRequest
 }
 
-func (r ApiSendRequest) BehavioralEventHttpCompletionRequest(behavioralEventHttpCompletionRequest BehavioralEventHttpCompletionRequest) ApiSendRequest {
+func (r ApiSendSendRequest) BehavioralEventHttpCompletionRequest(behavioralEventHttpCompletionRequest BehavioralEventHttpCompletionRequest) ApiSendSendRequest {
 	r.behavioralEventHttpCompletionRequest = &behavioralEventHttpCompletionRequest
 	return r
 }
 
-func (r ApiSendRequest) Execute() (*http.Response, error) {
-	return r.ApiService.SendExecute(r)
+func (r ApiSendSendRequest) Execute() (*http.Response, error) {
+	return r.ApiService.SendSendExecute(r)
 }
 
 /*
-Send Sends Custom Behavioral Event
+SendSend Sends Custom Behavioral Event
 
 Endpoint to send an instance of a behavioral event
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSendRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSendSendRequest
 */
-func (a *BehavioralEventsTrackingApiService) Send(ctx context.Context) ApiSendRequest {
-	return ApiSendRequest{
+func (a *BehavioralEventsTrackingAPIService) SendSend(ctx context.Context) ApiSendSendRequest {
+	return ApiSendSendRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-func (a *BehavioralEventsTrackingApiService) SendExecute(r ApiSendRequest) (*http.Response, error) {
+func (a *BehavioralEventsTrackingAPIService) SendSendExecute(r ApiSendSendRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BehavioralEventsTrackingApiService.Send")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BehavioralEventsTrackingAPIService.SendSend")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

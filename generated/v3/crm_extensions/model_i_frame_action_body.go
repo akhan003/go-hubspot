@@ -11,7 +11,9 @@ API version: v3
 package crm_extensions
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the IFrameActionBody type satisfies the MappedNullable interface at compile time
@@ -26,6 +28,8 @@ type IFrameActionBody struct {
 	Label                 *string  `json:"label,omitempty"`
 	PropertyNamesIncluded []string `json:"propertyNamesIncluded"`
 }
+
+type _IFrameActionBody IFrameActionBody
 
 // NewIFrameActionBody instantiates a new IFrameActionBody object
 // This constructor will assign default values to properties that have it defined,
@@ -222,6 +226,47 @@ func (o IFrameActionBody) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["propertyNamesIncluded"] = o.PropertyNamesIncluded
 	return toSerialize, nil
+}
+
+func (o *IFrameActionBody) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"type",
+		"width",
+		"height",
+		"url",
+		"propertyNamesIncluded",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varIFrameActionBody := _IFrameActionBody{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varIFrameActionBody)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IFrameActionBody(varIFrameActionBody)
+
+	return err
 }
 
 type NullableIFrameActionBody struct {

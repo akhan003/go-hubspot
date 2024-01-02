@@ -16,12 +16,12 @@ import (
 	"net/url"
 )
 
-// TokensApiService TokensApi service
-type TokensApiService service
+// TokensAPIService TokensAPI service
+type TokensAPIService service
 
 type ApiPostOauthV1TokenCreateRequest struct {
 	ctx          context.Context
-	ApiService   *TokensApiService
+	ApiService   *TokensAPIService
 	grantType    *string
 	code         *string
 	redirectUri  *string
@@ -67,10 +67,10 @@ func (r ApiPostOauthV1TokenCreateRequest) Execute() (*TokenResponseIF, *http.Res
 /*
 PostOauthV1TokenCreate Method for PostOauthV1TokenCreate
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiPostOauthV1TokenCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostOauthV1TokenCreateRequest
 */
-func (a *TokensApiService) PostOauthV1TokenCreate(ctx context.Context) ApiPostOauthV1TokenCreateRequest {
+func (a *TokensAPIService) PostOauthV1TokenCreate(ctx context.Context) ApiPostOauthV1TokenCreateRequest {
 	return ApiPostOauthV1TokenCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -78,8 +78,9 @@ func (a *TokensApiService) PostOauthV1TokenCreate(ctx context.Context) ApiPostOa
 }
 
 // Execute executes the request
-//  @return TokenResponseIF
-func (a *TokensApiService) PostOauthV1TokenCreateExecute(r ApiPostOauthV1TokenCreateRequest) (*TokenResponseIF, *http.Response, error) {
+//
+//	@return TokenResponseIF
+func (a *TokensAPIService) PostOauthV1TokenCreateExecute(r ApiPostOauthV1TokenCreateRequest) (*TokenResponseIF, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -87,7 +88,7 @@ func (a *TokensApiService) PostOauthV1TokenCreateExecute(r ApiPostOauthV1TokenCr
 		localVarReturnValue *TokenResponseIF
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TokensApiService.PostOauthV1TokenCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TokensAPIService.PostOauthV1TokenCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -11,7 +11,9 @@ API version: v3
 package associations
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -29,6 +31,8 @@ type BatchResponsePublicAssociationWithErrors struct {
 	CompletedAt time.Time           `json:"completedAt"`
 	Links       *map[string]string  `json:"links,omitempty"`
 }
+
+type _BatchResponsePublicAssociationWithErrors BatchResponsePublicAssociationWithErrors
 
 // NewBatchResponsePublicAssociationWithErrors instantiates a new BatchResponsePublicAssociationWithErrors object
 // This constructor will assign default values to properties that have it defined,
@@ -302,6 +306,46 @@ func (o BatchResponsePublicAssociationWithErrors) ToMap() (map[string]interface{
 		toSerialize["links"] = o.Links
 	}
 	return toSerialize, nil
+}
+
+func (o *BatchResponsePublicAssociationWithErrors) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"status",
+		"results",
+		"startedAt",
+		"completedAt",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchResponsePublicAssociationWithErrors := _BatchResponsePublicAssociationWithErrors{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchResponsePublicAssociationWithErrors)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchResponsePublicAssociationWithErrors(varBatchResponsePublicAssociationWithErrors)
+
+	return err
 }
 
 type NullableBatchResponsePublicAssociationWithErrors struct {

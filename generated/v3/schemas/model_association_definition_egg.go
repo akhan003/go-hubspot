@@ -11,7 +11,9 @@ API version: v3
 package schemas
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the AssociationDefinitionEgg type satisfies the MappedNullable interface at compile time
@@ -21,11 +23,13 @@ var _ MappedNullable = &AssociationDefinitionEgg{}
 type AssociationDefinitionEgg struct {
 	// ID of the primary object type to link from.
 	FromObjectTypeId string `json:"fromObjectTypeId"`
-	// ID of the target object type ID to link to.
-	ToObjectTypeId string `json:"toObjectTypeId"`
 	// A unique name for this association.
 	Name *string `json:"name,omitempty"`
+	// ID of the target object type ID to link to.
+	ToObjectTypeId string `json:"toObjectTypeId"`
 }
+
+type _AssociationDefinitionEgg AssociationDefinitionEgg
 
 // NewAssociationDefinitionEgg instantiates a new AssociationDefinitionEgg object
 // This constructor will assign default values to properties that have it defined,
@@ -70,30 +74,6 @@ func (o *AssociationDefinitionEgg) SetFromObjectTypeId(v string) {
 	o.FromObjectTypeId = v
 }
 
-// GetToObjectTypeId returns the ToObjectTypeId field value
-func (o *AssociationDefinitionEgg) GetToObjectTypeId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.ToObjectTypeId
-}
-
-// GetToObjectTypeIdOk returns a tuple with the ToObjectTypeId field value
-// and a boolean to check if the value has been set.
-func (o *AssociationDefinitionEgg) GetToObjectTypeIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.ToObjectTypeId, true
-}
-
-// SetToObjectTypeId sets field value
-func (o *AssociationDefinitionEgg) SetToObjectTypeId(v string) {
-	o.ToObjectTypeId = v
-}
-
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *AssociationDefinitionEgg) GetName() string {
 	if o == nil || IsNil(o.Name) {
@@ -126,6 +106,30 @@ func (o *AssociationDefinitionEgg) SetName(v string) {
 	o.Name = &v
 }
 
+// GetToObjectTypeId returns the ToObjectTypeId field value
+func (o *AssociationDefinitionEgg) GetToObjectTypeId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.ToObjectTypeId
+}
+
+// GetToObjectTypeIdOk returns a tuple with the ToObjectTypeId field value
+// and a boolean to check if the value has been set.
+func (o *AssociationDefinitionEgg) GetToObjectTypeIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ToObjectTypeId, true
+}
+
+// SetToObjectTypeId sets field value
+func (o *AssociationDefinitionEgg) SetToObjectTypeId(v string) {
+	o.ToObjectTypeId = v
+}
+
 func (o AssociationDefinitionEgg) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -137,11 +141,49 @@ func (o AssociationDefinitionEgg) MarshalJSON() ([]byte, error) {
 func (o AssociationDefinitionEgg) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["fromObjectTypeId"] = o.FromObjectTypeId
-	toSerialize["toObjectTypeId"] = o.ToObjectTypeId
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
+	toSerialize["toObjectTypeId"] = o.ToObjectTypeId
 	return toSerialize, nil
+}
+
+func (o *AssociationDefinitionEgg) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"fromObjectTypeId",
+		"toObjectTypeId",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAssociationDefinitionEgg := _AssociationDefinitionEgg{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAssociationDefinitionEgg)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AssociationDefinitionEgg(varAssociationDefinitionEgg)
+
+	return err
 }
 
 type NullableAssociationDefinitionEgg struct {

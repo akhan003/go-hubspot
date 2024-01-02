@@ -1,5 +1,5 @@
 /*
-CRM Owners
+Crm Owners
 
 HubSpot uses **owners** to assign CRM objects to specific people in your organization. The endpoints described here are used to get a list of the owners that are available for an account. To assign an owner to an object, set the hubspot_owner_id property using the appropriate CRM object update or create a request.  If teams are available for your HubSpot tier, these endpoints will also indicate which team(s) an owner can access, as well as which team is the owner's primary team.
 
@@ -11,7 +11,9 @@ API version: v3
 package owners
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponsePublicOwnerForwardPaging type satisfies the MappedNullable interface at compile time
@@ -19,9 +21,11 @@ var _ MappedNullable = &CollectionResponsePublicOwnerForwardPaging{}
 
 // CollectionResponsePublicOwnerForwardPaging struct for CollectionResponsePublicOwnerForwardPaging
 type CollectionResponsePublicOwnerForwardPaging struct {
-	Results []PublicOwner  `json:"results"`
 	Paging  *ForwardPaging `json:"paging,omitempty"`
+	Results []PublicOwner  `json:"results"`
 }
+
+type _CollectionResponsePublicOwnerForwardPaging CollectionResponsePublicOwnerForwardPaging
 
 // NewCollectionResponsePublicOwnerForwardPaging instantiates a new CollectionResponsePublicOwnerForwardPaging object
 // This constructor will assign default values to properties that have it defined,
@@ -39,30 +43,6 @@ func NewCollectionResponsePublicOwnerForwardPaging(results []PublicOwner) *Colle
 func NewCollectionResponsePublicOwnerForwardPagingWithDefaults() *CollectionResponsePublicOwnerForwardPaging {
 	this := CollectionResponsePublicOwnerForwardPaging{}
 	return &this
-}
-
-// GetResults returns the Results field value
-func (o *CollectionResponsePublicOwnerForwardPaging) GetResults() []PublicOwner {
-	if o == nil {
-		var ret []PublicOwner
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *CollectionResponsePublicOwnerForwardPaging) GetResultsOk() ([]PublicOwner, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *CollectionResponsePublicOwnerForwardPaging) SetResults(v []PublicOwner) {
-	o.Results = v
 }
 
 // GetPaging returns the Paging field value if set, zero value otherwise.
@@ -97,6 +77,30 @@ func (o *CollectionResponsePublicOwnerForwardPaging) SetPaging(v ForwardPaging) 
 	o.Paging = &v
 }
 
+// GetResults returns the Results field value
+func (o *CollectionResponsePublicOwnerForwardPaging) GetResults() []PublicOwner {
+	if o == nil {
+		var ret []PublicOwner
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *CollectionResponsePublicOwnerForwardPaging) GetResultsOk() ([]PublicOwner, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *CollectionResponsePublicOwnerForwardPaging) SetResults(v []PublicOwner) {
+	o.Results = v
+}
+
 func (o CollectionResponsePublicOwnerForwardPaging) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,11 +111,48 @@ func (o CollectionResponsePublicOwnerForwardPaging) MarshalJSON() ([]byte, error
 
 func (o CollectionResponsePublicOwnerForwardPaging) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["results"] = o.Results
 	if !IsNil(o.Paging) {
 		toSerialize["paging"] = o.Paging
 	}
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponsePublicOwnerForwardPaging) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponsePublicOwnerForwardPaging := _CollectionResponsePublicOwnerForwardPaging{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponsePublicOwnerForwardPaging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponsePublicOwnerForwardPaging(varCollectionResponsePublicOwnerForwardPaging)
+
+	return err
 }
 
 type NullableCollectionResponsePublicOwnerForwardPaging struct {

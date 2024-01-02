@@ -1,5 +1,5 @@
 /*
-Marketing Events Extension
+Marketing Marketing Events
 
 These APIs allow you to interact with HubSpot's Marketing Events Extension. It allows you to: * Create, Read or update Marketing Event information in HubSpot * Specify whether a HubSpot contact has registered, attended or cancelled a registration to a Marketing Event. * Specify a URL that can be called to get the details of a Marketing Event.
 
@@ -11,7 +11,9 @@ API version: v3
 package marketing_events_beta
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SubscriberEmailResponse type satisfies the MappedNullable interface at compile time
@@ -22,6 +24,8 @@ type SubscriberEmailResponse struct {
 	Vid   int32  `json:"vid"`
 	Email string `json:"email"`
 }
+
+type _SubscriberEmailResponse SubscriberEmailResponse
 
 // NewSubscriberEmailResponse instantiates a new SubscriberEmailResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -103,6 +107,44 @@ func (o SubscriberEmailResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["vid"] = o.Vid
 	toSerialize["email"] = o.Email
 	return toSerialize, nil
+}
+
+func (o *SubscriberEmailResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"vid",
+		"email",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSubscriberEmailResponse := _SubscriberEmailResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSubscriberEmailResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SubscriberEmailResponse(varSubscriberEmailResponse)
+
+	return err
 }
 
 type NullableSubscriberEmailResponse struct {

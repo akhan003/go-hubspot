@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// CardsApiService CardsApi service
-type CardsApiService service
+// CardsAPIService CardsAPI service
+type CardsAPIService service
 
 type ApiCardsArchiveRequest struct {
 	ctx        context.Context
-	ApiService *CardsApiService
+	ApiService *CardsAPIService
 	appId      int32
 	cardId     string
 }
@@ -38,12 +38,12 @@ CardsArchive Delete a card
 
 Permanently deletes a card definition with the given ID. Once deleted, data fetch requests for this card will no longer be sent to your service. This can't be undone.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the target app.
- @param cardId The ID of the card to delete.
- @return ApiCardsArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the target app.
+	@param cardId The ID of the card to delete.
+	@return ApiCardsArchiveRequest
 */
-func (a *CardsApiService) CardsArchive(ctx context.Context, appId int32, cardId string) ApiCardsArchiveRequest {
+func (a *CardsAPIService) CardsArchive(ctx context.Context, appId int32, cardId string) ApiCardsArchiveRequest {
 	return ApiCardsArchiveRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -53,14 +53,14 @@ func (a *CardsApiService) CardsArchive(ctx context.Context, appId int32, cardId 
 }
 
 // Execute executes the request
-func (a *CardsApiService) CardsArchiveExecute(r ApiCardsArchiveRequest) (*http.Response, error) {
+func (a *CardsAPIService) CardsArchiveExecute(r ApiCardsArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsApiService.CardsArchive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsAPIService.CardsArchive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -142,7 +142,7 @@ func (a *CardsApiService) CardsArchiveExecute(r ApiCardsArchiveRequest) (*http.R
 
 type ApiCardsCreateRequest struct {
 	ctx               context.Context
-	ApiService        *CardsApiService
+	ApiService        *CardsAPIService
 	appId             int32
 	cardCreateRequest *CardCreateRequest
 }
@@ -162,11 +162,11 @@ CardsCreate Create a new card
 
 Defines a new card that will become active on an account when this app is installed.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the target app.
- @return ApiCardsCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the target app.
+	@return ApiCardsCreateRequest
 */
-func (a *CardsApiService) CardsCreate(ctx context.Context, appId int32) ApiCardsCreateRequest {
+func (a *CardsAPIService) CardsCreate(ctx context.Context, appId int32) ApiCardsCreateRequest {
 	return ApiCardsCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -175,8 +175,9 @@ func (a *CardsApiService) CardsCreate(ctx context.Context, appId int32) ApiCards
 }
 
 // Execute executes the request
-//  @return CardResponse
-func (a *CardsApiService) CardsCreateExecute(r ApiCardsCreateRequest) (*CardResponse, *http.Response, error) {
+//
+//	@return CardResponse
+func (a *CardsAPIService) CardsCreateExecute(r ApiCardsCreateRequest) (*CardResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -184,7 +185,7 @@ func (a *CardsApiService) CardsCreateExecute(r ApiCardsCreateRequest) (*CardResp
 		localVarReturnValue *CardResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsApiService.CardsCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsAPIService.CardsCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -279,7 +280,7 @@ func (a *CardsApiService) CardsCreateExecute(r ApiCardsCreateRequest) (*CardResp
 
 type ApiCardsGetAllRequest struct {
 	ctx        context.Context
-	ApiService *CardsApiService
+	ApiService *CardsAPIService
 	appId      int32
 }
 
@@ -292,11 +293,11 @@ CardsGetAll Get all cards
 
 Returns a list of cards for a given app.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the target app.
- @return ApiCardsGetAllRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the target app.
+	@return ApiCardsGetAllRequest
 */
-func (a *CardsApiService) CardsGetAll(ctx context.Context, appId int32) ApiCardsGetAllRequest {
+func (a *CardsAPIService) CardsGetAll(ctx context.Context, appId int32) ApiCardsGetAllRequest {
 	return ApiCardsGetAllRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -305,8 +306,9 @@ func (a *CardsApiService) CardsGetAll(ctx context.Context, appId int32) ApiCards
 }
 
 // Execute executes the request
-//  @return CardListResponse
-func (a *CardsApiService) CardsGetAllExecute(r ApiCardsGetAllRequest) (*CardListResponse, *http.Response, error) {
+//
+//	@return CardListResponse
+func (a *CardsAPIService) CardsGetAllExecute(r ApiCardsGetAllRequest) (*CardListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -314,7 +316,7 @@ func (a *CardsApiService) CardsGetAllExecute(r ApiCardsGetAllRequest) (*CardList
 		localVarReturnValue *CardListResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsApiService.CardsGetAll")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsAPIService.CardsGetAll")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -404,7 +406,7 @@ func (a *CardsApiService) CardsGetAllExecute(r ApiCardsGetAllRequest) (*CardList
 
 type ApiCardsGetByIDRequest struct {
 	ctx        context.Context
-	ApiService *CardsApiService
+	ApiService *CardsAPIService
 	appId      int32
 	cardId     string
 }
@@ -418,12 +420,12 @@ CardsGetByID Get a card.
 
 Returns the definition for a card with the given ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the target app.
- @param cardId The ID of the target card.
- @return ApiCardsGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the target app.
+	@param cardId The ID of the target card.
+	@return ApiCardsGetByIDRequest
 */
-func (a *CardsApiService) CardsGetByID(ctx context.Context, appId int32, cardId string) ApiCardsGetByIDRequest {
+func (a *CardsAPIService) CardsGetByID(ctx context.Context, appId int32, cardId string) ApiCardsGetByIDRequest {
 	return ApiCardsGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -433,8 +435,9 @@ func (a *CardsApiService) CardsGetByID(ctx context.Context, appId int32, cardId 
 }
 
 // Execute executes the request
-//  @return CardResponse
-func (a *CardsApiService) CardsGetByIDExecute(r ApiCardsGetByIDRequest) (*CardResponse, *http.Response, error) {
+//
+//	@return CardResponse
+func (a *CardsAPIService) CardsGetByIDExecute(r ApiCardsGetByIDRequest) (*CardResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -442,7 +445,7 @@ func (a *CardsApiService) CardsGetByIDExecute(r ApiCardsGetByIDRequest) (*CardRe
 		localVarReturnValue *CardResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsApiService.CardsGetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsAPIService.CardsGetByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -533,7 +536,7 @@ func (a *CardsApiService) CardsGetByIDExecute(r ApiCardsGetByIDRequest) (*CardRe
 
 type ApiCardsUpdateRequest struct {
 	ctx              context.Context
-	ApiService       *CardsApiService
+	ApiService       *CardsAPIService
 	appId            int32
 	cardId           string
 	cardPatchRequest *CardPatchRequest
@@ -554,12 +557,12 @@ CardsUpdate Update a card
 
 Update a card definition with new details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param appId The ID of the target app.
- @param cardId The ID of the card to update.
- @return ApiCardsUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param appId The ID of the target app.
+	@param cardId The ID of the card to update.
+	@return ApiCardsUpdateRequest
 */
-func (a *CardsApiService) CardsUpdate(ctx context.Context, appId int32, cardId string) ApiCardsUpdateRequest {
+func (a *CardsAPIService) CardsUpdate(ctx context.Context, appId int32, cardId string) ApiCardsUpdateRequest {
 	return ApiCardsUpdateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -569,8 +572,9 @@ func (a *CardsApiService) CardsUpdate(ctx context.Context, appId int32, cardId s
 }
 
 // Execute executes the request
-//  @return CardResponse
-func (a *CardsApiService) CardsUpdateExecute(r ApiCardsUpdateRequest) (*CardResponse, *http.Response, error) {
+//
+//	@return CardResponse
+func (a *CardsAPIService) CardsUpdateExecute(r ApiCardsUpdateRequest) (*CardResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -578,7 +582,7 @@ func (a *CardsApiService) CardsUpdateExecute(r ApiCardsUpdateRequest) (*CardResp
 		localVarReturnValue *CardResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsApiService.CardsUpdate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CardsAPIService.CardsUpdate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

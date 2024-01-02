@@ -1,5 +1,5 @@
 /*
-Marketing Events Extension
+Marketing Marketing Events
 
 These APIs allow you to interact with HubSpot's Marketing Events Extension. It allows you to: * Create, Read or update Marketing Event information in HubSpot * Specify whether a HubSpot contact has registered, attended or cancelled a registration to a Marketing Event. * Specify a URL that can be called to get the details of a Marketing Event.
 
@@ -11,7 +11,9 @@ API version: v3
 package marketing_events_beta
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the EventDetailSettingsUrl type satisfies the MappedNullable interface at compile time
@@ -22,6 +24,8 @@ type EventDetailSettingsUrl struct {
 	// The url that will be used to fetch marketing event details by id. Must contain a `%s` character sequence that will be substituted with the event id. For example: `https://my.event.app/events/%s`
 	EventDetailsUrl string `json:"eventDetailsUrl"`
 }
+
+type _EventDetailSettingsUrl EventDetailSettingsUrl
 
 // NewEventDetailSettingsUrl instantiates a new EventDetailSettingsUrl object
 // This constructor will assign default values to properties that have it defined,
@@ -77,6 +81,43 @@ func (o EventDetailSettingsUrl) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["eventDetailsUrl"] = o.EventDetailsUrl
 	return toSerialize, nil
+}
+
+func (o *EventDetailSettingsUrl) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"eventDetailsUrl",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varEventDetailSettingsUrl := _EventDetailSettingsUrl{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varEventDetailSettingsUrl)
+
+	if err != nil {
+		return err
+	}
+
+	*o = EventDetailSettingsUrl(varEventDetailSettingsUrl)
+
+	return err
 }
 
 type NullableEventDetailSettingsUrl struct {

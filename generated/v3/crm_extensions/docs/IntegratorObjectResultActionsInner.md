@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Type** | **string** |  | [default to "IFRAME"]
+**Type** | **string** |  | [default to "ACTION_HOOK"]
 **Confirmation** | Pointer to [**ActionConfirmationBody**](ActionConfirmationBody.md) |  | [optional] 
 **HttpMethod** | **string** |  | 
 **Url** | **string** |  | 

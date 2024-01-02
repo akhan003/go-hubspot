@@ -11,7 +11,9 @@ API version: v3
 package properties
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -20,24 +22,26 @@ var _ MappedNullable = &BatchResponseProperty{}
 
 // BatchResponseProperty struct for BatchResponseProperty
 type BatchResponseProperty struct {
-	Status      string             `json:"status"`
-	Results     []Property         `json:"results"`
+	CompletedAt time.Time          `json:"completedAt"`
 	RequestedAt *time.Time         `json:"requestedAt,omitempty"`
 	StartedAt   time.Time          `json:"startedAt"`
-	CompletedAt time.Time          `json:"completedAt"`
 	Links       *map[string]string `json:"links,omitempty"`
+	Results     []Property         `json:"results"`
+	Status      string             `json:"status"`
 }
+
+type _BatchResponseProperty BatchResponseProperty
 
 // NewBatchResponseProperty instantiates a new BatchResponseProperty object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBatchResponseProperty(status string, results []Property, startedAt time.Time, completedAt time.Time) *BatchResponseProperty {
+func NewBatchResponseProperty(completedAt time.Time, startedAt time.Time, results []Property, status string) *BatchResponseProperty {
 	this := BatchResponseProperty{}
-	this.Status = status
-	this.Results = results
-	this.StartedAt = startedAt
 	this.CompletedAt = completedAt
+	this.StartedAt = startedAt
+	this.Results = results
+	this.Status = status
 	return &this
 }
 
@@ -49,52 +53,28 @@ func NewBatchResponsePropertyWithDefaults() *BatchResponseProperty {
 	return &this
 }
 
-// GetStatus returns the Status field value
-func (o *BatchResponseProperty) GetStatus() string {
+// GetCompletedAt returns the CompletedAt field value
+func (o *BatchResponseProperty) GetCompletedAt() time.Time {
 	if o == nil {
-		var ret string
+		var ret time.Time
 		return ret
 	}
 
-	return o.Status
+	return o.CompletedAt
 }
 
-// GetStatusOk returns a tuple with the Status field value
+// GetCompletedAtOk returns a tuple with the CompletedAt field value
 // and a boolean to check if the value has been set.
-func (o *BatchResponseProperty) GetStatusOk() (*string, bool) {
+func (o *BatchResponseProperty) GetCompletedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Status, true
+	return &o.CompletedAt, true
 }
 
-// SetStatus sets field value
-func (o *BatchResponseProperty) SetStatus(v string) {
-	o.Status = v
-}
-
-// GetResults returns the Results field value
-func (o *BatchResponseProperty) GetResults() []Property {
-	if o == nil {
-		var ret []Property
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponseProperty) GetResultsOk() ([]Property, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *BatchResponseProperty) SetResults(v []Property) {
-	o.Results = v
+// SetCompletedAt sets field value
+func (o *BatchResponseProperty) SetCompletedAt(v time.Time) {
+	o.CompletedAt = v
 }
 
 // GetRequestedAt returns the RequestedAt field value if set, zero value otherwise.
@@ -153,30 +133,6 @@ func (o *BatchResponseProperty) SetStartedAt(v time.Time) {
 	o.StartedAt = v
 }
 
-// GetCompletedAt returns the CompletedAt field value
-func (o *BatchResponseProperty) GetCompletedAt() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.CompletedAt
-}
-
-// GetCompletedAtOk returns a tuple with the CompletedAt field value
-// and a boolean to check if the value has been set.
-func (o *BatchResponseProperty) GetCompletedAtOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.CompletedAt, true
-}
-
-// SetCompletedAt sets field value
-func (o *BatchResponseProperty) SetCompletedAt(v time.Time) {
-	o.CompletedAt = v
-}
-
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *BatchResponseProperty) GetLinks() map[string]string {
 	if o == nil || IsNil(o.Links) {
@@ -209,6 +165,54 @@ func (o *BatchResponseProperty) SetLinks(v map[string]string) {
 	o.Links = &v
 }
 
+// GetResults returns the Results field value
+func (o *BatchResponseProperty) GetResults() []Property {
+	if o == nil {
+		var ret []Property
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponseProperty) GetResultsOk() ([]Property, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *BatchResponseProperty) SetResults(v []Property) {
+	o.Results = v
+}
+
+// GetStatus returns the Status field value
+func (o *BatchResponseProperty) GetStatus() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value
+// and a boolean to check if the value has been set.
+func (o *BatchResponseProperty) GetStatusOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Status, true
+}
+
+// SetStatus sets field value
+func (o *BatchResponseProperty) SetStatus(v string) {
+	o.Status = v
+}
+
 func (o BatchResponseProperty) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -219,17 +223,57 @@ func (o BatchResponseProperty) MarshalJSON() ([]byte, error) {
 
 func (o BatchResponseProperty) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["status"] = o.Status
-	toSerialize["results"] = o.Results
+	toSerialize["completedAt"] = o.CompletedAt
 	if !IsNil(o.RequestedAt) {
 		toSerialize["requestedAt"] = o.RequestedAt
 	}
 	toSerialize["startedAt"] = o.StartedAt
-	toSerialize["completedAt"] = o.CompletedAt
 	if !IsNil(o.Links) {
 		toSerialize["links"] = o.Links
 	}
+	toSerialize["results"] = o.Results
+	toSerialize["status"] = o.Status
 	return toSerialize, nil
+}
+
+func (o *BatchResponseProperty) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"completedAt",
+		"startedAt",
+		"results",
+		"status",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBatchResponseProperty := _BatchResponseProperty{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBatchResponseProperty)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BatchResponseProperty(varBatchResponseProperty)
+
+	return err
 }
 
 type NullableBatchResponseProperty struct {

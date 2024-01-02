@@ -19,60 +19,56 @@ import (
 	"strings"
 )
 
-// SourceCodeExtractApiService SourceCodeExtractApi service
-type SourceCodeExtractApiService service
+// SourceCodeExtractAPIService SourceCodeExtractAPI service
+type SourceCodeExtractAPIService service
 
-type ApiExtractAsyncRequest struct {
-	ctx                context.Context
-	ApiService         *SourceCodeExtractApiService
-	fileExtractRequest *FileExtractRequest
+type ApiGetCmsV3SourceCodeExtractAsyncTasksTaskIdStatusRequest struct {
+	ctx        context.Context
+	ApiService *SourceCodeExtractAPIService
+	taskId     int32
 }
 
-func (r ApiExtractAsyncRequest) FileExtractRequest(fileExtractRequest FileExtractRequest) ApiExtractAsyncRequest {
-	r.fileExtractRequest = &fileExtractRequest
-	return r
-}
-
-func (r ApiExtractAsyncRequest) Execute() (*TaskLocator, *http.Response, error) {
-	return r.ApiService.ExtractAsyncExecute(r)
+func (r ApiGetCmsV3SourceCodeExtractAsyncTasksTaskIdStatusRequest) Execute() (*ActionResponse, *http.Response, error) {
+	return r.ApiService.GetCmsV3SourceCodeExtractAsyncTasksTaskIdStatusExecute(r)
 }
 
 /*
-ExtractAsync Method for ExtractAsync
+GetCmsV3SourceCodeExtractAsyncTasksTaskIdStatus Method for GetCmsV3SourceCodeExtractAsyncTasksTaskIdStatus
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiExtractAsyncRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param taskId
+	@return ApiGetCmsV3SourceCodeExtractAsyncTasksTaskIdStatusRequest
 */
-func (a *SourceCodeExtractApiService) ExtractAsync(ctx context.Context) ApiExtractAsyncRequest {
-	return ApiExtractAsyncRequest{
+func (a *SourceCodeExtractAPIService) GetCmsV3SourceCodeExtractAsyncTasksTaskIdStatus(ctx context.Context, taskId int32) ApiGetCmsV3SourceCodeExtractAsyncTasksTaskIdStatusRequest {
+	return ApiGetCmsV3SourceCodeExtractAsyncTasksTaskIdStatusRequest{
 		ApiService: a,
 		ctx:        ctx,
+		taskId:     taskId,
 	}
 }
 
 // Execute executes the request
-//  @return TaskLocator
-func (a *SourceCodeExtractApiService) ExtractAsyncExecute(r ApiExtractAsyncRequest) (*TaskLocator, *http.Response, error) {
+//
+//	@return ActionResponse
+func (a *SourceCodeExtractAPIService) GetCmsV3SourceCodeExtractAsyncTasksTaskIdStatusExecute(r ApiGetCmsV3SourceCodeExtractAsyncTasksTaskIdStatusRequest) (*ActionResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *TaskLocator
+		localVarReturnValue *ActionResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourceCodeExtractApiService.ExtractAsync")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourceCodeExtractAPIService.GetCmsV3SourceCodeExtractAsyncTasksTaskIdStatus")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cms/v3/source-code/extract/async"
+	localVarPath := localBasePath + "/cms/v3/source-code/extract/async/tasks/{taskId}/status"
+	localVarPath = strings.Replace(localVarPath, "{"+"taskId"+"}", url.PathEscape(parameterValueToString(r.taskId, "taskId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.fileExtractRequest == nil {
-		return localVarReturnValue, nil, reportError("fileExtractRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -84,15 +80,13 @@ func (a *SourceCodeExtractApiService) ExtractAsyncExecute(r ApiExtractAsyncReque
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.fileExtractRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -152,55 +146,61 @@ func (a *SourceCodeExtractApiService) ExtractAsyncExecute(r ApiExtractAsyncReque
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiExtractGetAsyncStatusRequest struct {
-	ctx        context.Context
-	ApiService *SourceCodeExtractApiService
-	taskId     int32
+type ApiPostCmsV3SourceCodeExtractAsyncRequest struct {
+	ctx                context.Context
+	ApiService         *SourceCodeExtractAPIService
+	fileExtractRequest *FileExtractRequest
 }
 
-func (r ApiExtractGetAsyncStatusRequest) Execute() (*ActionResponse, *http.Response, error) {
-	return r.ApiService.ExtractGetAsyncStatusExecute(r)
+func (r ApiPostCmsV3SourceCodeExtractAsyncRequest) FileExtractRequest(fileExtractRequest FileExtractRequest) ApiPostCmsV3SourceCodeExtractAsyncRequest {
+	r.fileExtractRequest = &fileExtractRequest
+	return r
+}
+
+func (r ApiPostCmsV3SourceCodeExtractAsyncRequest) Execute() (*TaskLocator, *http.Response, error) {
+	return r.ApiService.PostCmsV3SourceCodeExtractAsyncExecute(r)
 }
 
 /*
-ExtractGetAsyncStatus Method for ExtractGetAsyncStatus
+PostCmsV3SourceCodeExtractAsync Method for PostCmsV3SourceCodeExtractAsync
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param taskId
- @return ApiExtractGetAsyncStatusRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3SourceCodeExtractAsyncRequest
 */
-func (a *SourceCodeExtractApiService) ExtractGetAsyncStatus(ctx context.Context, taskId int32) ApiExtractGetAsyncStatusRequest {
-	return ApiExtractGetAsyncStatusRequest{
+func (a *SourceCodeExtractAPIService) PostCmsV3SourceCodeExtractAsync(ctx context.Context) ApiPostCmsV3SourceCodeExtractAsyncRequest {
+	return ApiPostCmsV3SourceCodeExtractAsyncRequest{
 		ApiService: a,
 		ctx:        ctx,
-		taskId:     taskId,
 	}
 }
 
 // Execute executes the request
-//  @return ActionResponse
-func (a *SourceCodeExtractApiService) ExtractGetAsyncStatusExecute(r ApiExtractGetAsyncStatusRequest) (*ActionResponse, *http.Response, error) {
+//
+//	@return TaskLocator
+func (a *SourceCodeExtractAPIService) PostCmsV3SourceCodeExtractAsyncExecute(r ApiPostCmsV3SourceCodeExtractAsyncRequest) (*TaskLocator, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
+		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *ActionResponse
+		localVarReturnValue *TaskLocator
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourceCodeExtractApiService.ExtractGetAsyncStatus")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourceCodeExtractAPIService.PostCmsV3SourceCodeExtractAsync")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cms/v3/source-code/extract/async/tasks/{taskId}/status"
-	localVarPath = strings.Replace(localVarPath, "{"+"taskId"+"}", url.PathEscape(parameterValueToString(r.taskId, "taskId")), -1)
+	localVarPath := localBasePath + "/cms/v3/source-code/extract/async"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.fileExtractRequest == nil {
+		return localVarReturnValue, nil, reportError("fileExtractRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -209,13 +209,15 @@ func (a *SourceCodeExtractApiService) ExtractGetAsyncStatusExecute(r ApiExtractG
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.fileExtractRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

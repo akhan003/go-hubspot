@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// UserAccountsApiService UserAccountsApi service
-type UserAccountsApiService service
+// UserAccountsAPIService UserAccountsAPI service
+type UserAccountsAPIService service
 
 type ApiUserAccountsArchiveRequest struct {
 	ctx        context.Context
-	ApiService *UserAccountsApiService
+	ApiService *UserAccountsAPIService
 	accountId  string
 }
 
@@ -37,11 +37,11 @@ UserAccountsArchive Delete user account
 
 Deletes a user account from HubSpot, meaning that HubSpot will no longer send requests to the external accounting system for this user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param accountId The ID of the user account to delete.
- @return ApiUserAccountsArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountId The ID of the user account to delete.
+	@return ApiUserAccountsArchiveRequest
 */
-func (a *UserAccountsApiService) UserAccountsArchive(ctx context.Context, accountId string) ApiUserAccountsArchiveRequest {
+func (a *UserAccountsAPIService) UserAccountsArchive(ctx context.Context, accountId string) ApiUserAccountsArchiveRequest {
 	return ApiUserAccountsArchiveRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -50,14 +50,14 @@ func (a *UserAccountsApiService) UserAccountsArchive(ctx context.Context, accoun
 }
 
 // Execute executes the request
-func (a *UserAccountsApiService) UserAccountsArchiveExecute(r ApiUserAccountsArchiveRequest) (*http.Response, error) {
+func (a *UserAccountsAPIService) UserAccountsArchiveExecute(r ApiUserAccountsArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAccountsApiService.UserAccountsArchive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAccountsAPIService.UserAccountsArchive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -138,7 +138,7 @@ func (a *UserAccountsApiService) UserAccountsArchiveExecute(r ApiUserAccountsArc
 
 type ApiUserAccountsReplaceRequest struct {
 	ctx                              context.Context
-	ApiService                       *UserAccountsApiService
+	ApiService                       *UserAccountsAPIService
 	createUserAccountRequestExternal *CreateUserAccountRequestExternal
 }
 
@@ -157,10 +157,10 @@ UserAccountsReplace Create a user account
 
 Creates an account which contains the information about the account in the external accounting system.  This *must* be called after a user connects their HubSpot account to the external accounting system, as there is no other way for HubSpot to obtain the external account details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiUserAccountsReplaceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiUserAccountsReplaceRequest
 */
-func (a *UserAccountsApiService) UserAccountsReplace(ctx context.Context) ApiUserAccountsReplaceRequest {
+func (a *UserAccountsAPIService) UserAccountsReplace(ctx context.Context) ApiUserAccountsReplaceRequest {
 	return ApiUserAccountsReplaceRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -168,14 +168,14 @@ func (a *UserAccountsApiService) UserAccountsReplace(ctx context.Context) ApiUse
 }
 
 // Execute executes the request
-func (a *UserAccountsApiService) UserAccountsReplaceExecute(r ApiUserAccountsReplaceRequest) (*http.Response, error) {
+func (a *UserAccountsAPIService) UserAccountsReplaceExecute(r ApiUserAccountsReplaceRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPut
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAccountsApiService.UserAccountsReplace")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAccountsAPIService.UserAccountsReplace")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

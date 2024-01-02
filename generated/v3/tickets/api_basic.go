@@ -20,12 +20,12 @@ import (
 	"strings"
 )
 
-// BasicApiService BasicApi service
-type BasicApiService service
+// BasicAPIService BasicAPI service
+type BasicAPIService service
 
 type ApiArchiveRequest struct {
 	ctx        context.Context
-	ApiService *BasicApiService
+	ApiService *BasicAPIService
 	ticketId   string
 }
 
@@ -38,11 +38,11 @@ Archive Archive
 
 Move an Object identified by `{ticketId}` to the recycling bin.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param ticketId
- @return ApiArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param ticketId
+	@return ApiArchiveRequest
 */
-func (a *BasicApiService) Archive(ctx context.Context, ticketId string) ApiArchiveRequest {
+func (a *BasicAPIService) Archive(ctx context.Context, ticketId string) ApiArchiveRequest {
 	return ApiArchiveRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -51,14 +51,14 @@ func (a *BasicApiService) Archive(ctx context.Context, ticketId string) ApiArchi
 }
 
 // Execute executes the request
-func (a *BasicApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, error) {
+func (a *BasicAPIService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicApiService.Archive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicAPIService.Archive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -101,6 +101,20 @@ func (a *BasicApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, e
 			}
 		}
 	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
+		}
+	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
@@ -139,7 +153,7 @@ func (a *BasicApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, e
 
 type ApiCreateRequest struct {
 	ctx                              context.Context
-	ApiService                       *BasicApiService
+	ApiService                       *BasicAPIService
 	simplePublicObjectInputForCreate *SimplePublicObjectInputForCreate
 }
 
@@ -157,10 +171,10 @@ Create Create
 
 Create a ticket with the given properties and return a copy of the object, including the ID. Documentation and examples for creating standard tickets is provided.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateRequest
 */
-func (a *BasicApiService) Create(ctx context.Context) ApiCreateRequest {
+func (a *BasicAPIService) Create(ctx context.Context) ApiCreateRequest {
 	return ApiCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -168,8 +182,9 @@ func (a *BasicApiService) Create(ctx context.Context) ApiCreateRequest {
 }
 
 // Execute executes the request
-//  @return SimplePublicObject
-func (a *BasicApiService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject, *http.Response, error) {
+//
+//	@return SimplePublicObject
+func (a *BasicAPIService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -177,7 +192,7 @@ func (a *BasicApiService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject
 		localVarReturnValue *SimplePublicObject
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicApiService.Create")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicAPIService.Create")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -221,6 +236,20 @@ func (a *BasicApiService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject
 					key = apiKey.Key
 				}
 				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
 			}
 		}
 	}
@@ -271,7 +300,7 @@ func (a *BasicApiService) CreateExecute(r ApiCreateRequest) (*SimplePublicObject
 
 type ApiGetByIDRequest struct {
 	ctx                   context.Context
-	ApiService            *BasicApiService
+	ApiService            *BasicAPIService
 	ticketId              string
 	properties            *[]string
 	propertiesWithHistory *[]string
@@ -319,11 +348,11 @@ GetByID Read
 
 Read an Object identified by `{ticketId}`. `{ticketId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param.  Control what is returned via the `properties` query param.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param ticketId
- @return ApiGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param ticketId
+	@return ApiGetByIDRequest
 */
-func (a *BasicApiService) GetByID(ctx context.Context, ticketId string) ApiGetByIDRequest {
+func (a *BasicAPIService) GetByID(ctx context.Context, ticketId string) ApiGetByIDRequest {
 	return ApiGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -332,8 +361,9 @@ func (a *BasicApiService) GetByID(ctx context.Context, ticketId string) ApiGetBy
 }
 
 // Execute executes the request
-//  @return SimplePublicObjectWithAssociations
-func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObjectWithAssociations, *http.Response, error) {
+//
+//	@return SimplePublicObjectWithAssociations
+func (a *BasicAPIService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObjectWithAssociations, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -341,7 +371,7 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 		localVarReturnValue *SimplePublicObjectWithAssociations
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicApiService.GetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicAPIService.GetByID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -358,7 +388,7 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "properties", t, "multi")
@@ -369,7 +399,7 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", t, "multi")
@@ -380,7 +410,7 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "associations", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "associations", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "associations", t, "multi")
@@ -388,6 +418,9 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 	}
 	if r.archived != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
 	}
 	if r.idProperty != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "idProperty", r.idProperty, "")
@@ -420,6 +453,20 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 					key = apiKey.Key
 				}
 				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
 			}
 		}
 	}
@@ -470,7 +517,7 @@ func (a *BasicApiService) GetByIDExecute(r ApiGetByIDRequest) (*SimplePublicObje
 
 type ApiGetPageRequest struct {
 	ctx                   context.Context
-	ApiService            *BasicApiService
+	ApiService            *BasicAPIService
 	limit                 *int32
 	after                 *string
 	properties            *[]string
@@ -524,10 +571,10 @@ GetPage List
 
 Read a page of tickets. Control what is returned via the `properties` query param.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetPageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetPageRequest
 */
-func (a *BasicApiService) GetPage(ctx context.Context) ApiGetPageRequest {
+func (a *BasicAPIService) GetPage(ctx context.Context) ApiGetPageRequest {
 	return ApiGetPageRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -535,8 +582,9 @@ func (a *BasicApiService) GetPage(ctx context.Context) ApiGetPageRequest {
 }
 
 // Execute executes the request
-//  @return CollectionResponseSimplePublicObjectWithAssociationsForwardPaging
-func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionResponseSimplePublicObjectWithAssociationsForwardPaging, *http.Response, error) {
+//
+//	@return CollectionResponseSimplePublicObjectWithAssociationsForwardPaging
+func (a *BasicAPIService) GetPageExecute(r ApiGetPageRequest) (*CollectionResponseSimplePublicObjectWithAssociationsForwardPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -544,7 +592,7 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 		localVarReturnValue *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicApiService.GetPage")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicAPIService.GetPage")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -557,6 +605,9 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 
 	if r.limit != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	} else {
+		var defaultValue int32 = 10
+		r.limit = &defaultValue
 	}
 	if r.after != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "after", r.after, "")
@@ -566,7 +617,7 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "properties", t, "multi")
@@ -577,7 +628,7 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "propertiesWithHistory", t, "multi")
@@ -588,7 +639,7 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "associations", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "associations", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "associations", t, "multi")
@@ -596,6 +647,9 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 	}
 	if r.archived != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	} else {
+		var defaultValue bool = false
+		r.archived = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -625,6 +679,20 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 					key = apiKey.Key
 				}
 				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
 			}
 		}
 	}
@@ -675,7 +743,7 @@ func (a *BasicApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRespon
 
 type ApiUpdateRequest struct {
 	ctx                     context.Context
-	ApiService              *BasicApiService
+	ApiService              *BasicAPIService
 	ticketId                string
 	simplePublicObjectInput *SimplePublicObjectInput
 	idProperty              *string
@@ -701,11 +769,11 @@ Update Update
 
 Perform a partial update of an Object identified by `{ticketId}`. `{ticketId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param. Provided property values will be overwritten. Read-only and non-existent properties will be ignored. Properties values can be cleared by passing an empty string.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param ticketId
- @return ApiUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param ticketId
+	@return ApiUpdateRequest
 */
-func (a *BasicApiService) Update(ctx context.Context, ticketId string) ApiUpdateRequest {
+func (a *BasicAPIService) Update(ctx context.Context, ticketId string) ApiUpdateRequest {
 	return ApiUpdateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -714,8 +782,9 @@ func (a *BasicApiService) Update(ctx context.Context, ticketId string) ApiUpdate
 }
 
 // Execute executes the request
-//  @return SimplePublicObject
-func (a *BasicApiService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject, *http.Response, error) {
+//
+//	@return SimplePublicObject
+func (a *BasicAPIService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPatch
 		localVarPostBody    interface{}
@@ -723,7 +792,7 @@ func (a *BasicApiService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject
 		localVarReturnValue *SimplePublicObject
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicApiService.Update")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BasicAPIService.Update")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -771,6 +840,20 @@ func (a *BasicApiService) UpdateExecute(r ApiUpdateRequest) (*SimplePublicObject
 					key = apiKey.Key
 				}
 				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
 			}
 		}
 	}

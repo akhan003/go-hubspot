@@ -1,5 +1,5 @@
 /*
-Webhooks API
+Webhooks
 
 Provides a way for apps to subscribe to certain change events in HubSpot. Once configured, apps will receive event payloads containing details about the changes at a specified target URL. There can only be one target URL for receiving event notifications per app.
 
@@ -11,7 +11,9 @@ API version: v3
 package webhooks
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -20,30 +22,32 @@ var _ MappedNullable = &SubscriptionResponse{}
 
 // SubscriptionResponse Complete details for an event subscription.
 type SubscriptionResponse struct {
-	// Type of event to listen for. Can be one of `create`, `delete`, `deletedForPrivacy`, or `propertyChange`.
-	EventType string `json:"eventType"`
+	// When this subscription was created. Formatted as milliseconds from the [Unix epoch](#).
+	CreatedAt time.Time `json:"createdAt"`
 	// The internal name of the property being monitored for changes. Only applies when `eventType` is `propertyChange`.
 	PropertyName *string `json:"propertyName,omitempty"`
 	// Determines if the subscription is active or paused.
 	Active bool `json:"active"`
+	// Type of event to listen for. Can be one of `create`, `delete`, `deletedForPrivacy`, or `propertyChange`.
+	EventType string `json:"eventType"`
 	// The unique ID of the subscription.
 	Id string `json:"id"`
-	// When this subscription was created. Formatted as milliseconds from the [Unix epoch](#).
-	CreatedAt time.Time `json:"createdAt"`
 	// When this subscription was last updated. Formatted as milliseconds from the [Unix epoch](#).
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
+
+type _SubscriptionResponse SubscriptionResponse
 
 // NewSubscriptionResponse instantiates a new SubscriptionResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSubscriptionResponse(eventType string, active bool, id string, createdAt time.Time) *SubscriptionResponse {
+func NewSubscriptionResponse(createdAt time.Time, active bool, eventType string, id string) *SubscriptionResponse {
 	this := SubscriptionResponse{}
-	this.EventType = eventType
-	this.Active = active
-	this.Id = id
 	this.CreatedAt = createdAt
+	this.Active = active
+	this.EventType = eventType
+	this.Id = id
 	return &this
 }
 
@@ -55,28 +59,28 @@ func NewSubscriptionResponseWithDefaults() *SubscriptionResponse {
 	return &this
 }
 
-// GetEventType returns the EventType field value
-func (o *SubscriptionResponse) GetEventType() string {
+// GetCreatedAt returns the CreatedAt field value
+func (o *SubscriptionResponse) GetCreatedAt() time.Time {
 	if o == nil {
-		var ret string
+		var ret time.Time
 		return ret
 	}
 
-	return o.EventType
+	return o.CreatedAt
 }
 
-// GetEventTypeOk returns a tuple with the EventType field value
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
 // and a boolean to check if the value has been set.
-func (o *SubscriptionResponse) GetEventTypeOk() (*string, bool) {
+func (o *SubscriptionResponse) GetCreatedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.EventType, true
+	return &o.CreatedAt, true
 }
 
-// SetEventType sets field value
-func (o *SubscriptionResponse) SetEventType(v string) {
-	o.EventType = v
+// SetCreatedAt sets field value
+func (o *SubscriptionResponse) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
 }
 
 // GetPropertyName returns the PropertyName field value if set, zero value otherwise.
@@ -135,6 +139,30 @@ func (o *SubscriptionResponse) SetActive(v bool) {
 	o.Active = v
 }
 
+// GetEventType returns the EventType field value
+func (o *SubscriptionResponse) GetEventType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.EventType
+}
+
+// GetEventTypeOk returns a tuple with the EventType field value
+// and a boolean to check if the value has been set.
+func (o *SubscriptionResponse) GetEventTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.EventType, true
+}
+
+// SetEventType sets field value
+func (o *SubscriptionResponse) SetEventType(v string) {
+	o.EventType = v
+}
+
 // GetId returns the Id field value
 func (o *SubscriptionResponse) GetId() string {
 	if o == nil {
@@ -157,30 +185,6 @@ func (o *SubscriptionResponse) GetIdOk() (*string, bool) {
 // SetId sets field value
 func (o *SubscriptionResponse) SetId(v string) {
 	o.Id = v
-}
-
-// GetCreatedAt returns the CreatedAt field value
-func (o *SubscriptionResponse) GetCreatedAt() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.CreatedAt
-}
-
-// GetCreatedAtOk returns a tuple with the CreatedAt field value
-// and a boolean to check if the value has been set.
-func (o *SubscriptionResponse) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.CreatedAt, true
-}
-
-// SetCreatedAt sets field value
-func (o *SubscriptionResponse) SetCreatedAt(v time.Time) {
-	o.CreatedAt = v
 }
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
@@ -225,17 +229,57 @@ func (o SubscriptionResponse) MarshalJSON() ([]byte, error) {
 
 func (o SubscriptionResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["eventType"] = o.EventType
+	toSerialize["createdAt"] = o.CreatedAt
 	if !IsNil(o.PropertyName) {
 		toSerialize["propertyName"] = o.PropertyName
 	}
 	toSerialize["active"] = o.Active
+	toSerialize["eventType"] = o.EventType
 	toSerialize["id"] = o.Id
-	toSerialize["createdAt"] = o.CreatedAt
 	if !IsNil(o.UpdatedAt) {
 		toSerialize["updatedAt"] = o.UpdatedAt
 	}
 	return toSerialize, nil
+}
+
+func (o *SubscriptionResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"createdAt",
+		"active",
+		"eventType",
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSubscriptionResponse := _SubscriptionResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSubscriptionResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SubscriptionResponse(varSubscriptionResponse)
+
+	return err
 }
 
 type NullableSubscriptionResponse struct {

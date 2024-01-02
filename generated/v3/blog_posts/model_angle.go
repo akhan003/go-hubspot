@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the Angle type satisfies the MappedNullable interface at compile time
@@ -19,18 +21,20 @@ var _ MappedNullable = &Angle{}
 
 // Angle struct for Angle
 type Angle struct {
-	Value float32 `json:"value"`
 	Units string  `json:"units"`
+	Value float32 `json:"value"`
 }
+
+type _Angle Angle
 
 // NewAngle instantiates a new Angle object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAngle(value float32, units string) *Angle {
+func NewAngle(units string, value float32) *Angle {
 	this := Angle{}
-	this.Value = value
 	this.Units = units
+	this.Value = value
 	return &this
 }
 
@@ -40,30 +44,6 @@ func NewAngle(value float32, units string) *Angle {
 func NewAngleWithDefaults() *Angle {
 	this := Angle{}
 	return &this
-}
-
-// GetValue returns the Value field value
-func (o *Angle) GetValue() float32 {
-	if o == nil {
-		var ret float32
-		return ret
-	}
-
-	return o.Value
-}
-
-// GetValueOk returns a tuple with the Value field value
-// and a boolean to check if the value has been set.
-func (o *Angle) GetValueOk() (*float32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Value, true
-}
-
-// SetValue sets field value
-func (o *Angle) SetValue(v float32) {
-	o.Value = v
 }
 
 // GetUnits returns the Units field value
@@ -90,6 +70,30 @@ func (o *Angle) SetUnits(v string) {
 	o.Units = v
 }
 
+// GetValue returns the Value field value
+func (o *Angle) GetValue() float32 {
+	if o == nil {
+		var ret float32
+		return ret
+	}
+
+	return o.Value
+}
+
+// GetValueOk returns a tuple with the Value field value
+// and a boolean to check if the value has been set.
+func (o *Angle) GetValueOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Value, true
+}
+
+// SetValue sets field value
+func (o *Angle) SetValue(v float32) {
+	o.Value = v
+}
+
 func (o Angle) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -100,9 +104,47 @@ func (o Angle) MarshalJSON() ([]byte, error) {
 
 func (o Angle) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["value"] = o.Value
 	toSerialize["units"] = o.Units
+	toSerialize["value"] = o.Value
 	return toSerialize, nil
+}
+
+func (o *Angle) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"units",
+		"value",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAngle := _Angle{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAngle)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Angle(varAngle)
+
+	return err
 }
 
 type NullableAngle struct {

@@ -7,7 +7,7 @@ api_types.go
 client.go
 configuration.go
 docs/AssociatedId.md
-docs/BatchApi.md
+docs/BatchAPI.md
 docs/BatchInputPublicAssociation.md
 docs/BatchInputPublicObjectId.md
 docs/BatchResponsePublicAssociation.md
@@ -26,7 +26,7 @@ docs/PublicAssociationDefinition.md
 docs/PublicAssociationMulti.md
 docs/PublicObjectId.md
 docs/StandardError.md
-docs/TypesApi.md
+docs/TypesAPI.md
 git_push.sh
 go.mod
 go.sum
@@ -50,6 +50,4 @@ model_public_association_multi.go
 model_public_object_id.go
 model_standard_error.go
 response.go
-test/api_batch_test.go
-test/api_types_test.go
 utils.go

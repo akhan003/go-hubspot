@@ -11,7 +11,9 @@ API version: v3
 package properties
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PropertyGroupCreate type satisfies the MappedNullable interface at compile time
@@ -21,11 +23,13 @@ var _ MappedNullable = &PropertyGroupCreate{}
 type PropertyGroupCreate struct {
 	// The internal property group name, which must be used when referencing the property group via the API.
 	Name string `json:"name"`
-	// A human-readable label that will be shown in HubSpot.
-	Label string `json:"label"`
 	// Property groups are displayed in order starting with the lowest positive integer value. Values of -1 will cause the property group to be displayed after any positive values.
 	DisplayOrder *int32 `json:"displayOrder,omitempty"`
+	// A human-readable label that will be shown in HubSpot.
+	Label string `json:"label"`
 }
+
+type _PropertyGroupCreate PropertyGroupCreate
 
 // NewPropertyGroupCreate instantiates a new PropertyGroupCreate object
 // This constructor will assign default values to properties that have it defined,
@@ -70,30 +74,6 @@ func (o *PropertyGroupCreate) SetName(v string) {
 	o.Name = v
 }
 
-// GetLabel returns the Label field value
-func (o *PropertyGroupCreate) GetLabel() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Label
-}
-
-// GetLabelOk returns a tuple with the Label field value
-// and a boolean to check if the value has been set.
-func (o *PropertyGroupCreate) GetLabelOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Label, true
-}
-
-// SetLabel sets field value
-func (o *PropertyGroupCreate) SetLabel(v string) {
-	o.Label = v
-}
-
 // GetDisplayOrder returns the DisplayOrder field value if set, zero value otherwise.
 func (o *PropertyGroupCreate) GetDisplayOrder() int32 {
 	if o == nil || IsNil(o.DisplayOrder) {
@@ -126,6 +106,30 @@ func (o *PropertyGroupCreate) SetDisplayOrder(v int32) {
 	o.DisplayOrder = &v
 }
 
+// GetLabel returns the Label field value
+func (o *PropertyGroupCreate) GetLabel() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Label
+}
+
+// GetLabelOk returns a tuple with the Label field value
+// and a boolean to check if the value has been set.
+func (o *PropertyGroupCreate) GetLabelOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Label, true
+}
+
+// SetLabel sets field value
+func (o *PropertyGroupCreate) SetLabel(v string) {
+	o.Label = v
+}
+
 func (o PropertyGroupCreate) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -137,11 +141,49 @@ func (o PropertyGroupCreate) MarshalJSON() ([]byte, error) {
 func (o PropertyGroupCreate) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
-	toSerialize["label"] = o.Label
 	if !IsNil(o.DisplayOrder) {
 		toSerialize["displayOrder"] = o.DisplayOrder
 	}
+	toSerialize["label"] = o.Label
 	return toSerialize, nil
+}
+
+func (o *PropertyGroupCreate) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"label",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPropertyGroupCreate := _PropertyGroupCreate{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPropertyGroupCreate)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PropertyGroupCreate(varPropertyGroupCreate)
+
+	return err
 }
 
 type NullablePropertyGroupCreate struct {

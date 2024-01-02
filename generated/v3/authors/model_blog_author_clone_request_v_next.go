@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+CMS Authors
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package authors
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the BlogAuthorCloneRequestVNext type satisfies the MappedNullable interface at compile time
@@ -19,14 +21,16 @@ var _ MappedNullable = &BlogAuthorCloneRequestVNext{}
 
 // BlogAuthorCloneRequestVNext Request body object for cloning blog authors.
 type BlogAuthorCloneRequestVNext struct {
-	// ID of the object to be cloned.
-	Id string `json:"id"`
 	// Language of newly cloned object.
 	Language *string `json:"language,omitempty"`
+	// ID of the object to be cloned.
+	Id string `json:"id"`
 	// Primary language in multi-language group.
 	PrimaryLanguage *string    `json:"primaryLanguage,omitempty"`
 	BlogAuthor      BlogAuthor `json:"blogAuthor"`
 }
+
+type _BlogAuthorCloneRequestVNext BlogAuthorCloneRequestVNext
 
 // NewBlogAuthorCloneRequestVNext instantiates a new BlogAuthorCloneRequestVNext object
 // This constructor will assign default values to properties that have it defined,
@@ -45,30 +49,6 @@ func NewBlogAuthorCloneRequestVNext(id string, blogAuthor BlogAuthor) *BlogAutho
 func NewBlogAuthorCloneRequestVNextWithDefaults() *BlogAuthorCloneRequestVNext {
 	this := BlogAuthorCloneRequestVNext{}
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *BlogAuthorCloneRequestVNext) GetId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *BlogAuthorCloneRequestVNext) GetIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *BlogAuthorCloneRequestVNext) SetId(v string) {
-	o.Id = v
 }
 
 // GetLanguage returns the Language field value if set, zero value otherwise.
@@ -101,6 +81,30 @@ func (o *BlogAuthorCloneRequestVNext) HasLanguage() bool {
 // SetLanguage gets a reference to the given string and assigns it to the Language field.
 func (o *BlogAuthorCloneRequestVNext) SetLanguage(v string) {
 	o.Language = &v
+}
+
+// GetId returns the Id field value
+func (o *BlogAuthorCloneRequestVNext) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *BlogAuthorCloneRequestVNext) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *BlogAuthorCloneRequestVNext) SetId(v string) {
+	o.Id = v
 }
 
 // GetPrimaryLanguage returns the PrimaryLanguage field value if set, zero value otherwise.
@@ -169,15 +173,53 @@ func (o BlogAuthorCloneRequestVNext) MarshalJSON() ([]byte, error) {
 
 func (o BlogAuthorCloneRequestVNext) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
 	if !IsNil(o.Language) {
 		toSerialize["language"] = o.Language
 	}
+	toSerialize["id"] = o.Id
 	if !IsNil(o.PrimaryLanguage) {
 		toSerialize["primaryLanguage"] = o.PrimaryLanguage
 	}
 	toSerialize["blogAuthor"] = o.BlogAuthor
 	return toSerialize, nil
+}
+
+func (o *BlogAuthorCloneRequestVNext) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"id",
+		"blogAuthor",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBlogAuthorCloneRequestVNext := _BlogAuthorCloneRequestVNext{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBlogAuthorCloneRequestVNext)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BlogAuthorCloneRequestVNext(varBlogAuthorCloneRequestVNext)
+
+	return err
 }
 
 type NullableBlogAuthorCloneRequestVNext struct {

@@ -11,7 +11,9 @@ API version: v3
 package crm_extensions
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the IntegratorObjectResult type satisfies the MappedNullable interface at compile time
@@ -25,6 +27,8 @@ type IntegratorObjectResult struct {
 	Tokens  []ObjectToken                        `json:"tokens"`
 	Actions []IntegratorObjectResultActionsInner `json:"actions"`
 }
+
+type _IntegratorObjectResult IntegratorObjectResult
 
 // NewIntegratorObjectResult instantiates a new IntegratorObjectResult object
 // This constructor will assign default values to properties that have it defined,
@@ -193,6 +197,46 @@ func (o IntegratorObjectResult) ToMap() (map[string]interface{}, error) {
 	toSerialize["tokens"] = o.Tokens
 	toSerialize["actions"] = o.Actions
 	return toSerialize, nil
+}
+
+func (o *IntegratorObjectResult) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"id",
+		"title",
+		"tokens",
+		"actions",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varIntegratorObjectResult := _IntegratorObjectResult{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varIntegratorObjectResult)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IntegratorObjectResult(varIntegratorObjectResult)
+
+	return err
 }
 
 type NullableIntegratorObjectResult struct {

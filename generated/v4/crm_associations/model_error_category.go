@@ -11,7 +11,9 @@ API version: v4
 package crm_associations
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the ErrorCategory type satisfies the MappedNullable interface at compile time
@@ -22,6 +24,8 @@ type ErrorCategory struct {
 	Name       string `json:"name"`
 	HttpStatus string `json:"httpStatus"`
 }
+
+type _ErrorCategory ErrorCategory
 
 // NewErrorCategory instantiates a new ErrorCategory object
 // This constructor will assign default values to properties that have it defined,
@@ -103,6 +107,44 @@ func (o ErrorCategory) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["httpStatus"] = o.HttpStatus
 	return toSerialize, nil
+}
+
+func (o *ErrorCategory) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"httpStatus",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varErrorCategory := _ErrorCategory{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varErrorCategory)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ErrorCategory(varErrorCategory)
+
+	return err
 }
 
 type NullableErrorCategory struct {

@@ -20,7 +20,7 @@ var (
 	replacer     = strings.NewReplacer(" ", "_", "-", "_")
 )
 
-//preProcessMap contains a grouped list of operations to rename before generating typings.
+// preProcessMap contains a grouped list of operations to rename before generating typings.
 var preProcessMap = map[string][]preProcessEntry{
 	"Accounting": {
 		{old: "post-/crm/.*/extensions/accounting/callback/customer-create/{requestId}_createCustomer", new: "CallbackCreateCustomer"},
@@ -480,6 +480,16 @@ var preProcessMap = map[string][]preProcessEntry{
 		{old: "delete-/webhooks/.*/{appId}/subscriptions/{subscriptionId}_archive", new: "SubscriptionsArchive"},
 		{old: "patch-/webhooks/.*/{appId}/subscriptions/{subscriptionId}_update", new: "SubscriptionsUpdate"},
 	},
+	"Lists": {
+		// Lists
+		{old: "post-/crm/v3/lists/_create", new: "Create"},
+		{old: "delete-/crm/v3/lists/{listId}_remove", new: "Remove"},
+		{old: "put-/crm/.*/lists/{listId}/update-list-name_updateName", new: "UpdateName"},
+		// Memberships
+		{old: "put-/crm/v3/lists/{listId}/memberships/add-and-remove_addAndRemove", new: "AddAndRemoveMemberships"},
+		{old: "put-/crm/v3/lists/{listId}/memberships/add_add", new: "AddMemberships"},
+		{old: "put-/crm/v3/lists/{listId}/memberships/remove_remove", new: "RemoveMemberships"},
+	},
 }
 
 // preProcessEntry contains a mapping from an old operation to a new operation.
@@ -499,13 +509,17 @@ type schemaOpenAPI struct {
 // directory is the schema for the https://api.hubspot.com/api-catalog-public/v1/apis page which lists all
 // the publicly available APIs.
 type directory struct {
-	Results []struct {
-		Name     string `json:"name"`
-		Features map[string]struct {
-			OpenAPI string `json:"openAPI"`
-			Stage   string `json:"stage"`
-		} `json:"features"`
-	} `json:"results"`
+	Results []directoryResult `json:"results"`
+}
+
+type directoryResult struct {
+	Name     string                            `json:"name"`
+	Features map[string]directoryResultFeature `json:"features"`
+}
+
+type directoryResultFeature struct {
+	OpenAPI string `json:"openAPI"`
+	Stage   string `json:"stage"`
 }
 
 // retrieveSchema downloads a schema from the given url.
@@ -591,6 +605,21 @@ func main() {
 	generator, err := exec.LookPath("openapi-generator-cli")
 	if err != nil {
 		panic(err)
+	}
+
+	// Find the CRM group
+	var crm directoryResult
+	for _, group := range r.Results {
+		if group.Name == "CRM" {
+			crm = group
+			break
+		}
+	}
+
+	// Add the list features to the CRM group
+	crm.Features["Lists"] = directoryResultFeature{
+		OpenAPI: "https://api.hubspot.com/api-catalog-public/v1/apis/crm/v3/lists",
+		Stage:   "LATEST",
 	}
 
 	//i := 0

@@ -1,5 +1,5 @@
 /*
-CRM Owners
+Crm Owners
 
 HubSpot uses **owners** to assign CRM objects to specific people in your organization. The endpoints described here are used to get a list of the owners that are available for an account. To assign an owner to an object, set the hubspot_owner_id property using the appropriate CRM object update or create a request.  If teams are available for your HubSpot tier, these endpoints will also indicate which team(s) an owner can access, as well as which team is the owner's primary team.
 
@@ -11,7 +11,9 @@ API version: v3
 package owners
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PublicTeam type satisfies the MappedNullable interface at compile time
@@ -19,19 +21,21 @@ var _ MappedNullable = &PublicTeam{}
 
 // PublicTeam struct for PublicTeam
 type PublicTeam struct {
-	Id      string `json:"id"`
 	Name    string `json:"name"`
+	Id      string `json:"id"`
 	Primary bool   `json:"primary"`
 }
+
+type _PublicTeam PublicTeam
 
 // NewPublicTeam instantiates a new PublicTeam object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPublicTeam(id string, name string, primary bool) *PublicTeam {
+func NewPublicTeam(name string, id string, primary bool) *PublicTeam {
 	this := PublicTeam{}
-	this.Id = id
 	this.Name = name
+	this.Id = id
 	this.Primary = primary
 	return &this
 }
@@ -42,30 +46,6 @@ func NewPublicTeam(id string, name string, primary bool) *PublicTeam {
 func NewPublicTeamWithDefaults() *PublicTeam {
 	this := PublicTeam{}
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *PublicTeam) GetId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *PublicTeam) GetIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *PublicTeam) SetId(v string) {
-	o.Id = v
 }
 
 // GetName returns the Name field value
@@ -90,6 +70,30 @@ func (o *PublicTeam) GetNameOk() (*string, bool) {
 // SetName sets field value
 func (o *PublicTeam) SetName(v string) {
 	o.Name = v
+}
+
+// GetId returns the Id field value
+func (o *PublicTeam) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *PublicTeam) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *PublicTeam) SetId(v string) {
+	o.Id = v
 }
 
 // GetPrimary returns the Primary field value
@@ -126,10 +130,49 @@ func (o PublicTeam) MarshalJSON() ([]byte, error) {
 
 func (o PublicTeam) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
+	toSerialize["id"] = o.Id
 	toSerialize["primary"] = o.Primary
 	return toSerialize, nil
+}
+
+func (o *PublicTeam) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"id",
+		"primary",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPublicTeam := _PublicTeam{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPublicTeam)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicTeam(varPublicTeam)
+
+	return err
 }
 
 type NullablePublicTeam struct {

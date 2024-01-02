@@ -11,7 +11,9 @@ API version: v3
 package crm_extensions
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the TopLevelActions type satisfies the MappedNullable interface at compile time
@@ -23,6 +25,8 @@ type TopLevelActions struct {
 	Primary   *IntegratorObjectResultActionsInner  `json:"primary,omitempty"`
 	Secondary []IntegratorObjectResultActionsInner `json:"secondary"`
 }
+
+type _TopLevelActions TopLevelActions
 
 // NewTopLevelActions instantiates a new TopLevelActions object
 // This constructor will assign default values to properties that have it defined,
@@ -148,6 +152,43 @@ func (o TopLevelActions) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["secondary"] = o.Secondary
 	return toSerialize, nil
+}
+
+func (o *TopLevelActions) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"secondary",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTopLevelActions := _TopLevelActions{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varTopLevelActions)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TopLevelActions(varTopLevelActions)
+
+	return err
 }
 
 type NullableTopLevelActions struct {

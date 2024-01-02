@@ -1,5 +1,5 @@
 /*
-Marketing Events Extension
+Marketing Marketing Events
 
 These APIs allow you to interact with HubSpot's Marketing Events Extension. It allows you to: * Create, Read or update Marketing Event information in HubSpot * Specify whether a HubSpot contact has registered, attended or cancelled a registration to a Marketing Event. * Specify a URL that can be called to get the details of a Marketing Event.
 
@@ -11,7 +11,9 @@ API version: v3
 package marketing_events_beta
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -23,6 +25,8 @@ type MarketingEventCompleteRequestParams struct {
 	StartDateTime time.Time `json:"startDateTime"`
 	EndDateTime   time.Time `json:"endDateTime"`
 }
+
+type _MarketingEventCompleteRequestParams MarketingEventCompleteRequestParams
 
 // NewMarketingEventCompleteRequestParams instantiates a new MarketingEventCompleteRequestParams object
 // This constructor will assign default values to properties that have it defined,
@@ -104,6 +108,44 @@ func (o MarketingEventCompleteRequestParams) ToMap() (map[string]interface{}, er
 	toSerialize["startDateTime"] = o.StartDateTime
 	toSerialize["endDateTime"] = o.EndDateTime
 	return toSerialize, nil
+}
+
+func (o *MarketingEventCompleteRequestParams) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"startDateTime",
+		"endDateTime",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varMarketingEventCompleteRequestParams := _MarketingEventCompleteRequestParams{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varMarketingEventCompleteRequestParams)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MarketingEventCompleteRequestParams(varMarketingEventCompleteRequestParams)
+
+	return err
 }
 
 type NullableMarketingEventCompleteRequestParams struct {

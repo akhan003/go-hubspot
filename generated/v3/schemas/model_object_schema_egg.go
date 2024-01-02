@@ -11,7 +11,9 @@ API version: v3
 package schemas
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the ObjectSchemaEgg type satisfies the MappedNullable interface at compile time
@@ -19,36 +21,37 @@ var _ MappedNullable = &ObjectSchemaEgg{}
 
 // ObjectSchemaEgg Defines a new object type, its properties, and associations.
 type ObjectSchemaEgg struct {
-	Labels ObjectTypeDefinitionLabels `json:"labels"`
+	// The names of secondary properties for this object. These will be displayed as secondary on the HubSpot record page for this object type.
+	SecondaryDisplayProperties []string `json:"secondaryDisplayProperties,omitempty"`
 	// The names of properties that should be **required** when creating an object of this type.
 	RequiredProperties []string `json:"requiredProperties"`
 	// Names of properties that will be indexed for this object type in by HubSpot's product search.
-	SearchableProperties []string `json:"searchableProperties"`
+	SearchableProperties []string `json:"searchableProperties,omitempty"`
 	// The name of the primary property for this object. This will be displayed as primary on the HubSpot record page for this object type.
 	PrimaryDisplayProperty *string `json:"primaryDisplayProperty,omitempty"`
-	// The names of secondary properties for this object. These will be displayed as secondary on the HubSpot record page for this object type.
-	SecondaryDisplayProperties []string `json:"secondaryDisplayProperties"`
-	// Properties defined for this object type.
-	Properties []ObjectTypePropertyCreate `json:"properties"`
+	// A unique name for this object. For internal use only.
+	Name        string  `json:"name"`
+	Description *string `json:"description,omitempty"`
 	// Associations defined for this object type.
 	AssociatedObjects []string `json:"associatedObjects"`
-	// A unique name for this object. For internal use only.
-	Name string `json:"name"`
+	// Properties defined for this object type.
+	Properties []ObjectTypePropertyCreate `json:"properties"`
+	Labels     ObjectTypeDefinitionLabels `json:"labels"`
 }
+
+type _ObjectSchemaEgg ObjectSchemaEgg
 
 // NewObjectSchemaEgg instantiates a new ObjectSchemaEgg object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewObjectSchemaEgg(labels ObjectTypeDefinitionLabels, requiredProperties []string, searchableProperties []string, secondaryDisplayProperties []string, properties []ObjectTypePropertyCreate, associatedObjects []string, name string) *ObjectSchemaEgg {
+func NewObjectSchemaEgg(requiredProperties []string, name string, associatedObjects []string, properties []ObjectTypePropertyCreate, labels ObjectTypeDefinitionLabels) *ObjectSchemaEgg {
 	this := ObjectSchemaEgg{}
-	this.Labels = labels
 	this.RequiredProperties = requiredProperties
-	this.SearchableProperties = searchableProperties
-	this.SecondaryDisplayProperties = secondaryDisplayProperties
-	this.Properties = properties
-	this.AssociatedObjects = associatedObjects
 	this.Name = name
+	this.AssociatedObjects = associatedObjects
+	this.Properties = properties
+	this.Labels = labels
 	return &this
 }
 
@@ -60,28 +63,36 @@ func NewObjectSchemaEggWithDefaults() *ObjectSchemaEgg {
 	return &this
 }
 
-// GetLabels returns the Labels field value
-func (o *ObjectSchemaEgg) GetLabels() ObjectTypeDefinitionLabels {
-	if o == nil {
-		var ret ObjectTypeDefinitionLabels
+// GetSecondaryDisplayProperties returns the SecondaryDisplayProperties field value if set, zero value otherwise.
+func (o *ObjectSchemaEgg) GetSecondaryDisplayProperties() []string {
+	if o == nil || IsNil(o.SecondaryDisplayProperties) {
+		var ret []string
 		return ret
 	}
-
-	return o.Labels
+	return o.SecondaryDisplayProperties
 }
 
-// GetLabelsOk returns a tuple with the Labels field value
+// GetSecondaryDisplayPropertiesOk returns a tuple with the SecondaryDisplayProperties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ObjectSchemaEgg) GetLabelsOk() (*ObjectTypeDefinitionLabels, bool) {
-	if o == nil {
+func (o *ObjectSchemaEgg) GetSecondaryDisplayPropertiesOk() ([]string, bool) {
+	if o == nil || IsNil(o.SecondaryDisplayProperties) {
 		return nil, false
 	}
-	return &o.Labels, true
+	return o.SecondaryDisplayProperties, true
 }
 
-// SetLabels sets field value
-func (o *ObjectSchemaEgg) SetLabels(v ObjectTypeDefinitionLabels) {
-	o.Labels = v
+// HasSecondaryDisplayProperties returns a boolean if a field has been set.
+func (o *ObjectSchemaEgg) HasSecondaryDisplayProperties() bool {
+	if o != nil && !IsNil(o.SecondaryDisplayProperties) {
+		return true
+	}
+
+	return false
+}
+
+// SetSecondaryDisplayProperties gets a reference to the given []string and assigns it to the SecondaryDisplayProperties field.
+func (o *ObjectSchemaEgg) SetSecondaryDisplayProperties(v []string) {
+	o.SecondaryDisplayProperties = v
 }
 
 // GetRequiredProperties returns the RequiredProperties field value
@@ -108,26 +119,34 @@ func (o *ObjectSchemaEgg) SetRequiredProperties(v []string) {
 	o.RequiredProperties = v
 }
 
-// GetSearchableProperties returns the SearchableProperties field value
+// GetSearchableProperties returns the SearchableProperties field value if set, zero value otherwise.
 func (o *ObjectSchemaEgg) GetSearchableProperties() []string {
-	if o == nil {
+	if o == nil || IsNil(o.SearchableProperties) {
 		var ret []string
 		return ret
 	}
-
 	return o.SearchableProperties
 }
 
-// GetSearchablePropertiesOk returns a tuple with the SearchableProperties field value
+// GetSearchablePropertiesOk returns a tuple with the SearchableProperties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ObjectSchemaEgg) GetSearchablePropertiesOk() ([]string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.SearchableProperties) {
 		return nil, false
 	}
 	return o.SearchableProperties, true
 }
 
-// SetSearchableProperties sets field value
+// HasSearchableProperties returns a boolean if a field has been set.
+func (o *ObjectSchemaEgg) HasSearchableProperties() bool {
+	if o != nil && !IsNil(o.SearchableProperties) {
+		return true
+	}
+
+	return false
+}
+
+// SetSearchableProperties gets a reference to the given []string and assigns it to the SearchableProperties field.
 func (o *ObjectSchemaEgg) SetSearchableProperties(v []string) {
 	o.SearchableProperties = v
 }
@@ -164,52 +183,60 @@ func (o *ObjectSchemaEgg) SetPrimaryDisplayProperty(v string) {
 	o.PrimaryDisplayProperty = &v
 }
 
-// GetSecondaryDisplayProperties returns the SecondaryDisplayProperties field value
-func (o *ObjectSchemaEgg) GetSecondaryDisplayProperties() []string {
+// GetName returns the Name field value
+func (o *ObjectSchemaEgg) GetName() string {
 	if o == nil {
-		var ret []string
+		var ret string
 		return ret
 	}
 
-	return o.SecondaryDisplayProperties
+	return o.Name
 }
 
-// GetSecondaryDisplayPropertiesOk returns a tuple with the SecondaryDisplayProperties field value
+// GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *ObjectSchemaEgg) GetSecondaryDisplayPropertiesOk() ([]string, bool) {
+func (o *ObjectSchemaEgg) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.SecondaryDisplayProperties, true
+	return &o.Name, true
 }
 
-// SetSecondaryDisplayProperties sets field value
-func (o *ObjectSchemaEgg) SetSecondaryDisplayProperties(v []string) {
-	o.SecondaryDisplayProperties = v
+// SetName sets field value
+func (o *ObjectSchemaEgg) SetName(v string) {
+	o.Name = v
 }
 
-// GetProperties returns the Properties field value
-func (o *ObjectSchemaEgg) GetProperties() []ObjectTypePropertyCreate {
-	if o == nil {
-		var ret []ObjectTypePropertyCreate
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *ObjectSchemaEgg) GetDescription() string {
+	if o == nil || IsNil(o.Description) {
+		var ret string
 		return ret
 	}
-
-	return o.Properties
+	return *o.Description
 }
 
-// GetPropertiesOk returns a tuple with the Properties field value
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ObjectSchemaEgg) GetPropertiesOk() ([]ObjectTypePropertyCreate, bool) {
-	if o == nil {
+func (o *ObjectSchemaEgg) GetDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
-	return o.Properties, true
+	return o.Description, true
 }
 
-// SetProperties sets field value
-func (o *ObjectSchemaEgg) SetProperties(v []ObjectTypePropertyCreate) {
-	o.Properties = v
+// HasDescription returns a boolean if a field has been set.
+func (o *ObjectSchemaEgg) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *ObjectSchemaEgg) SetDescription(v string) {
+	o.Description = &v
 }
 
 // GetAssociatedObjects returns the AssociatedObjects field value
@@ -236,28 +263,52 @@ func (o *ObjectSchemaEgg) SetAssociatedObjects(v []string) {
 	o.AssociatedObjects = v
 }
 
-// GetName returns the Name field value
-func (o *ObjectSchemaEgg) GetName() string {
+// GetProperties returns the Properties field value
+func (o *ObjectSchemaEgg) GetProperties() []ObjectTypePropertyCreate {
 	if o == nil {
-		var ret string
+		var ret []ObjectTypePropertyCreate
 		return ret
 	}
 
-	return o.Name
+	return o.Properties
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetPropertiesOk returns a tuple with the Properties field value
 // and a boolean to check if the value has been set.
-func (o *ObjectSchemaEgg) GetNameOk() (*string, bool) {
+func (o *ObjectSchemaEgg) GetPropertiesOk() ([]ObjectTypePropertyCreate, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Properties, true
 }
 
-// SetName sets field value
-func (o *ObjectSchemaEgg) SetName(v string) {
-	o.Name = v
+// SetProperties sets field value
+func (o *ObjectSchemaEgg) SetProperties(v []ObjectTypePropertyCreate) {
+	o.Properties = v
+}
+
+// GetLabels returns the Labels field value
+func (o *ObjectSchemaEgg) GetLabels() ObjectTypeDefinitionLabels {
+	if o == nil {
+		var ret ObjectTypeDefinitionLabels
+		return ret
+	}
+
+	return o.Labels
+}
+
+// GetLabelsOk returns a tuple with the Labels field value
+// and a boolean to check if the value has been set.
+func (o *ObjectSchemaEgg) GetLabelsOk() (*ObjectTypeDefinitionLabels, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Labels, true
+}
+
+// SetLabels sets field value
+func (o *ObjectSchemaEgg) SetLabels(v ObjectTypeDefinitionLabels) {
+	o.Labels = v
 }
 
 func (o ObjectSchemaEgg) MarshalJSON() ([]byte, error) {
@@ -270,17 +321,65 @@ func (o ObjectSchemaEgg) MarshalJSON() ([]byte, error) {
 
 func (o ObjectSchemaEgg) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["labels"] = o.Labels
+	if !IsNil(o.SecondaryDisplayProperties) {
+		toSerialize["secondaryDisplayProperties"] = o.SecondaryDisplayProperties
+	}
 	toSerialize["requiredProperties"] = o.RequiredProperties
-	toSerialize["searchableProperties"] = o.SearchableProperties
+	if !IsNil(o.SearchableProperties) {
+		toSerialize["searchableProperties"] = o.SearchableProperties
+	}
 	if !IsNil(o.PrimaryDisplayProperty) {
 		toSerialize["primaryDisplayProperty"] = o.PrimaryDisplayProperty
 	}
-	toSerialize["secondaryDisplayProperties"] = o.SecondaryDisplayProperties
-	toSerialize["properties"] = o.Properties
-	toSerialize["associatedObjects"] = o.AssociatedObjects
 	toSerialize["name"] = o.Name
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	toSerialize["associatedObjects"] = o.AssociatedObjects
+	toSerialize["properties"] = o.Properties
+	toSerialize["labels"] = o.Labels
 	return toSerialize, nil
+}
+
+func (o *ObjectSchemaEgg) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"requiredProperties",
+		"name",
+		"associatedObjects",
+		"properties",
+		"labels",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varObjectSchemaEgg := _ObjectSchemaEgg{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varObjectSchemaEgg)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ObjectSchemaEgg(varObjectSchemaEgg)
+
+	return err
 }
 
 type NullableObjectSchemaEgg struct {

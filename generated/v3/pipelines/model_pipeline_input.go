@@ -1,5 +1,5 @@
 /*
-CRM Pipelines
+Pipelines
 
 Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. Pipelines support `deals` and `tickets` object types.  ## Pipeline ID validation  When calling endpoints that take pipelineId as a parameter, that ID must correspond to an existing, un-archived pipeline. Otherwise the request will fail with a `404 Not Found` response.
 
@@ -11,7 +11,9 @@ API version: v3
 package pipelines
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PipelineInput type satisfies the MappedNullable interface at compile time
@@ -19,23 +21,25 @@ var _ MappedNullable = &PipelineInput{}
 
 // PipelineInput An input used to create or replace a pipeline's definition.
 type PipelineInput struct {
-	// A unique label used to organize pipelines in HubSpot's UI
-	Label string `json:"label"`
 	// The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.
 	DisplayOrder int32 `json:"displayOrder"`
 	// Pipeline stage inputs used to create the new or replacement pipeline.
 	Stages []PipelineStageInput `json:"stages"`
+	// A unique label used to organize pipelines in HubSpot's UI
+	Label string `json:"label"`
 }
+
+type _PipelineInput PipelineInput
 
 // NewPipelineInput instantiates a new PipelineInput object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPipelineInput(label string, displayOrder int32, stages []PipelineStageInput) *PipelineInput {
+func NewPipelineInput(displayOrder int32, stages []PipelineStageInput, label string) *PipelineInput {
 	this := PipelineInput{}
-	this.Label = label
 	this.DisplayOrder = displayOrder
 	this.Stages = stages
+	this.Label = label
 	return &this
 }
 
@@ -45,30 +49,6 @@ func NewPipelineInput(label string, displayOrder int32, stages []PipelineStageIn
 func NewPipelineInputWithDefaults() *PipelineInput {
 	this := PipelineInput{}
 	return &this
-}
-
-// GetLabel returns the Label field value
-func (o *PipelineInput) GetLabel() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Label
-}
-
-// GetLabelOk returns a tuple with the Label field value
-// and a boolean to check if the value has been set.
-func (o *PipelineInput) GetLabelOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Label, true
-}
-
-// SetLabel sets field value
-func (o *PipelineInput) SetLabel(v string) {
-	o.Label = v
 }
 
 // GetDisplayOrder returns the DisplayOrder field value
@@ -119,6 +99,30 @@ func (o *PipelineInput) SetStages(v []PipelineStageInput) {
 	o.Stages = v
 }
 
+// GetLabel returns the Label field value
+func (o *PipelineInput) GetLabel() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Label
+}
+
+// GetLabelOk returns a tuple with the Label field value
+// and a boolean to check if the value has been set.
+func (o *PipelineInput) GetLabelOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Label, true
+}
+
+// SetLabel sets field value
+func (o *PipelineInput) SetLabel(v string) {
+	o.Label = v
+}
+
 func (o PipelineInput) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -129,10 +133,49 @@ func (o PipelineInput) MarshalJSON() ([]byte, error) {
 
 func (o PipelineInput) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["label"] = o.Label
 	toSerialize["displayOrder"] = o.DisplayOrder
 	toSerialize["stages"] = o.Stages
+	toSerialize["label"] = o.Label
 	return toSerialize, nil
+}
+
+func (o *PipelineInput) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"displayOrder",
+		"stages",
+		"label",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPipelineInput := _PipelineInput{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPipelineInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PipelineInput(varPipelineInput)
+
+	return err
 }
 
 type NullablePipelineInput struct {

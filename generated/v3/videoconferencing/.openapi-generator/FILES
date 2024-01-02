@@ -8,7 +8,7 @@ configuration.go
 docs/Error.md
 docs/ErrorDetail.md
 docs/ExternalSettings.md
-docs/SettingsApi.md
+docs/SettingsAPI.md
 git_push.sh
 go.mod
 go.sum
@@ -16,5 +16,4 @@ model_error.go
 model_error_detail.go
 model_external_settings.go
 response.go
-test/api_settings_test.go
 utils.go

@@ -11,7 +11,9 @@ API version: v4
 package crm_associations
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the NextPage type satisfies the MappedNullable interface at compile time
@@ -22,6 +24,8 @@ type NextPage struct {
 	After string  `json:"after"`
 	Link  *string `json:"link,omitempty"`
 }
+
+type _NextPage NextPage
 
 // NewNextPage instantiates a new NextPage object
 // This constructor will assign default values to properties that have it defined,
@@ -112,6 +116,43 @@ func (o NextPage) ToMap() (map[string]interface{}, error) {
 		toSerialize["link"] = o.Link
 	}
 	return toSerialize, nil
+}
+
+func (o *NextPage) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"after",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varNextPage := _NextPage{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varNextPage)
+
+	if err != nil {
+		return err
+	}
+
+	*o = NextPage(varNextPage)
+
+	return err
 }
 
 type NullableNextPage struct {

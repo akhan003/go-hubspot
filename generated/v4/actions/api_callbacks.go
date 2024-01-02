@@ -44,9 +44,9 @@ CallbackComplete Complete a callback
 
 Completes the given action callback.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param callbackId The ID of the target app.
- @return ApiCallbackCompleteRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param callbackId The ID of the target app.
+	@return ApiCallbackCompleteRequest
 */
 func (a *CallbacksApiService) CallbackComplete(ctx context.Context, callbackId string) ApiCallbackCompleteRequest {
 	return ApiCallbackCompleteRequest{
@@ -169,8 +169,8 @@ CallbackCompleteBatch Complete a batch of callbacks
 
 Completes the given action callbacks.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCallbackCompleteBatchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCallbackCompleteBatchRequest
 */
 func (a *CallbacksApiService) CallbackCompleteBatch(ctx context.Context) ApiCallbackCompleteBatchRequest {
 	return ApiCallbackCompleteBatchRequest{

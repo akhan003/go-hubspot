@@ -20,37 +20,37 @@ import (
 	"strings"
 )
 
-// ValidationApiService ValidationApi service
-type ValidationApiService service
+// ValidationAPIService ValidationAPI service
+type ValidationAPIService service
 
-type ApiValidateRequest struct {
+type ApiPostCmsV3SourceCodeEnvironmentValidatePathRequest struct {
 	ctx        context.Context
-	ApiService *ValidationApiService
+	ApiService *ValidationAPIService
 	path       string
 	file       *os.File
 }
 
 // The file to validate.
-func (r ApiValidateRequest) File(file *os.File) ApiValidateRequest {
+func (r ApiPostCmsV3SourceCodeEnvironmentValidatePathRequest) File(file *os.File) ApiPostCmsV3SourceCodeEnvironmentValidatePathRequest {
 	r.file = file
 	return r
 }
 
-func (r ApiValidateRequest) Execute() (*Error, *http.Response, error) {
-	return r.ApiService.ValidateExecute(r)
+func (r ApiPostCmsV3SourceCodeEnvironmentValidatePathRequest) Execute() (*Error, *http.Response, error) {
+	return r.ApiService.PostCmsV3SourceCodeEnvironmentValidatePathExecute(r)
 }
 
 /*
-Validate Validate the contents of a file
+PostCmsV3SourceCodeEnvironmentValidatePath Validate the contents of a file
 
 Validates the file contents passed to the endpoint given a specified path and environment. Accepts multipart/form-data content type.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param path The file system location of the file.
- @return ApiValidateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param path The file system location of the file.
+	@return ApiPostCmsV3SourceCodeEnvironmentValidatePathRequest
 */
-func (a *ValidationApiService) Validate(ctx context.Context, path string) ApiValidateRequest {
-	return ApiValidateRequest{
+func (a *ValidationAPIService) PostCmsV3SourceCodeEnvironmentValidatePath(ctx context.Context, path string) ApiPostCmsV3SourceCodeEnvironmentValidatePathRequest {
+	return ApiPostCmsV3SourceCodeEnvironmentValidatePathRequest{
 		ApiService: a,
 		ctx:        ctx,
 		path:       path,
@@ -58,8 +58,9 @@ func (a *ValidationApiService) Validate(ctx context.Context, path string) ApiVal
 }
 
 // Execute executes the request
-//  @return Error
-func (a *ValidationApiService) ValidateExecute(r ApiValidateRequest) (*Error, *http.Response, error) {
+//
+//	@return Error
+func (a *ValidationAPIService) PostCmsV3SourceCodeEnvironmentValidatePathExecute(r ApiPostCmsV3SourceCodeEnvironmentValidatePathRequest) (*Error, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -67,7 +68,7 @@ func (a *ValidationApiService) ValidateExecute(r ApiValidateRequest) (*Error, *h
 		localVarReturnValue *Error
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ValidationApiService.Validate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ValidationAPIService.PostCmsV3SourceCodeEnvironmentValidatePath")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -101,7 +102,6 @@ func (a *ValidationApiService) ValidateExecute(r ApiValidateRequest) (*Error, *h
 	var fileLocalVarFileBytes []byte
 
 	fileLocalVarFormFileName = "file"
-
 	fileLocalVarFile := r.file
 
 	if fileLocalVarFile != nil {

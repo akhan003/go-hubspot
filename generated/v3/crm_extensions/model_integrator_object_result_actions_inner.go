@@ -11,6 +11,7 @@ API version: v3
 package crm_extensions
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )

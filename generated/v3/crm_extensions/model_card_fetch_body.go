@@ -11,7 +11,9 @@ API version: v3
 package crm_extensions
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CardFetchBody type satisfies the MappedNullable interface at compile time
@@ -24,6 +26,8 @@ type CardFetchBody struct {
 	// An array of CRM object types where this card should be displayed. HubSpot will call your data fetch URL whenever a user visits a record page of the types defined here.
 	ObjectTypes []CardObjectTypeBody `json:"objectTypes"`
 }
+
+type _CardFetchBody CardFetchBody
 
 // NewCardFetchBody instantiates a new CardFetchBody object
 // This constructor will assign default values to properties that have it defined,
@@ -105,6 +109,44 @@ func (o CardFetchBody) ToMap() (map[string]interface{}, error) {
 	toSerialize["targetUrl"] = o.TargetUrl
 	toSerialize["objectTypes"] = o.ObjectTypes
 	return toSerialize, nil
+}
+
+func (o *CardFetchBody) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"targetUrl",
+		"objectTypes",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCardFetchBody := _CardFetchBody{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCardFetchBody)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CardFetchBody(varCardFetchBody)
+
+	return err
 }
 
 type NullableCardFetchBody struct {

@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Tags
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -21,37 +21,37 @@ import (
 	"time"
 )
 
-// BlogTagsApiService BlogTagsApi service
-type BlogTagsApiService service
+// BlogTagsAPIService BlogTagsAPI service
+type BlogTagsAPIService service
 
-type ApiArchiveRequest struct {
+type ApiDeleteCmsV3BlogsTagsObjectIdRequest struct {
 	ctx        context.Context
-	ApiService *BlogTagsApiService
+	ApiService *BlogTagsAPIService
 	objectId   string
 	archived   *bool
 }
 
 // Whether to return only results that have been archived.
-func (r ApiArchiveRequest) Archived(archived bool) ApiArchiveRequest {
+func (r ApiDeleteCmsV3BlogsTagsObjectIdRequest) Archived(archived bool) ApiDeleteCmsV3BlogsTagsObjectIdRequest {
 	r.archived = &archived
 	return r
 }
 
-func (r ApiArchiveRequest) Execute() (*http.Response, error) {
-	return r.ApiService.ArchiveExecute(r)
+func (r ApiDeleteCmsV3BlogsTagsObjectIdRequest) Execute() (*http.Response, error) {
+	return r.ApiService.DeleteCmsV3BlogsTagsObjectIdExecute(r)
 }
 
 /*
-Archive Delete a Blog Tag
+DeleteCmsV3BlogsTagsObjectId Delete a Blog Tag
 
 Delete the Blog Tag object identified by the id in the path.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectId The Blog Tag id.
- @return ApiArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectId The Blog Tag id.
+	@return ApiDeleteCmsV3BlogsTagsObjectIdRequest
 */
-func (a *BlogTagsApiService) Archive(ctx context.Context, objectId string) ApiArchiveRequest {
-	return ApiArchiveRequest{
+func (a *BlogTagsAPIService) DeleteCmsV3BlogsTagsObjectId(ctx context.Context, objectId string) ApiDeleteCmsV3BlogsTagsObjectIdRequest {
+	return ApiDeleteCmsV3BlogsTagsObjectIdRequest{
 		ApiService: a,
 		ctx:        ctx,
 		objectId:   objectId,
@@ -59,14 +59,14 @@ func (a *BlogTagsApiService) Archive(ctx context.Context, objectId string) ApiAr
 }
 
 // Execute executes the request
-func (a *BlogTagsApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response, error) {
+func (a *BlogTagsAPIService) DeleteCmsV3BlogsTagsObjectIdExecute(r ApiDeleteCmsV3BlogsTagsObjectIdRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.Archive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.DeleteCmsV3BlogsTagsObjectId")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -148,63 +148,171 @@ func (a *BlogTagsApiService) ArchiveExecute(r ApiArchiveRequest) (*http.Response
 	return localVarHTTPResponse, nil
 }
 
-type ApiAttachToLanguageGroupRequest struct {
-	ctx                             context.Context
-	ApiService                      *BlogTagsApiService
-	attachToLangPrimaryRequestVNext *AttachToLangPrimaryRequestVNext
+type ApiGetCmsV3BlogsTagsRequest struct {
+	ctx           context.Context
+	ApiService    *BlogTagsAPIService
+	createdAt     *time.Time
+	createdAfter  *time.Time
+	createdBefore *time.Time
+	updatedAt     *time.Time
+	updatedAfter  *time.Time
+	updatedBefore *time.Time
+	sort          *[]string
+	after         *string
+	limit         *int32
+	archived      *bool
+	property      *string
 }
 
-// The JSON representation of the AttachToLangPrimaryRequest object.
-func (r ApiAttachToLanguageGroupRequest) AttachToLangPrimaryRequestVNext(attachToLangPrimaryRequestVNext AttachToLangPrimaryRequestVNext) ApiAttachToLanguageGroupRequest {
-	r.attachToLangPrimaryRequestVNext = &attachToLangPrimaryRequestVNext
+// Only return Blog Tags created at exactly the specified time.
+func (r ApiGetCmsV3BlogsTagsRequest) CreatedAt(createdAt time.Time) ApiGetCmsV3BlogsTagsRequest {
+	r.createdAt = &createdAt
 	return r
 }
 
-func (r ApiAttachToLanguageGroupRequest) Execute() (*Error, *http.Response, error) {
-	return r.ApiService.AttachToLanguageGroupExecute(r)
+// Only return Blog Tags created after the specified time.
+func (r ApiGetCmsV3BlogsTagsRequest) CreatedAfter(createdAfter time.Time) ApiGetCmsV3BlogsTagsRequest {
+	r.createdAfter = &createdAfter
+	return r
+}
+
+// Only return Blog Tags created before the specified time.
+func (r ApiGetCmsV3BlogsTagsRequest) CreatedBefore(createdBefore time.Time) ApiGetCmsV3BlogsTagsRequest {
+	r.createdBefore = &createdBefore
+	return r
+}
+
+// Only return Blog Tags last updated at exactly the specified time.
+func (r ApiGetCmsV3BlogsTagsRequest) UpdatedAt(updatedAt time.Time) ApiGetCmsV3BlogsTagsRequest {
+	r.updatedAt = &updatedAt
+	return r
+}
+
+// Only return Blog Tags last updated after the specified time.
+func (r ApiGetCmsV3BlogsTagsRequest) UpdatedAfter(updatedAfter time.Time) ApiGetCmsV3BlogsTagsRequest {
+	r.updatedAfter = &updatedAfter
+	return r
+}
+
+// Only return Blog Tags last updated before the specified time.
+func (r ApiGetCmsV3BlogsTagsRequest) UpdatedBefore(updatedBefore time.Time) ApiGetCmsV3BlogsTagsRequest {
+	r.updatedBefore = &updatedBefore
+	return r
+}
+
+// Specifies which fields to use for sorting results. Valid fields are &#x60;name&#x60;, &#x60;createdAt&#x60;, &#x60;updatedAt&#x60;, &#x60;createdBy&#x60;, &#x60;updatedBy&#x60;. &#x60;createdAt&#x60; will be used by default.
+func (r ApiGetCmsV3BlogsTagsRequest) Sort(sort []string) ApiGetCmsV3BlogsTagsRequest {
+	r.sort = &sort
+	return r
+}
+
+// The cursor token value to get the next set of results. You can get this from the &#x60;paging.next.after&#x60; JSON property of a paged response containing more results.
+func (r ApiGetCmsV3BlogsTagsRequest) After(after string) ApiGetCmsV3BlogsTagsRequest {
+	r.after = &after
+	return r
+}
+
+// The maximum number of results to return. Default is 100.
+func (r ApiGetCmsV3BlogsTagsRequest) Limit(limit int32) ApiGetCmsV3BlogsTagsRequest {
+	r.limit = &limit
+	return r
+}
+
+// Specifies whether to return deleted Blog Tags. Defaults to &#x60;false&#x60;.
+func (r ApiGetCmsV3BlogsTagsRequest) Archived(archived bool) ApiGetCmsV3BlogsTagsRequest {
+	r.archived = &archived
+	return r
+}
+
+func (r ApiGetCmsV3BlogsTagsRequest) Property(property string) ApiGetCmsV3BlogsTagsRequest {
+	r.property = &property
+	return r
+}
+
+func (r ApiGetCmsV3BlogsTagsRequest) Execute() (*CollectionResponseWithTotalTagForwardPaging, *http.Response, error) {
+	return r.ApiService.GetCmsV3BlogsTagsExecute(r)
 }
 
 /*
-AttachToLanguageGroup Attach a Blog Tag to a multi-language group
+GetCmsV3BlogsTags Get all Blog Tags
 
-Attach a Blog Tag to a multi-language group.
+Get the list of blog tags. Supports paging and filtering. This method would be useful for an integration that examined these models and used an external service to suggest edits.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiAttachToLanguageGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCmsV3BlogsTagsRequest
 */
-func (a *BlogTagsApiService) AttachToLanguageGroup(ctx context.Context) ApiAttachToLanguageGroupRequest {
-	return ApiAttachToLanguageGroupRequest{
+func (a *BlogTagsAPIService) GetCmsV3BlogsTags(ctx context.Context) ApiGetCmsV3BlogsTagsRequest {
+	return ApiGetCmsV3BlogsTagsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return Error
-func (a *BlogTagsApiService) AttachToLanguageGroupExecute(r ApiAttachToLanguageGroupRequest) (*Error, *http.Response, error) {
+//
+//	@return CollectionResponseWithTotalTagForwardPaging
+func (a *BlogTagsAPIService) GetCmsV3BlogsTagsExecute(r ApiGetCmsV3BlogsTagsRequest) (*CollectionResponseWithTotalTagForwardPaging, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
+		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *Error
+		localVarReturnValue *CollectionResponseWithTotalTagForwardPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.AttachToLanguageGroup")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.GetCmsV3BlogsTags")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cms/v3/blogs/tags/multi-language/attach-to-lang-group"
+	localVarPath := localBasePath + "/cms/v3/blogs/tags"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.attachToLangPrimaryRequestVNext == nil {
-		return localVarReturnValue, nil, reportError("attachToLangPrimaryRequestVNext is required and must be specified")
-	}
 
+	if r.createdAt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "createdAt", r.createdAt, "")
+	}
+	if r.createdAfter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "createdAfter", r.createdAfter, "")
+	}
+	if r.createdBefore != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "createdBefore", r.createdBefore, "")
+	}
+	if r.updatedAt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updatedAt", r.updatedAt, "")
+	}
+	if r.updatedAfter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updatedAfter", r.updatedAfter, "")
+	}
+	if r.updatedBefore != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updatedBefore", r.updatedBefore, "")
+	}
+	if r.sort != nil {
+		t := *r.sort
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "sort", t, "multi")
+		}
+	}
+	if r.after != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "after", r.after, "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	}
+	if r.archived != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	}
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "")
+	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -213,15 +321,13 @@ func (a *BlogTagsApiService) AttachToLanguageGroupExecute(r ApiAttachToLanguageG
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.attachToLangPrimaryRequestVNext
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -281,46 +387,474 @@ func (a *BlogTagsApiService) AttachToLanguageGroupExecute(r ApiAttachToLanguageG
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiBatchArchiveRequest struct {
-	ctx              context.Context
-	ApiService       *BlogTagsApiService
-	batchInputString *BatchInputString
+type ApiGetCmsV3BlogsTagsObjectIdRequest struct {
+	ctx        context.Context
+	ApiService *BlogTagsAPIService
+	objectId   string
+	archived   *bool
+	property   *string
 }
 
-// The JSON array of Blog Tag ids.
-func (r ApiBatchArchiveRequest) BatchInputString(batchInputString BatchInputString) ApiBatchArchiveRequest {
-	r.batchInputString = &batchInputString
+// Specifies whether to return deleted Blog Tags. Defaults to &#x60;false&#x60;.
+func (r ApiGetCmsV3BlogsTagsObjectIdRequest) Archived(archived bool) ApiGetCmsV3BlogsTagsObjectIdRequest {
+	r.archived = &archived
 	return r
 }
 
-func (r ApiBatchArchiveRequest) Execute() (*http.Response, error) {
-	return r.ApiService.BatchArchiveExecute(r)
+func (r ApiGetCmsV3BlogsTagsObjectIdRequest) Property(property string) ApiGetCmsV3BlogsTagsObjectIdRequest {
+	r.property = &property
+	return r
+}
+
+func (r ApiGetCmsV3BlogsTagsObjectIdRequest) Execute() (*Tag, *http.Response, error) {
+	return r.ApiService.GetCmsV3BlogsTagsObjectIdExecute(r)
 }
 
 /*
-BatchArchive Delete a batch of Blog Tags
+GetCmsV3BlogsTagsObjectId Retrieve a Blog Tag
 
-Delete the Blog Tag objects identified in the request body.
+Retrieve the Blog Tag object identified by the id in the path.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectId The Blog Tag id.
+	@return ApiGetCmsV3BlogsTagsObjectIdRequest
 */
-func (a *BlogTagsApiService) BatchArchive(ctx context.Context) ApiBatchArchiveRequest {
-	return ApiBatchArchiveRequest{
+func (a *BlogTagsAPIService) GetCmsV3BlogsTagsObjectId(ctx context.Context, objectId string) ApiGetCmsV3BlogsTagsObjectIdRequest {
+	return ApiGetCmsV3BlogsTagsObjectIdRequest{
+		ApiService: a,
+		ctx:        ctx,
+		objectId:   objectId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Tag
+func (a *BlogTagsAPIService) GetCmsV3BlogsTagsObjectIdExecute(r ApiGetCmsV3BlogsTagsObjectIdRequest) (*Tag, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Tag
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.GetCmsV3BlogsTagsObjectId")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/cms/v3/blogs/tags/{objectId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"objectId"+"}", url.PathEscape(parameterValueToString(r.objectId, "objectId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.archived != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	}
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPatchCmsV3BlogsTagsObjectIdRequest struct {
+	ctx        context.Context
+	ApiService *BlogTagsAPIService
+	objectId   string
+	tag        *Tag
+	archived   *bool
+}
+
+// The JSON representation of the updated Blog Tag.
+func (r ApiPatchCmsV3BlogsTagsObjectIdRequest) Tag(tag Tag) ApiPatchCmsV3BlogsTagsObjectIdRequest {
+	r.tag = &tag
+	return r
+}
+
+// Specifies whether to update deleted Blog Tags. Defaults to &#x60;false&#x60;.
+func (r ApiPatchCmsV3BlogsTagsObjectIdRequest) Archived(archived bool) ApiPatchCmsV3BlogsTagsObjectIdRequest {
+	r.archived = &archived
+	return r
+}
+
+func (r ApiPatchCmsV3BlogsTagsObjectIdRequest) Execute() (*Tag, *http.Response, error) {
+	return r.ApiService.PatchCmsV3BlogsTagsObjectIdExecute(r)
+}
+
+/*
+PatchCmsV3BlogsTagsObjectId Update a Blog Tag
+
+Sparse updates a single Blog Tag object identified by the id in the path.
+All the column values need not be specified. Only the that need to be modified can be specified.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param objectId The Blog Tag id.
+	@return ApiPatchCmsV3BlogsTagsObjectIdRequest
+*/
+func (a *BlogTagsAPIService) PatchCmsV3BlogsTagsObjectId(ctx context.Context, objectId string) ApiPatchCmsV3BlogsTagsObjectIdRequest {
+	return ApiPatchCmsV3BlogsTagsObjectIdRequest{
+		ApiService: a,
+		ctx:        ctx,
+		objectId:   objectId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Tag
+func (a *BlogTagsAPIService) PatchCmsV3BlogsTagsObjectIdExecute(r ApiPatchCmsV3BlogsTagsObjectIdRequest) (*Tag, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPatch
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Tag
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PatchCmsV3BlogsTagsObjectId")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/cms/v3/blogs/tags/{objectId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"objectId"+"}", url.PathEscape(parameterValueToString(r.objectId, "objectId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.tag == nil {
+		return localVarReturnValue, nil, reportError("tag is required and must be specified")
+	}
+
+	if r.archived != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.tag
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPostCmsV3BlogsTagsRequest struct {
+	ctx        context.Context
+	ApiService *BlogTagsAPIService
+	tag        *Tag
+}
+
+// The JSON representation of a new Blog Tag.
+func (r ApiPostCmsV3BlogsTagsRequest) Tag(tag Tag) ApiPostCmsV3BlogsTagsRequest {
+	r.tag = &tag
+	return r
+}
+
+func (r ApiPostCmsV3BlogsTagsRequest) Execute() (*Tag, *http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsExecute(r)
+}
+
+/*
+PostCmsV3BlogsTags Create a new Blog Tag
+
+Create a new Blog Tag.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsRequest
+*/
+func (a *BlogTagsAPIService) PostCmsV3BlogsTags(ctx context.Context) ApiPostCmsV3BlogsTagsRequest {
+	return ApiPostCmsV3BlogsTagsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-func (a *BlogTagsApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*http.Response, error) {
+//
+//	@return Tag
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsExecute(r ApiPostCmsV3BlogsTagsRequest) (*Tag, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Tag
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTags")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/cms/v3/blogs/tags"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.tag == nil {
+		return localVarReturnValue, nil, reportError("tag is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.tag
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps_legacy"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app-legacy"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPostCmsV3BlogsTagsBatchArchiveRequest struct {
+	ctx              context.Context
+	ApiService       *BlogTagsAPIService
+	batchInputString *BatchInputString
+}
+
+// The JSON array of Blog Tag ids.
+func (r ApiPostCmsV3BlogsTagsBatchArchiveRequest) BatchInputString(batchInputString BatchInputString) ApiPostCmsV3BlogsTagsBatchArchiveRequest {
+	r.batchInputString = &batchInputString
+	return r
+}
+
+func (r ApiPostCmsV3BlogsTagsBatchArchiveRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsBatchArchiveExecute(r)
+}
+
+/*
+PostCmsV3BlogsTagsBatchArchive Delete a batch of Blog Tags
+
+Delete the Blog Tag objects identified in the request body.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsBatchArchiveRequest
+*/
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsBatchArchive(ctx context.Context) ApiPostCmsV3BlogsTagsBatchArchiveRequest {
+	return ApiPostCmsV3BlogsTagsBatchArchiveRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsBatchArchiveExecute(r ApiPostCmsV3BlogsTagsBatchArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.BatchArchive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTagsBatchArchive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -403,40 +937,41 @@ func (a *BlogTagsApiService) BatchArchiveExecute(r ApiBatchArchiveRequest) (*htt
 	return localVarHTTPResponse, nil
 }
 
-type ApiBatchCreateRequest struct {
+type ApiPostCmsV3BlogsTagsBatchCreateRequest struct {
 	ctx           context.Context
-	ApiService    *BlogTagsApiService
+	ApiService    *BlogTagsAPIService
 	batchInputTag *BatchInputTag
 }
 
 // The JSON array of new Blog Tags to create.
-func (r ApiBatchCreateRequest) BatchInputTag(batchInputTag BatchInputTag) ApiBatchCreateRequest {
+func (r ApiPostCmsV3BlogsTagsBatchCreateRequest) BatchInputTag(batchInputTag BatchInputTag) ApiPostCmsV3BlogsTagsBatchCreateRequest {
 	r.batchInputTag = &batchInputTag
 	return r
 }
 
-func (r ApiBatchCreateRequest) Execute() (*BatchResponseTag, *http.Response, error) {
-	return r.ApiService.BatchCreateExecute(r)
+func (r ApiPostCmsV3BlogsTagsBatchCreateRequest) Execute() (*BatchResponseTag, *http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsBatchCreateExecute(r)
 }
 
 /*
-BatchCreate Create a batch of Blog Tags
+PostCmsV3BlogsTagsBatchCreate Create a batch of Blog Tags
 
 Create the Blog Tag objects detailed in the request body.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsBatchCreateRequest
 */
-func (a *BlogTagsApiService) BatchCreate(ctx context.Context) ApiBatchCreateRequest {
-	return ApiBatchCreateRequest{
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsBatchCreate(ctx context.Context) ApiPostCmsV3BlogsTagsBatchCreateRequest {
+	return ApiPostCmsV3BlogsTagsBatchCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchResponseTag
-func (a *BlogTagsApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*BatchResponseTag, *http.Response, error) {
+//
+//	@return BatchResponseTag
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsBatchCreateExecute(r ApiPostCmsV3BlogsTagsBatchCreateRequest) (*BatchResponseTag, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -444,7 +979,7 @@ func (a *BlogTagsApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*Batch
 		localVarReturnValue *BatchResponseTag
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.BatchCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTagsBatchCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -536,47 +1071,48 @@ func (a *BlogTagsApiService) BatchCreateExecute(r ApiBatchCreateRequest) (*Batch
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiBatchReadRequest struct {
+type ApiPostCmsV3BlogsTagsBatchReadRequest struct {
 	ctx              context.Context
-	ApiService       *BlogTagsApiService
+	ApiService       *BlogTagsAPIService
 	batchInputString *BatchInputString
 	archived         *bool
 }
 
 // The JSON array of Blog Tag ids.
-func (r ApiBatchReadRequest) BatchInputString(batchInputString BatchInputString) ApiBatchReadRequest {
+func (r ApiPostCmsV3BlogsTagsBatchReadRequest) BatchInputString(batchInputString BatchInputString) ApiPostCmsV3BlogsTagsBatchReadRequest {
 	r.batchInputString = &batchInputString
 	return r
 }
 
 // Specifies whether to return deleted Blog Tags. Defaults to &#x60;false&#x60;.
-func (r ApiBatchReadRequest) Archived(archived bool) ApiBatchReadRequest {
+func (r ApiPostCmsV3BlogsTagsBatchReadRequest) Archived(archived bool) ApiPostCmsV3BlogsTagsBatchReadRequest {
 	r.archived = &archived
 	return r
 }
 
-func (r ApiBatchReadRequest) Execute() (*BatchResponseTag, *http.Response, error) {
-	return r.ApiService.BatchReadExecute(r)
+func (r ApiPostCmsV3BlogsTagsBatchReadRequest) Execute() (*BatchResponseTag, *http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsBatchReadExecute(r)
 }
 
 /*
-BatchRead Retrieve a batch of Blog Tags
+PostCmsV3BlogsTagsBatchRead Retrieve a batch of Blog Tags
 
 Retrieve the Blog Tag objects identified in the request body.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchReadRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsBatchReadRequest
 */
-func (a *BlogTagsApiService) BatchRead(ctx context.Context) ApiBatchReadRequest {
-	return ApiBatchReadRequest{
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsBatchRead(ctx context.Context) ApiPostCmsV3BlogsTagsBatchReadRequest {
+	return ApiPostCmsV3BlogsTagsBatchReadRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchResponseTag
-func (a *BlogTagsApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchResponseTag, *http.Response, error) {
+//
+//	@return BatchResponseTag
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsBatchReadExecute(r ApiPostCmsV3BlogsTagsBatchReadRequest) (*BatchResponseTag, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -584,7 +1120,7 @@ func (a *BlogTagsApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchResp
 		localVarReturnValue *BatchResponseTag
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.BatchRead")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTagsBatchRead")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -679,47 +1215,48 @@ func (a *BlogTagsApiService) BatchReadExecute(r ApiBatchReadRequest) (*BatchResp
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiBatchUpdateRequest struct {
+type ApiPostCmsV3BlogsTagsBatchUpdateRequest struct {
 	ctx                context.Context
-	ApiService         *BlogTagsApiService
+	ApiService         *BlogTagsAPIService
 	batchInputJsonNode *BatchInputJsonNode
 	archived           *bool
 }
 
 // A JSON array of the JSON representations of the updated Blog Tags.
-func (r ApiBatchUpdateRequest) BatchInputJsonNode(batchInputJsonNode BatchInputJsonNode) ApiBatchUpdateRequest {
+func (r ApiPostCmsV3BlogsTagsBatchUpdateRequest) BatchInputJsonNode(batchInputJsonNode BatchInputJsonNode) ApiPostCmsV3BlogsTagsBatchUpdateRequest {
 	r.batchInputJsonNode = &batchInputJsonNode
 	return r
 }
 
 // Specifies whether to update deleted Blog Tags. Defaults to &#x60;false&#x60;.
-func (r ApiBatchUpdateRequest) Archived(archived bool) ApiBatchUpdateRequest {
+func (r ApiPostCmsV3BlogsTagsBatchUpdateRequest) Archived(archived bool) ApiPostCmsV3BlogsTagsBatchUpdateRequest {
 	r.archived = &archived
 	return r
 }
 
-func (r ApiBatchUpdateRequest) Execute() (*BatchResponseTag, *http.Response, error) {
-	return r.ApiService.BatchUpdateExecute(r)
+func (r ApiPostCmsV3BlogsTagsBatchUpdateRequest) Execute() (*BatchResponseTag, *http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsBatchUpdateExecute(r)
 }
 
 /*
-BatchUpdate Update a batch of Blog Tags
+PostCmsV3BlogsTagsBatchUpdate Update a batch of Blog Tags
 
 Update the Blog Tag objects identified in the request body.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiBatchUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsBatchUpdateRequest
 */
-func (a *BlogTagsApiService) BatchUpdate(ctx context.Context) ApiBatchUpdateRequest {
-	return ApiBatchUpdateRequest{
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsBatchUpdate(ctx context.Context) ApiPostCmsV3BlogsTagsBatchUpdateRequest {
+	return ApiPostCmsV3BlogsTagsBatchUpdateRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchResponseTag
-func (a *BlogTagsApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*BatchResponseTag, *http.Response, error) {
+//
+//	@return BatchResponseTag
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsBatchUpdateExecute(r ApiPostCmsV3BlogsTagsBatchUpdateRequest) (*BatchResponseTag, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -727,7 +1264,7 @@ func (a *BlogTagsApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*Batch
 		localVarReturnValue *BatchResponseTag
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.BatchUpdate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTagsBatchUpdate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -822,59 +1359,57 @@ func (a *BlogTagsApiService) BatchUpdateExecute(r ApiBatchUpdateRequest) (*Batch
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiCreateRequest struct {
-	ctx        context.Context
-	ApiService *BlogTagsApiService
-	tag        *Tag
+type ApiPostCmsV3BlogsTagsMultiLanguageAttachToLangGroupRequest struct {
+	ctx                             context.Context
+	ApiService                      *BlogTagsAPIService
+	attachToLangPrimaryRequestVNext *AttachToLangPrimaryRequestVNext
 }
 
-// The JSON representation of a new Blog Tag.
-func (r ApiCreateRequest) Tag(tag Tag) ApiCreateRequest {
-	r.tag = &tag
+// The JSON representation of the AttachToLangPrimaryRequest object.
+func (r ApiPostCmsV3BlogsTagsMultiLanguageAttachToLangGroupRequest) AttachToLangPrimaryRequestVNext(attachToLangPrimaryRequestVNext AttachToLangPrimaryRequestVNext) ApiPostCmsV3BlogsTagsMultiLanguageAttachToLangGroupRequest {
+	r.attachToLangPrimaryRequestVNext = &attachToLangPrimaryRequestVNext
 	return r
 }
 
-func (r ApiCreateRequest) Execute() (*Tag, *http.Response, error) {
-	return r.ApiService.CreateExecute(r)
+func (r ApiPostCmsV3BlogsTagsMultiLanguageAttachToLangGroupRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsMultiLanguageAttachToLangGroupExecute(r)
 }
 
 /*
-Create Create a new Blog Tag
+PostCmsV3BlogsTagsMultiLanguageAttachToLangGroup Attach a Blog Tag to a multi-language group
 
-Create a new Blog Tag.
+Attach a Blog Tag to a multi-language group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsMultiLanguageAttachToLangGroupRequest
 */
-func (a *BlogTagsApiService) Create(ctx context.Context) ApiCreateRequest {
-	return ApiCreateRequest{
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsMultiLanguageAttachToLangGroup(ctx context.Context) ApiPostCmsV3BlogsTagsMultiLanguageAttachToLangGroupRequest {
+	return ApiPostCmsV3BlogsTagsMultiLanguageAttachToLangGroupRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return Tag
-func (a *BlogTagsApiService) CreateExecute(r ApiCreateRequest) (*Tag, *http.Response, error) {
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsMultiLanguageAttachToLangGroupExecute(r ApiPostCmsV3BlogsTagsMultiLanguageAttachToLangGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *Tag
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.Create")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTagsMultiLanguageAttachToLangGroup")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cms/v3/blogs/tags"
+	localVarPath := localBasePath + "/cms/v3/blogs/tags/multi-language/attach-to-lang-group"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.tag == nil {
-		return localVarReturnValue, nil, reportError("tag is required and must be specified")
+	if r.attachToLangPrimaryRequestVNext == nil {
+		return nil, reportError("attachToLangPrimaryRequestVNext is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -887,7 +1422,7 @@ func (a *BlogTagsApiService) CreateExecute(r ApiCreateRequest) (*Tag, *http.Resp
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+	localVarHTTPHeaderAccepts := []string{"*/*"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -895,7 +1430,7 @@ func (a *BlogTagsApiService) CreateExecute(r ApiCreateRequest) (*Tag, *http.Resp
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.tag
+	localVarPostBody = r.attachToLangPrimaryRequestVNext
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -912,19 +1447,19 @@ func (a *BlogTagsApiService) CreateExecute(r ApiCreateRequest) (*Tag, *http.Resp
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -936,59 +1471,51 @@ func (a *BlogTagsApiService) CreateExecute(r ApiCreateRequest) (*Tag, *http.Resp
 		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 		if err != nil {
 			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
+			return localVarHTTPResponse, newErr
 		}
 		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarHTTPResponse, nil
 }
 
-type ApiCreateLanguageVariationRequest struct {
+type ApiPostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationRequest struct {
 	ctx                  context.Context
-	ApiService           *BlogTagsApiService
+	ApiService           *BlogTagsAPIService
 	tagCloneRequestVNext *TagCloneRequestVNext
 }
 
 // The JSON representation of the ContentLanguageCloneRequest object.
-func (r ApiCreateLanguageVariationRequest) TagCloneRequestVNext(tagCloneRequestVNext TagCloneRequestVNext) ApiCreateLanguageVariationRequest {
+func (r ApiPostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationRequest) TagCloneRequestVNext(tagCloneRequestVNext TagCloneRequestVNext) ApiPostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationRequest {
 	r.tagCloneRequestVNext = &tagCloneRequestVNext
 	return r
 }
 
-func (r ApiCreateLanguageVariationRequest) Execute() (*Tag, *http.Response, error) {
-	return r.ApiService.CreateLanguageVariationExecute(r)
+func (r ApiPostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationRequest) Execute() (*Tag, *http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationExecute(r)
 }
 
 /*
-CreateLanguageVariation Create a new language variation
+PostCmsV3BlogsTagsMultiLanguageCreateLanguageVariation Create a new language variation
 
 Create a new language variation from an existing Blog Tag
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateLanguageVariationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationRequest
 */
-func (a *BlogTagsApiService) CreateLanguageVariation(ctx context.Context) ApiCreateLanguageVariationRequest {
-	return ApiCreateLanguageVariationRequest{
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsMultiLanguageCreateLanguageVariation(ctx context.Context) ApiPostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationRequest {
+	return ApiPostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return Tag
-func (a *BlogTagsApiService) CreateLanguageVariationExecute(r ApiCreateLanguageVariationRequest) (*Tag, *http.Response, error) {
+//
+//	@return Tag
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationExecute(r ApiPostCmsV3BlogsTagsMultiLanguageCreateLanguageVariationRequest) (*Tag, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -996,7 +1523,7 @@ func (a *BlogTagsApiService) CreateLanguageVariationExecute(r ApiCreateLanguageV
 		localVarReturnValue *Tag
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.CreateLanguageVariation")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTagsMultiLanguageCreateLanguageVariation")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1088,50 +1615,48 @@ func (a *BlogTagsApiService) CreateLanguageVariationExecute(r ApiCreateLanguageV
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDetachFromLanguageGroupRequest struct {
+type ApiPostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupRequest struct {
 	ctx                             context.Context
-	ApiService                      *BlogTagsApiService
+	ApiService                      *BlogTagsAPIService
 	detachFromLangGroupRequestVNext *DetachFromLangGroupRequestVNext
 }
 
 // The JSON representation of the DetachFromLangGroupRequest object.
-func (r ApiDetachFromLanguageGroupRequest) DetachFromLangGroupRequestVNext(detachFromLangGroupRequestVNext DetachFromLangGroupRequestVNext) ApiDetachFromLanguageGroupRequest {
+func (r ApiPostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupRequest) DetachFromLangGroupRequestVNext(detachFromLangGroupRequestVNext DetachFromLangGroupRequestVNext) ApiPostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupRequest {
 	r.detachFromLangGroupRequestVNext = &detachFromLangGroupRequestVNext
 	return r
 }
 
-func (r ApiDetachFromLanguageGroupRequest) Execute() (*Error, *http.Response, error) {
-	return r.ApiService.DetachFromLanguageGroupExecute(r)
+func (r ApiPostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupExecute(r)
 }
 
 /*
-DetachFromLanguageGroup Detach a Blog Tag from a multi-language group
+PostCmsV3BlogsTagsMultiLanguageDetachFromLangGroup Detach a Blog Tag from a multi-language group
 
 Detach a Blog Tag from a multi-language group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiDetachFromLanguageGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupRequest
 */
-func (a *BlogTagsApiService) DetachFromLanguageGroup(ctx context.Context) ApiDetachFromLanguageGroupRequest {
-	return ApiDetachFromLanguageGroupRequest{
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsMultiLanguageDetachFromLangGroup(ctx context.Context) ApiPostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupRequest {
+	return ApiPostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return Error
-func (a *BlogTagsApiService) DetachFromLanguageGroupExecute(r ApiDetachFromLanguageGroupRequest) (*Error, *http.Response, error) {
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupExecute(r ApiPostCmsV3BlogsTagsMultiLanguageDetachFromLangGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *Error
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.DetachFromLanguageGroup")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTagsMultiLanguageDetachFromLangGroup")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/cms/v3/blogs/tags/multi-language/detach-from-lang-group"
@@ -1140,7 +1665,7 @@ func (a *BlogTagsApiService) DetachFromLanguageGroupExecute(r ApiDetachFromLangu
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.detachFromLangGroupRequestVNext == nil {
-		return localVarReturnValue, nil, reportError("detachFromLangGroupRequestVNext is required and must be specified")
+		return nil, reportError("detachFromLangGroupRequestVNext is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -1178,19 +1703,19 @@ func (a *BlogTagsApiService) DetachFromLanguageGroupExecute(r ApiDetachFromLangu
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1202,86 +1727,71 @@ func (a *BlogTagsApiService) DetachFromLanguageGroupExecute(r ApiDetachFromLangu
 		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 		if err != nil {
 			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
+			return localVarHTTPResponse, newErr
 		}
 		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarHTTPResponse, nil
 }
 
-type ApiGetByIDRequest struct {
-	ctx        context.Context
-	ApiService *BlogTagsApiService
-	objectId   string
-	archived   *bool
+type ApiPostCmsV3BlogsTagsMultiLanguageUpdateLanguagesRequest struct {
+	ctx                         context.Context
+	ApiService                  *BlogTagsAPIService
+	updateLanguagesRequestVNext *UpdateLanguagesRequestVNext
 }
 
-// Specifies whether to return deleted Blog Tags. Defaults to &#x60;false&#x60;.
-func (r ApiGetByIDRequest) Archived(archived bool) ApiGetByIDRequest {
-	r.archived = &archived
+// The JSON representation of the UpdateLanguagesRequest object.
+func (r ApiPostCmsV3BlogsTagsMultiLanguageUpdateLanguagesRequest) UpdateLanguagesRequestVNext(updateLanguagesRequestVNext UpdateLanguagesRequestVNext) ApiPostCmsV3BlogsTagsMultiLanguageUpdateLanguagesRequest {
+	r.updateLanguagesRequestVNext = &updateLanguagesRequestVNext
 	return r
 }
 
-func (r ApiGetByIDRequest) Execute() (*Tag, *http.Response, error) {
-	return r.ApiService.GetByIDExecute(r)
+func (r ApiPostCmsV3BlogsTagsMultiLanguageUpdateLanguagesRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostCmsV3BlogsTagsMultiLanguageUpdateLanguagesExecute(r)
 }
 
 /*
-GetByID Retrieve a Blog Tag
+PostCmsV3BlogsTagsMultiLanguageUpdateLanguages Update languages of multi-language group
 
-Retrieve the Blog Tag object identified by the id in the path.
+Explicitly set new languages for each Blog Tag in a multi-language group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectId The Blog Tag id.
- @return ApiGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostCmsV3BlogsTagsMultiLanguageUpdateLanguagesRequest
 */
-func (a *BlogTagsApiService) GetByID(ctx context.Context, objectId string) ApiGetByIDRequest {
-	return ApiGetByIDRequest{
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsMultiLanguageUpdateLanguages(ctx context.Context) ApiPostCmsV3BlogsTagsMultiLanguageUpdateLanguagesRequest {
+	return ApiPostCmsV3BlogsTagsMultiLanguageUpdateLanguagesRequest{
 		ApiService: a,
 		ctx:        ctx,
-		objectId:   objectId,
 	}
 }
 
 // Execute executes the request
-//  @return Tag
-func (a *BlogTagsApiService) GetByIDExecute(r ApiGetByIDRequest) (*Tag, *http.Response, error) {
+func (a *BlogTagsAPIService) PostCmsV3BlogsTagsMultiLanguageUpdateLanguagesExecute(r ApiPostCmsV3BlogsTagsMultiLanguageUpdateLanguagesRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *Tag
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.GetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PostCmsV3BlogsTagsMultiLanguageUpdateLanguages")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cms/v3/blogs/tags/{objectId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"objectId"+"}", url.PathEscape(parameterValueToString(r.objectId, "objectId")), -1)
+	localVarPath := localBasePath + "/cms/v3/blogs/tags/multi-language/update-languages"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	if r.archived != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
+	if r.updateLanguagesRequestVNext == nil {
+		return nil, reportError("updateLanguagesRequestVNext is required and must be specified")
 	}
+
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -1290,13 +1800,15 @@ func (a *BlogTagsApiService) GetByIDExecute(r ApiGetByIDRequest) (*Tag, *http.Re
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+	localVarHTTPHeaderAccepts := []string{"*/*"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	// body params
+	localVarPostBody = r.updateLanguagesRequestVNext
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -1313,19 +1825,19 @@ func (a *BlogTagsApiService) GetByIDExecute(r ApiGetByIDRequest) (*Tag, *http.Re
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1337,295 +1849,56 @@ func (a *BlogTagsApiService) GetByIDExecute(r ApiGetByIDRequest) (*Tag, *http.Re
 		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 		if err != nil {
 			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
+			return localVarHTTPResponse, newErr
 		}
 		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarHTTPResponse, nil
 }
 
-type ApiGetPageRequest struct {
-	ctx           context.Context
-	ApiService    *BlogTagsApiService
-	createdAt     *time.Time
-	createdAfter  *time.Time
-	createdBefore *time.Time
-	updatedAt     *time.Time
-	updatedAfter  *time.Time
-	updatedBefore *time.Time
-	sort          *[]string
-	after         *string
-	limit         *int32
-	archived      *bool
-}
-
-// Only return Blog Tags created at exactly the specified time.
-func (r ApiGetPageRequest) CreatedAt(createdAt time.Time) ApiGetPageRequest {
-	r.createdAt = &createdAt
-	return r
-}
-
-// Only return Blog Tags created after the specified time.
-func (r ApiGetPageRequest) CreatedAfter(createdAfter time.Time) ApiGetPageRequest {
-	r.createdAfter = &createdAfter
-	return r
-}
-
-// Only return Blog Tags created before the specified time.
-func (r ApiGetPageRequest) CreatedBefore(createdBefore time.Time) ApiGetPageRequest {
-	r.createdBefore = &createdBefore
-	return r
-}
-
-// Only return Blog Tags last updated at exactly the specified time.
-func (r ApiGetPageRequest) UpdatedAt(updatedAt time.Time) ApiGetPageRequest {
-	r.updatedAt = &updatedAt
-	return r
-}
-
-// Only return Blog Tags last updated after the specified time.
-func (r ApiGetPageRequest) UpdatedAfter(updatedAfter time.Time) ApiGetPageRequest {
-	r.updatedAfter = &updatedAfter
-	return r
-}
-
-// Only return Blog Tags last updated before the specified time.
-func (r ApiGetPageRequest) UpdatedBefore(updatedBefore time.Time) ApiGetPageRequest {
-	r.updatedBefore = &updatedBefore
-	return r
-}
-
-// Specifies which fields to use for sorting results. Valid fields are &#x60;name&#x60;, &#x60;createdAt&#x60;, &#x60;updatedAt&#x60;, &#x60;createdBy&#x60;, &#x60;updatedBy&#x60;. &#x60;createdAt&#x60; will be used by default.
-func (r ApiGetPageRequest) Sort(sort []string) ApiGetPageRequest {
-	r.sort = &sort
-	return r
-}
-
-// The cursor token value to get the next set of results. You can get this from the &#x60;paging.next.after&#x60; JSON property of a paged response containing more results.
-func (r ApiGetPageRequest) After(after string) ApiGetPageRequest {
-	r.after = &after
-	return r
-}
-
-// The maximum number of results to return. Default is 100.
-func (r ApiGetPageRequest) Limit(limit int32) ApiGetPageRequest {
-	r.limit = &limit
-	return r
-}
-
-// Specifies whether to return deleted Blog Tags. Defaults to &#x60;false&#x60;.
-func (r ApiGetPageRequest) Archived(archived bool) ApiGetPageRequest {
-	r.archived = &archived
-	return r
-}
-
-func (r ApiGetPageRequest) Execute() (*CollectionResponseWithTotalTagForwardPaging, *http.Response, error) {
-	return r.ApiService.GetPageExecute(r)
-}
-
-/*
-GetPage Get all Blog Tags
-
-Get the list of blog tags. Supports paging and filtering. This method would be useful for an integration that examined these models and used an external service to suggest edits.
-
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetPageRequest
-*/
-func (a *BlogTagsApiService) GetPage(ctx context.Context) ApiGetPageRequest {
-	return ApiGetPageRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//  @return CollectionResponseWithTotalTagForwardPaging
-func (a *BlogTagsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionResponseWithTotalTagForwardPaging, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *CollectionResponseWithTotalTagForwardPaging
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.GetPage")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/cms/v3/blogs/tags"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	if r.createdAt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "createdAt", r.createdAt, "")
-	}
-	if r.createdAfter != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "createdAfter", r.createdAfter, "")
-	}
-	if r.createdBefore != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "createdBefore", r.createdBefore, "")
-	}
-	if r.updatedAt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updatedAt", r.updatedAt, "")
-	}
-	if r.updatedAfter != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updatedAfter", r.updatedAfter, "")
-	}
-	if r.updatedBefore != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updatedBefore", r.updatedBefore, "")
-	}
-	if r.sort != nil {
-		t := *r.sort
-		if reflect.TypeOf(t).Kind() == reflect.Slice {
-			s := reflect.ValueOf(t)
-			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i), "multi")
-			}
-		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "sort", t, "multi")
-		}
-	}
-	if r.after != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "after", r.after, "")
-	}
-	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
-	}
-	if r.archived != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiSetLanguagePrimaryRequest struct {
+type ApiPutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryRequest struct {
 	ctx                               context.Context
-	ApiService                        *BlogTagsApiService
+	ApiService                        *BlogTagsAPIService
 	setNewLanguagePrimaryRequestVNext *SetNewLanguagePrimaryRequestVNext
 }
 
 // The JSON representation of the SetNewLanguagePrimaryRequest object.
-func (r ApiSetLanguagePrimaryRequest) SetNewLanguagePrimaryRequestVNext(setNewLanguagePrimaryRequestVNext SetNewLanguagePrimaryRequestVNext) ApiSetLanguagePrimaryRequest {
+func (r ApiPutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryRequest) SetNewLanguagePrimaryRequestVNext(setNewLanguagePrimaryRequestVNext SetNewLanguagePrimaryRequestVNext) ApiPutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryRequest {
 	r.setNewLanguagePrimaryRequestVNext = &setNewLanguagePrimaryRequestVNext
 	return r
 }
 
-func (r ApiSetLanguagePrimaryRequest) Execute() (*http.Response, error) {
-	return r.ApiService.SetLanguagePrimaryExecute(r)
+func (r ApiPutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryExecute(r)
 }
 
 /*
-SetLanguagePrimary Set a new primary language
+PutCmsV3BlogsTagsMultiLanguageSetNewLangPrimary Set a new primary language
 
 Set a Blog Tag as the primary language of a multi-language group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetLanguagePrimaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryRequest
 */
-func (a *BlogTagsApiService) SetLanguagePrimary(ctx context.Context) ApiSetLanguagePrimaryRequest {
-	return ApiSetLanguagePrimaryRequest{
+func (a *BlogTagsAPIService) PutCmsV3BlogsTagsMultiLanguageSetNewLangPrimary(ctx context.Context) ApiPutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryRequest {
+	return ApiPutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-func (a *BlogTagsApiService) SetLanguagePrimaryExecute(r ApiSetLanguagePrimaryRequest) (*http.Response, error) {
+func (a *BlogTagsAPIService) PutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryExecute(r ApiPutCmsV3BlogsTagsMultiLanguageSetNewLangPrimaryRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPut
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.SetLanguagePrimary")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsAPIService.PutCmsV3BlogsTagsMultiLanguageSetNewLangPrimary")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1706,286 +1979,4 @@ func (a *BlogTagsApiService) SetLanguagePrimaryExecute(r ApiSetLanguagePrimaryRe
 	}
 
 	return localVarHTTPResponse, nil
-}
-
-type ApiUpdateRequest struct {
-	ctx        context.Context
-	ApiService *BlogTagsApiService
-	objectId   string
-	tag        *Tag
-	archived   *bool
-}
-
-// The JSON representation of the updated Blog Tag.
-func (r ApiUpdateRequest) Tag(tag Tag) ApiUpdateRequest {
-	r.tag = &tag
-	return r
-}
-
-// Specifies whether to update deleted Blog Tags. Defaults to &#x60;false&#x60;.
-func (r ApiUpdateRequest) Archived(archived bool) ApiUpdateRequest {
-	r.archived = &archived
-	return r
-}
-
-func (r ApiUpdateRequest) Execute() (*Tag, *http.Response, error) {
-	return r.ApiService.UpdateExecute(r)
-}
-
-/*
-Update Update a Blog Tag
-
-Sparse updates a single Blog Tag object identified by the id in the path.
-All the column values need not be specified. Only the that need to be modified can be specified.
-
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param objectId The Blog Tag id.
- @return ApiUpdateRequest
-*/
-func (a *BlogTagsApiService) Update(ctx context.Context, objectId string) ApiUpdateRequest {
-	return ApiUpdateRequest{
-		ApiService: a,
-		ctx:        ctx,
-		objectId:   objectId,
-	}
-}
-
-// Execute executes the request
-//  @return Tag
-func (a *BlogTagsApiService) UpdateExecute(r ApiUpdateRequest) (*Tag, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPatch
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *Tag
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.Update")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/cms/v3/blogs/tags/{objectId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"objectId"+"}", url.PathEscape(parameterValueToString(r.objectId, "objectId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.tag == nil {
-		return localVarReturnValue, nil, reportError("tag is required and must be specified")
-	}
-
-	if r.archived != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "archived", r.archived, "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.tag
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiUpdateLanguagesRequest struct {
-	ctx                         context.Context
-	ApiService                  *BlogTagsApiService
-	updateLanguagesRequestVNext *UpdateLanguagesRequestVNext
-}
-
-// The JSON representation of the UpdateLanguagesRequest object.
-func (r ApiUpdateLanguagesRequest) UpdateLanguagesRequestVNext(updateLanguagesRequestVNext UpdateLanguagesRequestVNext) ApiUpdateLanguagesRequest {
-	r.updateLanguagesRequestVNext = &updateLanguagesRequestVNext
-	return r
-}
-
-func (r ApiUpdateLanguagesRequest) Execute() (*Error, *http.Response, error) {
-	return r.ApiService.UpdateLanguagesExecute(r)
-}
-
-/*
-UpdateLanguages Update languages of multi-language group
-
-Explicitly set new languages for each Blog Tag in a multi-language group.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiUpdateLanguagesRequest
-*/
-func (a *BlogTagsApiService) UpdateLanguages(ctx context.Context) ApiUpdateLanguagesRequest {
-	return ApiUpdateLanguagesRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//  @return Error
-func (a *BlogTagsApiService) UpdateLanguagesExecute(r ApiUpdateLanguagesRequest) (*Error, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *Error
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BlogTagsApiService.UpdateLanguages")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/cms/v3/blogs/tags/multi-language/update-languages"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.updateLanguagesRequestVNext == nil {
-		return localVarReturnValue, nil, reportError("updateLanguagesRequestVNext is required and must be specified")
-	}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.updateLanguagesRequestVNext
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps_legacy"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app-legacy"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
 }

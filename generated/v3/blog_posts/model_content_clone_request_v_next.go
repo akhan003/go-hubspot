@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the ContentCloneRequestVNext type satisfies the MappedNullable interface at compile time
@@ -19,11 +21,13 @@ var _ MappedNullable = &ContentCloneRequestVNext{}
 
 // ContentCloneRequestVNext Request body object for cloning content.
 type ContentCloneRequestVNext struct {
-	// ID of the object to be cloned.
-	Id string `json:"id"`
 	// Name of the cloned object.
 	CloneName *string `json:"cloneName,omitempty"`
+	// ID of the object to be cloned.
+	Id string `json:"id"`
 }
+
+type _ContentCloneRequestVNext ContentCloneRequestVNext
 
 // NewContentCloneRequestVNext instantiates a new ContentCloneRequestVNext object
 // This constructor will assign default values to properties that have it defined,
@@ -41,30 +45,6 @@ func NewContentCloneRequestVNext(id string) *ContentCloneRequestVNext {
 func NewContentCloneRequestVNextWithDefaults() *ContentCloneRequestVNext {
 	this := ContentCloneRequestVNext{}
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *ContentCloneRequestVNext) GetId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *ContentCloneRequestVNext) GetIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *ContentCloneRequestVNext) SetId(v string) {
-	o.Id = v
 }
 
 // GetCloneName returns the CloneName field value if set, zero value otherwise.
@@ -99,6 +79,30 @@ func (o *ContentCloneRequestVNext) SetCloneName(v string) {
 	o.CloneName = &v
 }
 
+// GetId returns the Id field value
+func (o *ContentCloneRequestVNext) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *ContentCloneRequestVNext) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *ContentCloneRequestVNext) SetId(v string) {
+	o.Id = v
+}
+
 func (o ContentCloneRequestVNext) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -109,11 +113,48 @@ func (o ContentCloneRequestVNext) MarshalJSON() ([]byte, error) {
 
 func (o ContentCloneRequestVNext) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
 	if !IsNil(o.CloneName) {
 		toSerialize["cloneName"] = o.CloneName
 	}
+	toSerialize["id"] = o.Id
 	return toSerialize, nil
+}
+
+func (o *ContentCloneRequestVNext) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varContentCloneRequestVNext := _ContentCloneRequestVNext{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varContentCloneRequestVNext)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ContentCloneRequestVNext(varContentCloneRequestVNext)
+
+	return err
 }
 
 type NullableContentCloneRequestVNext struct {

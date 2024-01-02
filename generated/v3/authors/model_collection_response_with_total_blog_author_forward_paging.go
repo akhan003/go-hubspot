@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+CMS Authors
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package authors
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponseWithTotalBlogAuthorForwardPaging type satisfies the MappedNullable interface at compile time
@@ -20,11 +22,13 @@ var _ MappedNullable = &CollectionResponseWithTotalBlogAuthorForwardPaging{}
 // CollectionResponseWithTotalBlogAuthorForwardPaging Response object for collections of blog authors with pagination information.
 type CollectionResponseWithTotalBlogAuthorForwardPaging struct {
 	// Total number of blog authors.
-	Total int32 `json:"total"`
+	Total  int32          `json:"total"`
+	Paging *ForwardPaging `json:"paging,omitempty"`
 	// Collection of blog authors.
-	Results []BlogAuthor   `json:"results"`
-	Paging  *ForwardPaging `json:"paging,omitempty"`
+	Results []BlogAuthor `json:"results"`
 }
+
+type _CollectionResponseWithTotalBlogAuthorForwardPaging CollectionResponseWithTotalBlogAuthorForwardPaging
 
 // NewCollectionResponseWithTotalBlogAuthorForwardPaging instantiates a new CollectionResponseWithTotalBlogAuthorForwardPaging object
 // This constructor will assign default values to properties that have it defined,
@@ -69,30 +73,6 @@ func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) SetTotal(v int32) {
 	o.Total = v
 }
 
-// GetResults returns the Results field value
-func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) GetResults() []BlogAuthor {
-	if o == nil {
-		var ret []BlogAuthor
-		return ret
-	}
-
-	return o.Results
-}
-
-// GetResultsOk returns a tuple with the Results field value
-// and a boolean to check if the value has been set.
-func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) GetResultsOk() ([]BlogAuthor, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Results, true
-}
-
-// SetResults sets field value
-func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) SetResults(v []BlogAuthor) {
-	o.Results = v
-}
-
 // GetPaging returns the Paging field value if set, zero value otherwise.
 func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) GetPaging() ForwardPaging {
 	if o == nil || IsNil(o.Paging) {
@@ -125,6 +105,30 @@ func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) SetPaging(v Forward
 	o.Paging = &v
 }
 
+// GetResults returns the Results field value
+func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) GetResults() []BlogAuthor {
+	if o == nil {
+		var ret []BlogAuthor
+		return ret
+	}
+
+	return o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value
+// and a boolean to check if the value has been set.
+func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) GetResultsOk() ([]BlogAuthor, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// SetResults sets field value
+func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) SetResults(v []BlogAuthor) {
+	o.Results = v
+}
+
 func (o CollectionResponseWithTotalBlogAuthorForwardPaging) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -136,11 +140,49 @@ func (o CollectionResponseWithTotalBlogAuthorForwardPaging) MarshalJSON() ([]byt
 func (o CollectionResponseWithTotalBlogAuthorForwardPaging) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["total"] = o.Total
-	toSerialize["results"] = o.Results
 	if !IsNil(o.Paging) {
 		toSerialize["paging"] = o.Paging
 	}
+	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponseWithTotalBlogAuthorForwardPaging) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"total",
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponseWithTotalBlogAuthorForwardPaging := _CollectionResponseWithTotalBlogAuthorForwardPaging{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponseWithTotalBlogAuthorForwardPaging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponseWithTotalBlogAuthorForwardPaging(varCollectionResponseWithTotalBlogAuthorForwardPaging)
+
+	return err
 }
 
 type NullableCollectionResponseWithTotalBlogAuthorForwardPaging struct {

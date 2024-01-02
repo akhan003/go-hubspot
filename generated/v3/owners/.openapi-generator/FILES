@@ -10,7 +10,7 @@ docs/Error.md
 docs/ErrorDetail.md
 docs/ForwardPaging.md
 docs/NextPage.md
-docs/OwnersApi.md
+docs/OwnersAPI.md
 docs/PublicOwner.md
 docs/PublicTeam.md
 git_push.sh
@@ -24,5 +24,4 @@ model_next_page.go
 model_public_owner.go
 model_public_team.go
 response.go
-test/api_owners_test.go
 utils.go

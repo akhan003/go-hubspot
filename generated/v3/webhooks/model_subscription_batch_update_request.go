@@ -1,5 +1,5 @@
 /*
-Webhooks API
+Webhooks
 
 Provides a way for apps to subscribe to certain change events in HubSpot. Once configured, apps will receive event payloads containing details about the changes at a specified target URL. There can only be one target URL for receiving event notifications per app.
 
@@ -11,7 +11,9 @@ API version: v3
 package webhooks
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SubscriptionBatchUpdateRequest type satisfies the MappedNullable interface at compile time
@@ -19,18 +21,20 @@ var _ MappedNullable = &SubscriptionBatchUpdateRequest{}
 
 // SubscriptionBatchUpdateRequest struct for SubscriptionBatchUpdateRequest
 type SubscriptionBatchUpdateRequest struct {
-	Id     int32 `json:"id"`
 	Active bool  `json:"active"`
+	Id     int32 `json:"id"`
 }
+
+type _SubscriptionBatchUpdateRequest SubscriptionBatchUpdateRequest
 
 // NewSubscriptionBatchUpdateRequest instantiates a new SubscriptionBatchUpdateRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSubscriptionBatchUpdateRequest(id int32, active bool) *SubscriptionBatchUpdateRequest {
+func NewSubscriptionBatchUpdateRequest(active bool, id int32) *SubscriptionBatchUpdateRequest {
 	this := SubscriptionBatchUpdateRequest{}
-	this.Id = id
 	this.Active = active
+	this.Id = id
 	return &this
 }
 
@@ -40,30 +44,6 @@ func NewSubscriptionBatchUpdateRequest(id int32, active bool) *SubscriptionBatch
 func NewSubscriptionBatchUpdateRequestWithDefaults() *SubscriptionBatchUpdateRequest {
 	this := SubscriptionBatchUpdateRequest{}
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *SubscriptionBatchUpdateRequest) GetId() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *SubscriptionBatchUpdateRequest) GetIdOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *SubscriptionBatchUpdateRequest) SetId(v int32) {
-	o.Id = v
 }
 
 // GetActive returns the Active field value
@@ -90,6 +70,30 @@ func (o *SubscriptionBatchUpdateRequest) SetActive(v bool) {
 	o.Active = v
 }
 
+// GetId returns the Id field value
+func (o *SubscriptionBatchUpdateRequest) GetId() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *SubscriptionBatchUpdateRequest) GetIdOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *SubscriptionBatchUpdateRequest) SetId(v int32) {
+	o.Id = v
+}
+
 func (o SubscriptionBatchUpdateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -100,9 +104,47 @@ func (o SubscriptionBatchUpdateRequest) MarshalJSON() ([]byte, error) {
 
 func (o SubscriptionBatchUpdateRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
 	toSerialize["active"] = o.Active
+	toSerialize["id"] = o.Id
 	return toSerialize, nil
+}
+
+func (o *SubscriptionBatchUpdateRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"active",
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSubscriptionBatchUpdateRequest := _SubscriptionBatchUpdateRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSubscriptionBatchUpdateRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SubscriptionBatchUpdateRequest(varSubscriptionBatchUpdateRequest)
+
+	return err
 }
 
 type NullableSubscriptionBatchUpdateRequest struct {

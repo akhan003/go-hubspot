@@ -1,5 +1,5 @@
 /*
-Timeline events
+CRM Timeline
 
 This feature allows an app to create and configure custom events that can show up in the timelines of certain CRM objects like contacts, companies, tickets, or deals. You'll find multiple use cases for this API in the sections below.
 
@@ -11,7 +11,9 @@ API version: v3
 package timeline
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -20,23 +22,25 @@ var _ MappedNullable = &TimelineEventTemplate{}
 
 // TimelineEventTemplate The current state of the template definition.
 type TimelineEventTemplate struct {
-	// The template name.
-	Name string `json:"name"`
-	// This uses Markdown syntax with Handlebars and event-specific data to render HTML on a timeline as a header.
-	HeaderTemplate *string `json:"headerTemplate,omitempty"`
+	// The date and time that the Event Template was created, as an ISO 8601 timestamp. Will be null if the template was created before Feb 18th, 2020.
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// This uses Markdown syntax with Handlebars and event-specific data to render HTML on a timeline when you expand the details.
 	DetailTemplate *string `json:"detailTemplate,omitempty"`
+	// The template name.
+	Name string `json:"name"`
 	// A collection of tokens that can be used as custom properties on the event and to create fully fledged CRM objects.
 	Tokens []TimelineEventTemplateToken `json:"tokens"`
 	// The template ID.
 	Id string `json:"id"`
+	// This uses Markdown syntax with Handlebars and event-specific data to render HTML on a timeline as a header.
+	HeaderTemplate *string `json:"headerTemplate,omitempty"`
 	// The type of CRM object this template is for. [Contacts, companies, tickets, and deals] are supported.
 	ObjectType string `json:"objectType"`
-	// The date and time that the Event Template was created, as an ISO 8601 timestamp. Will be null if the template was created before Feb 18th, 2020.
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The date and time that the Event Template was last updated, as an ISO 8601 timestamp. Will be null if the template was created before Feb 18th, 2020.
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
+
+type _TimelineEventTemplate TimelineEventTemplate
 
 // NewTimelineEventTemplate instantiates a new TimelineEventTemplate object
 // This constructor will assign default values to properties that have it defined,
@@ -59,60 +63,36 @@ func NewTimelineEventTemplateWithDefaults() *TimelineEventTemplate {
 	return &this
 }
 
-// GetName returns the Name field value
-func (o *TimelineEventTemplate) GetName() string {
-	if o == nil {
-		var ret string
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+func (o *TimelineEventTemplate) GetCreatedAt() time.Time {
+	if o == nil || IsNil(o.CreatedAt) {
+		var ret time.Time
 		return ret
 	}
-
-	return o.Name
+	return *o.CreatedAt
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TimelineEventTemplate) GetNameOk() (*string, bool) {
-	if o == nil {
+func (o *TimelineEventTemplate) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.CreatedAt, true
 }
 
-// SetName sets field value
-func (o *TimelineEventTemplate) SetName(v string) {
-	o.Name = v
-}
-
-// GetHeaderTemplate returns the HeaderTemplate field value if set, zero value otherwise.
-func (o *TimelineEventTemplate) GetHeaderTemplate() string {
-	if o == nil || IsNil(o.HeaderTemplate) {
-		var ret string
-		return ret
-	}
-	return *o.HeaderTemplate
-}
-
-// GetHeaderTemplateOk returns a tuple with the HeaderTemplate field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *TimelineEventTemplate) GetHeaderTemplateOk() (*string, bool) {
-	if o == nil || IsNil(o.HeaderTemplate) {
-		return nil, false
-	}
-	return o.HeaderTemplate, true
-}
-
-// HasHeaderTemplate returns a boolean if a field has been set.
-func (o *TimelineEventTemplate) HasHeaderTemplate() bool {
-	if o != nil && !IsNil(o.HeaderTemplate) {
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *TimelineEventTemplate) HasCreatedAt() bool {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
 	return false
 }
 
-// SetHeaderTemplate gets a reference to the given string and assigns it to the HeaderTemplate field.
-func (o *TimelineEventTemplate) SetHeaderTemplate(v string) {
-	o.HeaderTemplate = &v
+// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+func (o *TimelineEventTemplate) SetCreatedAt(v time.Time) {
+	o.CreatedAt = &v
 }
 
 // GetDetailTemplate returns the DetailTemplate field value if set, zero value otherwise.
@@ -145,6 +125,30 @@ func (o *TimelineEventTemplate) HasDetailTemplate() bool {
 // SetDetailTemplate gets a reference to the given string and assigns it to the DetailTemplate field.
 func (o *TimelineEventTemplate) SetDetailTemplate(v string) {
 	o.DetailTemplate = &v
+}
+
+// GetName returns the Name field value
+func (o *TimelineEventTemplate) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *TimelineEventTemplate) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *TimelineEventTemplate) SetName(v string) {
+	o.Name = v
 }
 
 // GetTokens returns the Tokens field value
@@ -195,6 +199,38 @@ func (o *TimelineEventTemplate) SetId(v string) {
 	o.Id = v
 }
 
+// GetHeaderTemplate returns the HeaderTemplate field value if set, zero value otherwise.
+func (o *TimelineEventTemplate) GetHeaderTemplate() string {
+	if o == nil || IsNil(o.HeaderTemplate) {
+		var ret string
+		return ret
+	}
+	return *o.HeaderTemplate
+}
+
+// GetHeaderTemplateOk returns a tuple with the HeaderTemplate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *TimelineEventTemplate) GetHeaderTemplateOk() (*string, bool) {
+	if o == nil || IsNil(o.HeaderTemplate) {
+		return nil, false
+	}
+	return o.HeaderTemplate, true
+}
+
+// HasHeaderTemplate returns a boolean if a field has been set.
+func (o *TimelineEventTemplate) HasHeaderTemplate() bool {
+	if o != nil && !IsNil(o.HeaderTemplate) {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaderTemplate gets a reference to the given string and assigns it to the HeaderTemplate field.
+func (o *TimelineEventTemplate) SetHeaderTemplate(v string) {
+	o.HeaderTemplate = &v
+}
+
 // GetObjectType returns the ObjectType field value
 func (o *TimelineEventTemplate) GetObjectType() string {
 	if o == nil {
@@ -217,38 +253,6 @@ func (o *TimelineEventTemplate) GetObjectTypeOk() (*string, bool) {
 // SetObjectType sets field value
 func (o *TimelineEventTemplate) SetObjectType(v string) {
 	o.ObjectType = v
-}
-
-// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
-func (o *TimelineEventTemplate) GetCreatedAt() time.Time {
-	if o == nil || IsNil(o.CreatedAt) {
-		var ret time.Time
-		return ret
-	}
-	return *o.CreatedAt
-}
-
-// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *TimelineEventTemplate) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.CreatedAt) {
-		return nil, false
-	}
-	return o.CreatedAt, true
-}
-
-// HasCreatedAt returns a boolean if a field has been set.
-func (o *TimelineEventTemplate) HasCreatedAt() bool {
-	if o != nil && !IsNil(o.CreatedAt) {
-		return true
-	}
-
-	return false
-}
-
-// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
-func (o *TimelineEventTemplate) SetCreatedAt(v time.Time) {
-	o.CreatedAt = &v
 }
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
@@ -293,23 +297,63 @@ func (o TimelineEventTemplate) MarshalJSON() ([]byte, error) {
 
 func (o TimelineEventTemplate) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["name"] = o.Name
-	if !IsNil(o.HeaderTemplate) {
-		toSerialize["headerTemplate"] = o.HeaderTemplate
+	if !IsNil(o.CreatedAt) {
+		toSerialize["createdAt"] = o.CreatedAt
 	}
 	if !IsNil(o.DetailTemplate) {
 		toSerialize["detailTemplate"] = o.DetailTemplate
 	}
+	toSerialize["name"] = o.Name
 	toSerialize["tokens"] = o.Tokens
 	toSerialize["id"] = o.Id
-	toSerialize["objectType"] = o.ObjectType
-	if !IsNil(o.CreatedAt) {
-		toSerialize["createdAt"] = o.CreatedAt
+	if !IsNil(o.HeaderTemplate) {
+		toSerialize["headerTemplate"] = o.HeaderTemplate
 	}
+	toSerialize["objectType"] = o.ObjectType
 	if !IsNil(o.UpdatedAt) {
 		toSerialize["updatedAt"] = o.UpdatedAt
 	}
 	return toSerialize, nil
+}
+
+func (o *TimelineEventTemplate) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"tokens",
+		"id",
+		"objectType",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTimelineEventTemplate := _TimelineEventTemplate{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varTimelineEventTemplate)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TimelineEventTemplate(varTimelineEventTemplate)
+
+	return err
 }
 
 type NullableTimelineEventTemplate struct {

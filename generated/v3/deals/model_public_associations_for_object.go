@@ -11,7 +11,9 @@ API version: v3
 package deals
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PublicAssociationsForObject type satisfies the MappedNullable interface at compile time
@@ -19,18 +21,20 @@ var _ MappedNullable = &PublicAssociationsForObject{}
 
 // PublicAssociationsForObject struct for PublicAssociationsForObject
 type PublicAssociationsForObject struct {
-	To    PublicObjectId    `json:"to"`
 	Types []AssociationSpec `json:"types"`
+	To    PublicObjectId    `json:"to"`
 }
+
+type _PublicAssociationsForObject PublicAssociationsForObject
 
 // NewPublicAssociationsForObject instantiates a new PublicAssociationsForObject object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPublicAssociationsForObject(to PublicObjectId, types []AssociationSpec) *PublicAssociationsForObject {
+func NewPublicAssociationsForObject(types []AssociationSpec, to PublicObjectId) *PublicAssociationsForObject {
 	this := PublicAssociationsForObject{}
-	this.To = to
 	this.Types = types
+	this.To = to
 	return &this
 }
 
@@ -40,30 +44,6 @@ func NewPublicAssociationsForObject(to PublicObjectId, types []AssociationSpec) 
 func NewPublicAssociationsForObjectWithDefaults() *PublicAssociationsForObject {
 	this := PublicAssociationsForObject{}
 	return &this
-}
-
-// GetTo returns the To field value
-func (o *PublicAssociationsForObject) GetTo() PublicObjectId {
-	if o == nil {
-		var ret PublicObjectId
-		return ret
-	}
-
-	return o.To
-}
-
-// GetToOk returns a tuple with the To field value
-// and a boolean to check if the value has been set.
-func (o *PublicAssociationsForObject) GetToOk() (*PublicObjectId, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.To, true
-}
-
-// SetTo sets field value
-func (o *PublicAssociationsForObject) SetTo(v PublicObjectId) {
-	o.To = v
 }
 
 // GetTypes returns the Types field value
@@ -90,6 +70,30 @@ func (o *PublicAssociationsForObject) SetTypes(v []AssociationSpec) {
 	o.Types = v
 }
 
+// GetTo returns the To field value
+func (o *PublicAssociationsForObject) GetTo() PublicObjectId {
+	if o == nil {
+		var ret PublicObjectId
+		return ret
+	}
+
+	return o.To
+}
+
+// GetToOk returns a tuple with the To field value
+// and a boolean to check if the value has been set.
+func (o *PublicAssociationsForObject) GetToOk() (*PublicObjectId, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.To, true
+}
+
+// SetTo sets field value
+func (o *PublicAssociationsForObject) SetTo(v PublicObjectId) {
+	o.To = v
+}
+
 func (o PublicAssociationsForObject) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -100,9 +104,47 @@ func (o PublicAssociationsForObject) MarshalJSON() ([]byte, error) {
 
 func (o PublicAssociationsForObject) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["to"] = o.To
 	toSerialize["types"] = o.Types
+	toSerialize["to"] = o.To
 	return toSerialize, nil
+}
+
+func (o *PublicAssociationsForObject) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"types",
+		"to",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPublicAssociationsForObject := _PublicAssociationsForObject{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varPublicAssociationsForObject)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicAssociationsForObject(varPublicAssociationsForObject)
+
+	return err
 }
 
 type NullablePublicAssociationsForObject struct {

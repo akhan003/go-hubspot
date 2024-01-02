@@ -381,7 +381,8 @@
           }
         }
       }
-    }
+    },
+    "securitySchemes" : { }
   },
   "x-hubspot-available-client-libraries" : [ "PHP", "Node", "Python", "Ruby" ]
 }

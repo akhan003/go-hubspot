@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// DefinitionsApiService DefinitionsApi service
-type DefinitionsApiService service
+// DefinitionsAPIService DefinitionsAPI service
+type DefinitionsAPIService service
 
 type ApiDeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveRequest struct {
 	ctx               context.Context
-	ApiService        *DefinitionsApiService
+	ApiService        *DefinitionsAPIService
 	fromObjectType    string
 	toObjectType      string
 	associationTypeId int32
@@ -39,13 +39,13 @@ DeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchive 
 
 Deletes an association definition
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param fromObjectType
- @param toObjectType
- @param associationTypeId
- @return ApiDeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param fromObjectType
+	@param toObjectType
+	@param associationTypeId
+	@return ApiDeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveRequest
 */
-func (a *DefinitionsApiService) DeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchive(ctx context.Context, fromObjectType string, toObjectType string, associationTypeId int32) ApiDeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveRequest {
+func (a *DefinitionsAPIService) DeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchive(ctx context.Context, fromObjectType string, toObjectType string, associationTypeId int32) ApiDeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveRequest {
 	return ApiDeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveRequest{
 		ApiService:        a,
 		ctx:               ctx,
@@ -56,14 +56,14 @@ func (a *DefinitionsApiService) DeleteCrmV4AssociationsFromObjectTypeToObjectTyp
 }
 
 // Execute executes the request
-func (a *DefinitionsApiService) DeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveExecute(r ApiDeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveRequest) (*http.Response, error) {
+func (a *DefinitionsAPIService) DeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveExecute(r ApiDeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchiveRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionsApiService.DeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchive")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionsAPIService.DeleteCrmV4AssociationsFromObjectTypeToObjectTypeLabelsAssociationTypeIdArchive")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -160,7 +160,7 @@ func (a *DefinitionsApiService) DeleteCrmV4AssociationsFromObjectTypeToObjectTyp
 
 type ApiGetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllRequest struct {
 	ctx            context.Context
-	ApiService     *DefinitionsApiService
+	ApiService     *DefinitionsAPIService
 	fromObjectType string
 	toObjectType   string
 }
@@ -174,12 +174,12 @@ GetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAll Read
 
 Returns all association types between two object types
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param fromObjectType
- @param toObjectType
- @return ApiGetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param fromObjectType
+	@param toObjectType
+	@return ApiGetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllRequest
 */
-func (a *DefinitionsApiService) GetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAll(ctx context.Context, fromObjectType string, toObjectType string) ApiGetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllRequest {
+func (a *DefinitionsAPIService) GetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAll(ctx context.Context, fromObjectType string, toObjectType string) ApiGetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllRequest {
 	return ApiGetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllRequest{
 		ApiService:     a,
 		ctx:            ctx,
@@ -189,8 +189,9 @@ func (a *DefinitionsApiService) GetCrmV4AssociationsFromObjectTypeToObjectTypeLa
 }
 
 // Execute executes the request
-//  @return CollectionResponseAssociationSpecWithLabelNoPaging
-func (a *DefinitionsApiService) GetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllExecute(r ApiGetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllRequest) (*CollectionResponseAssociationSpecWithLabelNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponseAssociationSpecWithLabelNoPaging
+func (a *DefinitionsAPIService) GetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllExecute(r ApiGetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAllRequest) (*CollectionResponseAssociationSpecWithLabelNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -198,7 +199,7 @@ func (a *DefinitionsApiService) GetCrmV4AssociationsFromObjectTypeToObjectTypeLa
 		localVarReturnValue *CollectionResponseAssociationSpecWithLabelNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionsApiService.GetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAll")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionsAPIService.GetCrmV4AssociationsFromObjectTypeToObjectTypeLabelsGetAll")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -303,7 +304,7 @@ func (a *DefinitionsApiService) GetCrmV4AssociationsFromObjectTypeToObjectTypeLa
 
 type ApiPostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateRequest struct {
 	ctx                                      context.Context
-	ApiService                               *DefinitionsApiService
+	ApiService                               *DefinitionsAPIService
 	fromObjectType                           string
 	toObjectType                             string
 	publicAssociationDefinitionCreateRequest *PublicAssociationDefinitionCreateRequest
@@ -323,12 +324,12 @@ PostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreate Create
 
 Create a user defined association definition
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param fromObjectType
- @param toObjectType
- @return ApiPostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param fromObjectType
+	@param toObjectType
+	@return ApiPostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateRequest
 */
-func (a *DefinitionsApiService) PostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreate(ctx context.Context, fromObjectType string, toObjectType string) ApiPostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateRequest {
+func (a *DefinitionsAPIService) PostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreate(ctx context.Context, fromObjectType string, toObjectType string) ApiPostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateRequest {
 	return ApiPostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateRequest{
 		ApiService:     a,
 		ctx:            ctx,
@@ -338,8 +339,9 @@ func (a *DefinitionsApiService) PostCrmV4AssociationsFromObjectTypeToObjectTypeL
 }
 
 // Execute executes the request
-//  @return CollectionResponseAssociationSpecWithLabelNoPaging
-func (a *DefinitionsApiService) PostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateExecute(r ApiPostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateRequest) (*CollectionResponseAssociationSpecWithLabelNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponseAssociationSpecWithLabelNoPaging
+func (a *DefinitionsAPIService) PostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateExecute(r ApiPostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreateRequest) (*CollectionResponseAssociationSpecWithLabelNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -347,7 +349,7 @@ func (a *DefinitionsApiService) PostCrmV4AssociationsFromObjectTypeToObjectTypeL
 		localVarReturnValue *CollectionResponseAssociationSpecWithLabelNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionsApiService.PostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionsAPIService.PostCrmV4AssociationsFromObjectTypeToObjectTypeLabelsCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -457,7 +459,7 @@ func (a *DefinitionsApiService) PostCrmV4AssociationsFromObjectTypeToObjectTypeL
 
 type ApiPutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateRequest struct {
 	ctx                                      context.Context
-	ApiService                               *DefinitionsApiService
+	ApiService                               *DefinitionsAPIService
 	fromObjectType                           string
 	toObjectType                             string
 	publicAssociationDefinitionUpdateRequest *PublicAssociationDefinitionUpdateRequest
@@ -477,12 +479,12 @@ PutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdate Update
 
 Update a user defined association definition
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param fromObjectType
- @param toObjectType
- @return ApiPutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param fromObjectType
+	@param toObjectType
+	@return ApiPutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateRequest
 */
-func (a *DefinitionsApiService) PutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdate(ctx context.Context, fromObjectType string, toObjectType string) ApiPutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateRequest {
+func (a *DefinitionsAPIService) PutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdate(ctx context.Context, fromObjectType string, toObjectType string) ApiPutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateRequest {
 	return ApiPutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateRequest{
 		ApiService:     a,
 		ctx:            ctx,
@@ -492,14 +494,14 @@ func (a *DefinitionsApiService) PutCrmV4AssociationsFromObjectTypeToObjectTypeLa
 }
 
 // Execute executes the request
-func (a *DefinitionsApiService) PutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateExecute(r ApiPutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateRequest) (*http.Response, error) {
+func (a *DefinitionsAPIService) PutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateExecute(r ApiPutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdateRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPut
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionsApiService.PutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefinitionsAPIService.PutCrmV4AssociationsFromObjectTypeToObjectTypeLabelsUpdate")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

@@ -11,7 +11,9 @@ API version: v3
 package properties
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the CollectionResponsePropertyNoPaging type satisfies the MappedNullable interface at compile time
@@ -21,6 +23,8 @@ var _ MappedNullable = &CollectionResponsePropertyNoPaging{}
 type CollectionResponsePropertyNoPaging struct {
 	Results []Property `json:"results"`
 }
+
+type _CollectionResponsePropertyNoPaging CollectionResponsePropertyNoPaging
 
 // NewCollectionResponsePropertyNoPaging instantiates a new CollectionResponsePropertyNoPaging object
 // This constructor will assign default values to properties that have it defined,
@@ -76,6 +80,43 @@ func (o CollectionResponsePropertyNoPaging) ToMap() (map[string]interface{}, err
 	toSerialize := map[string]interface{}{}
 	toSerialize["results"] = o.Results
 	return toSerialize, nil
+}
+
+func (o *CollectionResponsePropertyNoPaging) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"results",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCollectionResponsePropertyNoPaging := _CollectionResponsePropertyNoPaging{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCollectionResponsePropertyNoPaging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CollectionResponsePropertyNoPaging(varCollectionResponsePropertyNoPaging)
+
+	return err
 }
 
 type NullableCollectionResponsePropertyNoPaging struct {

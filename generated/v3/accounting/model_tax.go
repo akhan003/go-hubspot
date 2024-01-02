@@ -11,7 +11,9 @@ API version: v3
 package accounting
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the Tax type satisfies the MappedNullable interface at compile time
@@ -26,6 +28,8 @@ type Tax struct {
 	// The display name of the tax.
 	Name string `json:"name"`
 }
+
+type _Tax Tax
 
 // NewTax instantiates a new Tax object
 // This constructor will assign default values to properties that have it defined,
@@ -133,6 +137,45 @@ func (o Tax) ToMap() (map[string]interface{}, error) {
 	toSerialize["percentage"] = o.Percentage
 	toSerialize["name"] = o.Name
 	return toSerialize, nil
+}
+
+func (o *Tax) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"code",
+		"percentage",
+		"name",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTax := _Tax{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varTax)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Tax(varTax)
+
+	return err
 }
 
 type NullableTax struct {

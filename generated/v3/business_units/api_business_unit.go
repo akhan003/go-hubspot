@@ -1,5 +1,5 @@
 /*
-Business Unit
+Business Units Business Units
 
 Retrieve Business Unit information.
 
@@ -20,44 +20,44 @@ import (
 	"strings"
 )
 
-// BusinessUnitApiService BusinessUnitApi service
-type BusinessUnitApiService service
+// BusinessUnitAPIService BusinessUnitAPI service
+type BusinessUnitAPIService service
 
-type ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest struct {
+type ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest struct {
 	ctx        context.Context
-	ApiService *BusinessUnitApiService
+	ApiService *BusinessUnitAPIService
 	userId     string
 	properties *[]string
 	name       *[]string
 }
 
 // The names of properties to optionally include in the response body. The only valid value is &#x60;logoMetadata&#x60;.
-func (r ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest) Properties(properties []string) ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest {
+func (r ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest) Properties(properties []string) ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest {
 	r.properties = &properties
 	return r
 }
 
 // The names of Business Units to retrieve. If empty or not provided, then all associated Business Units will be returned.
-func (r ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest) Name(name []string) ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest {
+func (r ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest) Name(name []string) ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest {
 	r.name = &name
 	return r
 }
 
-func (r ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest) Execute() (*CollectionResponsePublicBusinessUnitNoPaging, *http.Response, error) {
-	return r.ApiService.GetBusinessUnitsV3BusinessUnitsUserUserIdExecute(r)
+func (r ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest) Execute() (*CollectionResponsePublicBusinessUnitNoPaging, *http.Response, error) {
+	return r.ApiService.GetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDExecute(r)
 }
 
 /*
-GetBusinessUnitsV3BusinessUnitsUserUserId Get Business Units for a user
+GetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserID Get Business Units for a user
 
 Get Business Units identified by `userId`. The `userId` refers to the user’s ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param userId Identifier of user to retrieve.
- @return ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param userId Identifier of user to retrieve.
+	@return ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest
 */
-func (a *BusinessUnitApiService) GetBusinessUnitsV3BusinessUnitsUserUserId(ctx context.Context, userId string) ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest {
-	return ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest{
+func (a *BusinessUnitAPIService) GetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserID(ctx context.Context, userId string) ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest {
+	return ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest{
 		ApiService: a,
 		ctx:        ctx,
 		userId:     userId,
@@ -65,8 +65,9 @@ func (a *BusinessUnitApiService) GetBusinessUnitsV3BusinessUnitsUserUserId(ctx c
 }
 
 // Execute executes the request
-//  @return CollectionResponsePublicBusinessUnitNoPaging
-func (a *BusinessUnitApiService) GetBusinessUnitsV3BusinessUnitsUserUserIdExecute(r ApiGetBusinessUnitsV3BusinessUnitsUserUserIdRequest) (*CollectionResponsePublicBusinessUnitNoPaging, *http.Response, error) {
+//
+//	@return CollectionResponsePublicBusinessUnitNoPaging
+func (a *BusinessUnitAPIService) GetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDExecute(r ApiGetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserIDRequest) (*CollectionResponsePublicBusinessUnitNoPaging, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -74,7 +75,7 @@ func (a *BusinessUnitApiService) GetBusinessUnitsV3BusinessUnitsUserUserIdExecut
 		localVarReturnValue *CollectionResponsePublicBusinessUnitNoPaging
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BusinessUnitApiService.GetBusinessUnitsV3BusinessUnitsUserUserId")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BusinessUnitAPIService.GetBusinessUnitsV3BusinessUnitsUserUserIdGetByUserID")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -91,7 +92,7 @@ func (a *BusinessUnitApiService) GetBusinessUnitsV3BusinessUnitsUserUserIdExecut
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "properties", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "properties", t, "multi")
@@ -102,7 +103,7 @@ func (a *BusinessUnitApiService) GetBusinessUnitsV3BusinessUnitsUserUserIdExecut
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "name", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "name", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "name", t, "multi")

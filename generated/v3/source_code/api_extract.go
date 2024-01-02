@@ -19,32 +19,32 @@ import (
 	"strings"
 )
 
-// ExtractApiService ExtractApi service
-type ExtractApiService service
+// ExtractAPIService ExtractAPI service
+type ExtractAPIService service
 
-type ApiExtractByPathRequest struct {
+type ApiPostCmsV3SourceCodeExtractPathRequest struct {
 	ctx        context.Context
-	ApiService *ExtractApiService
+	ApiService *ExtractAPIService
 	path       string
 }
 
-func (r ApiExtractByPathRequest) Execute() (*http.Response, error) {
-	return r.ApiService.ExtractByPathExecute(r)
+func (r ApiPostCmsV3SourceCodeExtractPathRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostCmsV3SourceCodeExtractPathExecute(r)
 }
 
 /*
-ExtractByPath Extracts a zip file
+PostCmsV3SourceCodeExtractPath Extracts a zip file
 
 Extracts a zip file in the file system. The zip file will be extracted in-place and not be deleted automatically.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param path The file system location of the zip file.
- @return ApiExtractByPathRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param path The file system location of the zip file.
+	@return ApiPostCmsV3SourceCodeExtractPathRequest
 
 Deprecated
 */
-func (a *ExtractApiService) ExtractByPath(ctx context.Context, path string) ApiExtractByPathRequest {
-	return ApiExtractByPathRequest{
+func (a *ExtractAPIService) PostCmsV3SourceCodeExtractPath(ctx context.Context, path string) ApiPostCmsV3SourceCodeExtractPathRequest {
+	return ApiPostCmsV3SourceCodeExtractPathRequest{
 		ApiService: a,
 		ctx:        ctx,
 		path:       path,
@@ -53,14 +53,14 @@ func (a *ExtractApiService) ExtractByPath(ctx context.Context, path string) ApiE
 
 // Execute executes the request
 // Deprecated
-func (a *ExtractApiService) ExtractByPathExecute(r ApiExtractByPathRequest) (*http.Response, error) {
+func (a *ExtractAPIService) PostCmsV3SourceCodeExtractPathExecute(r ApiPostCmsV3SourceCodeExtractPathRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExtractApiService.ExtractByPath")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExtractAPIService.PostCmsV3SourceCodeExtractPath")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

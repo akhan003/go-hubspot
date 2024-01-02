@@ -18,7 +18,7 @@ docs/CardListResponse.md
 docs/CardObjectTypeBody.md
 docs/CardPatchRequest.md
 docs/CardResponse.md
-docs/CardsApi.md
+docs/CardsAPI.md
 docs/DisplayOption.md
 docs/Error.md
 docs/ErrorDetail.md
@@ -27,7 +27,7 @@ docs/IntegratorCardPayloadResponse.md
 docs/IntegratorObjectResult.md
 docs/IntegratorObjectResultActionsInner.md
 docs/ObjectToken.md
-docs/SampleResponseApi.md
+docs/SampleResponseAPI.md
 docs/TopLevelActions.md
 git_push.sh
 go.mod
@@ -54,6 +54,4 @@ model_integrator_object_result_actions_inner.go
 model_object_token.go
 model_top_level_actions.go
 response.go
-test/api_cards_test.go
-test/api_sample_response_test.go
 utils.go

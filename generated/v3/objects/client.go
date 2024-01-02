@@ -1,5 +1,5 @@
 /*
-CRM Objects
+Objects
 
 CRM objects such as companies, contacts, deals, line items, products, tickets, and quotes are standard objects in HubSpot’s CRM. These core building blocks support custom properties, store critical information, and play a central role in the HubSpot application.  ## Supported Object Types  This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).  |Object Type |Properties returned by default | |--|--| | `companies` | `name`, `domain` | | `contacts` | `firstname`, `lastname`, `email` | | `deals` | `dealname`, `amount`, `closedate`, `pipeline`, `dealstage` | | `products` | `name`, `description`, `price` | | `tickets` | `content`, `hs_pipeline`, `hs_pipeline_stage`, `hs_ticket_category`, `hs_ticket_priority`, `subject` |  Find a list of all properties for an object type using the [CRM Object Properties](https://developers.hubspot.com/docs/methods/crm-properties/get-properties) API. e.g. `GET https://api.hubapi.com/properties/v2/companies/properties`. Change the properties returned in the response using the `properties` array in the request body.
 
@@ -36,13 +36,13 @@ import (
 )
 
 var (
-	jsonCheck       = regexp.MustCompile(`(?i:(?:application|text)/(?:vnd\.[^;]+\+)?json)`)
-	xmlCheck        = regexp.MustCompile(`(?i:(?:application|text)/xml)`)
+	JsonCheck       = regexp.MustCompile(`(?i:(?:application|text)/(?:[^;]+\+)?json)`)
+	XmlCheck        = regexp.MustCompile(`(?i:(?:application|text)/(?:[^;]+\+)?xml)`)
 	queryParamSplit = regexp.MustCompile(`(^|&)([^&]+)`)
 	queryDescape    = strings.NewReplacer("%5B", "[", "%5D", "]")
 )
 
-// APIClient manages communication with the CRM Objects API vv3
+// APIClient manages communication with the Objects API vv3
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
@@ -50,17 +50,15 @@ type APIClient struct {
 
 	// API Services
 
-	AssociationsApi *AssociationsApiService
+	BasicAPI *BasicAPIService
 
-	BasicApi *BasicApiService
+	BatchAPI *BatchAPIService
 
-	BatchApi *BatchApiService
+	GDPRAPI *GDPRAPIService
 
-	GDPRApi *GDPRApiService
+	PublicObjectAPI *PublicObjectAPIService
 
-	PublicObjectApi *PublicObjectApiService
-
-	SearchApi *SearchApiService
+	SearchAPI *SearchAPIService
 }
 
 type service struct {
@@ -79,12 +77,11 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
-	c.AssociationsApi = (*AssociationsApiService)(&c.common)
-	c.BasicApi = (*BasicApiService)(&c.common)
-	c.BatchApi = (*BatchApiService)(&c.common)
-	c.GDPRApi = (*GDPRApiService)(&c.common)
-	c.PublicObjectApi = (*PublicObjectApiService)(&c.common)
-	c.SearchApi = (*SearchApiService)(&c.common)
+	c.BasicAPI = (*BasicAPIService)(&c.common)
+	c.BatchAPI = (*BatchAPIService)(&c.common)
+	c.GDPRAPI = (*GDPRAPIService)(&c.common)
+	c.PublicObjectAPI = (*PublicObjectAPIService)(&c.common)
+	c.SearchAPI = (*SearchAPIService)(&c.common)
 
 	return c
 }
@@ -477,13 +474,13 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 		_, err = (*f).Seek(0, io.SeekStart)
 		return
 	}
-	if xmlCheck.MatchString(contentType) {
+	if XmlCheck.MatchString(contentType) {
 		if err = xml.Unmarshal(b, v); err != nil {
 			return err
 		}
 		return nil
 	}
-	if jsonCheck.MatchString(contentType) {
+	if JsonCheck.MatchString(contentType) {
 		if actualObj, ok := v.(interface{ GetActualInstance() interface{} }); ok { // oneOf, anyOf schemas
 			if unmarshalObj, ok := actualObj.(interface{ UnmarshalJSON([]byte) error }); ok { // make sure it has UnmarshalJSON defined
 				if err = unmarshalObj.UnmarshalJSON(b); err != nil {
@@ -548,10 +545,14 @@ func setBody(body interface{}, contentType string) (bodyBuf *bytes.Buffer, err e
 		_, err = bodyBuf.WriteString(s)
 	} else if s, ok := body.(*string); ok {
 		_, err = bodyBuf.WriteString(*s)
-	} else if jsonCheck.MatchString(contentType) {
+	} else if JsonCheck.MatchString(contentType) {
 		err = json.NewEncoder(bodyBuf).Encode(body)
-	} else if xmlCheck.MatchString(contentType) {
-		err = xml.NewEncoder(bodyBuf).Encode(body)
+	} else if XmlCheck.MatchString(contentType) {
+		var bs []byte
+		bs, err = xml.Marshal(body)
+		if err == nil {
+			bodyBuf.Write(bs)
+		}
 	}
 
 	if err != nil {

@@ -1,5 +1,5 @@
 /*
-Timeline events
+CRM Timeline
 
 This feature allows an app to create and configure custom events that can show up in the timelines of certain CRM objects like contacts, companies, tickets, or deals. You'll find multiple use cases for this API in the sections below.
 
@@ -11,7 +11,9 @@ API version: v3
 package timeline
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the TimelineEventTemplateTokenUpdateRequest type satisfies the MappedNullable interface at compile time
@@ -19,22 +21,23 @@ var _ MappedNullable = &TimelineEventTemplateTokenUpdateRequest{}
 
 // TimelineEventTemplateTokenUpdateRequest State of the token definition for update requests.
 type TimelineEventTemplateTokenUpdateRequest struct {
+	// If type is `enumeration`, we should have a list of options to choose from.
+	Options []TimelineEventTemplateTokenOption `json:"options,omitempty"`
 	// Used for list segmentation and reporting.
 	Label string `json:"label"`
 	// The name of the CRM object property. This will populate the CRM object property associated with the event. With enough of these, you can fully build CRM objects via the Timeline API.
 	ObjectPropertyName *string `json:"objectPropertyName,omitempty"`
-	// If type is `enumeration`, we should have a list of options to choose from.
-	Options []TimelineEventTemplateTokenOption `json:"options"`
 }
+
+type _TimelineEventTemplateTokenUpdateRequest TimelineEventTemplateTokenUpdateRequest
 
 // NewTimelineEventTemplateTokenUpdateRequest instantiates a new TimelineEventTemplateTokenUpdateRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTimelineEventTemplateTokenUpdateRequest(label string, options []TimelineEventTemplateTokenOption) *TimelineEventTemplateTokenUpdateRequest {
+func NewTimelineEventTemplateTokenUpdateRequest(label string) *TimelineEventTemplateTokenUpdateRequest {
 	this := TimelineEventTemplateTokenUpdateRequest{}
 	this.Label = label
-	this.Options = options
 	return &this
 }
 
@@ -44,6 +47,38 @@ func NewTimelineEventTemplateTokenUpdateRequest(label string, options []Timeline
 func NewTimelineEventTemplateTokenUpdateRequestWithDefaults() *TimelineEventTemplateTokenUpdateRequest {
 	this := TimelineEventTemplateTokenUpdateRequest{}
 	return &this
+}
+
+// GetOptions returns the Options field value if set, zero value otherwise.
+func (o *TimelineEventTemplateTokenUpdateRequest) GetOptions() []TimelineEventTemplateTokenOption {
+	if o == nil || IsNil(o.Options) {
+		var ret []TimelineEventTemplateTokenOption
+		return ret
+	}
+	return o.Options
+}
+
+// GetOptionsOk returns a tuple with the Options field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *TimelineEventTemplateTokenUpdateRequest) GetOptionsOk() ([]TimelineEventTemplateTokenOption, bool) {
+	if o == nil || IsNil(o.Options) {
+		return nil, false
+	}
+	return o.Options, true
+}
+
+// HasOptions returns a boolean if a field has been set.
+func (o *TimelineEventTemplateTokenUpdateRequest) HasOptions() bool {
+	if o != nil && !IsNil(o.Options) {
+		return true
+	}
+
+	return false
+}
+
+// SetOptions gets a reference to the given []TimelineEventTemplateTokenOption and assigns it to the Options field.
+func (o *TimelineEventTemplateTokenUpdateRequest) SetOptions(v []TimelineEventTemplateTokenOption) {
+	o.Options = v
 }
 
 // GetLabel returns the Label field value
@@ -102,30 +137,6 @@ func (o *TimelineEventTemplateTokenUpdateRequest) SetObjectPropertyName(v string
 	o.ObjectPropertyName = &v
 }
 
-// GetOptions returns the Options field value
-func (o *TimelineEventTemplateTokenUpdateRequest) GetOptions() []TimelineEventTemplateTokenOption {
-	if o == nil {
-		var ret []TimelineEventTemplateTokenOption
-		return ret
-	}
-
-	return o.Options
-}
-
-// GetOptionsOk returns a tuple with the Options field value
-// and a boolean to check if the value has been set.
-func (o *TimelineEventTemplateTokenUpdateRequest) GetOptionsOk() ([]TimelineEventTemplateTokenOption, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Options, true
-}
-
-// SetOptions sets field value
-func (o *TimelineEventTemplateTokenUpdateRequest) SetOptions(v []TimelineEventTemplateTokenOption) {
-	o.Options = v
-}
-
 func (o TimelineEventTemplateTokenUpdateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -136,12 +147,51 @@ func (o TimelineEventTemplateTokenUpdateRequest) MarshalJSON() ([]byte, error) {
 
 func (o TimelineEventTemplateTokenUpdateRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Options) {
+		toSerialize["options"] = o.Options
+	}
 	toSerialize["label"] = o.Label
 	if !IsNil(o.ObjectPropertyName) {
 		toSerialize["objectPropertyName"] = o.ObjectPropertyName
 	}
-	toSerialize["options"] = o.Options
 	return toSerialize, nil
+}
+
+func (o *TimelineEventTemplateTokenUpdateRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"label",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTimelineEventTemplateTokenUpdateRequest := _TimelineEventTemplateTokenUpdateRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varTimelineEventTemplateTokenUpdateRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TimelineEventTemplateTokenUpdateRequest(varTimelineEventTemplateTokenUpdateRequest)
+
+	return err
 }
 
 type NullableTimelineEventTemplateTokenUpdateRequest struct {

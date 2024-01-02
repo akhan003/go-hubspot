@@ -1,5 +1,5 @@
 /*
-Calling Extensions API
+Calling Extensions
 
 Provides a way for apps to add custom calling options to a contact record. This works in conjunction with the [Calling SDK](#), which is used to build your phone/calling UI. The endpoints here allow your service to appear as an option to HubSpot users when they access the *Call* action on a contact record. Once accessed, your custom phone/calling UI will be displayed in an iframe at the specified URL with the specified dimensions on that record.
 
@@ -11,7 +11,9 @@ API version: v3
 package calling
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SettingsRequest type satisfies the MappedNullable interface at compile time
@@ -19,19 +21,21 @@ var _ MappedNullable = &SettingsRequest{}
 
 // SettingsRequest Settings create request
 type SettingsRequest struct {
+	// When true, you are indicating that your service is compatible with engagement v2 service and can be used with custom objects.
+	SupportsCustomObjects *bool `json:"supportsCustomObjects,omitempty"`
+	// When true, your service will appear as an option under the *Call* action in contact records of connected accounts.
+	IsReady *bool `json:"isReady,omitempty"`
 	// The name of your calling service to display to users.
 	Name string `json:"name"`
+	// The target width of the iframe that will contain your phone/calling UI.
+	Width *int32 `json:"width,omitempty"`
 	// The URL to your phone/calling UI, built with the [Calling SDK](#).
 	Url string `json:"url"`
 	// The target height of the iframe that will contain your phone/calling UI.
 	Height *int32 `json:"height,omitempty"`
-	// The target width of the iframe that will contain your phone/calling UI.
-	Width *int32 `json:"width,omitempty"`
-	// When true, your service will appear as an option under the *Call* action in contact records of connected accounts.
-	IsReady *bool `json:"isReady,omitempty"`
-	// When true, you are indicating that your service is compatible with engagement v2 service and can be used with custom objects.
-	SupportsCustomObjects *bool `json:"supportsCustomObjects,omitempty"`
 }
+
+type _SettingsRequest SettingsRequest
 
 // NewSettingsRequest instantiates a new SettingsRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -50,6 +54,70 @@ func NewSettingsRequest(name string, url string) *SettingsRequest {
 func NewSettingsRequestWithDefaults() *SettingsRequest {
 	this := SettingsRequest{}
 	return &this
+}
+
+// GetSupportsCustomObjects returns the SupportsCustomObjects field value if set, zero value otherwise.
+func (o *SettingsRequest) GetSupportsCustomObjects() bool {
+	if o == nil || IsNil(o.SupportsCustomObjects) {
+		var ret bool
+		return ret
+	}
+	return *o.SupportsCustomObjects
+}
+
+// GetSupportsCustomObjectsOk returns a tuple with the SupportsCustomObjects field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SettingsRequest) GetSupportsCustomObjectsOk() (*bool, bool) {
+	if o == nil || IsNil(o.SupportsCustomObjects) {
+		return nil, false
+	}
+	return o.SupportsCustomObjects, true
+}
+
+// HasSupportsCustomObjects returns a boolean if a field has been set.
+func (o *SettingsRequest) HasSupportsCustomObjects() bool {
+	if o != nil && !IsNil(o.SupportsCustomObjects) {
+		return true
+	}
+
+	return false
+}
+
+// SetSupportsCustomObjects gets a reference to the given bool and assigns it to the SupportsCustomObjects field.
+func (o *SettingsRequest) SetSupportsCustomObjects(v bool) {
+	o.SupportsCustomObjects = &v
+}
+
+// GetIsReady returns the IsReady field value if set, zero value otherwise.
+func (o *SettingsRequest) GetIsReady() bool {
+	if o == nil || IsNil(o.IsReady) {
+		var ret bool
+		return ret
+	}
+	return *o.IsReady
+}
+
+// GetIsReadyOk returns a tuple with the IsReady field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SettingsRequest) GetIsReadyOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsReady) {
+		return nil, false
+	}
+	return o.IsReady, true
+}
+
+// HasIsReady returns a boolean if a field has been set.
+func (o *SettingsRequest) HasIsReady() bool {
+	if o != nil && !IsNil(o.IsReady) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsReady gets a reference to the given bool and assigns it to the IsReady field.
+func (o *SettingsRequest) SetIsReady(v bool) {
+	o.IsReady = &v
 }
 
 // GetName returns the Name field value
@@ -74,6 +142,38 @@ func (o *SettingsRequest) GetNameOk() (*string, bool) {
 // SetName sets field value
 func (o *SettingsRequest) SetName(v string) {
 	o.Name = v
+}
+
+// GetWidth returns the Width field value if set, zero value otherwise.
+func (o *SettingsRequest) GetWidth() int32 {
+	if o == nil || IsNil(o.Width) {
+		var ret int32
+		return ret
+	}
+	return *o.Width
+}
+
+// GetWidthOk returns a tuple with the Width field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SettingsRequest) GetWidthOk() (*int32, bool) {
+	if o == nil || IsNil(o.Width) {
+		return nil, false
+	}
+	return o.Width, true
+}
+
+// HasWidth returns a boolean if a field has been set.
+func (o *SettingsRequest) HasWidth() bool {
+	if o != nil && !IsNil(o.Width) {
+		return true
+	}
+
+	return false
+}
+
+// SetWidth gets a reference to the given int32 and assigns it to the Width field.
+func (o *SettingsRequest) SetWidth(v int32) {
+	o.Width = &v
 }
 
 // GetUrl returns the Url field value
@@ -132,102 +232,6 @@ func (o *SettingsRequest) SetHeight(v int32) {
 	o.Height = &v
 }
 
-// GetWidth returns the Width field value if set, zero value otherwise.
-func (o *SettingsRequest) GetWidth() int32 {
-	if o == nil || IsNil(o.Width) {
-		var ret int32
-		return ret
-	}
-	return *o.Width
-}
-
-// GetWidthOk returns a tuple with the Width field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *SettingsRequest) GetWidthOk() (*int32, bool) {
-	if o == nil || IsNil(o.Width) {
-		return nil, false
-	}
-	return o.Width, true
-}
-
-// HasWidth returns a boolean if a field has been set.
-func (o *SettingsRequest) HasWidth() bool {
-	if o != nil && !IsNil(o.Width) {
-		return true
-	}
-
-	return false
-}
-
-// SetWidth gets a reference to the given int32 and assigns it to the Width field.
-func (o *SettingsRequest) SetWidth(v int32) {
-	o.Width = &v
-}
-
-// GetIsReady returns the IsReady field value if set, zero value otherwise.
-func (o *SettingsRequest) GetIsReady() bool {
-	if o == nil || IsNil(o.IsReady) {
-		var ret bool
-		return ret
-	}
-	return *o.IsReady
-}
-
-// GetIsReadyOk returns a tuple with the IsReady field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *SettingsRequest) GetIsReadyOk() (*bool, bool) {
-	if o == nil || IsNil(o.IsReady) {
-		return nil, false
-	}
-	return o.IsReady, true
-}
-
-// HasIsReady returns a boolean if a field has been set.
-func (o *SettingsRequest) HasIsReady() bool {
-	if o != nil && !IsNil(o.IsReady) {
-		return true
-	}
-
-	return false
-}
-
-// SetIsReady gets a reference to the given bool and assigns it to the IsReady field.
-func (o *SettingsRequest) SetIsReady(v bool) {
-	o.IsReady = &v
-}
-
-// GetSupportsCustomObjects returns the SupportsCustomObjects field value if set, zero value otherwise.
-func (o *SettingsRequest) GetSupportsCustomObjects() bool {
-	if o == nil || IsNil(o.SupportsCustomObjects) {
-		var ret bool
-		return ret
-	}
-	return *o.SupportsCustomObjects
-}
-
-// GetSupportsCustomObjectsOk returns a tuple with the SupportsCustomObjects field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *SettingsRequest) GetSupportsCustomObjectsOk() (*bool, bool) {
-	if o == nil || IsNil(o.SupportsCustomObjects) {
-		return nil, false
-	}
-	return o.SupportsCustomObjects, true
-}
-
-// HasSupportsCustomObjects returns a boolean if a field has been set.
-func (o *SettingsRequest) HasSupportsCustomObjects() bool {
-	if o != nil && !IsNil(o.SupportsCustomObjects) {
-		return true
-	}
-
-	return false
-}
-
-// SetSupportsCustomObjects gets a reference to the given bool and assigns it to the SupportsCustomObjects field.
-func (o *SettingsRequest) SetSupportsCustomObjects(v bool) {
-	o.SupportsCustomObjects = &v
-}
-
 func (o SettingsRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -238,21 +242,59 @@ func (o SettingsRequest) MarshalJSON() ([]byte, error) {
 
 func (o SettingsRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["name"] = o.Name
-	toSerialize["url"] = o.Url
-	if !IsNil(o.Height) {
-		toSerialize["height"] = o.Height
-	}
-	if !IsNil(o.Width) {
-		toSerialize["width"] = o.Width
+	if !IsNil(o.SupportsCustomObjects) {
+		toSerialize["supportsCustomObjects"] = o.SupportsCustomObjects
 	}
 	if !IsNil(o.IsReady) {
 		toSerialize["isReady"] = o.IsReady
 	}
-	if !IsNil(o.SupportsCustomObjects) {
-		toSerialize["supportsCustomObjects"] = o.SupportsCustomObjects
+	toSerialize["name"] = o.Name
+	if !IsNil(o.Width) {
+		toSerialize["width"] = o.Width
+	}
+	toSerialize["url"] = o.Url
+	if !IsNil(o.Height) {
+		toSerialize["height"] = o.Height
 	}
 	return toSerialize, nil
+}
+
+func (o *SettingsRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"url",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSettingsRequest := _SettingsRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSettingsRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SettingsRequest(varSettingsRequest)
+
+	return err
 }
 
 type NullableSettingsRequest struct {

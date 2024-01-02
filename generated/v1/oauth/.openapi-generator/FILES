@@ -8,13 +8,13 @@ api_tokens.go
 client.go
 configuration.go
 docs/AccessTokenInfoResponse.md
-docs/AccessTokensApi.md
+docs/AccessTokensAPI.md
 docs/Error.md
 docs/ErrorDetail.md
 docs/RefreshTokenInfoResponse.md
-docs/RefreshTokensApi.md
+docs/RefreshTokensAPI.md
 docs/TokenResponseIF.md
-docs/TokensApi.md
+docs/TokensAPI.md
 git_push.sh
 go.mod
 go.sum
@@ -24,7 +24,4 @@ model_error_detail.go
 model_refresh_token_info_response.go
 model_token_response_if.go
 response.go
-test/api_access_tokens_test.go
-test/api_refresh_tokens_test.go
-test/api_tokens_test.go
 utils.go

@@ -11,7 +11,9 @@ API version: v3
 package contacts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the Filter type satisfies the MappedNullable interface at compile time
@@ -19,13 +21,15 @@ var _ MappedNullable = &Filter{}
 
 // Filter struct for Filter
 type Filter struct {
-	Value        *string  `json:"value,omitempty"`
 	HighValue    *string  `json:"highValue,omitempty"`
-	Values       []string `json:"values,omitempty"`
 	PropertyName string   `json:"propertyName"`
+	Values       []string `json:"values,omitempty"`
+	Value        *string  `json:"value,omitempty"`
 	// null
 	Operator string `json:"operator"`
 }
+
+type _Filter Filter
 
 // NewFilter instantiates a new Filter object
 // This constructor will assign default values to properties that have it defined,
@@ -44,38 +48,6 @@ func NewFilter(propertyName string, operator string) *Filter {
 func NewFilterWithDefaults() *Filter {
 	this := Filter{}
 	return &this
-}
-
-// GetValue returns the Value field value if set, zero value otherwise.
-func (o *Filter) GetValue() string {
-	if o == nil || IsNil(o.Value) {
-		var ret string
-		return ret
-	}
-	return *o.Value
-}
-
-// GetValueOk returns a tuple with the Value field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Filter) GetValueOk() (*string, bool) {
-	if o == nil || IsNil(o.Value) {
-		return nil, false
-	}
-	return o.Value, true
-}
-
-// HasValue returns a boolean if a field has been set.
-func (o *Filter) HasValue() bool {
-	if o != nil && !IsNil(o.Value) {
-		return true
-	}
-
-	return false
-}
-
-// SetValue gets a reference to the given string and assigns it to the Value field.
-func (o *Filter) SetValue(v string) {
-	o.Value = &v
 }
 
 // GetHighValue returns the HighValue field value if set, zero value otherwise.
@@ -110,6 +82,30 @@ func (o *Filter) SetHighValue(v string) {
 	o.HighValue = &v
 }
 
+// GetPropertyName returns the PropertyName field value
+func (o *Filter) GetPropertyName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.PropertyName
+}
+
+// GetPropertyNameOk returns a tuple with the PropertyName field value
+// and a boolean to check if the value has been set.
+func (o *Filter) GetPropertyNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.PropertyName, true
+}
+
+// SetPropertyName sets field value
+func (o *Filter) SetPropertyName(v string) {
+	o.PropertyName = v
+}
+
 // GetValues returns the Values field value if set, zero value otherwise.
 func (o *Filter) GetValues() []string {
 	if o == nil || IsNil(o.Values) {
@@ -142,28 +138,36 @@ func (o *Filter) SetValues(v []string) {
 	o.Values = v
 }
 
-// GetPropertyName returns the PropertyName field value
-func (o *Filter) GetPropertyName() string {
-	if o == nil {
+// GetValue returns the Value field value if set, zero value otherwise.
+func (o *Filter) GetValue() string {
+	if o == nil || IsNil(o.Value) {
 		var ret string
 		return ret
 	}
-
-	return o.PropertyName
+	return *o.Value
 }
 
-// GetPropertyNameOk returns a tuple with the PropertyName field value
+// GetValueOk returns a tuple with the Value field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Filter) GetPropertyNameOk() (*string, bool) {
-	if o == nil {
+func (o *Filter) GetValueOk() (*string, bool) {
+	if o == nil || IsNil(o.Value) {
 		return nil, false
 	}
-	return &o.PropertyName, true
+	return o.Value, true
 }
 
-// SetPropertyName sets field value
-func (o *Filter) SetPropertyName(v string) {
-	o.PropertyName = v
+// HasValue returns a boolean if a field has been set.
+func (o *Filter) HasValue() bool {
+	if o != nil && !IsNil(o.Value) {
+		return true
+	}
+
+	return false
+}
+
+// SetValue gets a reference to the given string and assigns it to the Value field.
+func (o *Filter) SetValue(v string) {
+	o.Value = &v
 }
 
 // GetOperator returns the Operator field value
@@ -200,18 +204,56 @@ func (o Filter) MarshalJSON() ([]byte, error) {
 
 func (o Filter) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Value) {
-		toSerialize["value"] = o.Value
-	}
 	if !IsNil(o.HighValue) {
 		toSerialize["highValue"] = o.HighValue
 	}
+	toSerialize["propertyName"] = o.PropertyName
 	if !IsNil(o.Values) {
 		toSerialize["values"] = o.Values
 	}
-	toSerialize["propertyName"] = o.PropertyName
+	if !IsNil(o.Value) {
+		toSerialize["value"] = o.Value
+	}
 	toSerialize["operator"] = o.Operator
 	return toSerialize, nil
+}
+
+func (o *Filter) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"propertyName",
+		"operator",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varFilter := _Filter{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varFilter)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Filter(varFilter)
+
+	return err
 }
 
 type NullableFilter struct {

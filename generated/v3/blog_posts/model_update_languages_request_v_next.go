@@ -1,5 +1,5 @@
 /*
-Blog Post endpoints
+Posts
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and Blog Tags
 
@@ -11,7 +11,9 @@ API version: v3
 package blog_posts
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the UpdateLanguagesRequestVNext type satisfies the MappedNullable interface at compile time
@@ -19,20 +21,22 @@ var _ MappedNullable = &UpdateLanguagesRequestVNext{}
 
 // UpdateLanguagesRequestVNext Request object for updating languages within a multi-language group.
 type UpdateLanguagesRequestVNext struct {
-	// ID of the primary object in the multi-language group.
-	PrimaryId string `json:"primaryId"`
 	// Map of object IDs to associated languages of object in the multi-language group.
 	Languages map[string]string `json:"languages"`
+	// ID of the primary object in the multi-language group.
+	PrimaryId string `json:"primaryId"`
 }
+
+type _UpdateLanguagesRequestVNext UpdateLanguagesRequestVNext
 
 // NewUpdateLanguagesRequestVNext instantiates a new UpdateLanguagesRequestVNext object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateLanguagesRequestVNext(primaryId string, languages map[string]string) *UpdateLanguagesRequestVNext {
+func NewUpdateLanguagesRequestVNext(languages map[string]string, primaryId string) *UpdateLanguagesRequestVNext {
 	this := UpdateLanguagesRequestVNext{}
-	this.PrimaryId = primaryId
 	this.Languages = languages
+	this.PrimaryId = primaryId
 	return &this
 }
 
@@ -42,30 +46,6 @@ func NewUpdateLanguagesRequestVNext(primaryId string, languages map[string]strin
 func NewUpdateLanguagesRequestVNextWithDefaults() *UpdateLanguagesRequestVNext {
 	this := UpdateLanguagesRequestVNext{}
 	return &this
-}
-
-// GetPrimaryId returns the PrimaryId field value
-func (o *UpdateLanguagesRequestVNext) GetPrimaryId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.PrimaryId
-}
-
-// GetPrimaryIdOk returns a tuple with the PrimaryId field value
-// and a boolean to check if the value has been set.
-func (o *UpdateLanguagesRequestVNext) GetPrimaryIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.PrimaryId, true
-}
-
-// SetPrimaryId sets field value
-func (o *UpdateLanguagesRequestVNext) SetPrimaryId(v string) {
-	o.PrimaryId = v
 }
 
 // GetLanguages returns the Languages field value
@@ -92,6 +72,30 @@ func (o *UpdateLanguagesRequestVNext) SetLanguages(v map[string]string) {
 	o.Languages = v
 }
 
+// GetPrimaryId returns the PrimaryId field value
+func (o *UpdateLanguagesRequestVNext) GetPrimaryId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.PrimaryId
+}
+
+// GetPrimaryIdOk returns a tuple with the PrimaryId field value
+// and a boolean to check if the value has been set.
+func (o *UpdateLanguagesRequestVNext) GetPrimaryIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.PrimaryId, true
+}
+
+// SetPrimaryId sets field value
+func (o *UpdateLanguagesRequestVNext) SetPrimaryId(v string) {
+	o.PrimaryId = v
+}
+
 func (o UpdateLanguagesRequestVNext) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -102,9 +106,47 @@ func (o UpdateLanguagesRequestVNext) MarshalJSON() ([]byte, error) {
 
 func (o UpdateLanguagesRequestVNext) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["primaryId"] = o.PrimaryId
 	toSerialize["languages"] = o.Languages
+	toSerialize["primaryId"] = o.PrimaryId
 	return toSerialize, nil
+}
+
+func (o *UpdateLanguagesRequestVNext) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"languages",
+		"primaryId",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varUpdateLanguagesRequestVNext := _UpdateLanguagesRequestVNext{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varUpdateLanguagesRequestVNext)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateLanguagesRequestVNext(varUpdateLanguagesRequestVNext)
+
+	return err
 }
 
 type NullableUpdateLanguagesRequestVNext struct {

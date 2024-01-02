@@ -1,5 +1,5 @@
 /*
-Marketing Events Extension
+Marketing Marketing Events
 
 These APIs allow you to interact with HubSpot's Marketing Events Extension. It allows you to: * Create, Read or update Marketing Event information in HubSpot * Specify whether a HubSpot contact has registered, attended or cancelled a registration to a Marketing Event. * Specify a URL that can be called to get the details of a Marketing Event.
 
@@ -11,7 +11,9 @@ API version: v3
 package marketing_events_beta
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the MarketingEventExternalUniqueIdentifier type satisfies the MappedNullable interface at compile time
@@ -19,23 +21,25 @@ var _ MappedNullable = &MarketingEventExternalUniqueIdentifier{}
 
 // MarketingEventExternalUniqueIdentifier struct for MarketingEventExternalUniqueIdentifier
 type MarketingEventExternalUniqueIdentifier struct {
-	// The id of the application that created the marketing event in HubSpot.
-	AppId int32 `json:"appId"`
 	// The accountId that is associated with this marketing event in the external event application.
 	ExternalAccountId string `json:"externalAccountId"`
 	// The id of the marketing event in the external event application.
 	ExternalEventId string `json:"externalEventId"`
+	// The id of the application that created the marketing event in HubSpot.
+	AppId int32 `json:"appId"`
 }
+
+type _MarketingEventExternalUniqueIdentifier MarketingEventExternalUniqueIdentifier
 
 // NewMarketingEventExternalUniqueIdentifier instantiates a new MarketingEventExternalUniqueIdentifier object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMarketingEventExternalUniqueIdentifier(appId int32, externalAccountId string, externalEventId string) *MarketingEventExternalUniqueIdentifier {
+func NewMarketingEventExternalUniqueIdentifier(externalAccountId string, externalEventId string, appId int32) *MarketingEventExternalUniqueIdentifier {
 	this := MarketingEventExternalUniqueIdentifier{}
-	this.AppId = appId
 	this.ExternalAccountId = externalAccountId
 	this.ExternalEventId = externalEventId
+	this.AppId = appId
 	return &this
 }
 
@@ -45,30 +49,6 @@ func NewMarketingEventExternalUniqueIdentifier(appId int32, externalAccountId st
 func NewMarketingEventExternalUniqueIdentifierWithDefaults() *MarketingEventExternalUniqueIdentifier {
 	this := MarketingEventExternalUniqueIdentifier{}
 	return &this
-}
-
-// GetAppId returns the AppId field value
-func (o *MarketingEventExternalUniqueIdentifier) GetAppId() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.AppId
-}
-
-// GetAppIdOk returns a tuple with the AppId field value
-// and a boolean to check if the value has been set.
-func (o *MarketingEventExternalUniqueIdentifier) GetAppIdOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.AppId, true
-}
-
-// SetAppId sets field value
-func (o *MarketingEventExternalUniqueIdentifier) SetAppId(v int32) {
-	o.AppId = v
 }
 
 // GetExternalAccountId returns the ExternalAccountId field value
@@ -119,6 +99,30 @@ func (o *MarketingEventExternalUniqueIdentifier) SetExternalEventId(v string) {
 	o.ExternalEventId = v
 }
 
+// GetAppId returns the AppId field value
+func (o *MarketingEventExternalUniqueIdentifier) GetAppId() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.AppId
+}
+
+// GetAppIdOk returns a tuple with the AppId field value
+// and a boolean to check if the value has been set.
+func (o *MarketingEventExternalUniqueIdentifier) GetAppIdOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.AppId, true
+}
+
+// SetAppId sets field value
+func (o *MarketingEventExternalUniqueIdentifier) SetAppId(v int32) {
+	o.AppId = v
+}
+
 func (o MarketingEventExternalUniqueIdentifier) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -129,10 +133,49 @@ func (o MarketingEventExternalUniqueIdentifier) MarshalJSON() ([]byte, error) {
 
 func (o MarketingEventExternalUniqueIdentifier) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["appId"] = o.AppId
 	toSerialize["externalAccountId"] = o.ExternalAccountId
 	toSerialize["externalEventId"] = o.ExternalEventId
+	toSerialize["appId"] = o.AppId
 	return toSerialize, nil
+}
+
+func (o *MarketingEventExternalUniqueIdentifier) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"externalAccountId",
+		"externalEventId",
+		"appId",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varMarketingEventExternalUniqueIdentifier := _MarketingEventExternalUniqueIdentifier{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varMarketingEventExternalUniqueIdentifier)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MarketingEventExternalUniqueIdentifier(varMarketingEventExternalUniqueIdentifier)
+
+	return err
 }
 
 type NullableMarketingEventExternalUniqueIdentifier struct {

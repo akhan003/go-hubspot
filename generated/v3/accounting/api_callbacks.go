@@ -19,12 +19,12 @@ import (
 	"strings"
 )
 
-// CallbacksApiService CallbacksApi service
-type CallbacksApiService service
+// CallbacksAPIService CallbacksAPI service
+type CallbacksAPIService service
 
 type ApiCallbackCreateCustomerRequest struct {
 	ctx                        context.Context
-	ApiService                 *CallbacksApiService
+	ApiService                 *CallbacksAPIService
 	requestId                  string
 	resultIdAccountingResponse *ResultIdAccountingResponse
 }
@@ -44,11 +44,11 @@ CallbackCreateCustomer Endpoint for customer creation response
 
 Call this endpoint with the response to a customer creation request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackCreateCustomerRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackCreateCustomerRequest
 */
-func (a *CallbacksApiService) CallbackCreateCustomer(ctx context.Context, requestId string) ApiCallbackCreateCustomerRequest {
+func (a *CallbacksAPIService) CallbackCreateCustomer(ctx context.Context, requestId string) ApiCallbackCreateCustomerRequest {
 	return ApiCallbackCreateCustomerRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -57,14 +57,14 @@ func (a *CallbacksApiService) CallbackCreateCustomer(ctx context.Context, reques
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackCreateCustomerExecute(r ApiCallbackCreateCustomerRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackCreateCustomerExecute(r ApiCallbackCreateCustomerRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackCreateCustomer")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackCreateCustomer")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -150,7 +150,7 @@ func (a *CallbacksApiService) CallbackCreateCustomerExecute(r ApiCallbackCreateC
 
 type ApiCallbackCreateExchangeRateRequest struct {
 	ctx                  context.Context
-	ApiService           *CallbacksApiService
+	ApiService           *CallbacksAPIService
 	requestId            string
 	exchangeRateResponse *ExchangeRateResponse
 }
@@ -170,11 +170,11 @@ CallbackCreateExchangeRate Endpoint for exchange rate response
 
 Call this endpoint with the response to an exchange rate request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackCreateExchangeRateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackCreateExchangeRateRequest
 */
-func (a *CallbacksApiService) CallbackCreateExchangeRate(ctx context.Context, requestId string) ApiCallbackCreateExchangeRateRequest {
+func (a *CallbacksAPIService) CallbackCreateExchangeRate(ctx context.Context, requestId string) ApiCallbackCreateExchangeRateRequest {
 	return ApiCallbackCreateExchangeRateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -183,14 +183,14 @@ func (a *CallbacksApiService) CallbackCreateExchangeRate(ctx context.Context, re
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackCreateExchangeRateExecute(r ApiCallbackCreateExchangeRateRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackCreateExchangeRateExecute(r ApiCallbackCreateExchangeRateRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackCreateExchangeRate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackCreateExchangeRate")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -276,7 +276,7 @@ func (a *CallbacksApiService) CallbackCreateExchangeRateExecute(r ApiCallbackCre
 
 type ApiCallbackCreateInvoiceRequest struct {
 	ctx                        context.Context
-	ApiService                 *CallbacksApiService
+	ApiService                 *CallbacksAPIService
 	requestId                  string
 	resultIdAccountingResponse *ResultIdAccountingResponse
 }
@@ -296,11 +296,11 @@ CallbackCreateInvoice Endpoint for invoice creation response
 
 Call this endpoint with the response to a invoice creation request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackCreateInvoiceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackCreateInvoiceRequest
 */
-func (a *CallbacksApiService) CallbackCreateInvoice(ctx context.Context, requestId string) ApiCallbackCreateInvoiceRequest {
+func (a *CallbacksAPIService) CallbackCreateInvoice(ctx context.Context, requestId string) ApiCallbackCreateInvoiceRequest {
 	return ApiCallbackCreateInvoiceRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -309,14 +309,14 @@ func (a *CallbacksApiService) CallbackCreateInvoice(ctx context.Context, request
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackCreateInvoiceExecute(r ApiCallbackCreateInvoiceRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackCreateInvoiceExecute(r ApiCallbackCreateInvoiceRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackCreateInvoice")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackCreateInvoice")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -402,7 +402,7 @@ func (a *CallbacksApiService) CallbackCreateInvoiceExecute(r ApiCallbackCreateIn
 
 type ApiCallbackCreateTermRequest struct {
 	ctx           context.Context
-	ApiService    *CallbacksApiService
+	ApiService    *CallbacksAPIService
 	requestId     string
 	termsResponse *TermsResponse
 }
@@ -422,11 +422,11 @@ CallbackCreateTerm Endpoint for terms search response
 
 Call this endpoint with the response to a terms search request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackCreateTermRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackCreateTermRequest
 */
-func (a *CallbacksApiService) CallbackCreateTerm(ctx context.Context, requestId string) ApiCallbackCreateTermRequest {
+func (a *CallbacksAPIService) CallbackCreateTerm(ctx context.Context, requestId string) ApiCallbackCreateTermRequest {
 	return ApiCallbackCreateTermRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -435,14 +435,14 @@ func (a *CallbacksApiService) CallbackCreateTerm(ctx context.Context, requestId 
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackCreateTermExecute(r ApiCallbackCreateTermRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackCreateTermExecute(r ApiCallbackCreateTermRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackCreateTerm")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackCreateTerm")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -528,7 +528,7 @@ func (a *CallbacksApiService) CallbackCreateTermExecute(r ApiCallbackCreateTermR
 
 type ApiCallbackDoInvoiceSearchRequest struct {
 	ctx                   context.Context
-	ApiService            *CallbacksApiService
+	ApiService            *CallbacksAPIService
 	requestId             string
 	invoiceSearchResponse *InvoiceSearchResponse
 }
@@ -548,11 +548,11 @@ CallbackDoInvoiceSearch Endpoint for invoice search response
 
 Call this endpoint with the response to a invoice search request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackDoInvoiceSearchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackDoInvoiceSearchRequest
 */
-func (a *CallbacksApiService) CallbackDoInvoiceSearch(ctx context.Context, requestId string) ApiCallbackDoInvoiceSearchRequest {
+func (a *CallbacksAPIService) CallbackDoInvoiceSearch(ctx context.Context, requestId string) ApiCallbackDoInvoiceSearchRequest {
 	return ApiCallbackDoInvoiceSearchRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -561,14 +561,14 @@ func (a *CallbacksApiService) CallbackDoInvoiceSearch(ctx context.Context, reque
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackDoInvoiceSearchExecute(r ApiCallbackDoInvoiceSearchRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackDoInvoiceSearchExecute(r ApiCallbackDoInvoiceSearchRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackDoInvoiceSearch")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackDoInvoiceSearch")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -654,7 +654,7 @@ func (a *CallbacksApiService) CallbackDoInvoiceSearchExecute(r ApiCallbackDoInvo
 
 type ApiCallbackDoProductSearchRequest struct {
 	ctx                   context.Context
-	ApiService            *CallbacksApiService
+	ApiService            *CallbacksAPIService
 	requestId             string
 	productSearchResponse *ProductSearchResponse
 }
@@ -674,11 +674,11 @@ CallbackDoProductSearch Endpoint for product search response
 
 Call this endpoint with the response to a product search request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackDoProductSearchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackDoProductSearchRequest
 */
-func (a *CallbacksApiService) CallbackDoProductSearch(ctx context.Context, requestId string) ApiCallbackDoProductSearchRequest {
+func (a *CallbacksAPIService) CallbackDoProductSearch(ctx context.Context, requestId string) ApiCallbackDoProductSearchRequest {
 	return ApiCallbackDoProductSearchRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -687,14 +687,14 @@ func (a *CallbacksApiService) CallbackDoProductSearch(ctx context.Context, reque
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackDoProductSearchExecute(r ApiCallbackDoProductSearchRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackDoProductSearchExecute(r ApiCallbackDoProductSearchRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackDoProductSearch")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackDoProductSearch")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -780,7 +780,7 @@ func (a *CallbacksApiService) CallbackDoProductSearchExecute(r ApiCallbackDoProd
 
 type ApiCallbackDoSearchCustomerRequest struct {
 	ctx                            context.Context
-	ApiService                     *CallbacksApiService
+	ApiService                     *CallbacksAPIService
 	requestId                      string
 	customerSearchResponseExternal *CustomerSearchResponseExternal
 }
@@ -800,11 +800,11 @@ CallbackDoSearchCustomer Endpoint for customer search response
 
 Call this endpoint with the response to a customer search request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackDoSearchCustomerRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackDoSearchCustomerRequest
 */
-func (a *CallbacksApiService) CallbackDoSearchCustomer(ctx context.Context, requestId string) ApiCallbackDoSearchCustomerRequest {
+func (a *CallbacksAPIService) CallbackDoSearchCustomer(ctx context.Context, requestId string) ApiCallbackDoSearchCustomerRequest {
 	return ApiCallbackDoSearchCustomerRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -813,14 +813,14 @@ func (a *CallbacksApiService) CallbackDoSearchCustomer(ctx context.Context, requ
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackDoSearchCustomerExecute(r ApiCallbackDoSearchCustomerRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackDoSearchCustomerExecute(r ApiCallbackDoSearchCustomerRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackDoSearchCustomer")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackDoSearchCustomer")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -906,7 +906,7 @@ func (a *CallbacksApiService) CallbackDoSearchCustomerExecute(r ApiCallbackDoSea
 
 type ApiCallbackDoTaxSearchRequest struct {
 	ctx               context.Context
-	ApiService        *CallbacksApiService
+	ApiService        *CallbacksAPIService
 	requestId         string
 	taxSearchResponse *TaxSearchResponse
 }
@@ -926,11 +926,11 @@ CallbackDoTaxSearch Endpoint for taxes search response
 
 Call this endpoint with the response to a taxes search request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackDoTaxSearchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackDoTaxSearchRequest
 */
-func (a *CallbacksApiService) CallbackDoTaxSearch(ctx context.Context, requestId string) ApiCallbackDoTaxSearchRequest {
+func (a *CallbacksAPIService) CallbackDoTaxSearch(ctx context.Context, requestId string) ApiCallbackDoTaxSearchRequest {
 	return ApiCallbackDoTaxSearchRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -939,14 +939,14 @@ func (a *CallbacksApiService) CallbackDoTaxSearch(ctx context.Context, requestId
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackDoTaxSearchExecute(r ApiCallbackDoTaxSearchRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackDoTaxSearchExecute(r ApiCallbackDoTaxSearchRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackDoTaxSearch")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackDoTaxSearch")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1032,7 +1032,7 @@ func (a *CallbacksApiService) CallbackDoTaxSearchExecute(r ApiCallbackDoTaxSearc
 
 type ApiCallbackGetByIDRequest struct {
 	ctx                      context.Context
-	ApiService               *CallbacksApiService
+	ApiService               *CallbacksAPIService
 	requestId                string
 	invoicesResponseExternal *InvoicesResponseExternal
 }
@@ -1052,11 +1052,11 @@ CallbackGetByID Endpoint for invoice get-by-id response
 
 Call this endpoint with the response to a invoice get-by-id request.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackGetByIDRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackGetByIDRequest
 */
-func (a *CallbacksApiService) CallbackGetByID(ctx context.Context, requestId string) ApiCallbackGetByIDRequest {
+func (a *CallbacksAPIService) CallbackGetByID(ctx context.Context, requestId string) ApiCallbackGetByIDRequest {
 	return ApiCallbackGetByIDRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1065,14 +1065,14 @@ func (a *CallbacksApiService) CallbackGetByID(ctx context.Context, requestId str
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackGetByIDExecute(r ApiCallbackGetByIDRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackGetByIDExecute(r ApiCallbackGetByIDRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackGetByID")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackGetByID")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -1158,7 +1158,7 @@ func (a *CallbacksApiService) CallbackGetByIDExecute(r ApiCallbackGetByIDRequest
 
 type ApiCallbackInvoicePDFRequest struct {
 	ctx                context.Context
-	ApiService         *CallbacksApiService
+	ApiService         *CallbacksAPIService
 	requestId          string
 	invoicePdfResponse *InvoicePdfResponse
 }
@@ -1178,11 +1178,11 @@ CallbackInvoicePDF Endpoint for PDF content of invoice
 
 Call this endpoint with the PDF content of a requested invoice.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param requestId The ID of the request that this response is for
- @return ApiCallbackInvoicePDFRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param requestId The ID of the request that this response is for
+	@return ApiCallbackInvoicePDFRequest
 */
-func (a *CallbacksApiService) CallbackInvoicePDF(ctx context.Context, requestId string) ApiCallbackInvoicePDFRequest {
+func (a *CallbacksAPIService) CallbackInvoicePDF(ctx context.Context, requestId string) ApiCallbackInvoicePDFRequest {
 	return ApiCallbackInvoicePDFRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -1191,14 +1191,14 @@ func (a *CallbacksApiService) CallbackInvoicePDF(ctx context.Context, requestId 
 }
 
 // Execute executes the request
-func (a *CallbacksApiService) CallbackInvoicePDFExecute(r ApiCallbackInvoicePDFRequest) (*http.Response, error) {
+func (a *CallbacksAPIService) CallbackInvoicePDFExecute(r ApiCallbackInvoicePDFRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPost
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksApiService.CallbackInvoicePDF")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CallbacksAPIService.CallbackInvoicePDF")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}

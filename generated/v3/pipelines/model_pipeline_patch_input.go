@@ -1,5 +1,5 @@
 /*
-CRM Pipelines
+Pipelines
 
 Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. Pipelines support `deals` and `tickets` object types.  ## Pipeline ID validation  When calling endpoints that take pipelineId as a parameter, that ID must correspond to an existing, un-archived pipeline. Otherwise the request will fail with a `404 Not Found` response.
 
@@ -19,12 +19,12 @@ var _ MappedNullable = &PipelinePatchInput{}
 
 // PipelinePatchInput An input used to update some properties on a pipeline definition.
 type PipelinePatchInput struct {
-	// A unique label used to organize pipelines in HubSpot's UI
-	Label *string `json:"label,omitempty"`
-	// The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.
-	DisplayOrder *int32 `json:"displayOrder,omitempty"`
 	// Whether the pipeline is archived. This property should only be provided when restoring an archived pipeline. If it's provided in any other call, the request will fail and a `400 Bad Request` will be returned.
 	Archived *bool `json:"archived,omitempty"`
+	// The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.
+	DisplayOrder *int32 `json:"displayOrder,omitempty"`
+	// A unique label used to organize pipelines in HubSpot's UI
+	Label *string `json:"label,omitempty"`
 }
 
 // NewPipelinePatchInput instantiates a new PipelinePatchInput object
@@ -42,70 +42,6 @@ func NewPipelinePatchInput() *PipelinePatchInput {
 func NewPipelinePatchInputWithDefaults() *PipelinePatchInput {
 	this := PipelinePatchInput{}
 	return &this
-}
-
-// GetLabel returns the Label field value if set, zero value otherwise.
-func (o *PipelinePatchInput) GetLabel() string {
-	if o == nil || IsNil(o.Label) {
-		var ret string
-		return ret
-	}
-	return *o.Label
-}
-
-// GetLabelOk returns a tuple with the Label field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PipelinePatchInput) GetLabelOk() (*string, bool) {
-	if o == nil || IsNil(o.Label) {
-		return nil, false
-	}
-	return o.Label, true
-}
-
-// HasLabel returns a boolean if a field has been set.
-func (o *PipelinePatchInput) HasLabel() bool {
-	if o != nil && !IsNil(o.Label) {
-		return true
-	}
-
-	return false
-}
-
-// SetLabel gets a reference to the given string and assigns it to the Label field.
-func (o *PipelinePatchInput) SetLabel(v string) {
-	o.Label = &v
-}
-
-// GetDisplayOrder returns the DisplayOrder field value if set, zero value otherwise.
-func (o *PipelinePatchInput) GetDisplayOrder() int32 {
-	if o == nil || IsNil(o.DisplayOrder) {
-		var ret int32
-		return ret
-	}
-	return *o.DisplayOrder
-}
-
-// GetDisplayOrderOk returns a tuple with the DisplayOrder field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PipelinePatchInput) GetDisplayOrderOk() (*int32, bool) {
-	if o == nil || IsNil(o.DisplayOrder) {
-		return nil, false
-	}
-	return o.DisplayOrder, true
-}
-
-// HasDisplayOrder returns a boolean if a field has been set.
-func (o *PipelinePatchInput) HasDisplayOrder() bool {
-	if o != nil && !IsNil(o.DisplayOrder) {
-		return true
-	}
-
-	return false
-}
-
-// SetDisplayOrder gets a reference to the given int32 and assigns it to the DisplayOrder field.
-func (o *PipelinePatchInput) SetDisplayOrder(v int32) {
-	o.DisplayOrder = &v
 }
 
 // GetArchived returns the Archived field value if set, zero value otherwise.
@@ -140,6 +76,70 @@ func (o *PipelinePatchInput) SetArchived(v bool) {
 	o.Archived = &v
 }
 
+// GetDisplayOrder returns the DisplayOrder field value if set, zero value otherwise.
+func (o *PipelinePatchInput) GetDisplayOrder() int32 {
+	if o == nil || IsNil(o.DisplayOrder) {
+		var ret int32
+		return ret
+	}
+	return *o.DisplayOrder
+}
+
+// GetDisplayOrderOk returns a tuple with the DisplayOrder field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PipelinePatchInput) GetDisplayOrderOk() (*int32, bool) {
+	if o == nil || IsNil(o.DisplayOrder) {
+		return nil, false
+	}
+	return o.DisplayOrder, true
+}
+
+// HasDisplayOrder returns a boolean if a field has been set.
+func (o *PipelinePatchInput) HasDisplayOrder() bool {
+	if o != nil && !IsNil(o.DisplayOrder) {
+		return true
+	}
+
+	return false
+}
+
+// SetDisplayOrder gets a reference to the given int32 and assigns it to the DisplayOrder field.
+func (o *PipelinePatchInput) SetDisplayOrder(v int32) {
+	o.DisplayOrder = &v
+}
+
+// GetLabel returns the Label field value if set, zero value otherwise.
+func (o *PipelinePatchInput) GetLabel() string {
+	if o == nil || IsNil(o.Label) {
+		var ret string
+		return ret
+	}
+	return *o.Label
+}
+
+// GetLabelOk returns a tuple with the Label field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PipelinePatchInput) GetLabelOk() (*string, bool) {
+	if o == nil || IsNil(o.Label) {
+		return nil, false
+	}
+	return o.Label, true
+}
+
+// HasLabel returns a boolean if a field has been set.
+func (o *PipelinePatchInput) HasLabel() bool {
+	if o != nil && !IsNil(o.Label) {
+		return true
+	}
+
+	return false
+}
+
+// SetLabel gets a reference to the given string and assigns it to the Label field.
+func (o *PipelinePatchInput) SetLabel(v string) {
+	o.Label = &v
+}
+
 func (o PipelinePatchInput) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -150,14 +150,14 @@ func (o PipelinePatchInput) MarshalJSON() ([]byte, error) {
 
 func (o PipelinePatchInput) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Label) {
-		toSerialize["label"] = o.Label
+	if !IsNil(o.Archived) {
+		toSerialize["archived"] = o.Archived
 	}
 	if !IsNil(o.DisplayOrder) {
 		toSerialize["displayOrder"] = o.DisplayOrder
 	}
-	if !IsNil(o.Archived) {
-		toSerialize["archived"] = o.Archived
+	if !IsNil(o.Label) {
+		toSerialize["label"] = o.Label
 	}
 	return toSerialize, nil
 }

@@ -1,5 +1,5 @@
 /*
-CMS Performance API
+CMS Performance
 
 Use these endpoints to get a time series view of your website's performance.
 
@@ -18,12 +18,12 @@ import (
 	"net/url"
 )
 
-// PublicPerformanceApiService PublicPerformanceApi service
-type PublicPerformanceApiService service
+// PublicPerformanceAPIService PublicPerformanceAPI service
+type PublicPerformanceAPIService service
 
-type ApiGetPageRequest struct {
+type ApiGetCmsV3PerformanceRequest struct {
 	ctx        context.Context
-	ApiService *PublicPerformanceApiService
+	ApiService *PublicPerformanceAPIService
 	domain     *string
 	path       *string
 	pad        *bool
@@ -35,75 +35,76 @@ type ApiGetPageRequest struct {
 }
 
 // The domain to search return data for.
-func (r ApiGetPageRequest) Domain(domain string) ApiGetPageRequest {
+func (r ApiGetCmsV3PerformanceRequest) Domain(domain string) ApiGetCmsV3PerformanceRequest {
 	r.domain = &domain
 	return r
 }
 
 // The url path of the domain to return data for.
-func (r ApiGetPageRequest) Path(path string) ApiGetPageRequest {
+func (r ApiGetCmsV3PerformanceRequest) Path(path string) ApiGetCmsV3PerformanceRequest {
 	r.path = &path
 	return r
 }
 
 // Specifies whether the time series data should have empty intervals if performance data is not present to create a continuous set.
-func (r ApiGetPageRequest) Pad(pad bool) ApiGetPageRequest {
+func (r ApiGetCmsV3PerformanceRequest) Pad(pad bool) ApiGetCmsV3PerformanceRequest {
 	r.pad = &pad
 	return r
 }
 
 // Specifies whether the time series data should be summated for the given period. Defaults to false.
-func (r ApiGetPageRequest) Sum(sum bool) ApiGetPageRequest {
+func (r ApiGetCmsV3PerformanceRequest) Sum(sum bool) ApiGetCmsV3PerformanceRequest {
 	r.sum = &sum
 	return r
 }
 
 // A relative period to return time series data for. This value is ignored if start and/or end are provided. Valid periods: [15m, 30m, 1h, 4h, 12h, 1d, 1w]
-func (r ApiGetPageRequest) Period(period string) ApiGetPageRequest {
+func (r ApiGetCmsV3PerformanceRequest) Period(period string) ApiGetCmsV3PerformanceRequest {
 	r.period = &period
 	return r
 }
 
 // The time series interval to group data by. Valid intervals: [1m, 5m, 15m, 30m, 1h, 4h, 12h, 1d, 1w]
-func (r ApiGetPageRequest) Interval(interval string) ApiGetPageRequest {
+func (r ApiGetCmsV3PerformanceRequest) Interval(interval string) ApiGetCmsV3PerformanceRequest {
 	r.interval = &interval
 	return r
 }
 
 // A timestamp in milliseconds that indicates the start of the time period.
-func (r ApiGetPageRequest) Start(start int64) ApiGetPageRequest {
+func (r ApiGetCmsV3PerformanceRequest) Start(start int64) ApiGetCmsV3PerformanceRequest {
 	r.start = &start
 	return r
 }
 
 // A timestamp in milliseconds that indicates the end of the time period.
-func (r ApiGetPageRequest) End(end int64) ApiGetPageRequest {
+func (r ApiGetCmsV3PerformanceRequest) End(end int64) ApiGetCmsV3PerformanceRequest {
 	r.end = &end
 	return r
 }
 
-func (r ApiGetPageRequest) Execute() (*PublicPerformanceResponse, *http.Response, error) {
-	return r.ApiService.GetPageExecute(r)
+func (r ApiGetCmsV3PerformanceRequest) Execute() (*PublicPerformanceResponse, *http.Response, error) {
+	return r.ApiService.GetCmsV3PerformanceExecute(r)
 }
 
 /*
-GetPage View your website's performance.
+GetCmsV3Performance View your website's performance.
 
 Returns time series data website performance data for the given domain and/or path.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetPageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCmsV3PerformanceRequest
 */
-func (a *PublicPerformanceApiService) GetPage(ctx context.Context) ApiGetPageRequest {
-	return ApiGetPageRequest{
+func (a *PublicPerformanceAPIService) GetCmsV3Performance(ctx context.Context) ApiGetCmsV3PerformanceRequest {
+	return ApiGetCmsV3PerformanceRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return PublicPerformanceResponse
-func (a *PublicPerformanceApiService) GetPageExecute(r ApiGetPageRequest) (*PublicPerformanceResponse, *http.Response, error) {
+//
+//	@return PublicPerformanceResponse
+func (a *PublicPerformanceAPIService) GetCmsV3PerformanceExecute(r ApiGetCmsV3PerformanceRequest) (*PublicPerformanceResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -111,7 +112,7 @@ func (a *PublicPerformanceApiService) GetPageExecute(r ApiGetPageRequest) (*Publ
 		localVarReturnValue *PublicPerformanceResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicPerformanceApiService.GetPage")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicPerformanceAPIService.GetCmsV3Performance")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -222,9 +223,9 @@ func (a *PublicPerformanceApiService) GetPageExecute(r ApiGetPageRequest) (*Publ
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetUptimeRequest struct {
+type ApiGetCmsV3PerformanceUptimeRequest struct {
 	ctx        context.Context
-	ApiService *PublicPerformanceApiService
+	ApiService *PublicPerformanceAPIService
 	domain     *string
 	path       *string
 	pad        *bool
@@ -236,74 +237,75 @@ type ApiGetUptimeRequest struct {
 }
 
 // The domain to search return data for.
-func (r ApiGetUptimeRequest) Domain(domain string) ApiGetUptimeRequest {
+func (r ApiGetCmsV3PerformanceUptimeRequest) Domain(domain string) ApiGetCmsV3PerformanceUptimeRequest {
 	r.domain = &domain
 	return r
 }
 
-func (r ApiGetUptimeRequest) Path(path string) ApiGetUptimeRequest {
+func (r ApiGetCmsV3PerformanceUptimeRequest) Path(path string) ApiGetCmsV3PerformanceUptimeRequest {
 	r.path = &path
 	return r
 }
 
 // Specifies whether the time series data should have empty intervals if performance data is not present to create a continuous set.
-func (r ApiGetUptimeRequest) Pad(pad bool) ApiGetUptimeRequest {
+func (r ApiGetCmsV3PerformanceUptimeRequest) Pad(pad bool) ApiGetCmsV3PerformanceUptimeRequest {
 	r.pad = &pad
 	return r
 }
 
 // Specifies whether the time series data should be summated for the given period. Defaults to false.
-func (r ApiGetUptimeRequest) Sum(sum bool) ApiGetUptimeRequest {
+func (r ApiGetCmsV3PerformanceUptimeRequest) Sum(sum bool) ApiGetCmsV3PerformanceUptimeRequest {
 	r.sum = &sum
 	return r
 }
 
 // A relative period to return time series data for. This value is ignored if start and/or end are provided. Valid periods: [15m, 30m, 1h, 4h, 12h, 1d, 1w]
-func (r ApiGetUptimeRequest) Period(period string) ApiGetUptimeRequest {
+func (r ApiGetCmsV3PerformanceUptimeRequest) Period(period string) ApiGetCmsV3PerformanceUptimeRequest {
 	r.period = &period
 	return r
 }
 
 // The time series interval to group data by. Valid intervals: [1m, 5m, 15m, 30m, 1h, 4h, 12h, 1d, 1w]
-func (r ApiGetUptimeRequest) Interval(interval string) ApiGetUptimeRequest {
+func (r ApiGetCmsV3PerformanceUptimeRequest) Interval(interval string) ApiGetCmsV3PerformanceUptimeRequest {
 	r.interval = &interval
 	return r
 }
 
 // A timestamp in milliseconds that indicates the start of the time period.
-func (r ApiGetUptimeRequest) Start(start int64) ApiGetUptimeRequest {
+func (r ApiGetCmsV3PerformanceUptimeRequest) Start(start int64) ApiGetCmsV3PerformanceUptimeRequest {
 	r.start = &start
 	return r
 }
 
 // A timestamp in milliseconds that indicates the end of the time period.
-func (r ApiGetUptimeRequest) End(end int64) ApiGetUptimeRequest {
+func (r ApiGetCmsV3PerformanceUptimeRequest) End(end int64) ApiGetCmsV3PerformanceUptimeRequest {
 	r.end = &end
 	return r
 }
 
-func (r ApiGetUptimeRequest) Execute() (*PublicPerformanceResponse, *http.Response, error) {
-	return r.ApiService.GetUptimeExecute(r)
+func (r ApiGetCmsV3PerformanceUptimeRequest) Execute() (*PublicPerformanceResponse, *http.Response, error) {
+	return r.ApiService.GetCmsV3PerformanceUptimeExecute(r)
 }
 
 /*
-GetUptime View your website's uptime.
+GetCmsV3PerformanceUptime View your website's uptime.
 
 Returns uptime time series website performance data for the given domain.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetUptimeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCmsV3PerformanceUptimeRequest
 */
-func (a *PublicPerformanceApiService) GetUptime(ctx context.Context) ApiGetUptimeRequest {
-	return ApiGetUptimeRequest{
+func (a *PublicPerformanceAPIService) GetCmsV3PerformanceUptime(ctx context.Context) ApiGetCmsV3PerformanceUptimeRequest {
+	return ApiGetCmsV3PerformanceUptimeRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return PublicPerformanceResponse
-func (a *PublicPerformanceApiService) GetUptimeExecute(r ApiGetUptimeRequest) (*PublicPerformanceResponse, *http.Response, error) {
+//
+//	@return PublicPerformanceResponse
+func (a *PublicPerformanceAPIService) GetCmsV3PerformanceUptimeExecute(r ApiGetCmsV3PerformanceUptimeRequest) (*PublicPerformanceResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -311,7 +313,7 @@ func (a *PublicPerformanceApiService) GetUptimeExecute(r ApiGetUptimeRequest) (*
 		localVarReturnValue *PublicPerformanceResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicPerformanceApiService.GetUptime")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicPerformanceAPIService.GetCmsV3PerformanceUptime")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}

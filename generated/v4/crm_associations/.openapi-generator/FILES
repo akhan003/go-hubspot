@@ -8,7 +8,7 @@ client.go
 configuration.go
 docs/AssociationSpec.md
 docs/AssociationSpecWithLabel.md
-docs/BatchApi.md
+docs/BatchAPI.md
 docs/BatchInputPublicAssociationMultiArchive.md
 docs/BatchInputPublicAssociationMultiPost.md
 docs/BatchInputPublicDefaultAssociationMultiPost.md
@@ -19,7 +19,7 @@ docs/BatchResponsePublicAssociationMultiWithLabel.md
 docs/BatchResponsePublicAssociationMultiWithLabelWithErrors.md
 docs/BatchResponsePublicDefaultAssociation.md
 docs/CollectionResponseAssociationSpecWithLabelNoPaging.md
-docs/DefinitionsApi.md
+docs/DefinitionsAPI.md
 docs/Error.md
 docs/ErrorCategory.md
 docs/ErrorDetail.md
@@ -72,6 +72,4 @@ model_public_fetch_associations_batch_request.go
 model_public_object_id.go
 model_standard_error.go
 response.go
-test/api_batch_test.go
-test/api_definitions_test.go
 utils.go

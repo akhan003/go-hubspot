@@ -1,5 +1,5 @@
 /*
-CMS Audit Logs
+Cms Content Audit
 
 Use this endpoint to query audit logs of CMS changes that occurred on your HubSpot account.
 
@@ -19,92 +19,93 @@ import (
 	"reflect"
 )
 
-// AuditLogsApiService AuditLogsApi service
-type AuditLogsApiService service
+// AuditLogsAPIService AuditLogsAPI service
+type AuditLogsAPIService service
 
-type ApiGetPageRequest struct {
+type ApiGetCmsV3AuditLogsRequest struct {
 	ctx        context.Context
-	ApiService *AuditLogsApiService
-	objectId   *[]string
+	ApiService *AuditLogsAPIService
 	userId     *[]string
+	eventType  *[]string
+	objectType *[]string
+	objectId   *[]string
 	after      *string
 	before     *string
-	sort       *[]string
-	eventType  *[]string
 	limit      *int32
-	objectType *[]string
-}
-
-// Comma separated list of object ids to filter by.
-func (r ApiGetPageRequest) ObjectId(objectId []string) ApiGetPageRequest {
-	r.objectId = &objectId
-	return r
+	sort       *[]string
 }
 
 // Comma separated list of user ids to filter by.
-func (r ApiGetPageRequest) UserId(userId []string) ApiGetPageRequest {
+func (r ApiGetCmsV3AuditLogsRequest) UserId(userId []string) ApiGetCmsV3AuditLogsRequest {
 	r.userId = &userId
 	return r
 }
 
+// Comma separated list of event types to filter by (CREATED, UPDATED, PUBLISHED, DELETED, UNPUBLISHED).
+func (r ApiGetCmsV3AuditLogsRequest) EventType(eventType []string) ApiGetCmsV3AuditLogsRequest {
+	r.eventType = &eventType
+	return r
+}
+
+// Comma separated list of object types to filter by (BLOG, LANDING_PAGE, DOMAIN, HUBDB_TABLE etc.)
+func (r ApiGetCmsV3AuditLogsRequest) ObjectType(objectType []string) ApiGetCmsV3AuditLogsRequest {
+	r.objectType = &objectType
+	return r
+}
+
+// Comma separated list of object ids to filter by.
+func (r ApiGetCmsV3AuditLogsRequest) ObjectId(objectId []string) ApiGetCmsV3AuditLogsRequest {
+	r.objectId = &objectId
+	return r
+}
+
 // Timestamp after which audit logs will be returned
-func (r ApiGetPageRequest) After(after string) ApiGetPageRequest {
+func (r ApiGetCmsV3AuditLogsRequest) After(after string) ApiGetCmsV3AuditLogsRequest {
 	r.after = &after
 	return r
 }
 
 // Timestamp before which audit logs will be returned
-func (r ApiGetPageRequest) Before(before string) ApiGetPageRequest {
+func (r ApiGetCmsV3AuditLogsRequest) Before(before string) ApiGetCmsV3AuditLogsRequest {
 	r.before = &before
 	return r
 }
 
-// The sort direction for the audit logs. (Can only sort by timestamp).
-func (r ApiGetPageRequest) Sort(sort []string) ApiGetPageRequest {
-	r.sort = &sort
-	return r
-}
-
-// Comma separated list of event types to filter by (CREATED, UPDATED, PUBLISHED, DELETED, UNPUBLISHED).
-func (r ApiGetPageRequest) EventType(eventType []string) ApiGetPageRequest {
-	r.eventType = &eventType
-	return r
-}
-
 // The number of logs to return.
-func (r ApiGetPageRequest) Limit(limit int32) ApiGetPageRequest {
+func (r ApiGetCmsV3AuditLogsRequest) Limit(limit int32) ApiGetCmsV3AuditLogsRequest {
 	r.limit = &limit
 	return r
 }
 
-// Comma separated list of object types to filter by (BLOG, LANDING_PAGE, DOMAIN, HUBDB_TABLE etc.)
-func (r ApiGetPageRequest) ObjectType(objectType []string) ApiGetPageRequest {
-	r.objectType = &objectType
+// The sort direction for the audit logs. (Can only sort by timestamp).
+func (r ApiGetCmsV3AuditLogsRequest) Sort(sort []string) ApiGetCmsV3AuditLogsRequest {
+	r.sort = &sort
 	return r
 }
 
-func (r ApiGetPageRequest) Execute() (*CollectionResponsePublicAuditLog, *http.Response, error) {
-	return r.ApiService.GetPageExecute(r)
+func (r ApiGetCmsV3AuditLogsRequest) Execute() (*CollectionResponsePublicAuditLog, *http.Response, error) {
+	return r.ApiService.GetCmsV3AuditLogsExecute(r)
 }
 
 /*
-GetPage Query audit logs
+GetCmsV3AuditLogs Query audit logs
 
 Returns audit logs based on filters.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetPageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCmsV3AuditLogsRequest
 */
-func (a *AuditLogsApiService) GetPage(ctx context.Context) ApiGetPageRequest {
-	return ApiGetPageRequest{
+func (a *AuditLogsAPIService) GetCmsV3AuditLogs(ctx context.Context) ApiGetCmsV3AuditLogsRequest {
+	return ApiGetCmsV3AuditLogsRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CollectionResponsePublicAuditLog
-func (a *AuditLogsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionResponsePublicAuditLog, *http.Response, error) {
+//
+//	@return CollectionResponsePublicAuditLog
+func (a *AuditLogsAPIService) GetCmsV3AuditLogsExecute(r ApiGetCmsV3AuditLogsRequest) (*CollectionResponsePublicAuditLog, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -112,7 +113,7 @@ func (a *AuditLogsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRe
 		localVarReturnValue *CollectionResponsePublicAuditLog
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuditLogsApiService.GetPage")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuditLogsAPIService.GetCmsV3AuditLogs")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -123,26 +124,48 @@ func (a *AuditLogsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRe
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if r.objectId != nil {
-		t := *r.objectId
-		if reflect.TypeOf(t).Kind() == reflect.Slice {
-			s := reflect.ValueOf(t)
-			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "objectId", s.Index(i), "multi")
-			}
-		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "objectId", t, "multi")
-		}
-	}
 	if r.userId != nil {
 		t := *r.userId
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "userId", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "userId", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "userId", t, "multi")
+		}
+	}
+	if r.eventType != nil {
+		t := *r.eventType
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "eventType", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "eventType", t, "multi")
+		}
+	}
+	if r.objectType != nil {
+		t := *r.objectType
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "objectType", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "objectType", t, "multi")
+		}
+	}
+	if r.objectId != nil {
+		t := *r.objectId
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "objectId", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "objectId", t, "multi")
 		}
 	}
 	if r.after != nil {
@@ -151,40 +174,18 @@ func (a *AuditLogsApiService) GetPageExecute(r ApiGetPageRequest) (*CollectionRe
 	if r.before != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "before", r.before, "")
 	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	}
 	if r.sort != nil {
 		t := *r.sort
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "sort", s.Index(i).Interface(), "multi")
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "sort", t, "multi")
-		}
-	}
-	if r.eventType != nil {
-		t := *r.eventType
-		if reflect.TypeOf(t).Kind() == reflect.Slice {
-			s := reflect.ValueOf(t)
-			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "eventType", s.Index(i), "multi")
-			}
-		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "eventType", t, "multi")
-		}
-	}
-	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
-	}
-	if r.objectType != nil {
-		t := *r.objectType
-		if reflect.TypeOf(t).Kind() == reflect.Slice {
-			s := reflect.ValueOf(t)
-			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "objectType", s.Index(i), "multi")
-			}
-		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "objectType", t, "multi")
 		}
 	}
 	// to determine the Content-Type header

@@ -4,19 +4,20 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | The path of the file in the CMS Developer File System. | 
-**Name** | **string** | The name of the file. | 
-**Folder** | **bool** | Determines whether or not this path points to a folder. | 
-**Children** | Pointer to **[]string** | If the object is a folder, contains the filenames of the files within the folder. | [optional] 
-**UpdatedAt** | **int32** | Timestamp of when the object was last updated. | 
 **CreatedAt** | **int32** | Timestamp of when the object was first created. | 
 **ArchivedAt** | Pointer to **int64** | Timestamp of when the object was archived (deleted). | [optional] 
+**Folder** | **bool** | Determines whether or not this path points to a folder. | 
+**Children** | Pointer to **[]string** | If the object is a folder, contains the filenames of the files within the folder. | [optional] 
+**Name** | **string** | The name of the file. | 
+**Id** | **string** | The path of the file in the CMS Developer File System. | 
+**Hash** | Pointer to **string** |  | [optional] 
+**UpdatedAt** | **int32** | Timestamp of when the object was last updated. | 
 
 ## Methods
 
 ### NewAssetFileMetadata
 
-`func NewAssetFileMetadata(id string, name string, folder bool, updatedAt int32, createdAt int32, ) *AssetFileMetadata`
+`func NewAssetFileMetadata(createdAt int32, folder bool, name string, id string, updatedAt int32, ) *AssetFileMetadata`
 
 NewAssetFileMetadata instantiates a new AssetFileMetadata object
 This constructor will assign default values to properties that have it defined,
@@ -31,45 +32,50 @@ NewAssetFileMetadataWithDefaults instantiates a new AssetFileMetadata object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetId
+### GetCreatedAt
 
-`func (o *AssetFileMetadata) GetId() string`
+`func (o *AssetFileMetadata) GetCreatedAt() int32`
 
-GetId returns the Id field if non-nil, zero value otherwise.
+GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
 
-### GetIdOk
+### GetCreatedAtOk
 
-`func (o *AssetFileMetadata) GetIdOk() (*string, bool)`
+`func (o *AssetFileMetadata) GetCreatedAtOk() (*int32, bool)`
 
-GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetId
+### SetCreatedAt
 
-`func (o *AssetFileMetadata) SetId(v string)`
+`func (o *AssetFileMetadata) SetCreatedAt(v int32)`
 
-SetId sets Id field to given value.
+SetCreatedAt sets CreatedAt field to given value.
 
 
-### GetName
+### GetArchivedAt
 
-`func (o *AssetFileMetadata) GetName() string`
+`func (o *AssetFileMetadata) GetArchivedAt() int64`
 
-GetName returns the Name field if non-nil, zero value otherwise.
+GetArchivedAt returns the ArchivedAt field if non-nil, zero value otherwise.
 
-### GetNameOk
+### GetArchivedAtOk
 
-`func (o *AssetFileMetadata) GetNameOk() (*string, bool)`
+`func (o *AssetFileMetadata) GetArchivedAtOk() (*int64, bool)`
 
-GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+GetArchivedAtOk returns a tuple with the ArchivedAt field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetName
+### SetArchivedAt
 
-`func (o *AssetFileMetadata) SetName(v string)`
+`func (o *AssetFileMetadata) SetArchivedAt(v int64)`
 
-SetName sets Name field to given value.
+SetArchivedAt sets ArchivedAt field to given value.
 
+### HasArchivedAt
+
+`func (o *AssetFileMetadata) HasArchivedAt() bool`
+
+HasArchivedAt returns a boolean if a field has been set.
 
 ### GetFolder
 
@@ -116,6 +122,71 @@ SetChildren sets Children field to given value.
 
 HasChildren returns a boolean if a field has been set.
 
+### GetName
+
+`func (o *AssetFileMetadata) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *AssetFileMetadata) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *AssetFileMetadata) SetName(v string)`
+
+SetName sets Name field to given value.
+
+
+### GetId
+
+`func (o *AssetFileMetadata) GetId() string`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *AssetFileMetadata) GetIdOk() (*string, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *AssetFileMetadata) SetId(v string)`
+
+SetId sets Id field to given value.
+
+
+### GetHash
+
+`func (o *AssetFileMetadata) GetHash() string`
+
+GetHash returns the Hash field if non-nil, zero value otherwise.
+
+### GetHashOk
+
+`func (o *AssetFileMetadata) GetHashOk() (*string, bool)`
+
+GetHashOk returns a tuple with the Hash field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHash
+
+`func (o *AssetFileMetadata) SetHash(v string)`
+
+SetHash sets Hash field to given value.
+
+### HasHash
+
+`func (o *AssetFileMetadata) HasHash() bool`
+
+HasHash returns a boolean if a field has been set.
+
 ### GetUpdatedAt
 
 `func (o *AssetFileMetadata) GetUpdatedAt() int32`
@@ -135,51 +206,6 @@ and a boolean to check if the value has been set.
 
 SetUpdatedAt sets UpdatedAt field to given value.
 
-
-### GetCreatedAt
-
-`func (o *AssetFileMetadata) GetCreatedAt() int32`
-
-GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
-
-### GetCreatedAtOk
-
-`func (o *AssetFileMetadata) GetCreatedAtOk() (*int32, bool)`
-
-GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetCreatedAt
-
-`func (o *AssetFileMetadata) SetCreatedAt(v int32)`
-
-SetCreatedAt sets CreatedAt field to given value.
-
-
-### GetArchivedAt
-
-`func (o *AssetFileMetadata) GetArchivedAt() int64`
-
-GetArchivedAt returns the ArchivedAt field if non-nil, zero value otherwise.
-
-### GetArchivedAtOk
-
-`func (o *AssetFileMetadata) GetArchivedAtOk() (*int64, bool)`
-
-GetArchivedAtOk returns a tuple with the ArchivedAt field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetArchivedAt
-
-`func (o *AssetFileMetadata) SetArchivedAt(v int64)`
-
-SetArchivedAt sets ArchivedAt field to given value.
-
-### HasArchivedAt
-
-`func (o *AssetFileMetadata) HasArchivedAt() bool`
-
-HasArchivedAt returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
