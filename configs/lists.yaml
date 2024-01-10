@@ -1,0 +1,15 @@
+generatorName: go
+packageName: lists
+outputDir: generated/v3/lists
+inputSpec: https://api.hubspot.com/api-catalog-public/v1/apis/crm/v3/lists
+nameMappings:
+  setType: SetType_
+additionalProperties:
+  isGoSubmodule: false
+  withGoMod: false
+  disallowAdditionalPropertiesIfNotPresent: false
+  structPrefix: true
+  useOneOfDiscriminatorLookup: true
+removeOperationIdPrefix: true
+skipValidateSpec: true
+enablePostProcessFile: true
