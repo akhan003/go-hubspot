@@ -19,8 +19,11 @@ var _ MappedNullable = &ListUpdateResponse{}
 
 // ListUpdateResponse The updated definition of the list in response to a list update request.
 type ListUpdateResponse struct {
-	UpdatedList *PublicObjectList `json:"updatedList,omitempty"`
+	UpdatedList          *PublicObjectList `json:"updatedList,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListUpdateResponse ListUpdateResponse
 
 // NewListUpdateResponse instantiates a new ListUpdateResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o ListUpdateResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UpdatedList) {
 		toSerialize["updatedList"] = o.UpdatedList
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListUpdateResponse) UnmarshalJSON(data []byte) (err error) {
+	varListUpdateResponse := _ListUpdateResponse{}
+
+	err = json.Unmarshal(data, &varListUpdateResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListUpdateResponse(varListUpdateResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "updatedList")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListUpdateResponse struct {

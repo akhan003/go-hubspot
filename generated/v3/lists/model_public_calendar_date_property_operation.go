@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,6 +27,7 @@ type PublicCalendarDatePropertyOperation struct {
 	FiscalYearStart              *string `json:"fiscalYearStart,omitempty"`
 	UseFiscalYear                *bool   `json:"useFiscalYear,omitempty"`
 	TimeUnitCount                *int32  `json:"timeUnitCount,omitempty"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicCalendarDatePropertyOperation PublicCalendarDatePropertyOperation
@@ -270,6 +270,11 @@ func (o PublicCalendarDatePropertyOperation) ToMap() (map[string]interface{}, er
 	if !IsNil(o.TimeUnitCount) {
 		toSerialize["timeUnitCount"] = o.TimeUnitCount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -300,15 +305,26 @@ func (o *PublicCalendarDatePropertyOperation) UnmarshalJSON(data []byte) (err er
 
 	varPublicCalendarDatePropertyOperation := _PublicCalendarDatePropertyOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicCalendarDatePropertyOperation)
+	err = json.Unmarshal(data, &varPublicCalendarDatePropertyOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicCalendarDatePropertyOperation(varPublicCalendarDatePropertyOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "timeUnit")
+		delete(additionalProperties, "fiscalYearStart")
+		delete(additionalProperties, "useFiscalYear")
+		delete(additionalProperties, "timeUnitCount")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

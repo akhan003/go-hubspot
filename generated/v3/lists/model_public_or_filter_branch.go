@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,6 +24,7 @@ type PublicOrFilterBranch struct {
 	FilterBranches       []PublicPropertyAssociationFilterBranchFilterBranchesInner `json:"filterBranches"`
 	Filters              []PublicPropertyAssociationFilterBranchFiltersInner        `json:"filters"`
 	FilterBranchOperator string                                                     `json:"filterBranchOperator"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicOrFilterBranch PublicOrFilterBranch
@@ -162,6 +162,11 @@ func (o PublicOrFilterBranch) ToMap() (map[string]interface{}, error) {
 	toSerialize["filterBranches"] = o.FilterBranches
 	toSerialize["filters"] = o.Filters
 	toSerialize["filterBranchOperator"] = o.FilterBranchOperator
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,15 +197,23 @@ func (o *PublicOrFilterBranch) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicOrFilterBranch := _PublicOrFilterBranch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicOrFilterBranch)
+	err = json.Unmarshal(data, &varPublicOrFilterBranch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicOrFilterBranch(varPublicOrFilterBranch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterBranchType")
+		delete(additionalProperties, "filterBranches")
+		delete(additionalProperties, "filters")
+		delete(additionalProperties, "filterBranchOperator")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

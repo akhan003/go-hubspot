@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,12 +20,13 @@ var _ MappedNullable = &PublicFormSubmissionOnPageFilter{}
 
 // PublicFormSubmissionOnPageFilter struct for PublicFormSubmissionOnPageFilter
 type PublicFormSubmissionOnPageFilter struct {
-	FilterType         string                                        `json:"filterType"`
-	FormId             *string                                       `json:"formId,omitempty"`
-	PruningRefineBy    *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
-	CoalescingRefineBy *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
-	Operator           string                                        `json:"operator"`
-	PageId             string                                        `json:"pageId"`
+	FilterType           string                                        `json:"filterType"`
+	FormId               *string                                       `json:"formId,omitempty"`
+	PruningRefineBy      *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
+	CoalescingRefineBy   *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
+	Operator             string                                        `json:"operator"`
+	PageId               string                                        `json:"pageId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicFormSubmissionOnPageFilter PublicFormSubmissionOnPageFilter
@@ -243,6 +243,11 @@ func (o PublicFormSubmissionOnPageFilter) ToMap() (map[string]interface{}, error
 	}
 	toSerialize["operator"] = o.Operator
 	toSerialize["pageId"] = o.PageId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -272,15 +277,25 @@ func (o *PublicFormSubmissionOnPageFilter) UnmarshalJSON(data []byte) (err error
 
 	varPublicFormSubmissionOnPageFilter := _PublicFormSubmissionOnPageFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicFormSubmissionOnPageFilter)
+	err = json.Unmarshal(data, &varPublicFormSubmissionOnPageFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicFormSubmissionOnPageFilter(varPublicFormSubmissionOnPageFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "formId")
+		delete(additionalProperties, "pruningRefineBy")
+		delete(additionalProperties, "coalescingRefineBy")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "pageId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

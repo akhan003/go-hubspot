@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,6 +25,7 @@ type PublicRollingDateRangePropertyOperation struct {
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	NumberOfDays                 int32  `json:"numberOfDays"`
 	RequiresTimeZoneConversion   bool   `json:"requiresTimeZoneConversion"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicRollingDateRangePropertyOperation PublicRollingDateRangePropertyOperation
@@ -189,6 +189,11 @@ func (o PublicRollingDateRangePropertyOperation) ToMap() (map[string]interface{}
 	toSerialize["includeObjectsWithNoValueSet"] = o.IncludeObjectsWithNoValueSet
 	toSerialize["numberOfDays"] = o.NumberOfDays
 	toSerialize["requiresTimeZoneConversion"] = o.RequiresTimeZoneConversion
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -220,15 +225,24 @@ func (o *PublicRollingDateRangePropertyOperation) UnmarshalJSON(data []byte) (er
 
 	varPublicRollingDateRangePropertyOperation := _PublicRollingDateRangePropertyOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicRollingDateRangePropertyOperation)
+	err = json.Unmarshal(data, &varPublicRollingDateRangePropertyOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicRollingDateRangePropertyOperation(varPublicRollingDateRangePropertyOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "numberOfDays")
+		delete(additionalProperties, "requiresTimeZoneConversion")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

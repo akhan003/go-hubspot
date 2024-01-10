@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,10 +20,11 @@ var _ MappedNullable = &PublicAbsoluteRangedTimestampRefineBy{}
 
 // PublicAbsoluteRangedTimestampRefineBy struct for PublicAbsoluteRangedTimestampRefineBy
 type PublicAbsoluteRangedTimestampRefineBy struct {
-	Type           string `json:"type"`
-	RangeType      string `json:"rangeType"`
-	LowerTimestamp int64  `json:"lowerTimestamp"`
-	UpperTimestamp int64  `json:"upperTimestamp"`
+	Type                 string `json:"type"`
+	RangeType            string `json:"rangeType"`
+	LowerTimestamp       int64  `json:"lowerTimestamp"`
+	UpperTimestamp       int64  `json:"upperTimestamp"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicAbsoluteRangedTimestampRefineBy PublicAbsoluteRangedTimestampRefineBy
@@ -162,6 +162,11 @@ func (o PublicAbsoluteRangedTimestampRefineBy) ToMap() (map[string]interface{}, 
 	toSerialize["rangeType"] = o.RangeType
 	toSerialize["lowerTimestamp"] = o.LowerTimestamp
 	toSerialize["upperTimestamp"] = o.UpperTimestamp
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,15 +197,23 @@ func (o *PublicAbsoluteRangedTimestampRefineBy) UnmarshalJSON(data []byte) (err 
 
 	varPublicAbsoluteRangedTimestampRefineBy := _PublicAbsoluteRangedTimestampRefineBy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicAbsoluteRangedTimestampRefineBy)
+	err = json.Unmarshal(data, &varPublicAbsoluteRangedTimestampRefineBy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicAbsoluteRangedTimestampRefineBy(varPublicAbsoluteRangedTimestampRefineBy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "rangeType")
+		delete(additionalProperties, "lowerTimestamp")
+		delete(additionalProperties, "upperTimestamp")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

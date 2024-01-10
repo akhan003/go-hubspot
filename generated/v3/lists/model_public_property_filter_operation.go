@@ -160,7 +160,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
 	// try to unmarshal data into PublicAllPropertyTypesOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicAllPropertyTypesOperation)
+	err = json.Unmarshal(data, &dst.PublicAllPropertyTypesOperation)
 	if err == nil {
 		jsonPublicAllPropertyTypesOperation, _ := json.Marshal(dst.PublicAllPropertyTypesOperation)
 		if string(jsonPublicAllPropertyTypesOperation) == "{}" { // empty struct
@@ -173,7 +173,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicBoolPropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicBoolPropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicBoolPropertyOperation)
 	if err == nil {
 		jsonPublicBoolPropertyOperation, _ := json.Marshal(dst.PublicBoolPropertyOperation)
 		if string(jsonPublicBoolPropertyOperation) == "{}" { // empty struct
@@ -186,7 +186,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicCalendarDatePropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicCalendarDatePropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicCalendarDatePropertyOperation)
 	if err == nil {
 		jsonPublicCalendarDatePropertyOperation, _ := json.Marshal(dst.PublicCalendarDatePropertyOperation)
 		if string(jsonPublicCalendarDatePropertyOperation) == "{}" { // empty struct
@@ -199,7 +199,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicComparativeDatePropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicComparativeDatePropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicComparativeDatePropertyOperation)
 	if err == nil {
 		jsonPublicComparativeDatePropertyOperation, _ := json.Marshal(dst.PublicComparativeDatePropertyOperation)
 		if string(jsonPublicComparativeDatePropertyOperation) == "{}" { // empty struct
@@ -212,7 +212,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicComparativePropertyUpdatedOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicComparativePropertyUpdatedOperation)
+	err = json.Unmarshal(data, &dst.PublicComparativePropertyUpdatedOperation)
 	if err == nil {
 		jsonPublicComparativePropertyUpdatedOperation, _ := json.Marshal(dst.PublicComparativePropertyUpdatedOperation)
 		if string(jsonPublicComparativePropertyUpdatedOperation) == "{}" { // empty struct
@@ -225,7 +225,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicDatePropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicDatePropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicDatePropertyOperation)
 	if err == nil {
 		jsonPublicDatePropertyOperation, _ := json.Marshal(dst.PublicDatePropertyOperation)
 		if string(jsonPublicDatePropertyOperation) == "{}" { // empty struct
@@ -238,7 +238,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicDateTimePropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicDateTimePropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicDateTimePropertyOperation)
 	if err == nil {
 		jsonPublicDateTimePropertyOperation, _ := json.Marshal(dst.PublicDateTimePropertyOperation)
 		if string(jsonPublicDateTimePropertyOperation) == "{}" { // empty struct
@@ -251,7 +251,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicEnumerationPropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicEnumerationPropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicEnumerationPropertyOperation)
 	if err == nil {
 		jsonPublicEnumerationPropertyOperation, _ := json.Marshal(dst.PublicEnumerationPropertyOperation)
 		if string(jsonPublicEnumerationPropertyOperation) == "{}" { // empty struct
@@ -264,7 +264,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicMultiStringPropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicMultiStringPropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicMultiStringPropertyOperation)
 	if err == nil {
 		jsonPublicMultiStringPropertyOperation, _ := json.Marshal(dst.PublicMultiStringPropertyOperation)
 		if string(jsonPublicMultiStringPropertyOperation) == "{}" { // empty struct
@@ -277,7 +277,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicNumberPropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicNumberPropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicNumberPropertyOperation)
 	if err == nil {
 		jsonPublicNumberPropertyOperation, _ := json.Marshal(dst.PublicNumberPropertyOperation)
 		if string(jsonPublicNumberPropertyOperation) == "{}" { // empty struct
@@ -290,7 +290,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicRangedDatePropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicRangedDatePropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicRangedDatePropertyOperation)
 	if err == nil {
 		jsonPublicRangedDatePropertyOperation, _ := json.Marshal(dst.PublicRangedDatePropertyOperation)
 		if string(jsonPublicRangedDatePropertyOperation) == "{}" { // empty struct
@@ -303,7 +303,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicRangedNumberPropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicRangedNumberPropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicRangedNumberPropertyOperation)
 	if err == nil {
 		jsonPublicRangedNumberPropertyOperation, _ := json.Marshal(dst.PublicRangedNumberPropertyOperation)
 		if string(jsonPublicRangedNumberPropertyOperation) == "{}" { // empty struct
@@ -316,7 +316,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicRangedTimeOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicRangedTimeOperation)
+	err = json.Unmarshal(data, &dst.PublicRangedTimeOperation)
 	if err == nil {
 		jsonPublicRangedTimeOperation, _ := json.Marshal(dst.PublicRangedTimeOperation)
 		if string(jsonPublicRangedTimeOperation) == "{}" { // empty struct
@@ -329,7 +329,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicRollingDateRangePropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicRollingDateRangePropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicRollingDateRangePropertyOperation)
 	if err == nil {
 		jsonPublicRollingDateRangePropertyOperation, _ := json.Marshal(dst.PublicRollingDateRangePropertyOperation)
 		if string(jsonPublicRollingDateRangePropertyOperation) == "{}" { // empty struct
@@ -342,7 +342,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicRollingPropertyUpdatedOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicRollingPropertyUpdatedOperation)
+	err = json.Unmarshal(data, &dst.PublicRollingPropertyUpdatedOperation)
 	if err == nil {
 		jsonPublicRollingPropertyUpdatedOperation, _ := json.Marshal(dst.PublicRollingPropertyUpdatedOperation)
 		if string(jsonPublicRollingPropertyUpdatedOperation) == "{}" { // empty struct
@@ -355,7 +355,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicStringPropertyOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicStringPropertyOperation)
+	err = json.Unmarshal(data, &dst.PublicStringPropertyOperation)
 	if err == nil {
 		jsonPublicStringPropertyOperation, _ := json.Marshal(dst.PublicStringPropertyOperation)
 		if string(jsonPublicStringPropertyOperation) == "{}" { // empty struct
@@ -368,7 +368,7 @@ func (dst *PublicPropertyFilterOperation) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicTimePointOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicTimePointOperation)
+	err = json.Unmarshal(data, &dst.PublicTimePointOperation)
 	if err == nil {
 		jsonPublicTimePointOperation, _ := json.Marshal(dst.PublicTimePointOperation)
 		if string(jsonPublicTimePointOperation) == "{}" { // empty struct

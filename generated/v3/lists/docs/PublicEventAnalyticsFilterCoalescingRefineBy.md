@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Type** | **string** |  | 
 **MinOccurrences** | Pointer to **int32** |  | [optional] 
 **MaxOccurrences** | Pointer to **int32** |  | [optional] 
-**SetType** | **string** |  | 
+**SetType_** | **string** |  | 
 **Comparison** | **string** |  | 
 **TimeOffset** | [**PublicTimeOffset**](PublicTimeOffset.md) |  | 
 **RangeType** | **string** |  | 
@@ -116,24 +116,24 @@ SetMaxOccurrences sets MaxOccurrences field to given value.
 
 HasMaxOccurrences returns a boolean if a field has been set.
 
-### GetSetType
+### GetSetType_
 
-`func (o *PublicEventAnalyticsFilterCoalescingRefineBy) GetSetType() string`
+`func (o *PublicEventAnalyticsFilterCoalescingRefineBy) GetSetType_() string`
 
-GetSetType returns the SetType field if non-nil, zero value otherwise.
+GetSetType_ returns the SetType_ field if non-nil, zero value otherwise.
 
-### GetSetTypeOk
+### GetSetType_Ok
 
-`func (o *PublicEventAnalyticsFilterCoalescingRefineBy) GetSetTypeOk() (*string, bool)`
+`func (o *PublicEventAnalyticsFilterCoalescingRefineBy) GetSetType_Ok() (*string, bool)`
 
-GetSetTypeOk returns a tuple with the SetType field if it's non-nil, zero value otherwise
+GetSetType_Ok returns a tuple with the SetType_ field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetSetType
+### SetSetType_
 
-`func (o *PublicEventAnalyticsFilterCoalescingRefineBy) SetSetType(v string)`
+`func (o *PublicEventAnalyticsFilterCoalescingRefineBy) SetSetType_(v string)`
 
-SetSetType sets SetType field to given value.
+SetSetType_ sets SetType_ field to given value.
 
 
 ### GetComparison

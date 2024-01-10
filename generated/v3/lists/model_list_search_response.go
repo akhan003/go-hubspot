@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type ListSearchResponse struct {
 	// The lists that matched the search criteria.
 	Lists []PublicObjectListSearchResult `json:"lists"`
 	// Whether or not there are more results to page through.
-	HasMore bool `json:"hasMore"`
+	HasMore              bool `json:"hasMore"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListSearchResponse ListSearchResponse
@@ -164,6 +164,11 @@ func (o ListSearchResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["offset"] = o.Offset
 	toSerialize["lists"] = o.Lists
 	toSerialize["hasMore"] = o.HasMore
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -194,15 +199,23 @@ func (o *ListSearchResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varListSearchResponse := _ListSearchResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListSearchResponse)
+	err = json.Unmarshal(data, &varListSearchResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListSearchResponse(varListSearchResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "offset")
+		delete(additionalProperties, "lists")
+		delete(additionalProperties, "hasMore")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

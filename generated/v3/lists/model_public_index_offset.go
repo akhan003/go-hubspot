@@ -19,16 +19,19 @@ var _ MappedNullable = &PublicIndexOffset{}
 
 // PublicIndexOffset struct for PublicIndexOffset
 type PublicIndexOffset struct {
-	Years        *int32 `json:"years,omitempty"`
-	Quarters     *int32 `json:"quarters,omitempty"`
-	Months       *int32 `json:"months,omitempty"`
-	Weeks        *int32 `json:"weeks,omitempty"`
-	Days         *int32 `json:"days,omitempty"`
-	Hours        *int32 `json:"hours,omitempty"`
-	Minutes      *int32 `json:"minutes,omitempty"`
-	Seconds      *int32 `json:"seconds,omitempty"`
-	Milliseconds *int32 `json:"milliseconds,omitempty"`
+	Years                *int32 `json:"years,omitempty"`
+	Quarters             *int32 `json:"quarters,omitempty"`
+	Months               *int32 `json:"months,omitempty"`
+	Weeks                *int32 `json:"weeks,omitempty"`
+	Days                 *int32 `json:"days,omitempty"`
+	Hours                *int32 `json:"hours,omitempty"`
+	Minutes              *int32 `json:"minutes,omitempty"`
+	Seconds              *int32 `json:"seconds,omitempty"`
+	Milliseconds         *int32 `json:"milliseconds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PublicIndexOffset PublicIndexOffset
 
 // NewPublicIndexOffset instantiates a new PublicIndexOffset object
 // This constructor will assign default values to properties that have it defined,
@@ -372,7 +375,41 @@ func (o PublicIndexOffset) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Milliseconds) {
 		toSerialize["milliseconds"] = o.Milliseconds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PublicIndexOffset) UnmarshalJSON(data []byte) (err error) {
+	varPublicIndexOffset := _PublicIndexOffset{}
+
+	err = json.Unmarshal(data, &varPublicIndexOffset)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PublicIndexOffset(varPublicIndexOffset)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "years")
+		delete(additionalProperties, "quarters")
+		delete(additionalProperties, "months")
+		delete(additionalProperties, "weeks")
+		delete(additionalProperties, "days")
+		delete(additionalProperties, "hours")
+		delete(additionalProperties, "minutes")
+		delete(additionalProperties, "seconds")
+		delete(additionalProperties, "milliseconds")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePublicIndexOffset struct {

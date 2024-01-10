@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,11 +20,12 @@ var _ MappedNullable = &PublicFormSubmissionFilter{}
 
 // PublicFormSubmissionFilter struct for PublicFormSubmissionFilter
 type PublicFormSubmissionFilter struct {
-	FilterType         string                                        `json:"filterType"`
-	FormId             *string                                       `json:"formId,omitempty"`
-	PruningRefineBy    *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
-	CoalescingRefineBy *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
-	Operator           string                                        `json:"operator"`
+	FilterType           string                                        `json:"filterType"`
+	FormId               *string                                       `json:"formId,omitempty"`
+	PruningRefineBy      *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
+	CoalescingRefineBy   *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
+	Operator             string                                        `json:"operator"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicFormSubmissionFilter PublicFormSubmissionFilter
@@ -216,6 +216,11 @@ func (o PublicFormSubmissionFilter) ToMap() (map[string]interface{}, error) {
 		toSerialize["coalescingRefineBy"] = o.CoalescingRefineBy
 	}
 	toSerialize["operator"] = o.Operator
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -244,15 +249,24 @@ func (o *PublicFormSubmissionFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicFormSubmissionFilter := _PublicFormSubmissionFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicFormSubmissionFilter)
+	err = json.Unmarshal(data, &varPublicFormSubmissionFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicFormSubmissionFilter(varPublicFormSubmissionFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "formId")
+		delete(additionalProperties, "pruningRefineBy")
+		delete(additionalProperties, "coalescingRefineBy")
+		delete(additionalProperties, "operator")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicAbsoluteComparativeTimestampRefineBy{}
 
 // PublicAbsoluteComparativeTimestampRefineBy struct for PublicAbsoluteComparativeTimestampRefineBy
 type PublicAbsoluteComparativeTimestampRefineBy struct {
-	Type       string `json:"type"`
-	Comparison string `json:"comparison"`
-	Timestamp  int64  `json:"timestamp"`
+	Type                 string `json:"type"`
+	Comparison           string `json:"comparison"`
+	Timestamp            int64  `json:"timestamp"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicAbsoluteComparativeTimestampRefineBy PublicAbsoluteComparativeTimestampRefineBy
@@ -135,6 +135,11 @@ func (o PublicAbsoluteComparativeTimestampRefineBy) ToMap() (map[string]interfac
 	toSerialize["type"] = o.Type
 	toSerialize["comparison"] = o.Comparison
 	toSerialize["timestamp"] = o.Timestamp
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *PublicAbsoluteComparativeTimestampRefineBy) UnmarshalJSON(data []byte) 
 
 	varPublicAbsoluteComparativeTimestampRefineBy := _PublicAbsoluteComparativeTimestampRefineBy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicAbsoluteComparativeTimestampRefineBy)
+	err = json.Unmarshal(data, &varPublicAbsoluteComparativeTimestampRefineBy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicAbsoluteComparativeTimestampRefineBy(varPublicAbsoluteComparativeTimestampRefineBy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "comparison")
+		delete(additionalProperties, "timestamp")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

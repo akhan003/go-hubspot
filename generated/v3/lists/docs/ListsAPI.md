@@ -5,13 +5,13 @@ All URIs are relative to *https://api.hubapi.com*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**Create**](ListsAPI.md#Create) | **Post** /crm/v3/lists/ | Create List
-[**GetCrmV3ListsGetAll**](ListsAPI.md#GetCrmV3ListsGetAll) | **Get** /crm/v3/lists/ | Fetch Multiple Lists
-[**GetCrmV3ListsListIdGetById**](ListsAPI.md#GetCrmV3ListsListIdGetById) | **Get** /crm/v3/lists/{listId} | Fetch List by ID
-[**GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName**](ListsAPI.md#GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName) | **Get** /crm/v3/lists/object-type-id/{objectTypeId}/name/{listName} | Fetch List by Name
-[**PostCrmV3ListsSearchDoSearch**](ListsAPI.md#PostCrmV3ListsSearchDoSearch) | **Post** /crm/v3/lists/search | Search Lists
-[**PutCrmV3ListsListIdRestoreRestore**](ListsAPI.md#PutCrmV3ListsListIdRestoreRestore) | **Put** /crm/v3/lists/{listId}/restore | Restore a List
-[**PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters**](ListsAPI.md#PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters) | **Put** /crm/v3/lists/{listId}/update-list-filters | Update List Filter Definition
+[**DoSearch**](ListsAPI.md#DoSearch) | **Post** /crm/v3/lists/search | Search Lists
+[**GetAll**](ListsAPI.md#GetAll) | **Get** /crm/v3/lists/ | Fetch Multiple Lists
+[**GetById**](ListsAPI.md#GetById) | **Get** /crm/v3/lists/{listId} | Fetch List by ID
+[**GetByName**](ListsAPI.md#GetByName) | **Get** /crm/v3/lists/object-type-id/{objectTypeId}/name/{listName} | Fetch List by Name
 [**Remove**](ListsAPI.md#Remove) | **Delete** /crm/v3/lists/{listId} | Delete a List
+[**Restore**](ListsAPI.md#Restore) | **Put** /crm/v3/lists/{listId}/restore | Restore a List
+[**UpdateListFilters**](ListsAPI.md#UpdateListFilters) | **Put** /crm/v3/lists/{listId}/update-list-filters | Update List Filter Definition
 [**UpdateName**](ListsAPI.md#UpdateName) | **Put** /crm/v3/lists/{listId}/update-list-name | Update List Name
 
 
@@ -82,9 +82,75 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetCrmV3ListsGetAll
+## DoSearch
 
-> ListsByIdResponse GetCrmV3ListsGetAll(ctx).ListIds(listIds).IncludeFilters(includeFilters).Execute()
+> ListSearchResponse DoSearch(ctx).ListSearchRequest(listSearchRequest).Execute()
+
+Search Lists
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	listSearchRequest := *openapiclient.NewListSearchRequest(int32(123), []string{"AdditionalPropertiesField_example"}) // ListSearchRequest | The IDs of the records to add and/or remove from the list.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ListsAPI.DoSearch(context.Background()).ListSearchRequest(listSearchRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.DoSearch``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DoSearch`: ListSearchResponse
+	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.DoSearch`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDoSearchRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **listSearchRequest** | [**ListSearchRequest**](ListSearchRequest.md) | The IDs of the records to add and/or remove from the list. | 
+
+### Return type
+
+[**ListSearchResponse**](ListSearchResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2), [private_apps](../README.md#private_apps)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetAll
+
+> ListsByIdResponse GetAll(ctx).ListIds(listIds).IncludeFilters(includeFilters).Execute()
 
 Fetch Multiple Lists
 
@@ -108,13 +174,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ListsAPI.GetCrmV3ListsGetAll(context.Background()).ListIds(listIds).IncludeFilters(includeFilters).Execute()
+	resp, r, err := apiClient.ListsAPI.GetAll(context.Background()).ListIds(listIds).IncludeFilters(includeFilters).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.GetCrmV3ListsGetAll``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.GetAll``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetCrmV3ListsGetAll`: ListsByIdResponse
-	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.GetCrmV3ListsGetAll`: %v\n", resp)
+	// response from `GetAll`: ListsByIdResponse
+	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.GetAll`: %v\n", resp)
 }
 ```
 
@@ -124,7 +190,7 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetCrmV3ListsGetAllRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetAllRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -150,9 +216,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetCrmV3ListsListIdGetById
+## GetById
 
-> ListFetchResponse GetCrmV3ListsListIdGetById(ctx, listId).IncludeFilters(includeFilters).Execute()
+> ListFetchResponse GetById(ctx, listId).IncludeFilters(includeFilters).Execute()
 
 Fetch List by ID
 
@@ -176,13 +242,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ListsAPI.GetCrmV3ListsListIdGetById(context.Background(), listId).IncludeFilters(includeFilters).Execute()
+	resp, r, err := apiClient.ListsAPI.GetById(context.Background(), listId).IncludeFilters(includeFilters).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.GetCrmV3ListsListIdGetById``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.GetById``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetCrmV3ListsListIdGetById`: ListFetchResponse
-	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.GetCrmV3ListsListIdGetById`: %v\n", resp)
+	// response from `GetById`: ListFetchResponse
+	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.GetById`: %v\n", resp)
 }
 ```
 
@@ -196,7 +262,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetCrmV3ListsListIdGetByIdRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetByIdRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -222,9 +288,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName
+## GetByName
 
-> ListFetchResponse GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName(ctx, listName, objectTypeId).IncludeFilters(includeFilters).Execute()
+> ListFetchResponse GetByName(ctx, listName, objectTypeId).IncludeFilters(includeFilters).Execute()
 
 Fetch List by Name
 
@@ -249,13 +315,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ListsAPI.GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName(context.Background(), listName, objectTypeId).IncludeFilters(includeFilters).Execute()
+	resp, r, err := apiClient.ListsAPI.GetByName(context.Background(), listName, objectTypeId).IncludeFilters(includeFilters).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.GetByName``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName`: ListFetchResponse
-	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName`: %v\n", resp)
+	// response from `GetByName`: ListFetchResponse
+	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.GetByName`: %v\n", resp)
 }
 ```
 
@@ -270,7 +336,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetByNameRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -290,214 +356,6 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json, */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## PostCrmV3ListsSearchDoSearch
-
-> ListSearchResponse PostCrmV3ListsSearchDoSearch(ctx).ListSearchRequest(listSearchRequest).Execute()
-
-Search Lists
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
-)
-
-func main() {
-	listSearchRequest := *openapiclient.NewListSearchRequest(int32(123), []string{"AdditionalPropertiesField_example"}) // ListSearchRequest | The IDs of the records to add and/or remove from the list.
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ListsAPI.PostCrmV3ListsSearchDoSearch(context.Background()).ListSearchRequest(listSearchRequest).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.PostCrmV3ListsSearchDoSearch``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `PostCrmV3ListsSearchDoSearch`: ListSearchResponse
-	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.PostCrmV3ListsSearchDoSearch`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiPostCrmV3ListsSearchDoSearchRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **listSearchRequest** | [**ListSearchRequest**](ListSearchRequest.md) | The IDs of the records to add and/or remove from the list. | 
-
-### Return type
-
-[**ListSearchResponse**](ListSearchResponse.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2), [private_apps](../README.md#private_apps)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json, */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## PutCrmV3ListsListIdRestoreRestore
-
-> PutCrmV3ListsListIdRestoreRestore(ctx, listId).Execute()
-
-Restore a List
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
-)
-
-func main() {
-	listId := int32(56) // int32 | The **ILS ID** of the list to restore.
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ListsAPI.PutCrmV3ListsListIdRestoreRestore(context.Background(), listId).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.PutCrmV3ListsListIdRestoreRestore``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**listId** | **int32** | The **ILS ID** of the list to restore. | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiPutCrmV3ListsListIdRestoreRestoreRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
- (empty response body)
-
-### Authorization
-
-[oauth2](../README.md#oauth2), [private_apps](../README.md#private_apps)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters
-
-> ListUpdateResponse PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters(ctx, listId).ListFilterUpdateRequest(listFilterUpdateRequest).EnrollObjectsInWorkflows(enrollObjectsInWorkflows).Execute()
-
-Update List Filter Definition
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
-)
-
-func main() {
-	listId := int32(56) // int32 | The **ILS ID** of the list to update.
-	listFilterUpdateRequest := *openapiclient.NewListFilterUpdateRequest(openapiclient.PublicPropertyAssociationFilterBranch_filterBranches_inner{PublicAndFilterBranch: openapiclient.NewPublicAndFilterBranch("FilterBranchType_example", []openapiclient.PublicPropertyAssociationFilterBranchFilterBranchesInner{openapiclient.PublicPropertyAssociationFilterBranch_filterBranches_inner{PublicAndFilterBranch: openapiclient.NewPublicAndFilterBranch("FilterBranchType_example", []openapiclient.PublicPropertyAssociationFilterBranchFilterBranchesInner{openapiclient.PublicPropertyAssociationFilterBranch_filterBranches_inner{PublicAndFilterBranch: }}, []openapiclient.PublicPropertyAssociationFilterBranchFiltersInner{openapiclient.PublicPropertyAssociationFilterBranch_filters_inner{PublicAdsSearchFilter: openapiclient.NewPublicAdsSearchFilter("FilterType_example", "EntityType_example", "SearchTermType_example", []string{"SearchTerms_example"}, "AdNetwork_example", "Operator_example")}}, "FilterBranchOperator_example")}}, []openapiclient.PublicPropertyAssociationFilterBranchFiltersInner{openapiclient.PublicPropertyAssociationFilterBranch_filters_inner{PublicAdsSearchFilter: openapiclient.NewPublicAdsSearchFilter("FilterType_example", "EntityType_example", "SearchTermType_example", []string{"SearchTerms_example"}, "AdNetwork_example", "Operator_example")}}, "FilterBranchOperator_example")}) // ListFilterUpdateRequest | 
-	enrollObjectsInWorkflows := true // bool | A flag indicating whether or not the memberships added to the list as a result of the filter change should be enrolled in workflows that are relevant to this list. (optional) (default to false)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ListsAPI.PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters(context.Background(), listId).ListFilterUpdateRequest(listFilterUpdateRequest).EnrollObjectsInWorkflows(enrollObjectsInWorkflows).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters`: ListUpdateResponse
-	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**listId** | **int32** | The **ILS ID** of the list to update. | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **listFilterUpdateRequest** | [**ListFilterUpdateRequest**](ListFilterUpdateRequest.md) |  | 
- **enrollObjectsInWorkflows** | **bool** | A flag indicating whether or not the memberships added to the list as a result of the filter change should be enrolled in workflows that are relevant to this list. | [default to false]
-
-### Return type
-
-[**ListUpdateResponse**](ListUpdateResponse.md)
-
-### Authorization
-
-[oauth2](../README.md#oauth2), [private_apps](../README.md#private_apps)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
 - **Accept**: application/json, */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -567,6 +425,148 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## Restore
+
+> Restore(ctx, listId).Execute()
+
+Restore a List
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	listId := int32(56) // int32 | The **ILS ID** of the list to restore.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.ListsAPI.Restore(context.Background(), listId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.Restore``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**listId** | **int32** | The **ILS ID** of the list to restore. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRestoreRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[oauth2](../README.md#oauth2), [private_apps](../README.md#private_apps)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateListFilters
+
+> ListUpdateResponse UpdateListFilters(ctx, listId).ListFilterUpdateRequest(listFilterUpdateRequest).EnrollObjectsInWorkflows(enrollObjectsInWorkflows).Execute()
+
+Update List Filter Definition
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	listId := int32(56) // int32 | The **ILS ID** of the list to update.
+	listFilterUpdateRequest := *openapiclient.NewListFilterUpdateRequest(openapiclient.PublicPropertyAssociationFilterBranch_filterBranches_inner{PublicAndFilterBranch: openapiclient.NewPublicAndFilterBranch("FilterBranchType_example", []openapiclient.PublicPropertyAssociationFilterBranchFilterBranchesInner{openapiclient.PublicPropertyAssociationFilterBranch_filterBranches_inner{PublicAndFilterBranch: openapiclient.NewPublicAndFilterBranch("FilterBranchType_example", []openapiclient.PublicPropertyAssociationFilterBranchFilterBranchesInner{openapiclient.PublicPropertyAssociationFilterBranch_filterBranches_inner{PublicAndFilterBranch: }}, []openapiclient.PublicPropertyAssociationFilterBranchFiltersInner{openapiclient.PublicPropertyAssociationFilterBranch_filters_inner{PublicAdsSearchFilter: openapiclient.NewPublicAdsSearchFilter("FilterType_example", "EntityType_example", "SearchTermType_example", []string{"SearchTerms_example"}, "AdNetwork_example", "Operator_example")}}, "FilterBranchOperator_example")}}, []openapiclient.PublicPropertyAssociationFilterBranchFiltersInner{openapiclient.PublicPropertyAssociationFilterBranch_filters_inner{PublicAdsSearchFilter: openapiclient.NewPublicAdsSearchFilter("FilterType_example", "EntityType_example", "SearchTermType_example", []string{"SearchTerms_example"}, "AdNetwork_example", "Operator_example")}}, "FilterBranchOperator_example")}) // ListFilterUpdateRequest | 
+	enrollObjectsInWorkflows := true // bool | A flag indicating whether or not the memberships added to the list as a result of the filter change should be enrolled in workflows that are relevant to this list. (optional) (default to false)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ListsAPI.UpdateListFilters(context.Background(), listId).ListFilterUpdateRequest(listFilterUpdateRequest).EnrollObjectsInWorkflows(enrollObjectsInWorkflows).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ListsAPI.UpdateListFilters``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateListFilters`: ListUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `ListsAPI.UpdateListFilters`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**listId** | **int32** | The **ILS ID** of the list to update. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateListFiltersRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **listFilterUpdateRequest** | [**ListFilterUpdateRequest**](ListFilterUpdateRequest.md) |  | 
+ **enrollObjectsInWorkflows** | **bool** | A flag indicating whether or not the memberships added to the list as a result of the filter change should be enrolled in workflows that are relevant to this list. | [default to false]
+
+### Return type
+
+[**ListUpdateResponse**](ListUpdateResponse.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2), [private_apps](../README.md#private_apps)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

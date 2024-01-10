@@ -88,7 +88,7 @@ func (dst *PublicIndexedTimePointIndexReference) UnmarshalJSON(data []byte) erro
 	var err error
 	match := 0
 	// try to unmarshal data into PublicFiscalQuarterReference
-	err = newStrictDecoder(data).Decode(&dst.PublicFiscalQuarterReference)
+	err = json.Unmarshal(data, &dst.PublicFiscalQuarterReference)
 	if err == nil {
 		jsonPublicFiscalQuarterReference, _ := json.Marshal(dst.PublicFiscalQuarterReference)
 		if string(jsonPublicFiscalQuarterReference) == "{}" { // empty struct
@@ -101,7 +101,7 @@ func (dst *PublicIndexedTimePointIndexReference) UnmarshalJSON(data []byte) erro
 	}
 
 	// try to unmarshal data into PublicFiscalYearReference
-	err = newStrictDecoder(data).Decode(&dst.PublicFiscalYearReference)
+	err = json.Unmarshal(data, &dst.PublicFiscalYearReference)
 	if err == nil {
 		jsonPublicFiscalYearReference, _ := json.Marshal(dst.PublicFiscalYearReference)
 		if string(jsonPublicFiscalYearReference) == "{}" { // empty struct
@@ -114,7 +114,7 @@ func (dst *PublicIndexedTimePointIndexReference) UnmarshalJSON(data []byte) erro
 	}
 
 	// try to unmarshal data into PublicMonthReference
-	err = newStrictDecoder(data).Decode(&dst.PublicMonthReference)
+	err = json.Unmarshal(data, &dst.PublicMonthReference)
 	if err == nil {
 		jsonPublicMonthReference, _ := json.Marshal(dst.PublicMonthReference)
 		if string(jsonPublicMonthReference) == "{}" { // empty struct
@@ -127,7 +127,7 @@ func (dst *PublicIndexedTimePointIndexReference) UnmarshalJSON(data []byte) erro
 	}
 
 	// try to unmarshal data into PublicNowReference
-	err = newStrictDecoder(data).Decode(&dst.PublicNowReference)
+	err = json.Unmarshal(data, &dst.PublicNowReference)
 	if err == nil {
 		jsonPublicNowReference, _ := json.Marshal(dst.PublicNowReference)
 		if string(jsonPublicNowReference) == "{}" { // empty struct
@@ -140,7 +140,7 @@ func (dst *PublicIndexedTimePointIndexReference) UnmarshalJSON(data []byte) erro
 	}
 
 	// try to unmarshal data into PublicQuarterReference
-	err = newStrictDecoder(data).Decode(&dst.PublicQuarterReference)
+	err = json.Unmarshal(data, &dst.PublicQuarterReference)
 	if err == nil {
 		jsonPublicQuarterReference, _ := json.Marshal(dst.PublicQuarterReference)
 		if string(jsonPublicQuarterReference) == "{}" { // empty struct
@@ -153,7 +153,7 @@ func (dst *PublicIndexedTimePointIndexReference) UnmarshalJSON(data []byte) erro
 	}
 
 	// try to unmarshal data into PublicTodayReference
-	err = newStrictDecoder(data).Decode(&dst.PublicTodayReference)
+	err = json.Unmarshal(data, &dst.PublicTodayReference)
 	if err == nil {
 		jsonPublicTodayReference, _ := json.Marshal(dst.PublicTodayReference)
 		if string(jsonPublicTodayReference) == "{}" { // empty struct
@@ -166,7 +166,7 @@ func (dst *PublicIndexedTimePointIndexReference) UnmarshalJSON(data []byte) erro
 	}
 
 	// try to unmarshal data into PublicWeekReference
-	err = newStrictDecoder(data).Decode(&dst.PublicWeekReference)
+	err = json.Unmarshal(data, &dst.PublicWeekReference)
 	if err == nil {
 		jsonPublicWeekReference, _ := json.Marshal(dst.PublicWeekReference)
 		if string(jsonPublicWeekReference) == "{}" { // empty struct
@@ -179,7 +179,7 @@ func (dst *PublicIndexedTimePointIndexReference) UnmarshalJSON(data []byte) erro
 	}
 
 	// try to unmarshal data into PublicYearReference
-	err = newStrictDecoder(data).Decode(&dst.PublicYearReference)
+	err = json.Unmarshal(data, &dst.PublicYearReference)
 	if err == nil {
 		jsonPublicYearReference, _ := json.Marshal(dst.PublicYearReference)
 		if string(jsonPublicYearReference) == "{}" { // empty struct

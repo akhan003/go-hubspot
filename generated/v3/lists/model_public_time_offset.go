@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicTimeOffset{}
 
 // PublicTimeOffset struct for PublicTimeOffset
 type PublicTimeOffset struct {
-	OffsetDirection string `json:"offsetDirection"`
-	TimeUnit        string `json:"timeUnit"`
-	Amount          int64  `json:"amount"`
+	OffsetDirection      string `json:"offsetDirection"`
+	TimeUnit             string `json:"timeUnit"`
+	Amount               int64  `json:"amount"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicTimeOffset PublicTimeOffset
@@ -133,6 +133,11 @@ func (o PublicTimeOffset) ToMap() (map[string]interface{}, error) {
 	toSerialize["offsetDirection"] = o.OffsetDirection
 	toSerialize["timeUnit"] = o.TimeUnit
 	toSerialize["amount"] = o.Amount
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -162,15 +167,22 @@ func (o *PublicTimeOffset) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicTimeOffset := _PublicTimeOffset{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicTimeOffset)
+	err = json.Unmarshal(data, &varPublicTimeOffset)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicTimeOffset(varPublicTimeOffset)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "offsetDirection")
+		delete(additionalProperties, "timeUnit")
+		delete(additionalProperties, "amount")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

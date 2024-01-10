@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &ListsByIdResponse{}
 // ListsByIdResponse The response object containing the lists found for a multi-list fetch.
 type ListsByIdResponse struct {
 	// The object list definitions.
-	Lists []PublicObjectList `json:"lists"`
+	Lists                []PublicObjectList `json:"lists"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListsByIdResponse ListsByIdResponse
@@ -80,6 +80,11 @@ func (o ListsByIdResponse) MarshalJSON() ([]byte, error) {
 func (o ListsByIdResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["lists"] = o.Lists
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *ListsByIdResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varListsByIdResponse := _ListsByIdResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListsByIdResponse)
+	err = json.Unmarshal(data, &varListsByIdResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListsByIdResponse(varListsByIdResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "lists")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

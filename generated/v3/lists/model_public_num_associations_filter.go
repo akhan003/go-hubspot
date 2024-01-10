@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,10 +20,11 @@ var _ MappedNullable = &PublicNumAssociationsFilter{}
 
 // PublicNumAssociationsFilter struct for PublicNumAssociationsFilter
 type PublicNumAssociationsFilter struct {
-	FilterType          string                                       `json:"filterType"`
-	AssociationTypeId   int32                                        `json:"associationTypeId"`
-	AssociationCategory string                                       `json:"associationCategory"`
-	CoalescingRefineBy  PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy"`
+	FilterType           string                                       `json:"filterType"`
+	AssociationTypeId    int32                                        `json:"associationTypeId"`
+	AssociationCategory  string                                       `json:"associationCategory"`
+	CoalescingRefineBy   PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicNumAssociationsFilter PublicNumAssociationsFilter
@@ -162,6 +162,11 @@ func (o PublicNumAssociationsFilter) ToMap() (map[string]interface{}, error) {
 	toSerialize["associationTypeId"] = o.AssociationTypeId
 	toSerialize["associationCategory"] = o.AssociationCategory
 	toSerialize["coalescingRefineBy"] = o.CoalescingRefineBy
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,15 +197,23 @@ func (o *PublicNumAssociationsFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicNumAssociationsFilter := _PublicNumAssociationsFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicNumAssociationsFilter)
+	err = json.Unmarshal(data, &varPublicNumAssociationsFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicNumAssociationsFilter(varPublicNumAssociationsFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "associationTypeId")
+		delete(additionalProperties, "associationCategory")
+		delete(additionalProperties, "coalescingRefineBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

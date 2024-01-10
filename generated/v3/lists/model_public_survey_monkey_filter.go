@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicSurveyMonkeyFilter{}
 
 // PublicSurveyMonkeyFilter struct for PublicSurveyMonkeyFilter
 type PublicSurveyMonkeyFilter struct {
-	FilterType string `json:"filterType"`
-	SurveyId   string `json:"surveyId"`
-	Operator   string `json:"operator"`
+	FilterType           string `json:"filterType"`
+	SurveyId             string `json:"surveyId"`
+	Operator             string `json:"operator"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicSurveyMonkeyFilter PublicSurveyMonkeyFilter
@@ -135,6 +135,11 @@ func (o PublicSurveyMonkeyFilter) ToMap() (map[string]interface{}, error) {
 	toSerialize["filterType"] = o.FilterType
 	toSerialize["surveyId"] = o.SurveyId
 	toSerialize["operator"] = o.Operator
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *PublicSurveyMonkeyFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicSurveyMonkeyFilter := _PublicSurveyMonkeyFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicSurveyMonkeyFilter)
+	err = json.Unmarshal(data, &varPublicSurveyMonkeyFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicSurveyMonkeyFilter(varPublicSurveyMonkeyFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "surveyId")
+		delete(additionalProperties, "operator")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

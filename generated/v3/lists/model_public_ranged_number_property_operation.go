@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,6 +25,7 @@ type PublicRangedNumberPropertyOperation struct {
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	UpperBound                   int32  `json:"upperBound"`
 	LowerBound                   int32  `json:"lowerBound"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicRangedNumberPropertyOperation PublicRangedNumberPropertyOperation
@@ -189,6 +189,11 @@ func (o PublicRangedNumberPropertyOperation) ToMap() (map[string]interface{}, er
 	toSerialize["includeObjectsWithNoValueSet"] = o.IncludeObjectsWithNoValueSet
 	toSerialize["upperBound"] = o.UpperBound
 	toSerialize["lowerBound"] = o.LowerBound
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -220,15 +225,24 @@ func (o *PublicRangedNumberPropertyOperation) UnmarshalJSON(data []byte) (err er
 
 	varPublicRangedNumberPropertyOperation := _PublicRangedNumberPropertyOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicRangedNumberPropertyOperation)
+	err = json.Unmarshal(data, &varPublicRangedNumberPropertyOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicRangedNumberPropertyOperation(varPublicRangedNumberPropertyOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "upperBound")
+		delete(additionalProperties, "lowerBound")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

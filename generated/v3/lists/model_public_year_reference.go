@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,13 +20,14 @@ var _ MappedNullable = &PublicYearReference{}
 
 // PublicYearReference struct for PublicYearReference
 type PublicYearReference struct {
-	ReferenceType string `json:"referenceType"`
-	Hour          *int32 `json:"hour,omitempty"`
-	Minute        *int32 `json:"minute,omitempty"`
-	Second        *int32 `json:"second,omitempty"`
-	Millisecond   *int32 `json:"millisecond,omitempty"`
-	Month         int32  `json:"month"`
-	Day           int32  `json:"day"`
+	ReferenceType        string `json:"referenceType"`
+	Hour                 *int32 `json:"hour,omitempty"`
+	Minute               *int32 `json:"minute,omitempty"`
+	Second               *int32 `json:"second,omitempty"`
+	Millisecond          *int32 `json:"millisecond,omitempty"`
+	Month                int32  `json:"month"`
+	Day                  int32  `json:"day"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicYearReference PublicYearReference
@@ -279,6 +279,11 @@ func (o PublicYearReference) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["month"] = o.Month
 	toSerialize["day"] = o.Day
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -308,15 +313,26 @@ func (o *PublicYearReference) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicYearReference := _PublicYearReference{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicYearReference)
+	err = json.Unmarshal(data, &varPublicYearReference)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicYearReference(varPublicYearReference)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "referenceType")
+		delete(additionalProperties, "hour")
+		delete(additionalProperties, "minute")
+		delete(additionalProperties, "second")
+		delete(additionalProperties, "millisecond")
+		delete(additionalProperties, "month")
+		delete(additionalProperties, "day")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

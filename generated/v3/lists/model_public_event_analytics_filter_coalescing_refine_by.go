@@ -96,7 +96,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	var err error
 	match := 0
 	// try to unmarshal data into PublicAbsoluteComparativeTimestampRefineBy
-	err = newStrictDecoder(data).Decode(&dst.PublicAbsoluteComparativeTimestampRefineBy)
+	err = json.Unmarshal(data, &dst.PublicAbsoluteComparativeTimestampRefineBy)
 	if err == nil {
 		jsonPublicAbsoluteComparativeTimestampRefineBy, _ := json.Marshal(dst.PublicAbsoluteComparativeTimestampRefineBy)
 		if string(jsonPublicAbsoluteComparativeTimestampRefineBy) == "{}" { // empty struct
@@ -109,7 +109,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	}
 
 	// try to unmarshal data into PublicAbsoluteRangedTimestampRefineBy
-	err = newStrictDecoder(data).Decode(&dst.PublicAbsoluteRangedTimestampRefineBy)
+	err = json.Unmarshal(data, &dst.PublicAbsoluteRangedTimestampRefineBy)
 	if err == nil {
 		jsonPublicAbsoluteRangedTimestampRefineBy, _ := json.Marshal(dst.PublicAbsoluteRangedTimestampRefineBy)
 		if string(jsonPublicAbsoluteRangedTimestampRefineBy) == "{}" { // empty struct
@@ -122,7 +122,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	}
 
 	// try to unmarshal data into PublicAllHistoryRefineBy
-	err = newStrictDecoder(data).Decode(&dst.PublicAllHistoryRefineBy)
+	err = json.Unmarshal(data, &dst.PublicAllHistoryRefineBy)
 	if err == nil {
 		jsonPublicAllHistoryRefineBy, _ := json.Marshal(dst.PublicAllHistoryRefineBy)
 		if string(jsonPublicAllHistoryRefineBy) == "{}" { // empty struct
@@ -135,7 +135,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	}
 
 	// try to unmarshal data into PublicNumOccurrencesRefineBy
-	err = newStrictDecoder(data).Decode(&dst.PublicNumOccurrencesRefineBy)
+	err = json.Unmarshal(data, &dst.PublicNumOccurrencesRefineBy)
 	if err == nil {
 		jsonPublicNumOccurrencesRefineBy, _ := json.Marshal(dst.PublicNumOccurrencesRefineBy)
 		if string(jsonPublicNumOccurrencesRefineBy) == "{}" { // empty struct
@@ -148,7 +148,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	}
 
 	// try to unmarshal data into PublicRangedTimeOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicRangedTimeOperation)
+	err = json.Unmarshal(data, &dst.PublicRangedTimeOperation)
 	if err == nil {
 		jsonPublicRangedTimeOperation, _ := json.Marshal(dst.PublicRangedTimeOperation)
 		if string(jsonPublicRangedTimeOperation) == "{}" { // empty struct
@@ -161,7 +161,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	}
 
 	// try to unmarshal data into PublicRelativeComparativeTimestampRefineBy
-	err = newStrictDecoder(data).Decode(&dst.PublicRelativeComparativeTimestampRefineBy)
+	err = json.Unmarshal(data, &dst.PublicRelativeComparativeTimestampRefineBy)
 	if err == nil {
 		jsonPublicRelativeComparativeTimestampRefineBy, _ := json.Marshal(dst.PublicRelativeComparativeTimestampRefineBy)
 		if string(jsonPublicRelativeComparativeTimestampRefineBy) == "{}" { // empty struct
@@ -174,7 +174,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	}
 
 	// try to unmarshal data into PublicRelativeRangedTimestampRefineBy
-	err = newStrictDecoder(data).Decode(&dst.PublicRelativeRangedTimestampRefineBy)
+	err = json.Unmarshal(data, &dst.PublicRelativeRangedTimestampRefineBy)
 	if err == nil {
 		jsonPublicRelativeRangedTimestampRefineBy, _ := json.Marshal(dst.PublicRelativeRangedTimestampRefineBy)
 		if string(jsonPublicRelativeRangedTimestampRefineBy) == "{}" { // empty struct
@@ -187,7 +187,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	}
 
 	// try to unmarshal data into PublicSetOccurrencesRefineBy
-	err = newStrictDecoder(data).Decode(&dst.PublicSetOccurrencesRefineBy)
+	err = json.Unmarshal(data, &dst.PublicSetOccurrencesRefineBy)
 	if err == nil {
 		jsonPublicSetOccurrencesRefineBy, _ := json.Marshal(dst.PublicSetOccurrencesRefineBy)
 		if string(jsonPublicSetOccurrencesRefineBy) == "{}" { // empty struct
@@ -200,7 +200,7 @@ func (dst *PublicEventAnalyticsFilterCoalescingRefineBy) UnmarshalJSON(data []by
 	}
 
 	// try to unmarshal data into PublicTimePointOperation
-	err = newStrictDecoder(data).Decode(&dst.PublicTimePointOperation)
+	err = json.Unmarshal(data, &dst.PublicTimePointOperation)
 	if err == nil {
 		jsonPublicTimePointOperation, _ := json.Marshal(dst.PublicTimePointOperation)
 		if string(jsonPublicTimePointOperation) == "{}" { // empty struct

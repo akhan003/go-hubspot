@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,11 +20,12 @@ var _ MappedNullable = &PublicIndexedTimePoint{}
 
 // PublicIndexedTimePoint struct for PublicIndexedTimePoint
 type PublicIndexedTimePoint struct {
-	TimeType       string                               `json:"timeType"`
-	TimezoneSource *string                              `json:"timezoneSource,omitempty"`
-	ZoneId         string                               `json:"zoneId"`
-	IndexReference PublicIndexedTimePointIndexReference `json:"indexReference"`
-	Offset         *PublicIndexOffset                   `json:"offset,omitempty"`
+	TimeType             string                               `json:"timeType"`
+	TimezoneSource       *string                              `json:"timezoneSource,omitempty"`
+	ZoneId               string                               `json:"zoneId"`
+	IndexReference       PublicIndexedTimePointIndexReference `json:"indexReference"`
+	Offset               *PublicIndexOffset                   `json:"offset,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicIndexedTimePoint PublicIndexedTimePoint
@@ -207,6 +207,11 @@ func (o PublicIndexedTimePoint) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Offset) {
 		toSerialize["offset"] = o.Offset
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -236,15 +241,24 @@ func (o *PublicIndexedTimePoint) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicIndexedTimePoint := _PublicIndexedTimePoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicIndexedTimePoint)
+	err = json.Unmarshal(data, &varPublicIndexedTimePoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicIndexedTimePoint(varPublicIndexedTimePoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "timeType")
+		delete(additionalProperties, "timezoneSource")
+		delete(additionalProperties, "zoneId")
+		delete(additionalProperties, "indexReference")
+		delete(additionalProperties, "offset")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

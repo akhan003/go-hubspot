@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,6 +27,7 @@ type PublicPropertyAssociationFilterBranch struct {
 	ObjectTypeId         string                                                     `json:"objectTypeId"`
 	Operator             string                                                     `json:"operator"`
 	PropertyWithObjectId string                                                     `json:"propertyWithObjectId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicPropertyAssociationFilterBranch PublicPropertyAssociationFilterBranch
@@ -243,6 +243,11 @@ func (o PublicPropertyAssociationFilterBranch) ToMap() (map[string]interface{}, 
 	toSerialize["objectTypeId"] = o.ObjectTypeId
 	toSerialize["operator"] = o.Operator
 	toSerialize["propertyWithObjectId"] = o.PropertyWithObjectId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -276,15 +281,26 @@ func (o *PublicPropertyAssociationFilterBranch) UnmarshalJSON(data []byte) (err 
 
 	varPublicPropertyAssociationFilterBranch := _PublicPropertyAssociationFilterBranch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicPropertyAssociationFilterBranch)
+	err = json.Unmarshal(data, &varPublicPropertyAssociationFilterBranch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicPropertyAssociationFilterBranch(varPublicPropertyAssociationFilterBranch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterBranchType")
+		delete(additionalProperties, "filterBranchOperator")
+		delete(additionalProperties, "filterBranches")
+		delete(additionalProperties, "filters")
+		delete(additionalProperties, "objectTypeId")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "propertyWithObjectId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

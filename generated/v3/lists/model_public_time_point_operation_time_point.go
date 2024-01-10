@@ -48,7 +48,7 @@ func (dst *PublicTimePointOperationTimePoint) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
 	// try to unmarshal data into PublicDatePoint
-	err = newStrictDecoder(data).Decode(&dst.PublicDatePoint)
+	err = json.Unmarshal(data, &dst.PublicDatePoint)
 	if err == nil {
 		jsonPublicDatePoint, _ := json.Marshal(dst.PublicDatePoint)
 		if string(jsonPublicDatePoint) == "{}" { // empty struct
@@ -61,7 +61,7 @@ func (dst *PublicTimePointOperationTimePoint) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicIndexedTimePoint
-	err = newStrictDecoder(data).Decode(&dst.PublicIndexedTimePoint)
+	err = json.Unmarshal(data, &dst.PublicIndexedTimePoint)
 	if err == nil {
 		jsonPublicIndexedTimePoint, _ := json.Marshal(dst.PublicIndexedTimePoint)
 		if string(jsonPublicIndexedTimePoint) == "{}" { // empty struct
@@ -74,7 +74,7 @@ func (dst *PublicTimePointOperationTimePoint) UnmarshalJSON(data []byte) error {
 	}
 
 	// try to unmarshal data into PublicPropertyReferencedTime
-	err = newStrictDecoder(data).Decode(&dst.PublicPropertyReferencedTime)
+	err = json.Unmarshal(data, &dst.PublicPropertyReferencedTime)
 	if err == nil {
 		jsonPublicPropertyReferencedTime, _ := json.Marshal(dst.PublicPropertyReferencedTime)
 		if string(jsonPublicPropertyReferencedTime) == "{}" { // empty struct

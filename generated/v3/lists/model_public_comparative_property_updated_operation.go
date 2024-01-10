@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,6 +25,7 @@ type PublicComparativePropertyUpdatedOperation struct {
 	IncludeObjectsWithNoValueSet bool    `json:"includeObjectsWithNoValueSet"`
 	ComparisonPropertyName       string  `json:"comparisonPropertyName"`
 	DefaultComparisonValue       *string `json:"defaultComparisonValue,omitempty"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicComparativePropertyUpdatedOperation PublicComparativePropertyUpdatedOperation
@@ -198,6 +198,11 @@ func (o PublicComparativePropertyUpdatedOperation) ToMap() (map[string]interface
 	if !IsNil(o.DefaultComparisonValue) {
 		toSerialize["defaultComparisonValue"] = o.DefaultComparisonValue
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -228,15 +233,24 @@ func (o *PublicComparativePropertyUpdatedOperation) UnmarshalJSON(data []byte) (
 
 	varPublicComparativePropertyUpdatedOperation := _PublicComparativePropertyUpdatedOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicComparativePropertyUpdatedOperation)
+	err = json.Unmarshal(data, &varPublicComparativePropertyUpdatedOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicComparativePropertyUpdatedOperation(varPublicComparativePropertyUpdatedOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "comparisonPropertyName")
+		delete(additionalProperties, "defaultComparisonValue")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

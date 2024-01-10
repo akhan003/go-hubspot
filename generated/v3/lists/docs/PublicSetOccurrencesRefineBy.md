@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Type** | **string** |  | [default to "SET_OCCURRENCES"]
-**SetType** | **string** |  | 
+**SetType_** | **string** |  | 
 
 ## Methods
 
@@ -46,24 +46,24 @@ and a boolean to check if the value has been set.
 SetType sets Type field to given value.
 
 
-### GetSetType
+### GetSetType_
 
-`func (o *PublicSetOccurrencesRefineBy) GetSetType() string`
+`func (o *PublicSetOccurrencesRefineBy) GetSetType_() string`
 
-GetSetType returns the SetType field if non-nil, zero value otherwise.
+GetSetType_ returns the SetType_ field if non-nil, zero value otherwise.
 
-### GetSetTypeOk
+### GetSetType_Ok
 
-`func (o *PublicSetOccurrencesRefineBy) GetSetTypeOk() (*string, bool)`
+`func (o *PublicSetOccurrencesRefineBy) GetSetType_Ok() (*string, bool)`
 
-GetSetTypeOk returns a tuple with the SetType field if it's non-nil, zero value otherwise
+GetSetType_Ok returns a tuple with the SetType_ field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetSetType
+### SetSetType_
 
-`func (o *PublicSetOccurrencesRefineBy) SetSetType(v string)`
+`func (o *PublicSetOccurrencesRefineBy) SetSetType_(v string)`
 
-SetSetType sets SetType field to given value.
+SetSetType_ sets SetType_ field to given value.
 
 
 

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,6 +28,7 @@ type ListSearchRequest struct {
 	Count *int32 `json:"count,omitempty"`
 	// The property names of any additional list properties to include in the response. Properties that do not exist or that are empty for a particular list are not included in the response.  By default, all requests will fetch the following properties for each list: `hs_list_size`, `hs_last_record_added_at`, `hs_last_record_removed_at`, `hs_folder_name`, and `hs_list_reference_count`.
 	AdditionalPropertiesField []string `json:"additionalProperties"`
+	AdditionalProperties      map[string]interface{}
 }
 
 type _ListSearchRequest ListSearchRequest
@@ -182,6 +182,11 @@ func (o ListSearchRequest) ToMap() (map[string]interface{}, error) {
 		toSerialize["count"] = o.Count
 	}
 	toSerialize["additionalProperties"] = o.AdditionalPropertiesField
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -210,15 +215,23 @@ func (o *ListSearchRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varListSearchRequest := _ListSearchRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListSearchRequest)
+	err = json.Unmarshal(data, &varListSearchRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListSearchRequest(varListSearchRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "offset")
+		delete(additionalProperties, "query")
+		delete(additionalProperties, "count")
+		delete(additionalProperties, "additionalProperties")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

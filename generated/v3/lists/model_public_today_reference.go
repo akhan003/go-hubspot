@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,11 +20,12 @@ var _ MappedNullable = &PublicTodayReference{}
 
 // PublicTodayReference struct for PublicTodayReference
 type PublicTodayReference struct {
-	ReferenceType string `json:"referenceType"`
-	Hour          *int32 `json:"hour,omitempty"`
-	Minute        *int32 `json:"minute,omitempty"`
-	Second        *int32 `json:"second,omitempty"`
-	Millisecond   *int32 `json:"millisecond,omitempty"`
+	ReferenceType        string `json:"referenceType"`
+	Hour                 *int32 `json:"hour,omitempty"`
+	Minute               *int32 `json:"minute,omitempty"`
+	Second               *int32 `json:"second,omitempty"`
+	Millisecond          *int32 `json:"millisecond,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicTodayReference PublicTodayReference
@@ -225,6 +225,11 @@ func (o PublicTodayReference) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Millisecond) {
 		toSerialize["millisecond"] = o.Millisecond
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -252,15 +257,24 @@ func (o *PublicTodayReference) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicTodayReference := _PublicTodayReference{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicTodayReference)
+	err = json.Unmarshal(data, &varPublicTodayReference)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicTodayReference(varPublicTodayReference)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "referenceType")
+		delete(additionalProperties, "hour")
+		delete(additionalProperties, "minute")
+		delete(additionalProperties, "second")
+		delete(additionalProperties, "millisecond")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,13 +20,14 @@ var _ MappedNullable = &PublicEmailEventFilter{}
 
 // PublicEmailEventFilter struct for PublicEmailEventFilter
 type PublicEmailEventFilter struct {
-	FilterType      string                                        `json:"filterType"`
-	Level           string                                        `json:"level"`
-	EmailId         int32                                         `json:"emailId"`
-	AppId           int32                                         `json:"appId"`
-	Operator        string                                        `json:"operator"`
-	ClickUrl        *string                                       `json:"clickUrl,omitempty"`
-	PruningRefineBy *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
+	FilterType           string                                        `json:"filterType"`
+	Level                string                                        `json:"level"`
+	EmailId              int32                                         `json:"emailId"`
+	AppId                int32                                         `json:"appId"`
+	Operator             string                                        `json:"operator"`
+	ClickUrl             *string                                       `json:"clickUrl,omitempty"`
+	PruningRefineBy      *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicEmailEventFilter PublicEmailEventFilter
@@ -261,6 +261,11 @@ func (o PublicEmailEventFilter) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PruningRefineBy) {
 		toSerialize["pruningRefineBy"] = o.PruningRefineBy
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -292,15 +297,26 @@ func (o *PublicEmailEventFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicEmailEventFilter := _PublicEmailEventFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicEmailEventFilter)
+	err = json.Unmarshal(data, &varPublicEmailEventFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicEmailEventFilter(varPublicEmailEventFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "level")
+		delete(additionalProperties, "emailId")
+		delete(additionalProperties, "appId")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "clickUrl")
+		delete(additionalProperties, "pruningRefineBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

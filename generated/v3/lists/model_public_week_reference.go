@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,12 +20,13 @@ var _ MappedNullable = &PublicWeekReference{}
 
 // PublicWeekReference struct for PublicWeekReference
 type PublicWeekReference struct {
-	ReferenceType string `json:"referenceType"`
-	Hour          *int32 `json:"hour,omitempty"`
-	Minute        *int32 `json:"minute,omitempty"`
-	Second        *int32 `json:"second,omitempty"`
-	Millisecond   *int32 `json:"millisecond,omitempty"`
-	DayOfWeek     string `json:"dayOfWeek"`
+	ReferenceType        string `json:"referenceType"`
+	Hour                 *int32 `json:"hour,omitempty"`
+	Minute               *int32 `json:"minute,omitempty"`
+	Second               *int32 `json:"second,omitempty"`
+	Millisecond          *int32 `json:"millisecond,omitempty"`
+	DayOfWeek            string `json:"dayOfWeek"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicWeekReference PublicWeekReference
@@ -252,6 +252,11 @@ func (o PublicWeekReference) ToMap() (map[string]interface{}, error) {
 		toSerialize["millisecond"] = o.Millisecond
 	}
 	toSerialize["dayOfWeek"] = o.DayOfWeek
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -280,15 +285,25 @@ func (o *PublicWeekReference) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicWeekReference := _PublicWeekReference{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicWeekReference)
+	err = json.Unmarshal(data, &varPublicWeekReference)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicWeekReference(varPublicWeekReference)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "referenceType")
+		delete(additionalProperties, "hour")
+		delete(additionalProperties, "minute")
+		delete(additionalProperties, "second")
+		delete(additionalProperties, "millisecond")
+		delete(additionalProperties, "dayOfWeek")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

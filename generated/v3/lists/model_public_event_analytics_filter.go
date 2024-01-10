@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,11 +20,12 @@ var _ MappedNullable = &PublicEventAnalyticsFilter{}
 
 // PublicEventAnalyticsFilter struct for PublicEventAnalyticsFilter
 type PublicEventAnalyticsFilter struct {
-	FilterType         string                                        `json:"filterType"`
-	CoalescingRefineBy *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
-	PruningRefineBy    *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
-	Operator           string                                        `json:"operator"`
-	EventId            string                                        `json:"eventId"`
+	FilterType           string                                        `json:"filterType"`
+	CoalescingRefineBy   *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
+	PruningRefineBy      *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
+	Operator             string                                        `json:"operator"`
+	EventId              string                                        `json:"eventId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicEventAnalyticsFilter PublicEventAnalyticsFilter
@@ -207,6 +207,11 @@ func (o PublicEventAnalyticsFilter) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["operator"] = o.Operator
 	toSerialize["eventId"] = o.EventId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -236,15 +241,24 @@ func (o *PublicEventAnalyticsFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicEventAnalyticsFilter := _PublicEventAnalyticsFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicEventAnalyticsFilter)
+	err = json.Unmarshal(data, &varPublicEventAnalyticsFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicEventAnalyticsFilter(varPublicEventAnalyticsFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "coalescingRefineBy")
+		delete(additionalProperties, "pruningRefineBy")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "eventId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

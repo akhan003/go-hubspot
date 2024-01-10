@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -47,7 +46,8 @@ type PublicObjectListSearchResult struct {
 	// The ID of the user that created the list.
 	CreatedById *int32 `json:"createdById,omitempty"`
 	// The time the list was last updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt            *time.Time `json:"updatedAt,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicObjectListSearchResult PublicObjectListSearchResult
@@ -471,6 +471,11 @@ func (o PublicObjectListSearchResult) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UpdatedAt) {
 		toSerialize["updatedAt"] = o.UpdatedAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -504,15 +509,32 @@ func (o *PublicObjectListSearchResult) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicObjectListSearchResult := _PublicObjectListSearchResult{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicObjectListSearchResult)
+	err = json.Unmarshal(data, &varPublicObjectListSearchResult)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicObjectListSearchResult(varPublicObjectListSearchResult)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "processingType")
+		delete(additionalProperties, "objectTypeId")
+		delete(additionalProperties, "updatedById")
+		delete(additionalProperties, "filtersUpdatedAt")
+		delete(additionalProperties, "listId")
+		delete(additionalProperties, "createdAt")
+		delete(additionalProperties, "processingStatus")
+		delete(additionalProperties, "deletedAt")
+		delete(additionalProperties, "listVersion")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "additionalProperties")
+		delete(additionalProperties, "createdById")
+		delete(additionalProperties, "updatedAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

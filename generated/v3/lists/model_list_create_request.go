@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,8 +27,9 @@ type ListCreateRequest struct {
 	// The ID of the folder that the list should be created in. If left blank, then the list will be created in the root of the list folder structure.
 	ListFolderId *int32 `json:"listFolderId,omitempty"`
 	// The name of the list, which must be globally unique across all public lists in the portal.
-	Name         string                                                    `json:"name"`
-	FilterBranch *PublicPropertyAssociationFilterBranchFilterBranchesInner `json:"filterBranch,omitempty"`
+	Name                 string                                                    `json:"name"`
+	FilterBranch         *PublicPropertyAssociationFilterBranchFilterBranchesInner `json:"filterBranch,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListCreateRequest ListCreateRequest
@@ -209,6 +209,11 @@ func (o ListCreateRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.FilterBranch) {
 		toSerialize["filterBranch"] = o.FilterBranch
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -238,15 +243,24 @@ func (o *ListCreateRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varListCreateRequest := _ListCreateRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListCreateRequest)
+	err = json.Unmarshal(data, &varListCreateRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListCreateRequest(varListCreateRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "objectTypeId")
+		delete(additionalProperties, "processingType")
+		delete(additionalProperties, "listFolderId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "filterBranch")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

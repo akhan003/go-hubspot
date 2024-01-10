@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,12 +20,13 @@ var _ MappedNullable = &PublicMonthReference{}
 
 // PublicMonthReference struct for PublicMonthReference
 type PublicMonthReference struct {
-	ReferenceType string `json:"referenceType"`
-	Hour          *int32 `json:"hour,omitempty"`
-	Minute        *int32 `json:"minute,omitempty"`
-	Second        *int32 `json:"second,omitempty"`
-	Millisecond   *int32 `json:"millisecond,omitempty"`
-	Day           int32  `json:"day"`
+	ReferenceType        string `json:"referenceType"`
+	Hour                 *int32 `json:"hour,omitempty"`
+	Minute               *int32 `json:"minute,omitempty"`
+	Second               *int32 `json:"second,omitempty"`
+	Millisecond          *int32 `json:"millisecond,omitempty"`
+	Day                  int32  `json:"day"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicMonthReference PublicMonthReference
@@ -252,6 +252,11 @@ func (o PublicMonthReference) ToMap() (map[string]interface{}, error) {
 		toSerialize["millisecond"] = o.Millisecond
 	}
 	toSerialize["day"] = o.Day
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -280,15 +285,25 @@ func (o *PublicMonthReference) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicMonthReference := _PublicMonthReference{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicMonthReference)
+	err = json.Unmarshal(data, &varPublicMonthReference)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicMonthReference(varPublicMonthReference)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "referenceType")
+		delete(additionalProperties, "hour")
+		delete(additionalProperties, "minute")
+		delete(additionalProperties, "second")
+		delete(additionalProperties, "millisecond")
+		delete(additionalProperties, "day")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

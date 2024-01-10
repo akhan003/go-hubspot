@@ -22,7 +22,127 @@ import (
 // MembershipsAPIService MembershipsAPI service
 type MembershipsAPIService service
 
-type ApiAddAndRemoveMembershipsRequest struct {
+type MembershipsAPIAddAllFromListRequest struct {
+	ctx          context.Context
+	ApiService   *MembershipsAPIService
+	listId       int32
+	sourceListId int32
+}
+
+func (r MembershipsAPIAddAllFromListRequest) Execute() (*http.Response, error) {
+	return r.ApiService.AddAllFromListExecute(r)
+}
+
+/*
+AddAllFromList Add All Records from a Source List to a Destination List
+
+Add all of the records from a *source list* (specified by the `sourceListId`) to a *destination list* (specified by the `listId`). Records that are already members of the *destination list* will be ignored. The *destination* and *source list* IDs must be different. The *destination* and *source lists* must contain records of the same type (e.g. contacts, companies, etc.).
+
+This endpoint only works for *destination lists* that have a `processingType` of `MANUAL` or `SNAPSHOT`. The *source list* can have any `processingType`.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param listId The **ILS ID** of the `MANUAL` or `SNAPSHOT` *destination list*, which the *source list* records are added to.
+	@param sourceListId The **ILS ID** of the *source list* to grab the records from, which are then added to the *destination list*.
+	@return MembershipsAPIAddAllFromListRequest
+*/
+func (a *MembershipsAPIService) AddAllFromList(ctx context.Context, listId int32, sourceListId int32) MembershipsAPIAddAllFromListRequest {
+	return MembershipsAPIAddAllFromListRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		listId:       listId,
+		sourceListId: sourceListId,
+	}
+}
+
+// Execute executes the request
+func (a *MembershipsAPIService) AddAllFromListExecute(r MembershipsAPIAddAllFromListRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MembershipsAPIService.AddAllFromList")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/crm/v3/lists/{listId}/memberships/add-from/{sourceListId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"listId"+"}", url.PathEscape(parameterValueToString(r.listId, "listId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"sourceListId"+"}", url.PathEscape(parameterValueToString(r.sourceListId, "sourceListId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type MembershipsAPIAddAndRemoveMembershipsRequest struct {
 	ctx                     context.Context
 	ApiService              *MembershipsAPIService
 	listId                  int32
@@ -30,12 +150,12 @@ type ApiAddAndRemoveMembershipsRequest struct {
 }
 
 // The IDs of the records to add and/or remove from the list.
-func (r ApiAddAndRemoveMembershipsRequest) MembershipChangeRequest(membershipChangeRequest MembershipChangeRequest) ApiAddAndRemoveMembershipsRequest {
+func (r MembershipsAPIAddAndRemoveMembershipsRequest) MembershipChangeRequest(membershipChangeRequest MembershipChangeRequest) MembershipsAPIAddAndRemoveMembershipsRequest {
 	r.membershipChangeRequest = &membershipChangeRequest
 	return r
 }
 
-func (r ApiAddAndRemoveMembershipsRequest) Execute() (*MembershipsUpdateResponse, *http.Response, error) {
+func (r MembershipsAPIAddAndRemoveMembershipsRequest) Execute() (*MembershipsUpdateResponse, *http.Response, error) {
 	return r.ApiService.AddAndRemoveMembershipsExecute(r)
 }
 
@@ -48,10 +168,10 @@ This endpoint only works for lists that have a `processingType` of `MANUAL` or `
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listId The **ILS ID** of the `MANUAL` or `SNAPSHOT` list.
-	@return ApiAddAndRemoveMembershipsRequest
+	@return MembershipsAPIAddAndRemoveMembershipsRequest
 */
-func (a *MembershipsAPIService) AddAndRemoveMemberships(ctx context.Context, listId int32) ApiAddAndRemoveMembershipsRequest {
-	return ApiAddAndRemoveMembershipsRequest{
+func (a *MembershipsAPIService) AddAndRemoveMemberships(ctx context.Context, listId int32) MembershipsAPIAddAndRemoveMembershipsRequest {
+	return MembershipsAPIAddAndRemoveMembershipsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		listId:     listId,
@@ -61,7 +181,7 @@ func (a *MembershipsAPIService) AddAndRemoveMemberships(ctx context.Context, lis
 // Execute executes the request
 //
 //	@return MembershipsUpdateResponse
-func (a *MembershipsAPIService) AddAndRemoveMembershipsExecute(r ApiAddAndRemoveMembershipsRequest) (*MembershipsUpdateResponse, *http.Response, error) {
+func (a *MembershipsAPIService) AddAndRemoveMembershipsExecute(r MembershipsAPIAddAndRemoveMembershipsRequest) (*MembershipsUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -162,7 +282,7 @@ func (a *MembershipsAPIService) AddAndRemoveMembershipsExecute(r ApiAddAndRemove
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiAddMembershipsRequest struct {
+type MembershipsAPIAddMembershipsRequest struct {
 	ctx         context.Context
 	ApiService  *MembershipsAPIService
 	listId      int32
@@ -170,12 +290,12 @@ type ApiAddMembershipsRequest struct {
 }
 
 // The IDs of the records to add to the list.
-func (r ApiAddMembershipsRequest) RequestBody(requestBody []int64) ApiAddMembershipsRequest {
+func (r MembershipsAPIAddMembershipsRequest) RequestBody(requestBody []int64) MembershipsAPIAddMembershipsRequest {
 	r.requestBody = &requestBody
 	return r
 }
 
-func (r ApiAddMembershipsRequest) Execute() (*MembershipsUpdateResponse, *http.Response, error) {
+func (r MembershipsAPIAddMembershipsRequest) Execute() (*MembershipsUpdateResponse, *http.Response, error) {
 	return r.ApiService.AddMembershipsExecute(r)
 }
 
@@ -188,10 +308,10 @@ This endpoint only works for lists that have a `processingType` of `MANUAL` or `
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listId The **ILS ID** of the `MANUAL` or `SNAPSHOT` list.
-	@return ApiAddMembershipsRequest
+	@return MembershipsAPIAddMembershipsRequest
 */
-func (a *MembershipsAPIService) AddMemberships(ctx context.Context, listId int32) ApiAddMembershipsRequest {
-	return ApiAddMembershipsRequest{
+func (a *MembershipsAPIService) AddMemberships(ctx context.Context, listId int32) MembershipsAPIAddMembershipsRequest {
+	return MembershipsAPIAddMembershipsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		listId:     listId,
@@ -201,7 +321,7 @@ func (a *MembershipsAPIService) AddMemberships(ctx context.Context, listId int32
 // Execute executes the request
 //
 //	@return MembershipsUpdateResponse
-func (a *MembershipsAPIService) AddMembershipsExecute(r ApiAddMembershipsRequest) (*MembershipsUpdateResponse, *http.Response, error) {
+func (a *MembershipsAPIService) AddMembershipsExecute(r MembershipsAPIAddMembershipsRequest) (*MembershipsUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -302,123 +422,7 @@ func (a *MembershipsAPIService) AddMembershipsExecute(r ApiAddMembershipsRequest
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDeleteCrmV3ListsListIdMembershipsRemoveAllRequest struct {
-	ctx        context.Context
-	ApiService *MembershipsAPIService
-	listId     int32
-}
-
-func (r ApiDeleteCrmV3ListsListIdMembershipsRemoveAllRequest) Execute() (*http.Response, error) {
-	return r.ApiService.DeleteCrmV3ListsListIdMembershipsRemoveAllExecute(r)
-}
-
-/*
-DeleteCrmV3ListsListIdMembershipsRemoveAll Delete All Records from a List
-
-Remove **all** of the records from a list. ***Note:*** *The list is not deleted.*
-
-This endpoint only works for lists that have a `processingType` of `MANUAL` or `SNAPSHOT`.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param listId The **ILS ID** of the `MANUAL` or `SNAPSHOT` list.
-	@return ApiDeleteCrmV3ListsListIdMembershipsRemoveAllRequest
-*/
-func (a *MembershipsAPIService) DeleteCrmV3ListsListIdMembershipsRemoveAll(ctx context.Context, listId int32) ApiDeleteCrmV3ListsListIdMembershipsRemoveAllRequest {
-	return ApiDeleteCrmV3ListsListIdMembershipsRemoveAllRequest{
-		ApiService: a,
-		ctx:        ctx,
-		listId:     listId,
-	}
-}
-
-// Execute executes the request
-func (a *MembershipsAPIService) DeleteCrmV3ListsListIdMembershipsRemoveAllExecute(r ApiDeleteCrmV3ListsListIdMembershipsRemoveAllRequest) (*http.Response, error) {
-	var (
-		localVarHTTPMethod = http.MethodDelete
-		localVarPostBody   interface{}
-		formFiles          []formFile
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MembershipsAPIService.DeleteCrmV3ListsListIdMembershipsRemoveAll")
-	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/crm/v3/lists/{listId}/memberships"
-	localVarPath = strings.Replace(localVarPath, "{"+"listId"+"}", url.PathEscape(parameterValueToString(r.listId, "listId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarHTTPResponse, newErr
-	}
-
-	return localVarHTTPResponse, nil
-}
-
-type ApiGetCrmV3ListsListIdMembershipsGetPageRequest struct {
+type MembershipsAPIGetPageRequest struct {
 	ctx        context.Context
 	ApiService *MembershipsAPIService
 	listId     int32
@@ -428,29 +432,29 @@ type ApiGetCrmV3ListsListIdMembershipsGetPageRequest struct {
 }
 
 // The paging offset token for the page that comes &#x60;after&#x60; the previously requested records.  If provided, then the records in the response will be the records following the offset, sorted in *ascending* order. Takes precedence over the &#x60;before&#x60; offset.
-func (r ApiGetCrmV3ListsListIdMembershipsGetPageRequest) After(after string) ApiGetCrmV3ListsListIdMembershipsGetPageRequest {
+func (r MembershipsAPIGetPageRequest) After(after string) MembershipsAPIGetPageRequest {
 	r.after = &after
 	return r
 }
 
 // The paging offset token for the page that comes &#x60;before&#x60; the previously requested records.  If provided, then the records in the response will be the records preceding the offset, sorted in *descending* order.
-func (r ApiGetCrmV3ListsListIdMembershipsGetPageRequest) Before(before string) ApiGetCrmV3ListsListIdMembershipsGetPageRequest {
+func (r MembershipsAPIGetPageRequest) Before(before string) MembershipsAPIGetPageRequest {
 	r.before = &before
 	return r
 }
 
 // The number of records to return in the response. The maximum &#x60;limit&#x60; is 250.
-func (r ApiGetCrmV3ListsListIdMembershipsGetPageRequest) Limit(limit int32) ApiGetCrmV3ListsListIdMembershipsGetPageRequest {
+func (r MembershipsAPIGetPageRequest) Limit(limit int32) MembershipsAPIGetPageRequest {
 	r.limit = &limit
 	return r
 }
 
-func (r ApiGetCrmV3ListsListIdMembershipsGetPageRequest) Execute() (*CollectionResponseLong, *http.Response, error) {
-	return r.ApiService.GetCrmV3ListsListIdMembershipsGetPageExecute(r)
+func (r MembershipsAPIGetPageRequest) Execute() (*CollectionResponseLong, *http.Response, error) {
+	return r.ApiService.GetPageExecute(r)
 }
 
 /*
-GetCrmV3ListsListIdMembershipsGetPage Fetch List Memberships Ordered by ID
+GetPage Fetch List Memberships Ordered by ID
 
 Fetch the memberships of a list in order sorted by the `recordId` of the records in the list.
 
@@ -460,10 +464,10 @@ The `after` offset parameter will take precedence over the `before` offset in a 
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listId The **ILS ID** of the list.
-	@return ApiGetCrmV3ListsListIdMembershipsGetPageRequest
+	@return MembershipsAPIGetPageRequest
 */
-func (a *MembershipsAPIService) GetCrmV3ListsListIdMembershipsGetPage(ctx context.Context, listId int32) ApiGetCrmV3ListsListIdMembershipsGetPageRequest {
-	return ApiGetCrmV3ListsListIdMembershipsGetPageRequest{
+func (a *MembershipsAPIService) GetPage(ctx context.Context, listId int32) MembershipsAPIGetPageRequest {
+	return MembershipsAPIGetPageRequest{
 		ApiService: a,
 		ctx:        ctx,
 		listId:     listId,
@@ -473,7 +477,7 @@ func (a *MembershipsAPIService) GetCrmV3ListsListIdMembershipsGetPage(ctx contex
 // Execute executes the request
 //
 //	@return CollectionResponseLong
-func (a *MembershipsAPIService) GetCrmV3ListsListIdMembershipsGetPageExecute(r ApiGetCrmV3ListsListIdMembershipsGetPageRequest) (*CollectionResponseLong, *http.Response, error) {
+func (a *MembershipsAPIService) GetPageExecute(r MembershipsAPIGetPageRequest) (*CollectionResponseLong, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -481,7 +485,7 @@ func (a *MembershipsAPIService) GetCrmV3ListsListIdMembershipsGetPageExecute(r A
 		localVarReturnValue *CollectionResponseLong
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MembershipsAPIService.GetCrmV3ListsListIdMembershipsGetPage")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MembershipsAPIService.GetPage")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -581,54 +585,50 @@ func (a *MembershipsAPIService) GetCrmV3ListsListIdMembershipsGetPageExecute(r A
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListRequest struct {
-	ctx          context.Context
-	ApiService   *MembershipsAPIService
-	listId       int32
-	sourceListId int32
+type MembershipsAPIRemoveAllRequest struct {
+	ctx        context.Context
+	ApiService *MembershipsAPIService
+	listId     int32
 }
 
-func (r ApiPutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListRequest) Execute() (*http.Response, error) {
-	return r.ApiService.PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListExecute(r)
+func (r MembershipsAPIRemoveAllRequest) Execute() (*http.Response, error) {
+	return r.ApiService.RemoveAllExecute(r)
 }
 
 /*
-PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList Add All Records from a Source List to a Destination List
+RemoveAll Delete All Records from a List
 
-Add all of the records from a *source list* (specified by the `sourceListId`) to a *destination list* (specified by the `listId`). Records that are already members of the *destination list* will be ignored. The *destination* and *source list* IDs must be different. The *destination* and *source lists* must contain records of the same type (e.g. contacts, companies, etc.).
+Remove **all** of the records from a list. ***Note:*** *The list is not deleted.*
 
-This endpoint only works for *destination lists* that have a `processingType` of `MANUAL` or `SNAPSHOT`. The *source list* can have any `processingType`.
+This endpoint only works for lists that have a `processingType` of `MANUAL` or `SNAPSHOT`.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param listId The **ILS ID** of the `MANUAL` or `SNAPSHOT` *destination list*, which the *source list* records are added to.
-	@param sourceListId The **ILS ID** of the *source list* to grab the records from, which are then added to the *destination list*.
-	@return ApiPutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListRequest
+	@param listId The **ILS ID** of the `MANUAL` or `SNAPSHOT` list.
+	@return MembershipsAPIRemoveAllRequest
 */
-func (a *MembershipsAPIService) PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList(ctx context.Context, listId int32, sourceListId int32) ApiPutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListRequest {
-	return ApiPutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListRequest{
-		ApiService:   a,
-		ctx:          ctx,
-		listId:       listId,
-		sourceListId: sourceListId,
+func (a *MembershipsAPIService) RemoveAll(ctx context.Context, listId int32) MembershipsAPIRemoveAllRequest {
+	return MembershipsAPIRemoveAllRequest{
+		ApiService: a,
+		ctx:        ctx,
+		listId:     listId,
 	}
 }
 
 // Execute executes the request
-func (a *MembershipsAPIService) PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListExecute(r ApiPutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListRequest) (*http.Response, error) {
+func (a *MembershipsAPIService) RemoveAllExecute(r MembershipsAPIRemoveAllRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod = http.MethodPut
+		localVarHTTPMethod = http.MethodDelete
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MembershipsAPIService.PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MembershipsAPIService.RemoveAll")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/crm/v3/lists/{listId}/memberships/add-from/{sourceListId}"
+	localVarPath := localBasePath + "/crm/v3/lists/{listId}/memberships"
 	localVarPath = strings.Replace(localVarPath, "{"+"listId"+"}", url.PathEscape(parameterValueToString(r.listId, "listId")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"sourceListId"+"}", url.PathEscape(parameterValueToString(r.sourceListId, "sourceListId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -701,7 +701,7 @@ func (a *MembershipsAPIService) PutCrmV3ListsListIdMembershipsAddFromSourceListI
 	return localVarHTTPResponse, nil
 }
 
-type ApiRemoveMembershipsRequest struct {
+type MembershipsAPIRemoveMembershipsRequest struct {
 	ctx         context.Context
 	ApiService  *MembershipsAPIService
 	listId      int32
@@ -709,12 +709,12 @@ type ApiRemoveMembershipsRequest struct {
 }
 
 // The IDs of the records to remove from the list.
-func (r ApiRemoveMembershipsRequest) RequestBody(requestBody []int64) ApiRemoveMembershipsRequest {
+func (r MembershipsAPIRemoveMembershipsRequest) RequestBody(requestBody []int64) MembershipsAPIRemoveMembershipsRequest {
 	r.requestBody = &requestBody
 	return r
 }
 
-func (r ApiRemoveMembershipsRequest) Execute() (*MembershipsUpdateResponse, *http.Response, error) {
+func (r MembershipsAPIRemoveMembershipsRequest) Execute() (*MembershipsUpdateResponse, *http.Response, error) {
 	return r.ApiService.RemoveMembershipsExecute(r)
 }
 
@@ -727,10 +727,10 @@ This endpoint only works for lists that have a `processingType` of `MANUAL` or `
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listId The **ILS ID** of the `MANUAL` or `SNAPSHOT` list.
-	@return ApiRemoveMembershipsRequest
+	@return MembershipsAPIRemoveMembershipsRequest
 */
-func (a *MembershipsAPIService) RemoveMemberships(ctx context.Context, listId int32) ApiRemoveMembershipsRequest {
-	return ApiRemoveMembershipsRequest{
+func (a *MembershipsAPIService) RemoveMemberships(ctx context.Context, listId int32) MembershipsAPIRemoveMembershipsRequest {
+	return MembershipsAPIRemoveMembershipsRequest{
 		ApiService: a,
 		ctx:        ctx,
 		listId:     listId,
@@ -740,7 +740,7 @@ func (a *MembershipsAPIService) RemoveMemberships(ctx context.Context, listId in
 // Execute executes the request
 //
 //	@return MembershipsUpdateResponse
-func (a *MembershipsAPIService) RemoveMembershipsExecute(r ApiRemoveMembershipsRequest) (*MembershipsUpdateResponse, *http.Response, error) {
+func (a *MembershipsAPIService) RemoveMembershipsExecute(r MembershipsAPIRemoveMembershipsRequest) (*MembershipsUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}

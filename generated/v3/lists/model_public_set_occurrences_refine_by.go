@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &PublicSetOccurrencesRefineBy{}
 
 // PublicSetOccurrencesRefineBy struct for PublicSetOccurrencesRefineBy
 type PublicSetOccurrencesRefineBy struct {
-	Type    string `json:"type"`
-	SetType_ string `json:"setType"`
+	Type                 string `json:"type"`
+	SetType_             string `json:"setType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicSetOccurrencesRefineBy PublicSetOccurrencesRefineBy
@@ -72,8 +72,8 @@ func (o *PublicSetOccurrencesRefineBy) SetType(v string) {
 	o.Type = v
 }
 
-// GetSetType returns the SetType field value
-func (o *PublicSetOccurrencesRefineBy) GetSetType() string {
+// GetSetType_ returns the SetType_ field value
+func (o *PublicSetOccurrencesRefineBy) GetSetType_() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -82,17 +82,17 @@ func (o *PublicSetOccurrencesRefineBy) GetSetType() string {
 	return o.SetType_
 }
 
-// GetSetTypeOk returns a tuple with the SetType field value
+// GetSetType_Ok returns a tuple with the SetType_ field value
 // and a boolean to check if the value has been set.
-func (o *PublicSetOccurrencesRefineBy) GetSetTypeOk() (*string, bool) {
+func (o *PublicSetOccurrencesRefineBy) GetSetType_Ok() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
 	return &o.SetType_, true
 }
 
-// SetSetType sets field value
-func (o *PublicSetOccurrencesRefineBy) SetSetType(v string) {
+// SetSetType_ sets field value
+func (o *PublicSetOccurrencesRefineBy) SetSetType_(v string) {
 	o.SetType_ = v
 }
 
@@ -107,7 +107,12 @@ func (o PublicSetOccurrencesRefineBy) MarshalJSON() ([]byte, error) {
 func (o PublicSetOccurrencesRefineBy) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
-	toSerialize["setType"] = o.SetType
+	toSerialize["setType"] = o.SetType_
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *PublicSetOccurrencesRefineBy) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicSetOccurrencesRefineBy := _PublicSetOccurrencesRefineBy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicSetOccurrencesRefineBy)
+	err = json.Unmarshal(data, &varPublicSetOccurrencesRefineBy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicSetOccurrencesRefineBy(varPublicSetOccurrencesRefineBy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "setType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

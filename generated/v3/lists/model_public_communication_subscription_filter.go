@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,12 +20,13 @@ var _ MappedNullable = &PublicCommunicationSubscriptionFilter{}
 
 // PublicCommunicationSubscriptionFilter struct for PublicCommunicationSubscriptionFilter
 type PublicCommunicationSubscriptionFilter struct {
-	FilterType        string   `json:"filterType"`
-	SubscriptionIds   []int64  `json:"subscriptionIds"`
-	Channel           string   `json:"channel"`
-	AcceptedOptStates []string `json:"acceptedOptStates"`
-	BusinessUnitId    *int64   `json:"businessUnitId,omitempty"`
-	SubscriptionType  string   `json:"subscriptionType"`
+	FilterType           string   `json:"filterType"`
+	SubscriptionIds      []int64  `json:"subscriptionIds"`
+	Channel              string   `json:"channel"`
+	AcceptedOptStates    []string `json:"acceptedOptStates"`
+	BusinessUnitId       *int64   `json:"businessUnitId,omitempty"`
+	SubscriptionType     string   `json:"subscriptionType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicCommunicationSubscriptionFilter PublicCommunicationSubscriptionFilter
@@ -225,6 +225,11 @@ func (o PublicCommunicationSubscriptionFilter) ToMap() (map[string]interface{}, 
 		toSerialize["businessUnitId"] = o.BusinessUnitId
 	}
 	toSerialize["subscriptionType"] = o.SubscriptionType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -256,15 +261,25 @@ func (o *PublicCommunicationSubscriptionFilter) UnmarshalJSON(data []byte) (err 
 
 	varPublicCommunicationSubscriptionFilter := _PublicCommunicationSubscriptionFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicCommunicationSubscriptionFilter)
+	err = json.Unmarshal(data, &varPublicCommunicationSubscriptionFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicCommunicationSubscriptionFilter(varPublicCommunicationSubscriptionFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "subscriptionIds")
+		delete(additionalProperties, "channel")
+		delete(additionalProperties, "acceptedOptStates")
+		delete(additionalProperties, "businessUnitId")
+		delete(additionalProperties, "subscriptionType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

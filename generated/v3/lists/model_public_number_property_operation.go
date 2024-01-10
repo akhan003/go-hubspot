@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,6 +24,7 @@ type PublicNumberPropertyOperation struct {
 	Operator                     string  `json:"operator"`
 	IncludeObjectsWithNoValueSet bool    `json:"includeObjectsWithNoValueSet"`
 	Value                        float32 `json:"value"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicNumberPropertyOperation PublicNumberPropertyOperation
@@ -162,6 +162,11 @@ func (o PublicNumberPropertyOperation) ToMap() (map[string]interface{}, error) {
 	toSerialize["operator"] = o.Operator
 	toSerialize["includeObjectsWithNoValueSet"] = o.IncludeObjectsWithNoValueSet
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,15 +197,23 @@ func (o *PublicNumberPropertyOperation) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicNumberPropertyOperation := _PublicNumberPropertyOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicNumberPropertyOperation)
+	err = json.Unmarshal(data, &varPublicNumberPropertyOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicNumberPropertyOperation(varPublicNumberPropertyOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

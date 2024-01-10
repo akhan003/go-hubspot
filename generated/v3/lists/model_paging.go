@@ -19,9 +19,12 @@ var _ MappedNullable = &Paging{}
 
 // Paging The cursor to be used for paging through records.
 type Paging struct {
-	Next *NextPage     `json:"next,omitempty"`
-	Prev *PreviousPage `json:"prev,omitempty"`
+	Next                 *NextPage     `json:"next,omitempty"`
+	Prev                 *PreviousPage `json:"prev,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Paging Paging
 
 // NewPaging instantiates a new Paging object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o Paging) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Prev) {
 		toSerialize["prev"] = o.Prev
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Paging) UnmarshalJSON(data []byte) (err error) {
+	varPaging := _Paging{}
+
+	err = json.Unmarshal(data, &varPaging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Paging(varPaging)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "next")
+		delete(additionalProperties, "prev")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePaging struct {

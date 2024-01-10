@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,12 +20,13 @@ var _ MappedNullable = &PublicAdsSearchFilter{}
 
 // PublicAdsSearchFilter struct for PublicAdsSearchFilter
 type PublicAdsSearchFilter struct {
-	FilterType     string   `json:"filterType"`
-	EntityType     string   `json:"entityType"`
-	SearchTermType string   `json:"searchTermType"`
-	SearchTerms    []string `json:"searchTerms"`
-	AdNetwork      string   `json:"adNetwork"`
-	Operator       string   `json:"operator"`
+	FilterType           string   `json:"filterType"`
+	EntityType           string   `json:"entityType"`
+	SearchTermType       string   `json:"searchTermType"`
+	SearchTerms          []string `json:"searchTerms"`
+	AdNetwork            string   `json:"adNetwork"`
+	Operator             string   `json:"operator"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicAdsSearchFilter PublicAdsSearchFilter
@@ -216,6 +216,11 @@ func (o PublicAdsSearchFilter) ToMap() (map[string]interface{}, error) {
 	toSerialize["searchTerms"] = o.SearchTerms
 	toSerialize["adNetwork"] = o.AdNetwork
 	toSerialize["operator"] = o.Operator
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -248,15 +253,25 @@ func (o *PublicAdsSearchFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicAdsSearchFilter := _PublicAdsSearchFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicAdsSearchFilter)
+	err = json.Unmarshal(data, &varPublicAdsSearchFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicAdsSearchFilter(varPublicAdsSearchFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "entityType")
+		delete(additionalProperties, "searchTermType")
+		delete(additionalProperties, "searchTerms")
+		delete(additionalProperties, "adNetwork")
+		delete(additionalProperties, "operator")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &ListFilterUpdateRequest{}
 
 // ListFilterUpdateRequest The definition of the list filter branch update request.
 type ListFilterUpdateRequest struct {
-	FilterBranch PublicPropertyAssociationFilterBranchFilterBranchesInner `json:"filterBranch"`
+	FilterBranch         PublicPropertyAssociationFilterBranchFilterBranchesInner `json:"filterBranch"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListFilterUpdateRequest ListFilterUpdateRequest
@@ -79,6 +79,11 @@ func (o ListFilterUpdateRequest) MarshalJSON() ([]byte, error) {
 func (o ListFilterUpdateRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["filterBranch"] = o.FilterBranch
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *ListFilterUpdateRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varListFilterUpdateRequest := _ListFilterUpdateRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListFilterUpdateRequest)
+	err = json.Unmarshal(data, &varListFilterUpdateRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListFilterUpdateRequest(varListFilterUpdateRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterBranch")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,10 +20,11 @@ var _ MappedNullable = &PublicRelativeRangedTimestampRefineBy{}
 
 // PublicRelativeRangedTimestampRefineBy struct for PublicRelativeRangedTimestampRefineBy
 type PublicRelativeRangedTimestampRefineBy struct {
-	Type             string           `json:"type"`
-	RangeType        string           `json:"rangeType"`
-	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
-	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
+	Type                 string           `json:"type"`
+	RangeType            string           `json:"rangeType"`
+	UpperBoundOffset     PublicTimeOffset `json:"upperBoundOffset"`
+	LowerBoundOffset     PublicTimeOffset `json:"lowerBoundOffset"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicRelativeRangedTimestampRefineBy PublicRelativeRangedTimestampRefineBy
@@ -162,6 +162,11 @@ func (o PublicRelativeRangedTimestampRefineBy) ToMap() (map[string]interface{}, 
 	toSerialize["rangeType"] = o.RangeType
 	toSerialize["upperBoundOffset"] = o.UpperBoundOffset
 	toSerialize["lowerBoundOffset"] = o.LowerBoundOffset
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,15 +197,23 @@ func (o *PublicRelativeRangedTimestampRefineBy) UnmarshalJSON(data []byte) (err 
 
 	varPublicRelativeRangedTimestampRefineBy := _PublicRelativeRangedTimestampRefineBy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicRelativeRangedTimestampRefineBy)
+	err = json.Unmarshal(data, &varPublicRelativeRangedTimestampRefineBy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicRelativeRangedTimestampRefineBy(varPublicRelativeRangedTimestampRefineBy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "rangeType")
+		delete(additionalProperties, "upperBoundOffset")
+		delete(additionalProperties, "lowerBoundOffset")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

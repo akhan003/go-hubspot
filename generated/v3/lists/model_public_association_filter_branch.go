@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,6 +28,7 @@ type PublicAssociationFilterBranch struct {
 	AssociationTypeId    int32                                                      `json:"associationTypeId"`
 	AssociationCategory  string                                                     `json:"associationCategory"`
 	FilterBranchOperator string                                                     `json:"filterBranchOperator"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicAssociationFilterBranch PublicAssociationFilterBranch
@@ -270,6 +270,11 @@ func (o PublicAssociationFilterBranch) ToMap() (map[string]interface{}, error) {
 	toSerialize["associationTypeId"] = o.AssociationTypeId
 	toSerialize["associationCategory"] = o.AssociationCategory
 	toSerialize["filterBranchOperator"] = o.FilterBranchOperator
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -304,15 +309,27 @@ func (o *PublicAssociationFilterBranch) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicAssociationFilterBranch := _PublicAssociationFilterBranch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicAssociationFilterBranch)
+	err = json.Unmarshal(data, &varPublicAssociationFilterBranch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicAssociationFilterBranch(varPublicAssociationFilterBranch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterBranchType")
+		delete(additionalProperties, "filterBranches")
+		delete(additionalProperties, "filters")
+		delete(additionalProperties, "objectTypeId")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "associationTypeId")
+		delete(additionalProperties, "associationCategory")
+		delete(additionalProperties, "filterBranchOperator")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

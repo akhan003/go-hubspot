@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type MembershipChangeRequest struct {
 	//
 	RecordIdsToRemove []int64 `json:"recordIdsToRemove"`
 	//
-	RecordIdsToAdd []int64 `json:"recordIdsToAdd"`
+	RecordIdsToAdd       []int64 `json:"recordIdsToAdd"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MembershipChangeRequest MembershipChangeRequest
@@ -108,6 +108,11 @@ func (o MembershipChangeRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["recordIdsToRemove"] = o.RecordIdsToRemove
 	toSerialize["recordIdsToAdd"] = o.RecordIdsToAdd
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *MembershipChangeRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varMembershipChangeRequest := _MembershipChangeRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMembershipChangeRequest)
+	err = json.Unmarshal(data, &varMembershipChangeRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MembershipChangeRequest(varMembershipChangeRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "recordIdsToRemove")
+		delete(additionalProperties, "recordIdsToAdd")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

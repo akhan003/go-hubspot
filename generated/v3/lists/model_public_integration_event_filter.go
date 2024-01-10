@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicIntegrationEventFilter{}
 
 // PublicIntegrationEventFilter struct for PublicIntegrationEventFilter
 type PublicIntegrationEventFilter struct {
-	FilterType  string                      `json:"filterType"`
-	EventTypeId int32                       `json:"eventTypeId"`
-	FilterLines []PublicEventFilterMetadata `json:"filterLines"`
+	FilterType           string                      `json:"filterType"`
+	EventTypeId          int32                       `json:"eventTypeId"`
+	FilterLines          []PublicEventFilterMetadata `json:"filterLines"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicIntegrationEventFilter PublicIntegrationEventFilter
@@ -135,6 +135,11 @@ func (o PublicIntegrationEventFilter) ToMap() (map[string]interface{}, error) {
 	toSerialize["filterType"] = o.FilterType
 	toSerialize["eventTypeId"] = o.EventTypeId
 	toSerialize["filterLines"] = o.FilterLines
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *PublicIntegrationEventFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicIntegrationEventFilter := _PublicIntegrationEventFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicIntegrationEventFilter)
+	err = json.Unmarshal(data, &varPublicIntegrationEventFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicIntegrationEventFilter(varPublicIntegrationEventFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "eventTypeId")
+		delete(additionalProperties, "filterLines")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

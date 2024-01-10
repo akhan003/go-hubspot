@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicConstantFilter{}
 
 // PublicConstantFilter struct for PublicConstantFilter
 type PublicConstantFilter struct {
-	FilterType   string  `json:"filterType"`
-	ShouldAccept bool    `json:"shouldAccept"`
-	Source       *string `json:"source,omitempty"`
+	FilterType           string  `json:"filterType"`
+	ShouldAccept         bool    `json:"shouldAccept"`
+	Source               *string `json:"source,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicConstantFilter PublicConstantFilter
@@ -144,6 +144,11 @@ func (o PublicConstantFilter) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Source) {
 		toSerialize["source"] = o.Source
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -172,15 +177,22 @@ func (o *PublicConstantFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicConstantFilter := _PublicConstantFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicConstantFilter)
+	err = json.Unmarshal(data, &varPublicConstantFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicConstantFilter(varPublicConstantFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "shouldAccept")
+		delete(additionalProperties, "source")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

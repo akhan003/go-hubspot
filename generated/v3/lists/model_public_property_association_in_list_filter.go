@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,6 +26,7 @@ type PublicPropertyAssociationInListFilter struct {
 	ListId               int32                                        `json:"listId"`
 	ToObjectTypeId       *string                                      `json:"toObjectTypeId,omitempty"`
 	PropertyWithObjectId string                                       `json:"propertyWithObjectId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicPropertyAssociationInListFilter PublicPropertyAssociationInListFilter
@@ -225,6 +225,11 @@ func (o PublicPropertyAssociationInListFilter) ToMap() (map[string]interface{}, 
 		toSerialize["toObjectTypeId"] = o.ToObjectTypeId
 	}
 	toSerialize["propertyWithObjectId"] = o.PropertyWithObjectId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -256,15 +261,25 @@ func (o *PublicPropertyAssociationInListFilter) UnmarshalJSON(data []byte) (err 
 
 	varPublicPropertyAssociationInListFilter := _PublicPropertyAssociationInListFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicPropertyAssociationInListFilter)
+	err = json.Unmarshal(data, &varPublicPropertyAssociationInListFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicPropertyAssociationInListFilter(varPublicPropertyAssociationInListFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "coalescingRefineBy")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "listId")
+		delete(additionalProperties, "toObjectTypeId")
+		delete(additionalProperties, "propertyWithObjectId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

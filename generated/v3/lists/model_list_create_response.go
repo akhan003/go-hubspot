@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &ListCreateResponse{}
 
 // ListCreateResponse The response for a list create request.
 type ListCreateResponse struct {
-	List PublicObjectList `json:"list"`
+	List                 PublicObjectList `json:"list"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListCreateResponse ListCreateResponse
@@ -79,6 +79,11 @@ func (o ListCreateResponse) MarshalJSON() ([]byte, error) {
 func (o ListCreateResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["list"] = o.List
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *ListCreateResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varListCreateResponse := _ListCreateResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListCreateResponse)
+	err = json.Unmarshal(data, &varListCreateResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListCreateResponse(varListCreateResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "list")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

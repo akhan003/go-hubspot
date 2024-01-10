@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,10 +20,11 @@ var _ MappedNullable = &PublicEmailSubscriptionFilter{}
 
 // PublicEmailSubscriptionFilter struct for PublicEmailSubscriptionFilter
 type PublicEmailSubscriptionFilter struct {
-	FilterType       string   `json:"filterType"`
-	SubscriptionIds  []int64  `json:"subscriptionIds"`
-	AcceptedStatuses []string `json:"acceptedStatuses"`
-	SubscriptionType *string  `json:"subscriptionType,omitempty"`
+	FilterType           string   `json:"filterType"`
+	SubscriptionIds      []int64  `json:"subscriptionIds"`
+	AcceptedStatuses     []string `json:"acceptedStatuses"`
+	SubscriptionType     *string  `json:"subscriptionType,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicEmailSubscriptionFilter PublicEmailSubscriptionFilter
@@ -171,6 +171,11 @@ func (o PublicEmailSubscriptionFilter) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SubscriptionType) {
 		toSerialize["subscriptionType"] = o.SubscriptionType
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -200,15 +205,23 @@ func (o *PublicEmailSubscriptionFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicEmailSubscriptionFilter := _PublicEmailSubscriptionFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicEmailSubscriptionFilter)
+	err = json.Unmarshal(data, &varPublicEmailSubscriptionFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicEmailSubscriptionFilter(varPublicEmailSubscriptionFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "subscriptionIds")
+		delete(additionalProperties, "acceptedStatuses")
+		delete(additionalProperties, "subscriptionType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

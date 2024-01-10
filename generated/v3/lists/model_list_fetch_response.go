@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &ListFetchResponse{}
 
 // ListFetchResponse The response for a list fetch request.
 type ListFetchResponse struct {
-	List PublicObjectList `json:"list"`
+	List                 PublicObjectList `json:"list"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListFetchResponse ListFetchResponse
@@ -79,6 +79,11 @@ func (o ListFetchResponse) MarshalJSON() ([]byte, error) {
 func (o ListFetchResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["list"] = o.List
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *ListFetchResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varListFetchResponse := _ListFetchResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListFetchResponse)
+	err = json.Unmarshal(data, &varListFetchResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListFetchResponse(varListFetchResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "list")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

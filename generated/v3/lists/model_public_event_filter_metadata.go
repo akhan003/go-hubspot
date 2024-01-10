@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &PublicEventFilterMetadata{}
 
 // PublicEventFilterMetadata struct for PublicEventFilterMetadata
 type PublicEventFilterMetadata struct {
-	Property  string                        `json:"property"`
-	Operation PublicPropertyFilterOperation `json:"operation"`
+	Property             string                        `json:"property"`
+	Operation            PublicPropertyFilterOperation `json:"operation"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicEventFilterMetadata PublicEventFilterMetadata
@@ -106,6 +106,11 @@ func (o PublicEventFilterMetadata) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["property"] = o.Property
 	toSerialize["operation"] = o.Operation
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *PublicEventFilterMetadata) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicEventFilterMetadata := _PublicEventFilterMetadata{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicEventFilterMetadata)
+	err = json.Unmarshal(data, &varPublicEventFilterMetadata)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicEventFilterMetadata(varPublicEventFilterMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "property")
+		delete(additionalProperties, "operation")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -4,13 +4,84 @@ All URIs are relative to *https://api.hubapi.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AddAllFromList**](MembershipsAPI.md#AddAllFromList) | **Put** /crm/v3/lists/{listId}/memberships/add-from/{sourceListId} | Add All Records from a Source List to a Destination List
 [**AddAndRemoveMemberships**](MembershipsAPI.md#AddAndRemoveMemberships) | **Put** /crm/v3/lists/{listId}/memberships/add-and-remove | Add and/or Remove Records from a List
 [**AddMemberships**](MembershipsAPI.md#AddMemberships) | **Put** /crm/v3/lists/{listId}/memberships/add | Add Records to a List
-[**DeleteCrmV3ListsListIdMembershipsRemoveAll**](MembershipsAPI.md#DeleteCrmV3ListsListIdMembershipsRemoveAll) | **Delete** /crm/v3/lists/{listId}/memberships | Delete All Records from a List
-[**GetCrmV3ListsListIdMembershipsGetPage**](MembershipsAPI.md#GetCrmV3ListsListIdMembershipsGetPage) | **Get** /crm/v3/lists/{listId}/memberships | Fetch List Memberships Ordered by ID
-[**PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList**](MembershipsAPI.md#PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList) | **Put** /crm/v3/lists/{listId}/memberships/add-from/{sourceListId} | Add All Records from a Source List to a Destination List
+[**GetPage**](MembershipsAPI.md#GetPage) | **Get** /crm/v3/lists/{listId}/memberships | Fetch List Memberships Ordered by ID
+[**RemoveAll**](MembershipsAPI.md#RemoveAll) | **Delete** /crm/v3/lists/{listId}/memberships | Delete All Records from a List
 [**RemoveMemberships**](MembershipsAPI.md#RemoveMemberships) | **Put** /crm/v3/lists/{listId}/memberships/remove | Remove Records from a List
 
+
+
+## AddAllFromList
+
+> AddAllFromList(ctx, listId, sourceListId).Execute()
+
+Add All Records from a Source List to a Destination List
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	listId := int32(56) // int32 | The **ILS ID** of the `MANUAL` or `SNAPSHOT` *destination list*, which the *source list* records are added to.
+	sourceListId := int32(56) // int32 | The **ILS ID** of the *source list* to grab the records from, which are then added to the *destination list*.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.MembershipsAPI.AddAllFromList(context.Background(), listId, sourceListId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `MembershipsAPI.AddAllFromList``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**listId** | **int32** | The **ILS ID** of the &#x60;MANUAL&#x60; or &#x60;SNAPSHOT&#x60; *destination list*, which the *source list* records are added to. | 
+**sourceListId** | **int32** | The **ILS ID** of the *source list* to grab the records from, which are then added to the *destination list*. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAddAllFromListRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[oauth2](../README.md#oauth2), [private_apps](../README.md#private_apps)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## AddAndRemoveMemberships
@@ -157,77 +228,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## DeleteCrmV3ListsListIdMembershipsRemoveAll
+## GetPage
 
-> DeleteCrmV3ListsListIdMembershipsRemoveAll(ctx, listId).Execute()
-
-Delete All Records from a List
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
-)
-
-func main() {
-	listId := int32(56) // int32 | The **ILS ID** of the `MANUAL` or `SNAPSHOT` list.
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MembershipsAPI.DeleteCrmV3ListsListIdMembershipsRemoveAll(context.Background(), listId).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `MembershipsAPI.DeleteCrmV3ListsListIdMembershipsRemoveAll``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**listId** | **int32** | The **ILS ID** of the &#x60;MANUAL&#x60; or &#x60;SNAPSHOT&#x60; list. | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteCrmV3ListsListIdMembershipsRemoveAllRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-### Return type
-
- (empty response body)
-
-### Authorization
-
-[oauth2](../README.md#oauth2), [private_apps](../README.md#private_apps)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetCrmV3ListsListIdMembershipsGetPage
-
-> CollectionResponseLong GetCrmV3ListsListIdMembershipsGetPage(ctx, listId).After(after).Before(before).Limit(limit).Execute()
+> CollectionResponseLong GetPage(ctx, listId).After(after).Before(before).Limit(limit).Execute()
 
 Fetch List Memberships Ordered by ID
 
@@ -253,13 +256,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.MembershipsAPI.GetCrmV3ListsListIdMembershipsGetPage(context.Background(), listId).After(after).Before(before).Limit(limit).Execute()
+	resp, r, err := apiClient.MembershipsAPI.GetPage(context.Background(), listId).After(after).Before(before).Limit(limit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `MembershipsAPI.GetCrmV3ListsListIdMembershipsGetPage``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `MembershipsAPI.GetPage``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetCrmV3ListsListIdMembershipsGetPage`: CollectionResponseLong
-	fmt.Fprintf(os.Stdout, "Response from `MembershipsAPI.GetCrmV3ListsListIdMembershipsGetPage`: %v\n", resp)
+	// response from `GetPage`: CollectionResponseLong
+	fmt.Fprintf(os.Stdout, "Response from `MembershipsAPI.GetPage`: %v\n", resp)
 }
 ```
 
@@ -273,7 +276,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiGetCrmV3ListsListIdMembershipsGetPageRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiGetPageRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -301,11 +304,11 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList
+## RemoveAll
 
-> PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList(ctx, listId, sourceListId).Execute()
+> RemoveAll(ctx, listId).Execute()
 
-Add All Records from a Source List to a Destination List
+Delete All Records from a List
 
 
 
@@ -322,14 +325,13 @@ import (
 )
 
 func main() {
-	listId := int32(56) // int32 | The **ILS ID** of the `MANUAL` or `SNAPSHOT` *destination list*, which the *source list* records are added to.
-	sourceListId := int32(56) // int32 | The **ILS ID** of the *source list* to grab the records from, which are then added to the *destination list*.
+	listId := int32(56) // int32 | The **ILS ID** of the `MANUAL` or `SNAPSHOT` list.
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MembershipsAPI.PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList(context.Background(), listId, sourceListId).Execute()
+	r, err := apiClient.MembershipsAPI.RemoveAll(context.Background(), listId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `MembershipsAPI.PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `MembershipsAPI.RemoveAll``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 }
@@ -341,17 +343,15 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**listId** | **int32** | The **ILS ID** of the &#x60;MANUAL&#x60; or &#x60;SNAPSHOT&#x60; *destination list*, which the *source list* records are added to. | 
-**sourceListId** | **int32** | The **ILS ID** of the *source list* to grab the records from, which are then added to the *destination list*. | 
+**listId** | **int32** | The **ILS ID** of the &#x60;MANUAL&#x60; or &#x60;SNAPSHOT&#x60; list. | 
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiPutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromListRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiRemoveAllRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-
 
 
 ### Return type

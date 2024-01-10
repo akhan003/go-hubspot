@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,7 +24,8 @@ type MembershipsUpdateResponse struct {
 	RecordIdsRemoved []int64 `json:"recordIdsRemoved"`
 	RecordsIdsAdded  []int64 `json:"recordsIdsAdded"`
 	// The IDs of the records that were `missing` (e.g. did not exist in the portal) and so were not `added` or `removed`.
-	RecordIdsMissing []int64 `json:"recordIdsMissing"`
+	RecordIdsMissing     []int64 `json:"recordIdsMissing"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MembershipsUpdateResponse MembershipsUpdateResponse
@@ -135,6 +135,11 @@ func (o MembershipsUpdateResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["recordIdsRemoved"] = o.RecordIdsRemoved
 	toSerialize["recordsIdsAdded"] = o.RecordsIdsAdded
 	toSerialize["recordIdsMissing"] = o.RecordIdsMissing
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *MembershipsUpdateResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varMembershipsUpdateResponse := _MembershipsUpdateResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMembershipsUpdateResponse)
+	err = json.Unmarshal(data, &varMembershipsUpdateResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MembershipsUpdateResponse(varMembershipsUpdateResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "recordIdsRemoved")
+		delete(additionalProperties, "recordsIdsAdded")
+		delete(additionalProperties, "recordIdsMissing")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

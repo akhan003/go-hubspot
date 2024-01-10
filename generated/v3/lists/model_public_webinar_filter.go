@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicWebinarFilter{}
 
 // PublicWebinarFilter struct for PublicWebinarFilter
 type PublicWebinarFilter struct {
-	FilterType string  `json:"filterType"`
-	Operator   string  `json:"operator"`
-	WebinarId  *string `json:"webinarId,omitempty"`
+	FilterType           string  `json:"filterType"`
+	Operator             string  `json:"operator"`
+	WebinarId            *string `json:"webinarId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicWebinarFilter PublicWebinarFilter
@@ -144,6 +144,11 @@ func (o PublicWebinarFilter) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.WebinarId) {
 		toSerialize["webinarId"] = o.WebinarId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -172,15 +177,22 @@ func (o *PublicWebinarFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicWebinarFilter := _PublicWebinarFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicWebinarFilter)
+	err = json.Unmarshal(data, &varPublicWebinarFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicWebinarFilter(varPublicWebinarFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "webinarId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -88,7 +88,7 @@ func (dst *PublicPropertyAssociationFilterBranchFilterBranchesInner) UnmarshalJS
 	var err error
 	match := 0
 	// try to unmarshal data into PublicAndFilterBranch
-	err = newStrictDecoder(data).Decode(&dst.PublicAndFilterBranch)
+	err = json.Unmarshal(data, &dst.PublicAndFilterBranch)
 	if err == nil {
 		jsonPublicAndFilterBranch, _ := json.Marshal(dst.PublicAndFilterBranch)
 		if string(jsonPublicAndFilterBranch) == "{}" { // empty struct
@@ -101,7 +101,7 @@ func (dst *PublicPropertyAssociationFilterBranchFilterBranchesInner) UnmarshalJS
 	}
 
 	// try to unmarshal data into PublicAssociationFilterBranch
-	err = newStrictDecoder(data).Decode(&dst.PublicAssociationFilterBranch)
+	err = json.Unmarshal(data, &dst.PublicAssociationFilterBranch)
 	if err == nil {
 		jsonPublicAssociationFilterBranch, _ := json.Marshal(dst.PublicAssociationFilterBranch)
 		if string(jsonPublicAssociationFilterBranch) == "{}" { // empty struct
@@ -114,7 +114,7 @@ func (dst *PublicPropertyAssociationFilterBranchFilterBranchesInner) UnmarshalJS
 	}
 
 	// try to unmarshal data into PublicNotAllFilterBranch
-	err = newStrictDecoder(data).Decode(&dst.PublicNotAllFilterBranch)
+	err = json.Unmarshal(data, &dst.PublicNotAllFilterBranch)
 	if err == nil {
 		jsonPublicNotAllFilterBranch, _ := json.Marshal(dst.PublicNotAllFilterBranch)
 		if string(jsonPublicNotAllFilterBranch) == "{}" { // empty struct
@@ -127,7 +127,7 @@ func (dst *PublicPropertyAssociationFilterBranchFilterBranchesInner) UnmarshalJS
 	}
 
 	// try to unmarshal data into PublicNotAnyFilterBranch
-	err = newStrictDecoder(data).Decode(&dst.PublicNotAnyFilterBranch)
+	err = json.Unmarshal(data, &dst.PublicNotAnyFilterBranch)
 	if err == nil {
 		jsonPublicNotAnyFilterBranch, _ := json.Marshal(dst.PublicNotAnyFilterBranch)
 		if string(jsonPublicNotAnyFilterBranch) == "{}" { // empty struct
@@ -140,7 +140,7 @@ func (dst *PublicPropertyAssociationFilterBranchFilterBranchesInner) UnmarshalJS
 	}
 
 	// try to unmarshal data into PublicOrFilterBranch
-	err = newStrictDecoder(data).Decode(&dst.PublicOrFilterBranch)
+	err = json.Unmarshal(data, &dst.PublicOrFilterBranch)
 	if err == nil {
 		jsonPublicOrFilterBranch, _ := json.Marshal(dst.PublicOrFilterBranch)
 		if string(jsonPublicOrFilterBranch) == "{}" { // empty struct
@@ -153,7 +153,7 @@ func (dst *PublicPropertyAssociationFilterBranchFilterBranchesInner) UnmarshalJS
 	}
 
 	// try to unmarshal data into PublicPropertyAssociationFilterBranch
-	err = newStrictDecoder(data).Decode(&dst.PublicPropertyAssociationFilterBranch)
+	err = json.Unmarshal(data, &dst.PublicPropertyAssociationFilterBranch)
 	if err == nil {
 		jsonPublicPropertyAssociationFilterBranch, _ := json.Marshal(dst.PublicPropertyAssociationFilterBranch)
 		if string(jsonPublicPropertyAssociationFilterBranch) == "{}" { // empty struct
@@ -166,7 +166,7 @@ func (dst *PublicPropertyAssociationFilterBranchFilterBranchesInner) UnmarshalJS
 	}
 
 	// try to unmarshal data into PublicRestrictedFilterBranch
-	err = newStrictDecoder(data).Decode(&dst.PublicRestrictedFilterBranch)
+	err = json.Unmarshal(data, &dst.PublicRestrictedFilterBranch)
 	if err == nil {
 		jsonPublicRestrictedFilterBranch, _ := json.Marshal(dst.PublicRestrictedFilterBranch)
 		if string(jsonPublicRestrictedFilterBranch) == "{}" { // empty struct
@@ -179,7 +179,7 @@ func (dst *PublicPropertyAssociationFilterBranchFilterBranchesInner) UnmarshalJS
 	}
 
 	// try to unmarshal data into PublicUnifiedEventsFilterBranch
-	err = newStrictDecoder(data).Decode(&dst.PublicUnifiedEventsFilterBranch)
+	err = json.Unmarshal(data, &dst.PublicUnifiedEventsFilterBranch)
 	if err == nil {
 		jsonPublicUnifiedEventsFilterBranch, _ := json.Marshal(dst.PublicUnifiedEventsFilterBranch)
 		if string(jsonPublicUnifiedEventsFilterBranch) == "{}" { // empty struct

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,6 +29,7 @@ type PublicRangedTimeOperation struct {
 	LowerBoundTimePoint          PublicTimePointOperationTimePoint `json:"lowerBoundTimePoint"`
 	UpperBoundTimePoint          PublicTimePointOperationTimePoint `json:"upperBoundTimePoint"`
 	OperationType                string                            `json:"operationType"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicRangedTimeOperation PublicRangedTimeOperation
@@ -324,6 +324,11 @@ func (o PublicRangedTimeOperation) ToMap() (map[string]interface{}, error) {
 	toSerialize["lowerBoundTimePoint"] = o.LowerBoundTimePoint
 	toSerialize["upperBoundTimePoint"] = o.UpperBoundTimePoint
 	toSerialize["operationType"] = o.OperationType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -356,15 +361,28 @@ func (o *PublicRangedTimeOperation) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicRangedTimeOperation := _PublicRangedTimeOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicRangedTimeOperation)
+	err = json.Unmarshal(data, &varPublicRangedTimeOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicRangedTimeOperation(varPublicRangedTimeOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "lowerBoundEndpointBehavior")
+		delete(additionalProperties, "upperBoundEndpointBehavior")
+		delete(additionalProperties, "propertyParser")
+		delete(additionalProperties, "lowerBoundTimePoint")
+		delete(additionalProperties, "upperBoundTimePoint")
+		delete(additionalProperties, "operationType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

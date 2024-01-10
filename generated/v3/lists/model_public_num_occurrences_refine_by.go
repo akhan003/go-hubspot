@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicNumOccurrencesRefineBy{}
 
 // PublicNumOccurrencesRefineBy struct for PublicNumOccurrencesRefineBy
 type PublicNumOccurrencesRefineBy struct {
-	Type           string `json:"type"`
-	MinOccurrences *int32 `json:"minOccurrences,omitempty"`
-	MaxOccurrences *int32 `json:"maxOccurrences,omitempty"`
+	Type                 string `json:"type"`
+	MinOccurrences       *int32 `json:"minOccurrences,omitempty"`
+	MaxOccurrences       *int32 `json:"maxOccurrences,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicNumOccurrencesRefineBy PublicNumOccurrencesRefineBy
@@ -153,6 +153,11 @@ func (o PublicNumOccurrencesRefineBy) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.MaxOccurrences) {
 		toSerialize["maxOccurrences"] = o.MaxOccurrences
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -180,15 +185,22 @@ func (o *PublicNumOccurrencesRefineBy) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicNumOccurrencesRefineBy := _PublicNumOccurrencesRefineBy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicNumOccurrencesRefineBy)
+	err = json.Unmarshal(data, &varPublicNumOccurrencesRefineBy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicNumOccurrencesRefineBy(varPublicNumOccurrencesRefineBy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "minOccurrences")
+		delete(additionalProperties, "maxOccurrences")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

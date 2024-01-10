@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,6 +26,7 @@ type PublicDatePropertyOperation struct {
 	Year                         int32  `json:"year"`
 	Month                        string `json:"month"`
 	Day                          int32  `json:"day"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicDatePropertyOperation PublicDatePropertyOperation
@@ -216,6 +216,11 @@ func (o PublicDatePropertyOperation) ToMap() (map[string]interface{}, error) {
 	toSerialize["year"] = o.Year
 	toSerialize["month"] = o.Month
 	toSerialize["day"] = o.Day
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -248,15 +253,25 @@ func (o *PublicDatePropertyOperation) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicDatePropertyOperation := _PublicDatePropertyOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicDatePropertyOperation)
+	err = json.Unmarshal(data, &varPublicDatePropertyOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicDatePropertyOperation(varPublicDatePropertyOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "year")
+		delete(additionalProperties, "month")
+		delete(additionalProperties, "day")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

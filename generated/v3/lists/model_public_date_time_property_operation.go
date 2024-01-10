@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,6 +25,7 @@ type PublicDateTimePropertyOperation struct {
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	RequiresTimeZoneConversion   bool   `json:"requiresTimeZoneConversion"`
 	Timestamp                    int32  `json:"timestamp"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicDateTimePropertyOperation PublicDateTimePropertyOperation
@@ -189,6 +189,11 @@ func (o PublicDateTimePropertyOperation) ToMap() (map[string]interface{}, error)
 	toSerialize["includeObjectsWithNoValueSet"] = o.IncludeObjectsWithNoValueSet
 	toSerialize["requiresTimeZoneConversion"] = o.RequiresTimeZoneConversion
 	toSerialize["timestamp"] = o.Timestamp
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -220,15 +225,24 @@ func (o *PublicDateTimePropertyOperation) UnmarshalJSON(data []byte) (err error)
 
 	varPublicDateTimePropertyOperation := _PublicDateTimePropertyOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicDateTimePropertyOperation)
+	err = json.Unmarshal(data, &varPublicDateTimePropertyOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicDateTimePropertyOperation(varPublicDateTimePropertyOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "requiresTimeZoneConversion")
+		delete(additionalProperties, "timestamp")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,11 +20,12 @@ var _ MappedNullable = &PublicPropertyReferencedTime{}
 
 // PublicPropertyReferencedTime struct for PublicPropertyReferencedTime
 type PublicPropertyReferencedTime struct {
-	TimeType       string  `json:"timeType"`
-	TimezoneSource *string `json:"timezoneSource,omitempty"`
-	ZoneId         string  `json:"zoneId"`
-	Property       string  `json:"property"`
-	ReferenceType  string  `json:"referenceType"`
+	TimeType             string  `json:"timeType"`
+	TimezoneSource       *string `json:"timezoneSource,omitempty"`
+	ZoneId               string  `json:"zoneId"`
+	Property             string  `json:"property"`
+	ReferenceType        string  `json:"referenceType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicPropertyReferencedTime PublicPropertyReferencedTime
@@ -198,6 +198,11 @@ func (o PublicPropertyReferencedTime) ToMap() (map[string]interface{}, error) {
 	toSerialize["zoneId"] = o.ZoneId
 	toSerialize["property"] = o.Property
 	toSerialize["referenceType"] = o.ReferenceType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -228,15 +233,24 @@ func (o *PublicPropertyReferencedTime) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicPropertyReferencedTime := _PublicPropertyReferencedTime{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicPropertyReferencedTime)
+	err = json.Unmarshal(data, &varPublicPropertyReferencedTime)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicPropertyReferencedTime(varPublicPropertyReferencedTime)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "timeType")
+		delete(additionalProperties, "timezoneSource")
+		delete(additionalProperties, "zoneId")
+		delete(additionalProperties, "property")
+		delete(additionalProperties, "referenceType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

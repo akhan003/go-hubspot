@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicPropertyFilter{}
 
 // PublicPropertyFilter struct for PublicPropertyFilter
 type PublicPropertyFilter struct {
-	FilterType string                        `json:"filterType"`
-	Property   string                        `json:"property"`
-	Operation  PublicPropertyFilterOperation `json:"operation"`
+	FilterType           string                        `json:"filterType"`
+	Property             string                        `json:"property"`
+	Operation            PublicPropertyFilterOperation `json:"operation"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicPropertyFilter PublicPropertyFilter
@@ -135,6 +135,11 @@ func (o PublicPropertyFilter) ToMap() (map[string]interface{}, error) {
 	toSerialize["filterType"] = o.FilterType
 	toSerialize["property"] = o.Property
 	toSerialize["operation"] = o.Operation
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *PublicPropertyFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicPropertyFilter := _PublicPropertyFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicPropertyFilter)
+	err = json.Unmarshal(data, &varPublicPropertyFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicPropertyFilter(varPublicPropertyFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "property")
+		delete(additionalProperties, "operation")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

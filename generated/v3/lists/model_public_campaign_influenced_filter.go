@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &PublicCampaignInfluencedFilter{}
 
 // PublicCampaignInfluencedFilter struct for PublicCampaignInfluencedFilter
 type PublicCampaignInfluencedFilter struct {
-	FilterType string `json:"filterType"`
-	CampaignId string `json:"campaignId"`
+	FilterType           string `json:"filterType"`
+	CampaignId           string `json:"campaignId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicCampaignInfluencedFilter PublicCampaignInfluencedFilter
@@ -108,6 +108,11 @@ func (o PublicCampaignInfluencedFilter) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["filterType"] = o.FilterType
 	toSerialize["campaignId"] = o.CampaignId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *PublicCampaignInfluencedFilter) UnmarshalJSON(data []byte) (err error) 
 
 	varPublicCampaignInfluencedFilter := _PublicCampaignInfluencedFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicCampaignInfluencedFilter)
+	err = json.Unmarshal(data, &varPublicCampaignInfluencedFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicCampaignInfluencedFilter(varPublicCampaignInfluencedFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "campaignId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

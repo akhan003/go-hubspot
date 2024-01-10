@@ -79,19 +79,19 @@ All URIs are relative to *https://api.hubapi.com*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *ListsAPI* | [**Create**](docs/ListsAPI.md#create) | **Post** /crm/v3/lists/ | Create List
-*ListsAPI* | [**GetCrmV3ListsGetAll**](docs/ListsAPI.md#getcrmv3listsgetall) | **Get** /crm/v3/lists/ | Fetch Multiple Lists
-*ListsAPI* | [**GetCrmV3ListsListIdGetById**](docs/ListsAPI.md#getcrmv3listslistidgetbyid) | **Get** /crm/v3/lists/{listId} | Fetch List by ID
-*ListsAPI* | [**GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName**](docs/ListsAPI.md#getcrmv3listsobjecttypeidobjecttypeidnamelistnamegetbyname) | **Get** /crm/v3/lists/object-type-id/{objectTypeId}/name/{listName} | Fetch List by Name
-*ListsAPI* | [**PostCrmV3ListsSearchDoSearch**](docs/ListsAPI.md#postcrmv3listssearchdosearch) | **Post** /crm/v3/lists/search | Search Lists
-*ListsAPI* | [**PutCrmV3ListsListIdRestoreRestore**](docs/ListsAPI.md#putcrmv3listslistidrestorerestore) | **Put** /crm/v3/lists/{listId}/restore | Restore a List
-*ListsAPI* | [**PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters**](docs/ListsAPI.md#putcrmv3listslistidupdatelistfiltersupdatelistfilters) | **Put** /crm/v3/lists/{listId}/update-list-filters | Update List Filter Definition
+*ListsAPI* | [**DoSearch**](docs/ListsAPI.md#dosearch) | **Post** /crm/v3/lists/search | Search Lists
+*ListsAPI* | [**GetAll**](docs/ListsAPI.md#getall) | **Get** /crm/v3/lists/ | Fetch Multiple Lists
+*ListsAPI* | [**GetById**](docs/ListsAPI.md#getbyid) | **Get** /crm/v3/lists/{listId} | Fetch List by ID
+*ListsAPI* | [**GetByName**](docs/ListsAPI.md#getbyname) | **Get** /crm/v3/lists/object-type-id/{objectTypeId}/name/{listName} | Fetch List by Name
 *ListsAPI* | [**Remove**](docs/ListsAPI.md#remove) | **Delete** /crm/v3/lists/{listId} | Delete a List
+*ListsAPI* | [**Restore**](docs/ListsAPI.md#restore) | **Put** /crm/v3/lists/{listId}/restore | Restore a List
+*ListsAPI* | [**UpdateListFilters**](docs/ListsAPI.md#updatelistfilters) | **Put** /crm/v3/lists/{listId}/update-list-filters | Update List Filter Definition
 *ListsAPI* | [**UpdateName**](docs/ListsAPI.md#updatename) | **Put** /crm/v3/lists/{listId}/update-list-name | Update List Name
+*MembershipsAPI* | [**AddAllFromList**](docs/MembershipsAPI.md#addallfromlist) | **Put** /crm/v3/lists/{listId}/memberships/add-from/{sourceListId} | Add All Records from a Source List to a Destination List
 *MembershipsAPI* | [**AddAndRemoveMemberships**](docs/MembershipsAPI.md#addandremovememberships) | **Put** /crm/v3/lists/{listId}/memberships/add-and-remove | Add and/or Remove Records from a List
 *MembershipsAPI* | [**AddMemberships**](docs/MembershipsAPI.md#addmemberships) | **Put** /crm/v3/lists/{listId}/memberships/add | Add Records to a List
-*MembershipsAPI* | [**DeleteCrmV3ListsListIdMembershipsRemoveAll**](docs/MembershipsAPI.md#deletecrmv3listslistidmembershipsremoveall) | **Delete** /crm/v3/lists/{listId}/memberships | Delete All Records from a List
-*MembershipsAPI* | [**GetCrmV3ListsListIdMembershipsGetPage**](docs/MembershipsAPI.md#getcrmv3listslistidmembershipsgetpage) | **Get** /crm/v3/lists/{listId}/memberships | Fetch List Memberships Ordered by ID
-*MembershipsAPI* | [**PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList**](docs/MembershipsAPI.md#putcrmv3listslistidmembershipsaddfromsourcelistidaddallfromlist) | **Put** /crm/v3/lists/{listId}/memberships/add-from/{sourceListId} | Add All Records from a Source List to a Destination List
+*MembershipsAPI* | [**GetPage**](docs/MembershipsAPI.md#getpage) | **Get** /crm/v3/lists/{listId}/memberships | Fetch List Memberships Ordered by ID
+*MembershipsAPI* | [**RemoveAll**](docs/MembershipsAPI.md#removeall) | **Delete** /crm/v3/lists/{listId}/memberships | Delete All Records from a List
 *MembershipsAPI* | [**RemoveMemberships**](docs/MembershipsAPI.md#removememberships) | **Put** /crm/v3/lists/{listId}/memberships/remove | Remove Records from a List
 
 

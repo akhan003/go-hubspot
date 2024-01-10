@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &PublicAdsTimeFilter{}
 
 // PublicAdsTimeFilter struct for PublicAdsTimeFilter
 type PublicAdsTimeFilter struct {
-	FilterType      string                                       `json:"filterType"`
-	PruningRefineBy PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy"`
+	FilterType           string                                       `json:"filterType"`
+	PruningRefineBy      PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicAdsTimeFilter PublicAdsTimeFilter
@@ -108,6 +108,11 @@ func (o PublicAdsTimeFilter) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["filterType"] = o.FilterType
 	toSerialize["pruningRefineBy"] = o.PruningRefineBy
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *PublicAdsTimeFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicAdsTimeFilter := _PublicAdsTimeFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicAdsTimeFilter)
+	err = json.Unmarshal(data, &varPublicAdsTimeFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicAdsTimeFilter(varPublicAdsTimeFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "pruningRefineBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

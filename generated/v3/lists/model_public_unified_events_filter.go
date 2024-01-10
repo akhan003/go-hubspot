@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,11 +20,12 @@ var _ MappedNullable = &PublicUnifiedEventsFilter{}
 
 // PublicUnifiedEventsFilter struct for PublicUnifiedEventsFilter
 type PublicUnifiedEventsFilter struct {
-	FilterType         string                                        `json:"filterType"`
-	PruningRefineBy    *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
-	CoalescingRefineBy *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
-	EventTypeId        *string                                       `json:"eventTypeId,omitempty"`
-	FilterLines        []PublicEventFilterMetadata                   `json:"filterLines"`
+	FilterType           string                                        `json:"filterType"`
+	PruningRefineBy      *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
+	CoalescingRefineBy   *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
+	EventTypeId          *string                                       `json:"eventTypeId,omitempty"`
+	FilterLines          []PublicEventFilterMetadata                   `json:"filterLines"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicUnifiedEventsFilter PublicUnifiedEventsFilter
@@ -216,6 +216,11 @@ func (o PublicUnifiedEventsFilter) ToMap() (map[string]interface{}, error) {
 		toSerialize["eventTypeId"] = o.EventTypeId
 	}
 	toSerialize["filterLines"] = o.FilterLines
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -244,15 +249,24 @@ func (o *PublicUnifiedEventsFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicUnifiedEventsFilter := _PublicUnifiedEventsFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicUnifiedEventsFilter)
+	err = json.Unmarshal(data, &varPublicUnifiedEventsFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicUnifiedEventsFilter(varPublicUnifiedEventsFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "pruningRefineBy")
+		delete(additionalProperties, "coalescingRefineBy")
+		delete(additionalProperties, "eventTypeId")
+		delete(additionalProperties, "filterLines")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

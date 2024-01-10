@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,6 +26,7 @@ type PublicUnifiedEventsFilterBranch struct {
 	EventTypeId          string                                                     `json:"eventTypeId"`
 	Operator             string                                                     `json:"operator"`
 	FilterBranchOperator string                                                     `json:"filterBranchOperator"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicUnifiedEventsFilterBranch PublicUnifiedEventsFilterBranch
@@ -216,6 +216,11 @@ func (o PublicUnifiedEventsFilterBranch) ToMap() (map[string]interface{}, error)
 	toSerialize["eventTypeId"] = o.EventTypeId
 	toSerialize["operator"] = o.Operator
 	toSerialize["filterBranchOperator"] = o.FilterBranchOperator
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -248,15 +253,25 @@ func (o *PublicUnifiedEventsFilterBranch) UnmarshalJSON(data []byte) (err error)
 
 	varPublicUnifiedEventsFilterBranch := _PublicUnifiedEventsFilterBranch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicUnifiedEventsFilterBranch)
+	err = json.Unmarshal(data, &varPublicUnifiedEventsFilterBranch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicUnifiedEventsFilterBranch(varPublicUnifiedEventsFilterBranch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterBranchType")
+		delete(additionalProperties, "filterBranches")
+		delete(additionalProperties, "filters")
+		delete(additionalProperties, "eventTypeId")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "filterBranchOperator")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

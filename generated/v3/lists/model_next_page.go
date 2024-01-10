@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type NextPage struct {
 	// A direct link to the request for the next page of records.
 	Link *string `json:"link,omitempty"`
 	// The offset for the next page of records.
-	After string `json:"after"`
+	After                string `json:"after"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NextPage NextPage
@@ -117,6 +117,11 @@ func (o NextPage) ToMap() (map[string]interface{}, error) {
 		toSerialize["link"] = o.Link
 	}
 	toSerialize["after"] = o.After
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *NextPage) UnmarshalJSON(data []byte) (err error) {
 
 	varNextPage := _NextPage{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNextPage)
+	err = json.Unmarshal(data, &varNextPage)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NextPage(varNextPage)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "link")
+		delete(additionalProperties, "after")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &PublicInListFilterMetadata{}
 
 // PublicInListFilterMetadata struct for PublicInListFilterMetadata
 type PublicInListFilterMetadata struct {
-	Id         string `json:"id"`
-	InListType string `json:"inListType"`
+	Id                   string `json:"id"`
+	InListType           string `json:"inListType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicInListFilterMetadata PublicInListFilterMetadata
@@ -106,6 +106,11 @@ func (o PublicInListFilterMetadata) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["inListType"] = o.InListType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *PublicInListFilterMetadata) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicInListFilterMetadata := _PublicInListFilterMetadata{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicInListFilterMetadata)
+	err = json.Unmarshal(data, &varPublicInListFilterMetadata)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicInListFilterMetadata(varPublicInListFilterMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "inListType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

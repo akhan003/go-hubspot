@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,14 +20,15 @@ var _ MappedNullable = &PublicAssociationInListFilter{}
 
 // PublicAssociationInListFilter struct for PublicAssociationInListFilter
 type PublicAssociationInListFilter struct {
-	FilterType          string                                       `json:"filterType"`
-	CoalescingRefineBy  PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy"`
-	Operator            string                                       `json:"operator"`
-	ListId              int32                                        `json:"listId"`
-	ToObjectTypeId      *string                                      `json:"toObjectTypeId,omitempty"`
-	AssociationTypeId   int32                                        `json:"associationTypeId"`
-	AssociationCategory string                                       `json:"associationCategory"`
-	ToObjectType        *string                                      `json:"toObjectType,omitempty"`
+	FilterType           string                                       `json:"filterType"`
+	CoalescingRefineBy   PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy"`
+	Operator             string                                       `json:"operator"`
+	ListId               int32                                        `json:"listId"`
+	ToObjectTypeId       *string                                      `json:"toObjectTypeId,omitempty"`
+	AssociationTypeId    int32                                        `json:"associationTypeId"`
+	AssociationCategory  string                                       `json:"associationCategory"`
+	ToObjectType         *string                                      `json:"toObjectType,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicAssociationInListFilter PublicAssociationInListFilter
@@ -288,6 +288,11 @@ func (o PublicAssociationInListFilter) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ToObjectType) {
 		toSerialize["toObjectType"] = o.ToObjectType
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -320,15 +325,27 @@ func (o *PublicAssociationInListFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicAssociationInListFilter := _PublicAssociationInListFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicAssociationInListFilter)
+	err = json.Unmarshal(data, &varPublicAssociationInListFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicAssociationInListFilter(varPublicAssociationInListFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "coalescingRefineBy")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "listId")
+		delete(additionalProperties, "toObjectTypeId")
+		delete(additionalProperties, "associationTypeId")
+		delete(additionalProperties, "associationCategory")
+		delete(additionalProperties, "toObjectType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

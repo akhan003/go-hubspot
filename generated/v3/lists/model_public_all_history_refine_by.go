@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &PublicAllHistoryRefineBy{}
 
 // PublicAllHistoryRefineBy struct for PublicAllHistoryRefineBy
 type PublicAllHistoryRefineBy struct {
-	Type string `json:"type"`
+	Type                 string `json:"type"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicAllHistoryRefineBy PublicAllHistoryRefineBy
@@ -81,6 +81,11 @@ func (o PublicAllHistoryRefineBy) MarshalJSON() ([]byte, error) {
 func (o PublicAllHistoryRefineBy) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -108,15 +113,20 @@ func (o *PublicAllHistoryRefineBy) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicAllHistoryRefineBy := _PublicAllHistoryRefineBy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicAllHistoryRefineBy)
+	err = json.Unmarshal(data, &varPublicAllHistoryRefineBy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicAllHistoryRefineBy(varPublicAllHistoryRefineBy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

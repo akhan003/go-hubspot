@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type ErrorDetail struct {
 	// Context about the error condition
 	Context *map[string][]string `json:"context,omitempty"`
 	// A human readable message describing the error along with remediation steps where appropriate
-	Message string `json:"message"`
+	Message              string `json:"message"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ErrorDetail ErrorDetail
@@ -228,6 +228,11 @@ func (o ErrorDetail) ToMap() (map[string]interface{}, error) {
 		toSerialize["context"] = o.Context
 	}
 	toSerialize["message"] = o.Message
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -255,15 +260,24 @@ func (o *ErrorDetail) UnmarshalJSON(data []byte) (err error) {
 
 	varErrorDetail := _ErrorDetail{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varErrorDetail)
+	err = json.Unmarshal(data, &varErrorDetail)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ErrorDetail(varErrorDetail)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "subCategory")
+		delete(additionalProperties, "code")
+		delete(additionalProperties, "in")
+		delete(additionalProperties, "context")
+		delete(additionalProperties, "message")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

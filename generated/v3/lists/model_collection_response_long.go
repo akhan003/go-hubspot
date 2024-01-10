@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -23,7 +22,8 @@ var _ MappedNullable = &CollectionResponseLong{}
 type CollectionResponseLong struct {
 	Paging *Paging `json:"paging,omitempty"`
 	// The record IDs for the requested page of memberships.
-	Results []int64 `json:"results"`
+	Results              []int64 `json:"results"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CollectionResponseLong CollectionResponseLong
@@ -116,6 +116,11 @@ func (o CollectionResponseLong) ToMap() (map[string]interface{}, error) {
 		toSerialize["paging"] = o.Paging
 	}
 	toSerialize["results"] = o.Results
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -143,15 +148,21 @@ func (o *CollectionResponseLong) UnmarshalJSON(data []byte) (err error) {
 
 	varCollectionResponseLong := _CollectionResponseLong{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCollectionResponseLong)
+	err = json.Unmarshal(data, &varCollectionResponseLong)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CollectionResponseLong(varCollectionResponseLong)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "paging")
+		delete(additionalProperties, "results")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,16 +20,17 @@ var _ MappedNullable = &PublicDatePoint{}
 
 // PublicDatePoint struct for PublicDatePoint
 type PublicDatePoint struct {
-	TimeType       string  `json:"timeType"`
-	TimezoneSource *string `json:"timezoneSource,omitempty"`
-	ZoneId         string  `json:"zoneId"`
-	Year           int32   `json:"year"`
-	Month          int32   `json:"month"`
-	Day            int32   `json:"day"`
-	Hour           *int32  `json:"hour,omitempty"`
-	Minute         *int32  `json:"minute,omitempty"`
-	Second         *int32  `json:"second,omitempty"`
-	Millisecond    *int32  `json:"millisecond,omitempty"`
+	TimeType             string  `json:"timeType"`
+	TimezoneSource       *string `json:"timezoneSource,omitempty"`
+	ZoneId               string  `json:"zoneId"`
+	Year                 int32   `json:"year"`
+	Month                int32   `json:"month"`
+	Day                  int32   `json:"day"`
+	Hour                 *int32  `json:"hour,omitempty"`
+	Minute               *int32  `json:"minute,omitempty"`
+	Second               *int32  `json:"second,omitempty"`
+	Millisecond          *int32  `json:"millisecond,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicDatePoint PublicDatePoint
@@ -369,6 +369,11 @@ func (o PublicDatePoint) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Millisecond) {
 		toSerialize["millisecond"] = o.Millisecond
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -400,15 +405,29 @@ func (o *PublicDatePoint) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicDatePoint := _PublicDatePoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicDatePoint)
+	err = json.Unmarshal(data, &varPublicDatePoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicDatePoint(varPublicDatePoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "timeType")
+		delete(additionalProperties, "timezoneSource")
+		delete(additionalProperties, "zoneId")
+		delete(additionalProperties, "year")
+		delete(additionalProperties, "month")
+		delete(additionalProperties, "day")
+		delete(additionalProperties, "hour")
+		delete(additionalProperties, "minute")
+		delete(additionalProperties, "second")
+		delete(additionalProperties, "millisecond")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

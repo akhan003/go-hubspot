@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type PreviousPage struct {
 	// The offset of the previous page of records.
 	Before string `json:"before"`
 	// A direct link to the request for the previous page of records.
-	Link *string `json:"link,omitempty"`
+	Link                 *string `json:"link,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PreviousPage PreviousPage
@@ -117,6 +117,11 @@ func (o PreviousPage) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Link) {
 		toSerialize["link"] = o.Link
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *PreviousPage) UnmarshalJSON(data []byte) (err error) {
 
 	varPreviousPage := _PreviousPage{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPreviousPage)
+	err = json.Unmarshal(data, &varPreviousPage)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PreviousPage(varPreviousPage)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "before")
+		delete(additionalProperties, "link")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

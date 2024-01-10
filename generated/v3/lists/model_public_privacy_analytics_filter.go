@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicPrivacyAnalyticsFilter{}
 
 // PublicPrivacyAnalyticsFilter struct for PublicPrivacyAnalyticsFilter
 type PublicPrivacyAnalyticsFilter struct {
-	FilterType  string `json:"filterType"`
-	PrivacyName string `json:"privacyName"`
-	Operator    string `json:"operator"`
+	FilterType           string `json:"filterType"`
+	PrivacyName          string `json:"privacyName"`
+	Operator             string `json:"operator"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicPrivacyAnalyticsFilter PublicPrivacyAnalyticsFilter
@@ -135,6 +135,11 @@ func (o PublicPrivacyAnalyticsFilter) ToMap() (map[string]interface{}, error) {
 	toSerialize["filterType"] = o.FilterType
 	toSerialize["privacyName"] = o.PrivacyName
 	toSerialize["operator"] = o.Operator
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *PublicPrivacyAnalyticsFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicPrivacyAnalyticsFilter := _PublicPrivacyAnalyticsFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicPrivacyAnalyticsFilter)
+	err = json.Unmarshal(data, &varPublicPrivacyAnalyticsFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicPrivacyAnalyticsFilter(varPublicPrivacyAnalyticsFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "privacyName")
+		delete(additionalProperties, "operator")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

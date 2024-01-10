@@ -11,10 +11,10 @@ package lists
 
 import (
 	"context"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func Test_lists_MembershipsAPIService(t *testing.T) {
@@ -22,82 +22,82 @@ func Test_lists_MembershipsAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test MembershipsAPIService DeleteCrmV3ListsListIdMembershipsRemoveAll", func(t *testing.T) {
+	t.Run("Test MembershipsAPIService AddAllFromList", func(t *testing.T) {
 
-		t.Skip("skip test") // remove to run test
-
-		var listId int32
-
-		httpRes, err := apiClient.MembershipsAPI.DeleteCrmV3ListsListIdMembershipsRemoveAll(context.Background(), listId).Execute()
-
-		require.Nil(t, err)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test MembershipsAPIService GetCrmV3ListsListIdMembershipsGetPage", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var listId int32
-
-		resp, httpRes, err := apiClient.MembershipsAPI.GetCrmV3ListsListIdMembershipsGetPage(context.Background(), listId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test MembershipsAPIService PutCrmV3ListsListIdMembershipsAddAdd", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var listId int32
-
-		resp, httpRes, err := apiClient.MembershipsAPI.PutCrmV3ListsListIdMembershipsAddAdd(context.Background(), listId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test MembershipsAPIService PutCrmV3ListsListIdMembershipsAddAndRemoveAddAndRemove", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
-
-		var listId int32
-
-		resp, httpRes, err := apiClient.MembershipsAPI.PutCrmV3ListsListIdMembershipsAddAndRemoveAddAndRemove(context.Background(), listId).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test MembershipsAPIService PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList", func(t *testing.T) {
-
-		t.Skip("skip test") // remove to run test
+		t.Skip("skip test")  // remove to run test
 
 		var listId int32
 		var sourceListId int32
 
-		httpRes, err := apiClient.MembershipsAPI.PutCrmV3ListsListIdMembershipsAddFromSourceListIdAddAllFromList(context.Background(), listId, sourceListId).Execute()
+		httpRes, err := apiClient.MembershipsAPI.AddAllFromList(context.Background(), listId, sourceListId).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
 
 	})
 
-	t.Run("Test MembershipsAPIService PutCrmV3ListsListIdMembershipsRemoveRemove", func(t *testing.T) {
+	t.Run("Test MembershipsAPIService AddAndRemoveMemberships", func(t *testing.T) {
 
-		t.Skip("skip test") // remove to run test
+		t.Skip("skip test")  // remove to run test
 
 		var listId int32
 
-		resp, httpRes, err := apiClient.MembershipsAPI.PutCrmV3ListsListIdMembershipsRemoveRemove(context.Background(), listId).Execute()
+		resp, httpRes, err := apiClient.MembershipsAPI.AddAndRemoveMemberships(context.Background(), listId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test MembershipsAPIService AddMemberships", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var listId int32
+
+		resp, httpRes, err := apiClient.MembershipsAPI.AddMemberships(context.Background(), listId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test MembershipsAPIService GetPage", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var listId int32
+
+		resp, httpRes, err := apiClient.MembershipsAPI.GetPage(context.Background(), listId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test MembershipsAPIService RemoveAll", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var listId int32
+
+		httpRes, err := apiClient.MembershipsAPI.RemoveAll(context.Background(), listId).Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test MembershipsAPIService RemoveMemberships", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var listId int32
+
+		resp, httpRes, err := apiClient.MembershipsAPI.RemoveMemberships(context.Background(), listId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

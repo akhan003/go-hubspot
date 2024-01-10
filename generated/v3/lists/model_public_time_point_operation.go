@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,6 +27,7 @@ type PublicTimePointOperation struct {
 	EndpointBehavior             *string                           `json:"endpointBehavior,omitempty"`
 	PropertyParser               *string                           `json:"propertyParser,omitempty"`
 	Type                         string                            `json:"type"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicTimePointOperation PublicTimePointOperation
@@ -261,6 +261,11 @@ func (o PublicTimePointOperation) ToMap() (map[string]interface{}, error) {
 		toSerialize["propertyParser"] = o.PropertyParser
 	}
 	toSerialize["type"] = o.Type
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -292,15 +297,26 @@ func (o *PublicTimePointOperation) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicTimePointOperation := _PublicTimePointOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicTimePointOperation)
+	err = json.Unmarshal(data, &varPublicTimePointOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicTimePointOperation(varPublicTimePointOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "timePoint")
+		delete(additionalProperties, "endpointBehavior")
+		delete(additionalProperties, "propertyParser")
+		delete(additionalProperties, "type")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -23,18 +23,18 @@ import (
 // ListsAPIService ListsAPI service
 type ListsAPIService service
 
-type ApiCreateRequest struct {
+type ListsAPICreateRequest struct {
 	ctx               context.Context
 	ApiService        *ListsAPIService
 	listCreateRequest *ListCreateRequest
 }
 
-func (r ApiCreateRequest) ListCreateRequest(listCreateRequest ListCreateRequest) ApiCreateRequest {
+func (r ListsAPICreateRequest) ListCreateRequest(listCreateRequest ListCreateRequest) ListsAPICreateRequest {
 	r.listCreateRequest = &listCreateRequest
 	return r
 }
 
-func (r ApiCreateRequest) Execute() (*ListCreateResponse, *http.Response, error) {
+func (r ListsAPICreateRequest) Execute() (*ListCreateResponse, *http.Response, error) {
 	return r.ApiService.CreateExecute(r)
 }
 
@@ -44,10 +44,10 @@ Create Create List
 Create a new list with the provided object list definition.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiCreateRequest
+	@return ListsAPICreateRequest
 */
-func (a *ListsAPIService) Create(ctx context.Context) ApiCreateRequest {
-	return ApiCreateRequest{
+func (a *ListsAPIService) Create(ctx context.Context) ListsAPICreateRequest {
+	return ListsAPICreateRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -56,7 +56,7 @@ func (a *ListsAPIService) Create(ctx context.Context) ApiCreateRequest {
 // Execute executes the request
 //
 //	@return ListCreateResponse
-func (a *ListsAPIService) CreateExecute(r ApiCreateRequest) (*ListCreateResponse, *http.Response, error) {
+func (a *ListsAPIService) CreateExecute(r ListsAPICreateRequest) (*ListCreateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -156,7 +156,141 @@ func (a *ListsAPIService) CreateExecute(r ApiCreateRequest) (*ListCreateResponse
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetCrmV3ListsGetAllRequest struct {
+type ListsAPIDoSearchRequest struct {
+	ctx               context.Context
+	ApiService        *ListsAPIService
+	listSearchRequest *ListSearchRequest
+}
+
+// The IDs of the records to add and/or remove from the list.
+func (r ListsAPIDoSearchRequest) ListSearchRequest(listSearchRequest ListSearchRequest) ListsAPIDoSearchRequest {
+	r.listSearchRequest = &listSearchRequest
+	return r
+}
+
+func (r ListsAPIDoSearchRequest) Execute() (*ListSearchResponse, *http.Response, error) {
+	return r.ApiService.DoSearchExecute(r)
+}
+
+/*
+DoSearch Search Lists
+
+Search lists by list name or page through all lists by providing an empty `query` value.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ListsAPIDoSearchRequest
+*/
+func (a *ListsAPIService) DoSearch(ctx context.Context) ListsAPIDoSearchRequest {
+	return ListsAPIDoSearchRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ListSearchResponse
+func (a *ListsAPIService) DoSearchExecute(r ListsAPIDoSearchRequest) (*ListSearchResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ListSearchResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.DoSearch")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/crm/v3/lists/search"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.listSearchRequest == nil {
+		return localVarReturnValue, nil, reportError("listSearchRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.listSearchRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["private_apps"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["private-app"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ListsAPIGetAllRequest struct {
 	ctx            context.Context
 	ApiService     *ListsAPIService
 	listIds        *[]int32
@@ -164,31 +298,31 @@ type ApiGetCrmV3ListsGetAllRequest struct {
 }
 
 // The **ILS IDs** of the lists to fetch.
-func (r ApiGetCrmV3ListsGetAllRequest) ListIds(listIds []int32) ApiGetCrmV3ListsGetAllRequest {
+func (r ListsAPIGetAllRequest) ListIds(listIds []int32) ListsAPIGetAllRequest {
 	r.listIds = &listIds
 	return r
 }
 
 // A flag indicating whether or not the response object list definitions should include a filter branch definition. By default, object list definitions will not have their filter branch definitions included in the response.
-func (r ApiGetCrmV3ListsGetAllRequest) IncludeFilters(includeFilters bool) ApiGetCrmV3ListsGetAllRequest {
+func (r ListsAPIGetAllRequest) IncludeFilters(includeFilters bool) ListsAPIGetAllRequest {
 	r.includeFilters = &includeFilters
 	return r
 }
 
-func (r ApiGetCrmV3ListsGetAllRequest) Execute() (*ListsByIdResponse, *http.Response, error) {
-	return r.ApiService.GetCrmV3ListsGetAllExecute(r)
+func (r ListsAPIGetAllRequest) Execute() (*ListsByIdResponse, *http.Response, error) {
+	return r.ApiService.GetAllExecute(r)
 }
 
 /*
-GetCrmV3ListsGetAll Fetch Multiple Lists
+GetAll Fetch Multiple Lists
 
 Fetch multiple lists in a single request by **ILS list ID**. The response will include the definitions of all lists that exist for the `listIds` provided.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiGetCrmV3ListsGetAllRequest
+	@return ListsAPIGetAllRequest
 */
-func (a *ListsAPIService) GetCrmV3ListsGetAll(ctx context.Context) ApiGetCrmV3ListsGetAllRequest {
-	return ApiGetCrmV3ListsGetAllRequest{
+func (a *ListsAPIService) GetAll(ctx context.Context) ListsAPIGetAllRequest {
+	return ListsAPIGetAllRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -197,7 +331,7 @@ func (a *ListsAPIService) GetCrmV3ListsGetAll(ctx context.Context) ApiGetCrmV3Li
 // Execute executes the request
 //
 //	@return ListsByIdResponse
-func (a *ListsAPIService) GetCrmV3ListsGetAllExecute(r ApiGetCrmV3ListsGetAllRequest) (*ListsByIdResponse, *http.Response, error) {
+func (a *ListsAPIService) GetAllExecute(r ListsAPIGetAllRequest) (*ListsByIdResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -205,7 +339,7 @@ func (a *ListsAPIService) GetCrmV3ListsGetAllExecute(r ApiGetCrmV3ListsGetAllReq
 		localVarReturnValue *ListsByIdResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.GetCrmV3ListsGetAll")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.GetAll")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -309,7 +443,7 @@ func (a *ListsAPIService) GetCrmV3ListsGetAllExecute(r ApiGetCrmV3ListsGetAllReq
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetCrmV3ListsListIdGetByIdRequest struct {
+type ListsAPIGetByIdRequest struct {
 	ctx            context.Context
 	ApiService     *ListsAPIService
 	listId         int32
@@ -317,26 +451,26 @@ type ApiGetCrmV3ListsListIdGetByIdRequest struct {
 }
 
 // A flag indicating whether or not the response object list definition should include a filter branch definition. By default, object list definitions will not have their filter branch definitions included in the response.
-func (r ApiGetCrmV3ListsListIdGetByIdRequest) IncludeFilters(includeFilters bool) ApiGetCrmV3ListsListIdGetByIdRequest {
+func (r ListsAPIGetByIdRequest) IncludeFilters(includeFilters bool) ListsAPIGetByIdRequest {
 	r.includeFilters = &includeFilters
 	return r
 }
 
-func (r ApiGetCrmV3ListsListIdGetByIdRequest) Execute() (*ListFetchResponse, *http.Response, error) {
-	return r.ApiService.GetCrmV3ListsListIdGetByIdExecute(r)
+func (r ListsAPIGetByIdRequest) Execute() (*ListFetchResponse, *http.Response, error) {
+	return r.ApiService.GetByIdExecute(r)
 }
 
 /*
-GetCrmV3ListsListIdGetById Fetch List by ID
+GetById Fetch List by ID
 
 Fetch a single list by **ILS list ID**.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listId The **ILS ID** of the list to fetch.
-	@return ApiGetCrmV3ListsListIdGetByIdRequest
+	@return ListsAPIGetByIdRequest
 */
-func (a *ListsAPIService) GetCrmV3ListsListIdGetById(ctx context.Context, listId int32) ApiGetCrmV3ListsListIdGetByIdRequest {
-	return ApiGetCrmV3ListsListIdGetByIdRequest{
+func (a *ListsAPIService) GetById(ctx context.Context, listId int32) ListsAPIGetByIdRequest {
+	return ListsAPIGetByIdRequest{
 		ApiService: a,
 		ctx:        ctx,
 		listId:     listId,
@@ -346,7 +480,7 @@ func (a *ListsAPIService) GetCrmV3ListsListIdGetById(ctx context.Context, listId
 // Execute executes the request
 //
 //	@return ListFetchResponse
-func (a *ListsAPIService) GetCrmV3ListsListIdGetByIdExecute(r ApiGetCrmV3ListsListIdGetByIdRequest) (*ListFetchResponse, *http.Response, error) {
+func (a *ListsAPIService) GetByIdExecute(r ListsAPIGetByIdRequest) (*ListFetchResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -354,7 +488,7 @@ func (a *ListsAPIService) GetCrmV3ListsListIdGetByIdExecute(r ApiGetCrmV3ListsLi
 		localVarReturnValue *ListFetchResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.GetCrmV3ListsListIdGetById")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.GetById")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -448,7 +582,7 @@ func (a *ListsAPIService) GetCrmV3ListsListIdGetByIdExecute(r ApiGetCrmV3ListsLi
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest struct {
+type ListsAPIGetByNameRequest struct {
 	ctx            context.Context
 	ApiService     *ListsAPIService
 	listName       string
@@ -457,27 +591,27 @@ type ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest struct
 }
 
 // A flag indicating whether or not the response object list definition should include a filter branch definition. By default, object list definitions will not have their filter branch definitions included in the response.
-func (r ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest) IncludeFilters(includeFilters bool) ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest {
+func (r ListsAPIGetByNameRequest) IncludeFilters(includeFilters bool) ListsAPIGetByNameRequest {
 	r.includeFilters = &includeFilters
 	return r
 }
 
-func (r ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest) Execute() (*ListFetchResponse, *http.Response, error) {
-	return r.ApiService.GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameExecute(r)
+func (r ListsAPIGetByNameRequest) Execute() (*ListFetchResponse, *http.Response, error) {
+	return r.ApiService.GetByNameExecute(r)
 }
 
 /*
-GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName Fetch List by Name
+GetByName Fetch List by Name
 
 Fetch a single list by list name and object type.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listName The name of the list to fetch. This is **not** case sensitive.
 	@param objectTypeId The object type ID of the object types stored by the list to fetch. For example, `0-1` for a `CONTACT` list.
-	@return ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest
+	@return ListsAPIGetByNameRequest
 */
-func (a *ListsAPIService) GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName(ctx context.Context, listName string, objectTypeId string) ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest {
-	return ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest{
+func (a *ListsAPIService) GetByName(ctx context.Context, listName string, objectTypeId string) ListsAPIGetByNameRequest {
+	return ListsAPIGetByNameRequest{
 		ApiService:   a,
 		ctx:          ctx,
 		listName:     listName,
@@ -488,7 +622,7 @@ func (a *ListsAPIService) GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetBy
 // Execute executes the request
 //
 //	@return ListFetchResponse
-func (a *ListsAPIService) GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameExecute(r ApiGetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByNameRequest) (*ListFetchResponse, *http.Response, error) {
+func (a *ListsAPIService) GetByNameExecute(r ListsAPIGetByNameRequest) (*ListFetchResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -496,7 +630,7 @@ func (a *ListsAPIService) GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetBy
 		localVarReturnValue *ListFetchResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetByName")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.GetByName")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -591,64 +725,55 @@ func (a *ListsAPIService) GetCrmV3ListsObjectTypeIdObjectTypeIdNameListNameGetBy
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPostCrmV3ListsSearchDoSearchRequest struct {
-	ctx               context.Context
-	ApiService        *ListsAPIService
-	listSearchRequest *ListSearchRequest
+type ListsAPIRemoveRequest struct {
+	ctx        context.Context
+	ApiService *ListsAPIService
+	listId     int32
 }
 
-// The IDs of the records to add and/or remove from the list.
-func (r ApiPostCrmV3ListsSearchDoSearchRequest) ListSearchRequest(listSearchRequest ListSearchRequest) ApiPostCrmV3ListsSearchDoSearchRequest {
-	r.listSearchRequest = &listSearchRequest
-	return r
-}
-
-func (r ApiPostCrmV3ListsSearchDoSearchRequest) Execute() (*ListSearchResponse, *http.Response, error) {
-	return r.ApiService.PostCrmV3ListsSearchDoSearchExecute(r)
+func (r ListsAPIRemoveRequest) Execute() (*http.Response, error) {
+	return r.ApiService.RemoveExecute(r)
 }
 
 /*
-PostCrmV3ListsSearchDoSearch Search Lists
+Remove Delete a List
 
-Search lists by list name or page through all lists by providing an empty `query` value.
+Delete a list by **ILS list ID**. Lists deleted through this endpoint can be restored up to 90-days following the delete. After 90-days, the list is purged and can no longer be restored.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPostCrmV3ListsSearchDoSearchRequest
+	@param listId The **ILS ID** of the list to delete.
+	@return ListsAPIRemoveRequest
 */
-func (a *ListsAPIService) PostCrmV3ListsSearchDoSearch(ctx context.Context) ApiPostCrmV3ListsSearchDoSearchRequest {
-	return ApiPostCrmV3ListsSearchDoSearchRequest{
+func (a *ListsAPIService) Remove(ctx context.Context, listId int32) ListsAPIRemoveRequest {
+	return ListsAPIRemoveRequest{
 		ApiService: a,
 		ctx:        ctx,
+		listId:     listId,
 	}
 }
 
 // Execute executes the request
-//
-//	@return ListSearchResponse
-func (a *ListsAPIService) PostCrmV3ListsSearchDoSearchExecute(r ApiPostCrmV3ListsSearchDoSearchRequest) (*ListSearchResponse, *http.Response, error) {
+func (a *ListsAPIService) RemoveExecute(r ListsAPIRemoveRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *ListSearchResponse
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.PostCrmV3ListsSearchDoSearch")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.Remove")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/crm/v3/lists/search"
+	localVarPath := localBasePath + "/crm/v3/lists/{listId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"listId"+"}", url.PathEscape(parameterValueToString(r.listId, "listId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.listSearchRequest == nil {
-		return localVarReturnValue, nil, reportError("listSearchRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -657,15 +782,13 @@ func (a *ListsAPIService) PostCrmV3ListsSearchDoSearchExecute(r ApiPostCrmV3List
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "*/*"}
+	localVarHTTPHeaderAccepts := []string{"*/*"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.listSearchRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -682,19 +805,19 @@ func (a *ListsAPIService) PostCrmV3ListsSearchDoSearchExecute(r ApiPostCrmV3List
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -706,46 +829,37 @@ func (a *ListsAPIService) PostCrmV3ListsSearchDoSearchExecute(r ApiPostCrmV3List
 		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 		if err != nil {
 			newErr.error = err.Error()
-			return localVarReturnValue, localVarHTTPResponse, newErr
+			return localVarHTTPResponse, newErr
 		}
 		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 		newErr.model = v
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarHTTPResponse, nil
 }
 
-type ApiPutCrmV3ListsListIdRestoreRestoreRequest struct {
+type ListsAPIRestoreRequest struct {
 	ctx        context.Context
 	ApiService *ListsAPIService
 	listId     int32
 }
 
-func (r ApiPutCrmV3ListsListIdRestoreRestoreRequest) Execute() (*http.Response, error) {
-	return r.ApiService.PutCrmV3ListsListIdRestoreRestoreExecute(r)
+func (r ListsAPIRestoreRequest) Execute() (*http.Response, error) {
+	return r.ApiService.RestoreExecute(r)
 }
 
 /*
-PutCrmV3ListsListIdRestoreRestore Restore a List
+Restore Restore a List
 
 Restore a previously deleted list by **ILS list ID**. Deleted lists are eligible to be restored up-to 90-days after the list has been deleted.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listId The **ILS ID** of the list to restore.
-	@return ApiPutCrmV3ListsListIdRestoreRestoreRequest
+	@return ListsAPIRestoreRequest
 */
-func (a *ListsAPIService) PutCrmV3ListsListIdRestoreRestore(ctx context.Context, listId int32) ApiPutCrmV3ListsListIdRestoreRestoreRequest {
-	return ApiPutCrmV3ListsListIdRestoreRestoreRequest{
+func (a *ListsAPIService) Restore(ctx context.Context, listId int32) ListsAPIRestoreRequest {
+	return ListsAPIRestoreRequest{
 		ApiService: a,
 		ctx:        ctx,
 		listId:     listId,
@@ -753,14 +867,14 @@ func (a *ListsAPIService) PutCrmV3ListsListIdRestoreRestore(ctx context.Context,
 }
 
 // Execute executes the request
-func (a *ListsAPIService) PutCrmV3ListsListIdRestoreRestoreExecute(r ApiPutCrmV3ListsListIdRestoreRestoreRequest) (*http.Response, error) {
+func (a *ListsAPIService) RestoreExecute(r ListsAPIRestoreRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodPut
 		localVarPostBody   interface{}
 		formFiles          []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.PutCrmV3ListsListIdRestoreRestore")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.Restore")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -839,7 +953,7 @@ func (a *ListsAPIService) PutCrmV3ListsListIdRestoreRestoreExecute(r ApiPutCrmV3
 	return localVarHTTPResponse, nil
 }
 
-type ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest struct {
+type ListsAPIUpdateListFiltersRequest struct {
 	ctx                      context.Context
 	ApiService               *ListsAPIService
 	listId                   int32
@@ -847,32 +961,32 @@ type ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest struct {
 	enrollObjectsInWorkflows *bool
 }
 
-func (r ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest) ListFilterUpdateRequest(listFilterUpdateRequest ListFilterUpdateRequest) ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest {
+func (r ListsAPIUpdateListFiltersRequest) ListFilterUpdateRequest(listFilterUpdateRequest ListFilterUpdateRequest) ListsAPIUpdateListFiltersRequest {
 	r.listFilterUpdateRequest = &listFilterUpdateRequest
 	return r
 }
 
 // A flag indicating whether or not the memberships added to the list as a result of the filter change should be enrolled in workflows that are relevant to this list.
-func (r ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest) EnrollObjectsInWorkflows(enrollObjectsInWorkflows bool) ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest {
+func (r ListsAPIUpdateListFiltersRequest) EnrollObjectsInWorkflows(enrollObjectsInWorkflows bool) ListsAPIUpdateListFiltersRequest {
 	r.enrollObjectsInWorkflows = &enrollObjectsInWorkflows
 	return r
 }
 
-func (r ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest) Execute() (*ListUpdateResponse, *http.Response, error) {
-	return r.ApiService.PutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersExecute(r)
+func (r ListsAPIUpdateListFiltersRequest) Execute() (*ListUpdateResponse, *http.Response, error) {
+	return r.ApiService.UpdateListFiltersExecute(r)
 }
 
 /*
-PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters Update List Filter Definition
+UpdateListFilters Update List Filter Definition
 
 Update the filter branch definition of a `DYNAMIC` list. Once updated, the list memberships will be re-evaluated and updated to match the new definition.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listId The **ILS ID** of the list to update.
-	@return ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest
+	@return ListsAPIUpdateListFiltersRequest
 */
-func (a *ListsAPIService) PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters(ctx context.Context, listId int32) ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest {
-	return ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest{
+func (a *ListsAPIService) UpdateListFilters(ctx context.Context, listId int32) ListsAPIUpdateListFiltersRequest {
+	return ListsAPIUpdateListFiltersRequest{
 		ApiService: a,
 		ctx:        ctx,
 		listId:     listId,
@@ -882,7 +996,7 @@ func (a *ListsAPIService) PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters(
 // Execute executes the request
 //
 //	@return ListUpdateResponse
-func (a *ListsAPIService) PutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersExecute(r ApiPutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersRequest) (*ListUpdateResponse, *http.Response, error) {
+func (a *ListsAPIService) UpdateListFiltersExecute(r ListsAPIUpdateListFiltersRequest) (*ListUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}
@@ -890,7 +1004,7 @@ func (a *ListsAPIService) PutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersE
 		localVarReturnValue *ListUpdateResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.PutCrmV3ListsListIdUpdateListFiltersUpdateListFilters")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.UpdateListFilters")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -989,121 +1103,7 @@ func (a *ListsAPIService) PutCrmV3ListsListIdUpdateListFiltersUpdateListFiltersE
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiRemoveRequest struct {
-	ctx        context.Context
-	ApiService *ListsAPIService
-	listId     int32
-}
-
-func (r ApiRemoveRequest) Execute() (*http.Response, error) {
-	return r.ApiService.RemoveExecute(r)
-}
-
-/*
-Remove Delete a List
-
-Delete a list by **ILS list ID**. Lists deleted through this endpoint can be restored up to 90-days following the delete. After 90-days, the list is purged and can no longer be restored.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param listId The **ILS ID** of the list to delete.
-	@return ApiRemoveRequest
-*/
-func (a *ListsAPIService) Remove(ctx context.Context, listId int32) ApiRemoveRequest {
-	return ApiRemoveRequest{
-		ApiService: a,
-		ctx:        ctx,
-		listId:     listId,
-	}
-}
-
-// Execute executes the request
-func (a *ListsAPIService) RemoveExecute(r ApiRemoveRequest) (*http.Response, error) {
-	var (
-		localVarHTTPMethod = http.MethodDelete
-		localVarPostBody   interface{}
-		formFiles          []formFile
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ListsAPIService.Remove")
-	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/crm/v3/lists/{listId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"listId"+"}", url.PathEscape(parameterValueToString(r.listId, "listId")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["private_apps"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["private-app"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		var v Error
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
-			return localVarHTTPResponse, newErr
-		}
-		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-		newErr.model = v
-		return localVarHTTPResponse, newErr
-	}
-
-	return localVarHTTPResponse, nil
-}
-
-type ApiUpdateNameRequest struct {
+type ListsAPIUpdateNameRequest struct {
 	ctx            context.Context
 	ApiService     *ListsAPIService
 	listId         int32
@@ -1112,18 +1112,18 @@ type ApiUpdateNameRequest struct {
 }
 
 // The name to update the list to.
-func (r ApiUpdateNameRequest) ListName(listName string) ApiUpdateNameRequest {
+func (r ListsAPIUpdateNameRequest) ListName(listName string) ListsAPIUpdateNameRequest {
 	r.listName = &listName
 	return r
 }
 
 // A flag indicating whether or not the response object list definition should include a filter branch definition. By default, object list definitions will not have their filter branch definitions included in the response.
-func (r ApiUpdateNameRequest) IncludeFilters(includeFilters bool) ApiUpdateNameRequest {
+func (r ListsAPIUpdateNameRequest) IncludeFilters(includeFilters bool) ListsAPIUpdateNameRequest {
 	r.includeFilters = &includeFilters
 	return r
 }
 
-func (r ApiUpdateNameRequest) Execute() (*ListUpdateResponse, *http.Response, error) {
+func (r ListsAPIUpdateNameRequest) Execute() (*ListUpdateResponse, *http.Response, error) {
 	return r.ApiService.UpdateNameExecute(r)
 }
 
@@ -1134,10 +1134,10 @@ Update the name of a list. The name must be globally unique relative to all othe
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param listId The **ILS ID** of the list to update.
-	@return ApiUpdateNameRequest
+	@return ListsAPIUpdateNameRequest
 */
-func (a *ListsAPIService) UpdateName(ctx context.Context, listId int32) ApiUpdateNameRequest {
-	return ApiUpdateNameRequest{
+func (a *ListsAPIService) UpdateName(ctx context.Context, listId int32) ListsAPIUpdateNameRequest {
+	return ListsAPIUpdateNameRequest{
 		ApiService: a,
 		ctx:        ctx,
 		listId:     listId,
@@ -1147,7 +1147,7 @@ func (a *ListsAPIService) UpdateName(ctx context.Context, listId int32) ApiUpdat
 // Execute executes the request
 //
 //	@return ListUpdateResponse
-func (a *ListsAPIService) UpdateNameExecute(r ApiUpdateNameRequest) (*ListUpdateResponse, *http.Response, error) {
+func (a *ListsAPIService) UpdateNameExecute(r ListsAPIUpdateNameRequest) (*ListUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
 		localVarPostBody    interface{}

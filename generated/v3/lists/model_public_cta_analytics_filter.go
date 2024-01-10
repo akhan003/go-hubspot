@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,11 +20,12 @@ var _ MappedNullable = &PublicCtaAnalyticsFilter{}
 
 // PublicCtaAnalyticsFilter struct for PublicCtaAnalyticsFilter
 type PublicCtaAnalyticsFilter struct {
-	FilterType         string                                        `json:"filterType"`
-	CoalescingRefineBy *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
-	PruningRefineBy    *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
-	Operator           string                                        `json:"operator"`
-	CtaName            string                                        `json:"ctaName"`
+	FilterType           string                                        `json:"filterType"`
+	CoalescingRefineBy   *PublicEventAnalyticsFilterCoalescingRefineBy `json:"coalescingRefineBy,omitempty"`
+	PruningRefineBy      *PublicEventAnalyticsFilterCoalescingRefineBy `json:"pruningRefineBy,omitempty"`
+	Operator             string                                        `json:"operator"`
+	CtaName              string                                        `json:"ctaName"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicCtaAnalyticsFilter PublicCtaAnalyticsFilter
@@ -207,6 +207,11 @@ func (o PublicCtaAnalyticsFilter) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["operator"] = o.Operator
 	toSerialize["ctaName"] = o.CtaName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -236,15 +241,24 @@ func (o *PublicCtaAnalyticsFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varPublicCtaAnalyticsFilter := _PublicCtaAnalyticsFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicCtaAnalyticsFilter)
+	err = json.Unmarshal(data, &varPublicCtaAnalyticsFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicCtaAnalyticsFilter(varPublicCtaAnalyticsFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filterType")
+		delete(additionalProperties, "coalescingRefineBy")
+		delete(additionalProperties, "pruningRefineBy")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "ctaName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

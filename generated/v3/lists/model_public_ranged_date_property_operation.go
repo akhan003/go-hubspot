@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,6 +26,7 @@ type PublicRangedDatePropertyOperation struct {
 	UpperBound                   int32  `json:"upperBound"`
 	LowerBound                   int32  `json:"lowerBound"`
 	RequiresTimeZoneConversion   bool   `json:"requiresTimeZoneConversion"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _PublicRangedDatePropertyOperation PublicRangedDatePropertyOperation
@@ -216,6 +216,11 @@ func (o PublicRangedDatePropertyOperation) ToMap() (map[string]interface{}, erro
 	toSerialize["upperBound"] = o.UpperBound
 	toSerialize["lowerBound"] = o.LowerBound
 	toSerialize["requiresTimeZoneConversion"] = o.RequiresTimeZoneConversion
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -248,15 +253,25 @@ func (o *PublicRangedDatePropertyOperation) UnmarshalJSON(data []byte) (err erro
 
 	varPublicRangedDatePropertyOperation := _PublicRangedDatePropertyOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicRangedDatePropertyOperation)
+	err = json.Unmarshal(data, &varPublicRangedDatePropertyOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicRangedDatePropertyOperation(varPublicRangedDatePropertyOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operationType")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "includeObjectsWithNoValueSet")
+		delete(additionalProperties, "upperBound")
+		delete(additionalProperties, "lowerBound")
+		delete(additionalProperties, "requiresTimeZoneConversion")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

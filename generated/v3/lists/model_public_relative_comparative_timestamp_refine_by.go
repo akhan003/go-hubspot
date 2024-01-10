@@ -11,7 +11,6 @@ API version: v3
 package lists
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &PublicRelativeComparativeTimestampRefineBy{}
 
 // PublicRelativeComparativeTimestampRefineBy struct for PublicRelativeComparativeTimestampRefineBy
 type PublicRelativeComparativeTimestampRefineBy struct {
-	Type       string           `json:"type"`
-	Comparison string           `json:"comparison"`
-	TimeOffset PublicTimeOffset `json:"timeOffset"`
+	Type                 string           `json:"type"`
+	Comparison           string           `json:"comparison"`
+	TimeOffset           PublicTimeOffset `json:"timeOffset"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PublicRelativeComparativeTimestampRefineBy PublicRelativeComparativeTimestampRefineBy
@@ -135,6 +135,11 @@ func (o PublicRelativeComparativeTimestampRefineBy) ToMap() (map[string]interfac
 	toSerialize["type"] = o.Type
 	toSerialize["comparison"] = o.Comparison
 	toSerialize["timeOffset"] = o.TimeOffset
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *PublicRelativeComparativeTimestampRefineBy) UnmarshalJSON(data []byte) 
 
 	varPublicRelativeComparativeTimestampRefineBy := _PublicRelativeComparativeTimestampRefineBy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPublicRelativeComparativeTimestampRefineBy)
+	err = json.Unmarshal(data, &varPublicRelativeComparativeTimestampRefineBy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PublicRelativeComparativeTimestampRefineBy(varPublicRelativeComparativeTimestampRefineBy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "comparison")
+		delete(additionalProperties, "timeOffset")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
